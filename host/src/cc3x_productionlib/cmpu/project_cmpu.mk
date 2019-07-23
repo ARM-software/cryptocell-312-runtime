@@ -75,8 +75,11 @@ INCDIRS_EXTRA +=  $(SHARED_DIR)/include/pal
 INCDIRS_EXTRA +=  $(SHARED_DIR)/include/pal/$(OS)
 INCDIRS_EXTRA += $(SHARED_DIR)/include/mbedtls
 INCDIRS_EXTRA += $(SHARED_DIR)/include/proj/$(PROJ)
-INCDIRS_EXTRA +=  $(SHARED_DIR)/../mbedtls/include
-INCDIRS_EXTRA +=  $(SHARED_DIR)/../mbedtls/include/mbedtls
+INCDIRS_EXTRA +=  $(SHARED_DIR)/../../../mbed-crypto/include
+INCDIRS_EXTRA +=  $(SHARED_DIR)/../../../mbed-crypto/include/mbedtls
+ifeq ($(TEST_BOARD), MUSCA_B1)
+INCDIRS_EXTRA += $(HOST_SRCDIR)/../../../../trusted-firmware-m/platform/ext/target/musca_b1/partition # for region_defs.h
+endif
 INCDIRS_EXTRA += $(HOST_SRCDIR)/cc3x_lib
 INCDIRS_EXTRA += $(HOST_SRCDIR)/hal
 INCDIRS_EXTRA += $(HOST_SRCDIR)/cc_mng

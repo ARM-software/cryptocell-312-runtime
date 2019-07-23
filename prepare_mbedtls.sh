@@ -1,10 +1,10 @@
 #!/bin/bash
 PROJ_ROOT=$(pwd)
-MBEDTLS_ROOT_DIR=$PROJ_ROOT/mbedtls
+MBEDTLS_ROOT_DIR=$PROJ_ROOT/../../mbed-crypto
 HOST_PROJ_ROOT=$PROJ_ROOT/host
 MBEDTLS_ALT_API=$PROJ_ROOT/shared/include/mbedtls
 MBEDTLS_PAL_INCDIRS+="$PROJ_ROOT/shared/include $PROJ_ROOT/shared/hw/include $PROJ_ROOT/shared/include/pal $PROJ_ROOT/shared/include/proj/cc3x $PROJ_ROOT/host/src/tests/common"
-MBEDTLS_CFLAGS=" -DUSE_MBEDTLS_CRYPTOCELL -I$MBEDTLS_ALT_API -I$PROJ_ROOT/host/include -I$PROJ_ROOT/shared/include/crypto_api/cc3x/ -I$PROJ_ROOT/shared/include/crypto_api/"
+MBEDTLS_CFLAGS=" -DUSE_MBEDTLS_CRYPTOCELL -I$MBEDTLS_ALT_API -I$PROJ_ROOT/host/include -I$PROJ_ROOT/shared/include/crypto_api/cc3x/ -I$PROJ_ROOT/shared/include/crypto_api/ -I$MBEDTLS_ROOT_DIR/../trusted-firmware-m/secure_fw/services/crypto/"
 #=========================== BUILD MBEDTLS LIBRARIES ==============================
 
 
@@ -21,7 +21,8 @@ elif [ "$CROSS_COMPILE" == "arm-none-eabi-" ]; then
 		TEE_OS=no_os
 	fi
 elif [ "$CROSS_COMPILE" == "armclang" ]; then
-	TEE_OS=freertos
+	#TEE_OS=freertos
+	TEE_OS=no_os
 fi
 
 # Set mbedtls_cflags according to the target's operating system (TEE_OS)
@@ -110,7 +111,7 @@ elif [ "$CROSS_COMPILE" == "arm-xilinx-linux-gnueabi-" ]; then
 
     MBEDTLS_TESTS_LDFLAGS+="-L../../host/lib -lpal_linux -lcc_312 -lpthread "
     # as we cannot change mbedtls Makefile, we add these libs before mbedtls* in order to pass link
-    export LOCAL_LDFLAGS+="-L$PROJ_ROOT/host/lib -L$PROJ_ROOT/mbedtls/library -Wl,--start-group -lcc_312 "
+    export LOCAL_LDFLAGS+="-L$PROJ_ROOT/host/lib -L$PROJ_ROOT/../../mbed-crypto/library -Wl,--start-group -lcc_312 "
     export LOCAL_LDFLAGS+="-lmbedtls "
     export LOCAL_LDFLAGS+="-lmbedx509 "
     export LOCAL_LDFLAGS+="-lmbedcrypto "
@@ -153,7 +154,8 @@ function mbedtls_git
     if [ ! -d $MBEDTLS_ROOT_DIR ];
     then
         echo "cloning mbedtls into $MBEDTLS_ROOT_DIR"
-        git clone -b "mbedtls-2.16.2"  https://github.com/ARMmbed/mbedtls.git $MBEDTLS_ROOT_DIR
+        #git clone -b "mbedtls-2.16.2"  https://github.com/ARMmbed/mbedtls.git $MBEDTLS_ROOT_DIR
+        git clone -b mbedcrypto-1.0.0 https://github.com/ARMmbed/mbed-crypto.git $MBEDTLS_ROOT_DIR
     else
         echo "rebase mbedtls $MBEDTLS_ROOT_DIR"
         cd $MBEDTLS_ROOT_DIR
@@ -182,7 +184,7 @@ function mbedtls_build_lib
 #============================== CLEAN MBEDTLS =================================
 function mbedtls_clean
 {
-    cd $PROJ_ROOT/mbedtls
+    cd $PROJ_ROOT/../../mbed-crypto
     make clean
 }
 if [ "$#" == "0" ];
