@@ -123,8 +123,13 @@ ifeq ($(ARCH),arm)
             CFLAGS += -mcpu=$(ARM_CPU)
         endif
         CFLAGS += --target=arm-arm-none-eabi -mlittle-endian
-        CFLAGS += -mthumb
-        CFLAGS += -DCC_TEE -DDX_PLAT_MPS2_PLUS
+        CFLAGS += -mthumb -fshort-enums -fshort-wchar -funsigned-char
+        CFLAGS += -DCC_TEE
+	    ifeq ($(TEST_BOARD),MUSCA_B1)
+		    CFLAGS += -DDX_PLAT_MUSCA_B1
+		else ifeq ($(TEST_BOARD),mps2+)
+		    CFLAGS += -DDX_PLAT_MPS2_PLUS
+	    endif
     endif
     # For arm-eabi- assume a15, otherwise assume a9 (zynq7000)
     ARM_CPU ?= $(if $(filter arm-eabi-,$(CROSS_COMPILE)),cortex-a15,cortex-a9)

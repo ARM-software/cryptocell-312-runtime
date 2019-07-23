@@ -64,8 +64,21 @@ if [ "$TEE_OS" == "freertos" ]; then
 fi
 
 if [ "$TEE_OS" == "no_os" ]; then
-    MBEDTLS_CFLAGS+=" -DMBEDTLS_CONFIG_FILE='<config-cc312-mps2-no-os.h>' "
+    MBEDTLS_CFLAGS+=" -DMBEDTLS_CONFIG_FILE='<config-cc312-musca_b1-no-os.h>' "
     MBEDTLS_PAL_INCDIRS+=" $PROJ_ROOT/shared/include/pal/no_os/"
+	if [ "$CROSS_COMPILE" == "armclang" ]; then
+        if [ "$CORTEX" == "cortex-m3" ]; then
+            MBEDTLS_CFLAGS+=" --target=arm-arm-none-eabi -mcpu=cortex-m3 "
+            MBEDTLS_CFLAGS+=" -mlittle-endian -xc "
+            MBEDTLS_CFLAGS+=" -DARMCM3 "
+        elif [ "$CORTEX" == "cortex-m33" ]; then
+            MBEDTLS_CFLAGS+=" --target=arm-arm-none-eabi -march=armv8-m.main "
+            MBEDTLS_CFLAGS+=" -mlittle-endian -xc "
+            MBEDTLS_CFLAGS+=" -mcmse "
+            MBEDTLS_CFLAGS+=" -mfpu=none "
+            MBEDTLS_CFLAGS+=" -DSSE_200 "
+        fi
+	fi
 fi
 
 if [ "$TEE_OS" == "linux" ]; then
