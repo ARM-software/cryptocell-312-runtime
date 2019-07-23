@@ -18,6 +18,9 @@ INCDIRS_EXTRA += $(SHARED_INCDIR)/pal/$(PLAT_OS)
 
 INCDIRS_EXTRA +=  $(SHARED_DIR)/hw/include # for dx_reg_base_host.h, included in cc_pal.c
 INCDIRS_EXTRA += $(HOST_SRCDIR)/hal # for cc_pal_interrupt_ctrl.c
+ifeq ($(TEST_BOARD), MUSCA_B1)
+INCDIRS_EXTRA += $(HOST_SRCDIR)/../../../../trusted-firmware-m/platform/ext/target/musca_b1/partition # for region_defs.h
+endif
 
 ifeq ($(ARCH),arm)
 ifeq ($(CROSS_COMPILE),arm-none-eabi-)
