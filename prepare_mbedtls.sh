@@ -155,7 +155,7 @@ function mbedtls_git
     then
         echo "cloning mbedtls into $MBEDTLS_ROOT_DIR"
         #git clone -b "mbedtls-2.16.2"  https://github.com/ARMmbed/mbedtls.git $MBEDTLS_ROOT_DIR
-        git clone -b mbedcrypto-1.0.0 https://github.com/ARMmbed/mbed-crypto.git $MBEDTLS_ROOT_DIR
+        git clone -b mbedcrypto-1.1.0 https://github.com/ARMmbed/mbed-crypto.git $MBEDTLS_ROOT_DIR
     else
         echo "rebase mbedtls $MBEDTLS_ROOT_DIR"
         cd $MBEDTLS_ROOT_DIR

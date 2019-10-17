@@ -15,6 +15,8 @@
 #define CC_PROD_AIB_ADDR_REG_READ_ACCESS_BIT_SHIFT    0x10UL
 #define CC_PROD_AIB_ADDR_REG_WRITE_ACCESS_BIT_SHIFT   0x11UL
 
+#define SCC_OTP_CTRL_REG_OFFSET 0x204
+
 #define CC_PROD_ROT32(val) ( (val) >> 16 | (val) << 16 )
 #define CC_PROD_CONVERT_WORD_END(val) ( ((CC_PROD_ROT32((val)) & 0xff00ff00UL) >> 8) | ((CC_PROD_ROT32((val)) & 0x00ff00ffUL) << 8) )
 #ifdef BIG__ENDIAN
@@ -35,6 +37,34 @@ do {\
     }while( !(regVal & 0x1 ));\
 }while(0)
 
+
+/* poll NVM register to be assure that the NVM boot is finished (and LCS and the keys are valid) */
+#define WAIT_NVM_IDLE() \
+    do {                                            \
+        uint32_t regVal;                                \
+        do {                                        \
+            regVal = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, NVM_IS_IDLE));            \
+            regVal = CC_REG_FLD_GET(0, NVM_IS_IDLE, VALUE, regVal);         \
+        }while( !regVal );                              \
+    }while(0)
+
+/* calc OTP memory length:
+   read RTL OTP address width. The supported sizes are 6 (for 2 Kbits),7,8,9,10,11 (for 64 Kbits).
+   convert value parameter to addresses of 32b words */
+#define GET_OTP_LENGTH(otpLength)                           \
+    do {                                                \
+        WAIT_NVM_IDLE(); \
+        otpLength = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, OTP_ADDR_WIDTH_DEF));  \
+        otpLength = CC_REG_FLD_GET(0, OTP_ADDR_WIDTH_DEF, VALUE, otpLength);            \
+        otpLength = (1 << 8 << (otpLength - 6));                               \
+    }while(0)
+
+
+/* read scc otp control register */
+#define GET_SCC_OTP_CONTROL(otp_control) \
+    do { \
+        otp_control = (*((volatile uint32_t *)(DX_SCC_BASE_ADDR + SCC_OTP_CTRL_REG_OFFSET))); \
+    }while(0)
 /*******************************************************  OTP defines  ******************************************************/
 /* read a word directly from OTP memory */
 #define  CC_PROD_OTP_READ(otpData, otpWordOffset)                           \

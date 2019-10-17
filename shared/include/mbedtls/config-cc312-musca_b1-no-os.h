@@ -2206,6 +2206,7 @@
  * Requires: MBEDTLS_ECP_C
  */
 #define MBEDTLS_ECDH_C
+#define MBEDTLS_ECDH_LEGACY_CONTEXT
 
 /**
  * \def MBEDTLS_ECDSA_C

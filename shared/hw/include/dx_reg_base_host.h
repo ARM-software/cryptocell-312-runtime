@@ -14,6 +14,7 @@
 #define DX_BASE_CODE 0x50030000 //# not used
 
 #define DX_BASE_ENV_REGS 0x500A0000 //TODO need confirm
+#define DX_SCC_BASE_ADDR 0x5010B000 //SCC base address
 
 #define DX_BASE_HOST_RGF 0x0UL
 #define DX_BASE_CRY_KERNEL     0x0UL
