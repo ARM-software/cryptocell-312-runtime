@@ -29,7 +29,7 @@ extern "C"
 
 #include "mbedtls_cc_util_defs.h"
 #include "mbedtls_cc_util_key_derivation_defs.h"
-#include "cc_hash_defs.h"
+#include "cc_hash_common_defs.h"
 
 /******************************************************************************
 *                           DEFINITIONS

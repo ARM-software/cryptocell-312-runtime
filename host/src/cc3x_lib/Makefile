@@ -27,7 +27,7 @@ endif
 
 
 PUBLIC_INCLUDES += $(CC_API_3x)/cc_aes_defs_proj.h 
-PUBLIC_INCLUDES += $(CODESAFE_SRCDIR)/mbedtls_api/mbedtls_ccm_common.h $(CC_API)/cc_ecpki_types.h $(CC_API_3x)/cc_pka_defs_hw.h 
+PUBLIC_INCLUDES += $(CODESAFE_SRCDIR)/mbedtls_api/mbedtls_ccm_common.h $(CC_API)/cc_ecpki_types.h $(CC_API_3x)/cc_pka_defs_hw.h $(CC_API)/cc_hash_common_defs.h
 PUBLIC_INCLUDES += $(CC_API)/cc_kdf.h $(CC_API)/cc_hash_defs.h# not to document
 PUBLIC_INCLUDES += $(CC_API)/cc_error.h $(CC_API)/cc_aes_defs.h 
 PUBLIC_INCLUDES += $(CC_API_3x)/mbedtls_cc_sha512_t.h

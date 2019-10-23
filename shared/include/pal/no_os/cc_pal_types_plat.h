@@ -11,9 +11,7 @@
 #define _CC_PAL_TYPES_PLAT_H
 /* Host specific types for standard (ISO-C99) compliant platforms */
 
-#include <stdint.h>
-#include <stddef.h>
-#include <stdbool.h>
+#include "cc_pal_common_types_plat.h"
 
 /*! Type definition for virtual address. */
 typedef uintptr_t       CCVirtAddr_t;

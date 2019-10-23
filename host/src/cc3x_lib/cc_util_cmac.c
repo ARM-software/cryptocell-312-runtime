@@ -13,6 +13,7 @@
 #include "cc_pal_abort.h"
 #include "cc_util_int_defs.h"
 #include "mbedtls_cc_util_defs.h"
+#include "mbedtls_cc_util_key_derivation_defs.h"
 #include "cc_util_error.h"
 #include "cc_aes_defs.h"
 #include "aes_driver.h"

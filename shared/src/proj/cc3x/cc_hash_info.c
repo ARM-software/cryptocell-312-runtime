@@ -8,6 +8,7 @@
 
 #include "cc_hash_defs.h"
 #include "cc_general_defs.h"
+#include "cc_pal_types.h"
 
 const HmacHash_t HmacHashInfo_t[CC_HASH_NumOfModes] = {
     /*CC_HASH_SHA1_mode         */        {CC_HASH_SHA1_DIGEST_SIZE_IN_BYTES,   CC_HASH_SHA1_mode},

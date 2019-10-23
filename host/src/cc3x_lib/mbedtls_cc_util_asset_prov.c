@@ -21,6 +21,7 @@
 #include "cc_util_cmac.h"
 #include "mbedtls_cc_util_asset_prov.h"
 #include "cc_util_asset_prov_int.h"
+#include "mbedtls_cc_util_key_derivation_defs.h"
 
 
 CCError_t mbedtls_util_asset_pkg_unpack(CCAssetProvKeyType_t        keyType,
