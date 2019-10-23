@@ -42,7 +42,7 @@ PUBLIC_INCLUDES += $(MBEDTLS_ALT_API)/config-cc312.h $(MBEDTLS_ALT_API)/config-c
 PUBLIC_INCLUDES += $(MBEDTLS_ALT_API)/cmac_alt.h $(MBEDTLS_ALT_API)/dhm_alt.h $(MBEDTLS_ALT_API)/chacha20_alt.h $(MBEDTLS_ALT_API)/poly1305_alt.h $(MBEDTLS_ALT_API)/chachapoly_alt.h
 PUBLIC_INCLUDES += $(MBEDTLS_ALT_API)/cc_ecc_internal.h $(CC_API_3x)/mbedtls_cc_ecdsa_edwards.h $(CC_API_3x)/mbedtls_cc_ecdh_edwards.h
 
-PUBLIC_INCLUDES += $(MANAGEMENT_INCLUDES)/mbedtls_cc_mng.h $(MANAGEMENT_INCLUDES)/mbedtls_cc_mng_error.h
+PUBLIC_INCLUDES += $(MANAGEMENT_INCLUDES)/mbedtls_cc_mng.h $(MANAGEMENT_INCLUDES)/mbedtls_cc_mng_error.h $(MANAGEMENT_API)/mbedtls_cc_mng_common.h $(HOST_PROJ_ROOT)/src/hal/cc_hal_plat.h
 PUBLIC_INCLUDES += $(SHARED_INCDIR)/cc_util/mbedtls_cc_util_key_derivation.h $(SHARED_INCDIR)/cc_util/mbedtls_cc_util_key_derivation_defs.h $(SHARED_INCDIR)/cc_util/mbedtls_cc_util_defs.h
 PUBLIC_INCLUDES += $(SHARED_INCDIR)/cc_util/cc_util_error.h
 
