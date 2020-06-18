@@ -12,7 +12,7 @@
 
 /*!
  @file
- @brief This file contains all the CryptoCell hash external DMA APIs, their
+ @brief This file contains all the CryptoCell hash external DMA APIs, their 
  enums and definitions.
  */
 
@@ -38,13 +38,13 @@ extern "C"
  */
 int mbedtls_hash_ext_dma_init(
     /*! [in] The hash mode. Supported modes are: SHA1, SHA224 or SHA256. */
-    CCHashOperationMode_t  operationMode,
+	CCHashOperationMode_t  operationMode,
     /*! [in] Input data size in bytes. */
-    uint32_t                dataSize
+	uint32_t                dataSize
     );
 
 /*!
-  @brief This function returns the digest after the hash operation, and frees
+  @brief This function returns the digest after the hash operation, and frees 
   used resources.
 
   @return \c CC_OK on success.
@@ -52,11 +52,11 @@ int mbedtls_hash_ext_dma_init(
  */
 int mbedtls_hash_ext_dma_finish(
     /*! [in] The hash mode. Supported modes are: SHA1, SHA224 or SHA256. */
-    CCHashOperationMode_t  operationMode,
+	CCHashOperationMode_t  operationMode,
     /*! [in] The size of the hash digest in bytes. */
-    uint32_t digestBufferSize,
+	uint32_t digestBufferSize,
     /*! [out] The output digest buffer. */
-    uint32_t *digestBuffer
+	uint32_t *digestBuffer
     );
 
 #ifdef __cplusplus

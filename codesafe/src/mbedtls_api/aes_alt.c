@@ -14,50 +14,50 @@
 #include "aes_driver.h"
 
 /**
- * \brief          Initialize AES context
+ * \brief		   Initialize AES context
  *
  *
- * \note           Context block should be pre-allocated by the caller.
+ * \note		   Context block should be pre-allocated by the caller.
  *
- * \param ctx      AES context to be initialized
+ * \param ctx	   AES context to be initialized
  */
 void mbedtls_aes_init(mbedtls_aes_context * ctx)
 {
-    AesContext_t *aesCtx = NULL;
+	AesContext_t *aesCtx = NULL;
 
-    if (NULL == ctx)
-    {
-        CC_PalAbort("ctx cannot be NULL");
-    }
+	if (NULL == ctx)
+	{
+		CC_PalAbort("ctx cannot be NULL");
+	}
 
-    /* check size of structs match */
-    if (sizeof(mbedtls_aes_context) != sizeof(AesContext_t))
-    {
-        CC_PalAbort("!!!!AES context sizes mismatch!!!\n");
-    }
+	/* check size of structs match */
+	if (sizeof(mbedtls_aes_context) != sizeof(AesContext_t))
+	{
+		CC_PalAbort("!!!!AES context sizes mismatch!!!\n");
+	}
 
-    aesCtx = (AesContext_t *)ctx;
+	aesCtx = (AesContext_t *)ctx;
 
-    aesCtx->padType = CRYPTO_PADDING_NONE;
-    aesCtx->dataBlockType = FIRST_BLOCK;
-    aesCtx->inputDataAddrType = DLLI_ADDR;
-    aesCtx->outputDataAddrType = DLLI_ADDR;
+	aesCtx->padType = CRYPTO_PADDING_NONE;
+	aesCtx->dataBlockType = FIRST_BLOCK;
+	aesCtx->inputDataAddrType = DLLI_ADDR;
+	aesCtx->outputDataAddrType = DLLI_ADDR;
 }
 
 
 /**
- * \brief          Clear AES context
+ * \brief		   Clear AES context
  *
- * \param ctx      AES context to be cleared
+ * \param ctx	   AES context to be cleared
  */
 void mbedtls_aes_free(mbedtls_aes_context * ctx)
 {
-    if (NULL == ctx)
-    {
-        CC_PAL_LOG_ERR("ctx cannot be NULL\n");
-        return;
-    }
-    CC_PalMemSet(ctx, 0, sizeof(mbedtls_aes_context));
+	if (NULL == ctx)
+	{
+		CC_PAL_LOG_ERR("ctx cannot be NULL\n");
+		return;
+	}
+	CC_PalMemSet(ctx, 0, sizeof(mbedtls_aes_context));
 }
 
 
@@ -70,27 +70,27 @@ void mbedtls_aes_free(mbedtls_aes_context * ctx)
  *
  */
 static int aes_setkey(mbedtls_aes_context * ctx, const unsigned char * key,
-        unsigned int keybits, cryptoDirection_t dir)
+		unsigned int keybits, cryptoDirection_t dir)
 {
-    AesContext_t *aesCtx = NULL;
+	AesContext_t *aesCtx = NULL;
 
-    /* if the users context ID pointer is NULL return an error */
-    if (NULL == ctx)
-    {
-        CC_PAL_LOG_ERR("ctx cannot be NULL\n");
-        return MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH;
-    }
+	/* if the users context ID pointer is NULL return an error */
+	if (NULL == ctx)
+	{
+		CC_PAL_LOG_ERR("ctx cannot be NULL\n");
+		return MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH;
+	}
 
-    /* check the validity of the key data pointer */
-    if (NULL == key)
-    {
-        CC_PAL_LOG_ERR("key cannot be NULL\n");
-        return MBEDTLS_ERR_AES_INVALID_KEY_LENGTH;
-    }
+	/* check the validity of the key data pointer */
+	if (NULL == key)
+	{
+		CC_PAL_LOG_ERR("key cannot be NULL\n");
+		return MBEDTLS_ERR_AES_INVALID_KEY_LENGTH;
+	}
 
-    aesCtx = (AesContext_t *)ctx;
-    aesCtx->dir = dir;
-    aesCtx->cryptoKey = USER_KEY;
+	aesCtx = (AesContext_t *)ctx;
+	aesCtx->dir = dir;
+	aesCtx->cryptoKey = USER_KEY;
 
     switch (keybits) {
         case 128:
@@ -107,9 +107,9 @@ static int aes_setkey(mbedtls_aes_context * ctx, const unsigned char * key,
             return MBEDTLS_ERR_AES_INVALID_KEY_LENGTH;
         }
 
-    CC_PalMemCopy(aesCtx->keyBuf, key, keybits/8);
+	CC_PalMemCopy(aesCtx->keyBuf, key, keybits/8);
 
-    return (0);   // no mbedTLS const for OK.
+	return (0);   // no mbedTLS const for OK.
 
 }
 
@@ -122,73 +122,73 @@ static int aes_setkey(mbedtls_aes_context * ctx, const unsigned char * key,
  *
  */
 int mbedtls_aes_setkey_enc(mbedtls_aes_context * ctx, const unsigned char * key,
-        unsigned int keybits)
+		unsigned int keybits)
 {
-    return aes_setkey(ctx, key, keybits, CRYPTO_DIRECTION_ENCRYPT);
+	return aes_setkey(ctx, key, keybits, CRYPTO_DIRECTION_ENCRYPT);
 }
 
 /**
- * \brief          AES key schedule (decryption)
+ * \brief		   AES key schedule (decryption)
  *
- * \param ctx      AES context to be initialized
- * \param key      decryption key
+ * \param ctx	   AES context to be initialized
+ * \param key	   decryption key
  * \param keybits  must be 128, 192 or 256
  *
- * \return         0 if successful, or MBEDTLS_ERR_AES_INVALID_KEY_LENGTH/
- *                 MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH
+ * \return		   0 if successful, or MBEDTLS_ERR_AES_INVALID_KEY_LENGTH/
+ * 				   MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH
  */
 
 
 int mbedtls_aes_setkey_dec(mbedtls_aes_context * ctx, const unsigned char * key,
-        unsigned int keybits)
+		unsigned int keybits)
 {
-    return aes_setkey(ctx, key, keybits, CRYPTO_DIRECTION_DECRYPT);
+	return aes_setkey(ctx, key, keybits, CRYPTO_DIRECTION_DECRYPT);
 }
 
 /**
- * \brief          AES-ECB block encryption/decryption
+ * \brief		   AES-ECB block encryption/decryption
  *
- * \param ctx      AES context
- * \param mode     MBEDTLS_AES_ENCRYPT or MBEDTLS_AES_DECRYPT
+ * \param ctx	   AES context
+ * \param mode	   MBEDTLS_AES_ENCRYPT or MBEDTLS_AES_DECRYPT
  * \param input    16-byte input block
  * \param output   16-byte output block
  *
- * \return         0 if successful, MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH otherwise
+ * \return		   0 if successful, MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH otherwise
  */
 
 
 int mbedtls_aes_crypt_ecb(mbedtls_aes_context * ctx,
-        int mode,
-        const unsigned char input[AES_BLOCK_SIZE],
-        unsigned char output[AES_BLOCK_SIZE])
+		int mode,
+		const unsigned char input[AES_BLOCK_SIZE],
+		unsigned char output[AES_BLOCK_SIZE])
 {
-    AesContext_t *aesCtx = NULL;
-    drvError_t drvRet;
+	AesContext_t *aesCtx = NULL;
+	drvError_t drvRet;
     CCBuffInfo_t inBuffInfo;
     CCBuffInfo_t outBuffInfo;
 
-    if (NULL == ctx || NULL == input || NULL == output)
-    {
+	if (NULL == ctx || NULL == input || NULL == output)
+	{
         CC_PAL_LOG_ERR("Null pointer exception\n");
         return MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH;
-    }
-    if (MBEDTLS_AES_ENCRYPT != mode && MBEDTLS_AES_DECRYPT != mode)
-    {
+	}
+	if (MBEDTLS_AES_ENCRYPT != mode && MBEDTLS_AES_DECRYPT != mode)
+	{
         CC_PAL_LOG_ERR("Mode %d is not supported\n", mode);
-        return MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH;
-    }
+		return MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH;
+	}
 
-    aesCtx = (AesContext_t *)ctx;
+	aesCtx = (AesContext_t *)ctx;
 
-    if (((MBEDTLS_AES_ENCRYPT == mode) && (CRYPTO_DIRECTION_ENCRYPT != aesCtx->dir))  ||
-            ((MBEDTLS_AES_DECRYPT == mode) && (CRYPTO_DIRECTION_DECRYPT != aesCtx->dir)))
-    {
-        //someone made a mistake - set key in the wrong direction
-        CC_PAL_LOG_ERR("Key & operation mode mismatch: mode = %d. aesCtx->dir = %d\n", mode, aesCtx->dir);
-        return MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH;
-    }
+	if (((MBEDTLS_AES_ENCRYPT == mode) && (CRYPTO_DIRECTION_ENCRYPT != aesCtx->dir))  ||
+			((MBEDTLS_AES_DECRYPT == mode) && (CRYPTO_DIRECTION_DECRYPT != aesCtx->dir)))
+	{
+		//someone made a mistake - set key in the wrong direction
+		CC_PAL_LOG_ERR("Key & operation mode mismatch: mode = %d. aesCtx->dir = %d\n", mode, aesCtx->dir);
+		return MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH;
+	}
 
-    aesCtx->mode = CIPHER_ECB;
+	aesCtx->mode = CIPHER_ECB;
 
     drvRet = SetDataBuffersInfo(input, AES_BLOCK_SIZE, &inBuffInfo,
                                 output, AES_BLOCK_SIZE, &outBuffInfo);
@@ -197,7 +197,7 @@ int mbedtls_aes_crypt_ecb(mbedtls_aes_context * ctx,
          return MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH;
      }
 
-    drvRet = ProcessAesDrv(aesCtx, &inBuffInfo, &outBuffInfo, AES_BLOCK_SIZE);
+	drvRet = ProcessAesDrv(aesCtx, &inBuffInfo, &outBuffInfo, AES_BLOCK_SIZE);
 
     if (drvRet != AES_DRV_OK)
     {
@@ -220,8 +220,8 @@ int mbedtls_aes_crypt_cbc( mbedtls_aes_context *ctx,
 {
 
     AesContext_t *aesCtx = NULL;
-    drvError_t drvRet;
-    CCBuffInfo_t inBuffInfo;
+	drvError_t drvRet;
+	CCBuffInfo_t inBuffInfo;
     CCBuffInfo_t outBuffInfo;
 
     if (0 == length) /* In case input size is 0 - do nothing and return with success*/
@@ -229,17 +229,17 @@ int mbedtls_aes_crypt_cbc( mbedtls_aes_context *ctx,
         return (0);
     }
 
-    if (NULL == ctx || NULL == input || NULL == output || NULL == iv)
-    {
+	if (NULL == ctx || NULL == input || NULL == output || NULL == iv)
+	{
         CC_PAL_LOG_ERR("Null pointer exception\n");
         return MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH;
-    }
+	}
 
-    if (MBEDTLS_AES_ENCRYPT != mode && MBEDTLS_AES_DECRYPT != mode)
-    {
+	if (MBEDTLS_AES_ENCRYPT != mode && MBEDTLS_AES_DECRYPT != mode)
+	{
         CC_PAL_LOG_ERR("Mode %d is not supported\n", mode);
         return MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH;
-    }
+	}
 
     if( length % AES_BLOCK_SIZE )
     {
@@ -247,18 +247,18 @@ int mbedtls_aes_crypt_cbc( mbedtls_aes_context *ctx,
         return( MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH );
     }
 
-    aesCtx = (AesContext_t *)ctx;
+	aesCtx = (AesContext_t *)ctx;
 
-    if (((MBEDTLS_AES_ENCRYPT == mode) && (CRYPTO_DIRECTION_ENCRYPT != aesCtx->dir))  ||
-            ((MBEDTLS_AES_DECRYPT == mode) && (CRYPTO_DIRECTION_DECRYPT != aesCtx->dir)))
-    {
-        //someone made a mistake - set key in the wrong direction
-        CC_PAL_LOG_ERR("Key & operation mode mismatch: operation %d key %d\n", mode, aesCtx->dir);
-        return MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH;
-    }
+	if (((MBEDTLS_AES_ENCRYPT == mode) && (CRYPTO_DIRECTION_ENCRYPT != aesCtx->dir))  ||
+			((MBEDTLS_AES_DECRYPT == mode) && (CRYPTO_DIRECTION_DECRYPT != aesCtx->dir)))
+	{
+		//someone made a mistake - set key in the wrong direction
+		CC_PAL_LOG_ERR("Key & operation mode mismatch: operation %d key %d\n", mode, aesCtx->dir);
+		return MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH;
+	}
 
     CC_PalMemCopy(aesCtx->ivBuf, iv, AES_IV_SIZE);
-    aesCtx->mode = CIPHER_CBC;
+	aesCtx->mode = CIPHER_CBC;
 
     drvRet = SetDataBuffersInfo(input, length, &inBuffInfo,
                                 output, length, &outBuffInfo);
@@ -267,7 +267,7 @@ int mbedtls_aes_crypt_cbc( mbedtls_aes_context *ctx,
          return MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH;
      }
 
-    drvRet = ProcessAesDrv(aesCtx, &inBuffInfo, &outBuffInfo, length);
+	drvRet = ProcessAesDrv(aesCtx, &inBuffInfo, &outBuffInfo, length);
 
     if (drvRet != AES_DRV_OK)
     {
@@ -336,20 +336,20 @@ static int aes_crypt_ctr_ofb( mbedtls_aes_context *ctx,
                               unsigned char *output )
 {
     AesContext_t *aesCtx = NULL;
-    drvError_t drvRet;
+	drvError_t drvRet;
     CCBuffInfo_t inBuffInfo;
     CCBuffInfo_t outBuffInfo;
 
-    if (0 == length) /* In case input size is 0 - do nothing and return with success*/
-    {
-        return (0);
-    }
+	if (0 == length) /* In case input size is 0 - do nothing and return with success*/
+	{
+	    return (0);
+	}
 
-    if (NULL == ctx || NULL == iv || NULL == input || NULL == output)
-    {
+	if (NULL == ctx || NULL == iv || NULL == input || NULL == output)
+	{
         CC_PAL_LOG_ERR("Null pointer exception\n");
         return MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH;
-    }
+	}
 
     if ((iv_off != NULL) && (*iv_off != 0))
     {
@@ -357,9 +357,9 @@ static int aes_crypt_ctr_ofb( mbedtls_aes_context *ctx,
         return MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH;
     }
 
-    aesCtx = (AesContext_t *)ctx;
+	aesCtx = (AesContext_t *)ctx;
 
-    aesCtx->mode = mode;
+	aesCtx->mode = mode;
     CC_PalMemCopy(aesCtx->ivBuf, iv, AES_BLOCK_SIZE);
 
     drvRet = SetDataBuffersInfo(input, length, &inBuffInfo,
@@ -369,7 +369,7 @@ static int aes_crypt_ctr_ofb( mbedtls_aes_context *ctx,
          return MBEDTLS_ERR_AES_INVALID_INPUT_LENGTH;
     }
 
-    drvRet = ProcessAesDrv(aesCtx, &inBuffInfo, &outBuffInfo, length);
+	drvRet = ProcessAesDrv(aesCtx, &inBuffInfo, &outBuffInfo, length);
     if (drvRet != AES_DRV_OK)
     {
         CC_PAL_LOG_ERR("ctr/ofb crypt failed with error code %d\n", drvRet);
@@ -377,7 +377,7 @@ static int aes_crypt_ctr_ofb( mbedtls_aes_context *ctx,
     }
     CC_PalMemCopy(iv, aesCtx->ivBuf, AES_BLOCK_SIZE);
 
-    return (0);
+	return (0);
 }
 #endif /* MBEDTLS_CIPHER_MODE_CTR || MBEDTLS_CIPHER_MODE_OFB*/
 
@@ -433,8 +433,8 @@ int mbedtls_internal_aes_encrypt( mbedtls_aes_context *ctx,
  * \param output    Output (ciphertext) block
  */
 void mbedtls_aes_encrypt( mbedtls_aes_context *ctx,
-        const unsigned char input[16],
-        unsigned char output[16] )
+		const unsigned char input[16],
+		unsigned char output[16] )
 {
     mbedtls_internal_aes_encrypt( ctx, input, output );
 }
@@ -450,8 +450,8 @@ int mbedtls_internal_aes_decrypt( mbedtls_aes_context *ctx,
 }
 
 void mbedtls_aes_decrypt( mbedtls_aes_context *ctx,
-        const unsigned char input[16],
-        unsigned char output[16] )
+		const unsigned char input[16],
+		unsigned char output[16] )
 {
     mbedtls_internal_aes_decrypt( ctx, input, output );
 }

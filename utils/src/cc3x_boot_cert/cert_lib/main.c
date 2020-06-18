@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001-2019, Arm Limited and Contributors. All rights reserved.
+ * Copyright (c) 2001-2020, Arm Limited and Contributors. All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause OR Arm’s non-OSI source license
  */
@@ -10,14 +10,10 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
-
-#include <openssl/objects.h>
-#include <openssl/pem.h>
-#include <openssl/evp.h>
-#include <openssl/rand.h>
-#include <openssl/bn.h>
 #include <openssl/aes.h>
-#include <openssl/err.h>
+#include <openssl/sha.h>
+#include <openssl/objects.h>
+#include <openssl/evp.h>
 #include "common_sb_ops.h"
 #include "common_crypto_asym.h"
 #include "common_util_log.h"
@@ -57,7 +53,14 @@ SBUEXPORT_C int SBU_RSA_Sign(int pkcsVersion,
     unsigned char *pwd = NULL;
     int  ret_code;
 
-    OpenSSL_add_all_algorithms ();
+    ret_code = OPENSSL_init_crypto( OPENSSL_INIT_LOAD_CRYPTO_STRINGS    |
+                                    OPENSSL_INIT_ADD_ALL_CIPHERS        |
+                                    OPENSSL_INIT_ADD_ALL_DIGESTS,NULL);
+    /* OPENSSL_init_crypto returns 1 on success or 0 on error.*/
+    if (ret_code == 0) {
+        printf("OPENSSL_init_crypto failed \n");
+        return (-1);
+    }
 
     /* parse the passphrase for a given file */
     if( strlen(pwdFileName) ) {
@@ -65,7 +68,8 @@ SBUEXPORT_C int SBU_RSA_Sign(int pkcsVersion,
             printf("Failed to retrieve pwd\n");
             if (pwd != NULL)
                 free(pwd);
-            return (-1);
+            ret_code=-1;
+            goto SBU_RSA_Sign_END;
         }
     }
     else {
@@ -75,7 +79,8 @@ SBUEXPORT_C int SBU_RSA_Sign(int pkcsVersion,
     if (CC_CommonGetKeyPair (&pRsaPrivKey, PemEncryptedFileName_ptr, pwd) < 0)
     {
         printf ("\nCC_CommonGetKeyPair Cannot read RSA private key\n");
-        return (-1);
+        ret_code=-1;
+        goto SBU_RSA_Sign_END;
     }
 
     if (pkcsVersion == RSA_USE_PKCS_15_VERSION) {
@@ -84,6 +89,7 @@ SBUEXPORT_C int SBU_RSA_Sign(int pkcsVersion,
         ret_code = Sign_v21(pRsaPrivKey, DataIn_ptr, DataInSize, Signature_ptr);
     }
 
+SBU_RSA_Sign_END:
     return (ret_code);
 }
 
@@ -124,13 +130,19 @@ SBUEXPORT_C int SBU_AES_CTR_EncryptFile(char *pFileName,
     uint32_t actualWriten = 0;
     uint8_t *pBuff2Hash = NULL;
     uint8_t imageHash[HASH_SHA256_DIGEST_SIZE_IN_BYTES] = {0};
-    EVP_CIPHER_CTX ctrCtx;
     SHA256_CTX sha256Ctx;
     uint32_t encryptedBuffSize = 0;
     uint32_t prevBuffLen = 0;
+    EVP_CIPHER_CTX *ctrCtx = EVP_CIPHER_CTX_new();
+
 
     if (pFileName == NULL || Output_ptr == NULL || imageSize == NULL){
         printf("illegal parameters !\n");
+        return 1;
+    }
+    if ( ctrCtx == NULL )
+    {
+        printf("Failed with EVP_CIPHER_CTX_new\n");
         return 1;
     }
     if (IV_ptr != NULL){ /* if there is IV than key is required as well */
@@ -180,8 +192,8 @@ SBUEXPORT_C int SBU_AES_CTR_EncryptFile(char *pFileName,
         }
 
         /* init AES CTR open-ssl context */
-        EVP_CIPHER_CTX_init(&ctrCtx);
-        rc = EVP_EncryptInit(&ctrCtx, EVP_aes_128_ctr(), m_key, m_iv);
+        EVP_CIPHER_CTX_reset(ctrCtx);
+        rc = EVP_EncryptInit(ctrCtx, EVP_aes_128_ctr(), m_key, m_iv);
         if (rc == 0) {
             printf( "failed to EVP_EncryptInit_ex 0x%x\n", rc);
             rc = 1;
@@ -210,7 +222,7 @@ SBUEXPORT_C int SBU_AES_CTR_EncryptFile(char *pFileName,
         if (encFlag == true) {
             encryptedBuffSize = 0;
             pBuff2Hash = &encryptedBuff[0];
-            rc = EVP_EncryptUpdate(&ctrCtx, encryptedBuff, &prevBuffLen, origBuff, actualRead);
+            rc = EVP_EncryptUpdate(ctrCtx, encryptedBuff, &prevBuffLen, origBuff, actualRead);
             if (rc == 0) {
                 printf( "failed to EVP_EncryptUpdate, rc 0x%x\n", rc);
                 rc = 1;
@@ -219,7 +231,7 @@ SBUEXPORT_C int SBU_AES_CTR_EncryptFile(char *pFileName,
             /* update total encrypted byte count */
             encryptedBuffSize += prevBuffLen;
             if (totalRead >= actualFileLen) {
-                    rc = EVP_EncryptFinal_ex(&ctrCtx, encryptedBuff+encryptedBuffSize, &prevBuffLen);
+                    rc = EVP_EncryptFinal_ex(ctrCtx, encryptedBuff+encryptedBuffSize, &prevBuffLen);
                 if (rc == 0) {
                     printf( "failed to EVP_EncryptFinal_ex, rc 0x%x\n", rc);
                     rc = 1;
@@ -272,8 +284,7 @@ END:
     if (encFd != NULL) {
         fclose(encFd);
     }
-    EVP_cleanup();
-
+    EVP_CIPHER_CTX_free(ctrCtx);
     return rc;
 
 }

@@ -59,16 +59,16 @@ typedef enum {
 #define CC_MAX( a , b ) ( ( (a) > (b) ) ? (a) : (b) )
 #endif
 
-/*! This macro calculates the number of full bytes from bits, where seven bits
+/*! This macro calculates the number of full bytes from bits, where seven bits 
 are one byte. */
 #define CALC_FULL_BYTES(numBits)        ((numBits)/CC_BITS_IN_BYTE + (((numBits) & (CC_BITS_IN_BYTE-1)) > 0))
-/*! This macro calculates the number of full 32-bit words from bits, where
+/*! This macro calculates the number of full 32-bit words from bits, where 
 31 bits are one word. */
 #define CALC_FULL_32BIT_WORDS(numBits)      ((numBits)/CC_BITS_IN_32BIT_WORD +  (((numBits) & (CC_BITS_IN_32BIT_WORD-1)) > 0))
-/*! This macro calculates the number of full 32-bit words from bytes, where
+/*! This macro calculates the number of full 32-bit words from bytes, where 
 three bytes are one word. */
 #define CALC_32BIT_WORDS_FROM_BYTES(sizeBytes)  ((sizeBytes)/CC_32BIT_WORD_SIZE + (((sizeBytes) & (CC_32BIT_WORD_SIZE-1)) > 0))
-/*! This macro calculates the number of full 32-bit words from 64-bits
+/*! This macro calculates the number of full 32-bit words from 64-bits 
 dwords. */
 #define CALC_32BIT_WORDS_FROM_64BIT_DWORD(sizeWords)  (sizeWords * CC_32BIT_WORD_IN_64BIT_DWORD)
 /*! This macro rounds up bits to 32-bit words. */

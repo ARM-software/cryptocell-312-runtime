@@ -26,15 +26,15 @@ extern "C"
 @return A non-zero value from bsv_error.h on failure.
 */
 CCError_t CC_BsvOTPWordRead(
-    unsigned long hwBaseAddress,    /*!< [in] CryptoCell HW registers' base address. */
-    uint32_t otpAddress,        /*!< [in] Word address in the OTP memory to read from. */
-    uint32_t *pOtpWord      /*!< [out] The OTP memory word's contents. */
-    );
+	unsigned long hwBaseAddress, 	/*!< [in] CryptoCell HW registers' base address. */
+	uint32_t otpAddress, 		/*!< [in] Word address in the OTP memory to read from. */
+	uint32_t *pOtpWord		/*!< [out] The OTP memory word's contents. */
+	);
 
 
 /*!
 @brief This function writes a 32-bit OTP memory word to a given address. Prior to writing,
-    the function reads the current value in the OTP memory word, and performs bit-wise OR to generate the expected value.
+	the function reads the current value in the OTP memory word, and performs bit-wise OR to generate the expected value.
         After writing, the word is read and compared to the expected value.
 
 
@@ -42,10 +42,10 @@ CCError_t CC_BsvOTPWordRead(
 @return A non-zero value from sbrom_bsv_error.h on failure.
 */
 CCError_t CC_BsvOTPWordWrite(
-    unsigned long hwBaseAddress,    /*!< [in] CryptoCell HW registers' base address. */
-    uint32_t otpAddress,        /*!< [in] Word address in the OTP memory to write to. */
-    uint32_t otpWord        /*!< [in] The OTP memory word's contents. */
-    );
+	unsigned long hwBaseAddress, 	/*!< [in] CryptoCell HW registers' base address. */
+	uint32_t otpAddress,		/*!< [in] Word address in the OTP memory to write to. */
+	uint32_t otpWord		/*!< [in] The OTP memory word's contents. */
+	);
 
 
 #ifdef __cplusplus

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001-2019, Arm Limited and Contributors. All rights reserved.
+ * Copyright (c) 2001-2020, Arm Limited and Contributors. All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause OR Arm’s non-OSI source license
  */
@@ -15,6 +15,7 @@
 #include <openssl/err.h>
 #include <openssl/cmac.h>
 #include <openssl/sha.h>
+#include <openssl/modes.h>
 #include "common_crypto_sym.h"
 #include "common_util_log.h"
 #include "common_util_files.h"
@@ -59,8 +60,9 @@ int32_t CC_CommonAesCtrEncrypt(int8_t  *pDataIn,
         UTIL_LOG_ERR("\n AES_set_encrypt_key failed");
         return -1;
     }
+
     /* Encrypting data and sending it to the destination */
-    AES_ctr128_encrypt (pDataIn, pEncBuff, dataInSize, &key, m_iv, m_ecount_buf, &m_num);
+    CRYPTO_ctr128_encrypt(pDataIn,pEncBuff,dataInSize, &key, m_iv, m_ecount_buf, &m_num,(block128_f)AES_encrypt);
 
     return 0;
 }
@@ -238,9 +240,14 @@ int32_t CC_CommonAesCcmEncrypt(uint8_t *keyBuf,
                   uint8_t *tagBuff,
                   uint32_t  tagBuffLen)
 {
-    EVP_CIPHER_CTX ccm_ctx;
+    EVP_CIPHER_CTX *ccm_ctx = EVP_CIPHER_CTX_new();
     int32_t outlen = 0;
     int32_t rc  = 0;
+
+    if(NULL == ccm_ctx) {
+        UTIL_LOG_ERR( "EVP_CIPHER_CTX_new failed for ccm_ctx\n");
+        return 1;
+    }
 
     if ((NULL == keyBuf) ||
         (NULL == nonce) ||
@@ -249,6 +256,7 @@ int32_t CC_CommonAesCcmEncrypt(uint8_t *keyBuf,
         (NULL == enBuffLen) ||
         (NULL == tagBuff)) {
         UTIL_LOG_ERR( "invalid input pointers\n");
+        EVP_CIPHER_CTX_free(ccm_ctx);
         return 1;
     }
     /* check legth validity*/
@@ -256,24 +264,23 @@ int32_t CC_CommonAesCcmEncrypt(uint8_t *keyBuf,
     memset(tagBuff, 0, tagBuffLen);
 
 
-    EVP_CIPHER_CTX_init(&ccm_ctx);
-
+    EVP_CIPHER_CTX_reset(ccm_ctx);
     /* Set cipher type and mode */
-    rc  = EVP_EncryptInit_ex(&ccm_ctx, EVP_aes_128_ccm(), NULL, NULL, NULL);
+    rc  = EVP_EncryptInit_ex(ccm_ctx, EVP_aes_128_ccm(), NULL, NULL, NULL);
     if (rc != 1) {
         UTIL_LOG_ERR( "failed to EVP_EncryptInit_ex() for CCM cipher\n");
         rc = 1;
         goto ccmEnd;
     }
     /* Set nonce length if default 96 bits is not appropriate */
-    rc  = EVP_CIPHER_CTX_ctrl(&ccm_ctx, EVP_CTRL_CCM_SET_IVLEN, nonceLen, NULL);
+    rc  = EVP_CIPHER_CTX_ctrl(ccm_ctx, EVP_CTRL_CCM_SET_IVLEN, nonceLen, NULL);
     if (rc != 1) {
         UTIL_LOG_ERR( "failed to EVP_CIPHER_CTX_ctrl() for nonce length\n");
         rc = 1;
         goto ccmEnd;
     }
     /* Set tag length */
-    rc  = EVP_CIPHER_CTX_ctrl(&ccm_ctx, EVP_CTRL_CCM_SET_TAG, tagBuffLen, NULL);
+    rc  = EVP_CIPHER_CTX_ctrl(ccm_ctx, EVP_CTRL_CCM_SET_TAG, tagBuffLen, NULL);
     if (rc != 1) {
         UTIL_LOG_ERR( "failed to EVP_CIPHER_CTX_ctrl() for tag length\n");
         rc = 1;
@@ -282,7 +289,7 @@ int32_t CC_CommonAesCcmEncrypt(uint8_t *keyBuf,
     /* Initialise key and IV */
     UTIL_LOG_BYTE_BUFF("nonce", nonce, nonceLen);
     UTIL_LOG_BYTE_BUFF("keyBuf", keyBuf, 16);
-    rc  = EVP_EncryptInit_ex(&ccm_ctx, NULL, NULL, keyBuf, nonce);
+    rc  = EVP_EncryptInit_ex(ccm_ctx, NULL, NULL, keyBuf, nonce);
     if (rc != 1) {
         UTIL_LOG_ERR( "failed to EVP_EncryptInit_ex() for key and IV\n");
         rc = 1;
@@ -290,7 +297,7 @@ int32_t CC_CommonAesCcmEncrypt(uint8_t *keyBuf,
     }
     if ((aDatalen>0) && (aData != NULL)) {
         /* Set plaintext length: only needed if AAD is used */
-        rc  = EVP_EncryptUpdate(&ccm_ctx, NULL, &outlen, NULL, plainTxtLen);
+        rc  = EVP_EncryptUpdate(ccm_ctx, NULL, &outlen, NULL, plainTxtLen);
         if (rc != 1) {
             UTIL_LOG_ERR( "failed to EVP_EncryptUpdate() for plaintext length\n");
             rc = 1;
@@ -298,7 +305,7 @@ int32_t CC_CommonAesCcmEncrypt(uint8_t *keyBuf,
         }
         /* Zero or one call to specify any AAD */
         UTIL_LOG_BYTE_BUFF("aData", aData, aDatalen);
-        rc  = EVP_EncryptUpdate(&ccm_ctx, NULL, &outlen, aData, aDatalen);
+        rc  = EVP_EncryptUpdate(ccm_ctx, NULL, &outlen, aData, aDatalen);
         if (rc != 1) {
             UTIL_LOG_ERR( "failed to EVP_EncryptUpdate() for AAD\n");
             rc = 1;
@@ -308,7 +315,7 @@ int32_t CC_CommonAesCcmEncrypt(uint8_t *keyBuf,
 
     /* Encrypt plaintext: can only be called once */
     UTIL_LOG_BYTE_BUFF("plainTxt", plainTxt, plainTxtLen);
-    rc  = EVP_EncryptUpdate(&ccm_ctx, enBuff, &outlen, plainTxt, plainTxtLen);
+    rc  = EVP_EncryptUpdate(ccm_ctx, enBuff, &outlen, plainTxt, plainTxtLen);
     if (rc != 1) {
         UTIL_LOG_ERR( "failed to EVP_EncryptUpdate() for plaintext\n");
         rc = 1;
@@ -321,14 +328,14 @@ int32_t CC_CommonAesCcmEncrypt(uint8_t *keyBuf,
     }
     UTIL_LOG_BYTE_BUFF("enBuff", enBuff, outlen);
     /* Finalise: note get no output for CCM */
-    rc  = EVP_EncryptFinal_ex(&ccm_ctx, &enBuff[outlen], &outlen);
+    rc  = EVP_EncryptFinal_ex(ccm_ctx, &enBuff[outlen], &outlen);
     if (rc != 1) {
         UTIL_LOG_ERR( "failed to EVP_EncryptFinal_ex()\n");
         rc = 1;
         goto ccmEnd;
     }
     /* Get tag */
-    rc  = EVP_CIPHER_CTX_ctrl(&ccm_ctx, EVP_CTRL_CCM_GET_TAG, tagBuffLen, tagBuff);
+    rc  = EVP_CIPHER_CTX_ctrl(ccm_ctx, EVP_CTRL_CCM_GET_TAG, tagBuffLen, tagBuff);
     if (rc != 1) {
         UTIL_LOG_ERR( "failed to EVP_CIPHER_CTX_ctrl() to get the tag\n");
         rc = 1;
@@ -339,7 +346,8 @@ int32_t CC_CommonAesCcmEncrypt(uint8_t *keyBuf,
 
     ccmEnd:
 
-    EVP_CIPHER_CTX_cleanup(&ccm_ctx);
+    EVP_CIPHER_CTX_reset(ccm_ctx);
+    EVP_CIPHER_CTX_free(ccm_ctx);
     return rc;
 }
 

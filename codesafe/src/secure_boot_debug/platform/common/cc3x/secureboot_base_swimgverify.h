@@ -30,7 +30,7 @@ extern "C"
  *
  *
  * @param[in] preHashflashRead_func - User's Flash read function used to read data from the flash to memory location.
- *        this is the first function used (before the hash)
+ *	      this is the first function used (before the hash)
  * @param[in] preHashUserContext - User's context for the usage of preHashflashRead_func
  * @param[in] hwBaseAddress - base address for the ARM TrustZone CryptoCell HW engines
  * @param[in] isLoadFromFlash - should image be copied from flash with user callback
@@ -50,38 +50,38 @@ extern "C"
  */
 
 CCError_t CCSbImageLoadAndVerify(CCSbFlashReadFunc preHashflashRead_func,
-                       void *preHashUserContext,
-                       unsigned long hwBaseAddress,
-                       uint8_t isLoadFromFlash,
-                       uint8_t isVerifyImage,
-                       bsvCryptoMode_t cryptoMode,
-                       CCBsvKeyType_t  keyType,
-                       AES_Iv_t AESIv,
-                       uint8_t *pSwRecSignedData,
-                       uint32_t *pSwRecNoneSignedData,
-                       uint32_t *workspace_ptr,
-                       uint32_t workspaceSize);
+					   void *preHashUserContext,
+					   unsigned long hwBaseAddress,
+					   uint8_t isLoadFromFlash,
+					   uint8_t isVerifyImage,
+					   bsvCryptoMode_t cryptoMode,
+					   CCBsvKeyType_t  keyType,
+					   AES_Iv_t	AESIv,
+					   uint8_t *pSwRecSignedData,
+					   uint32_t *pSwRecNoneSignedData,
+					   uint32_t *workspace_ptr,
+					   uint32_t workspaceSize);
 
 /*!
  * @brief verify NV counter extension against OTP
  *
- * @param[in] hwBaseAddress - hw registers base address
- * @param[in] pCertNvCounter    - NV counter fields read from certificate
- * @param[in] certPkgInfo   - certPkgInfo - certificate data structure
+ * @param[in] hwBaseAddress	- hw registers base address
+ * @param[in] pCertNvCounter	- NV counter fields read from certificate
+ * @param[in] certPkgInfo	- certPkgInfo - certificate data structure
  *
- * @return uint32_t         - On success: the value CC_OK is returned,
- *                    On failure: a value from bsv_error.h
+ * @return uint32_t 		- On success: the value CC_OK is returned,
+ *         			  On failure: a value from bsv_error.h
  */
 CCError_t CCSbVerifyNvCounter(unsigned long hwBaseAddress, uint32_t swVersion, CCSbCertInfo_t *certPkgInfo);
 
 /*!
  * @brief Set NV counter to the OTP (if needed)
  *
- * @param[in] hwBaseAddress - hw registers base address
- * @param[in] certPkgInfo   - certificate data structure
+ * @param[in] hwBaseAddress	- hw registers base address
+ * @param[in] certPkgInfo 	- certificate data structure
  *
- * @return uint32_t         - On success: the value CC_OK is returned,
- *                    On failure: a value from bsv_error.h
+ * @return uint32_t 		- On success: the value CC_OK is returned,
+ *         			  On failure: a value from bsv_error.h
  */
 CCError_t CCSbSetNvCounter(unsigned long hwBaseAddress, CCSbCertInfo_t *certPkgInfo);
 

@@ -8,6 +8,7 @@ UTILS_LIB_PATH = ./lib
 UTILS_LIB_NAME = lib_cmpuutil_crypto.so
 UTILS_SCRIPTS_DIRNAME = $(UTIL_ROOT)
 
+include $(UTILS_ROOT)/src/Makefile.openssl
 
 DEPENDENCY_ON_EXISTENCE_OF = $(filter-out $(wildcard $(1)), $(1))
 

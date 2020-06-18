@@ -23,8 +23,11 @@
 #include "prod_util.h"
 
 
-// These are empty mutexs  - no mutexes are needed in production pahse
-CC_PalMutex CCSymCryptoMutex;
+/*
+ * MutexLock and MutexUnlock are empty for production purpose - OS is no_os.
+ * The following definitions are used only to ensure
+ * a correct linkage of the production tool libraries.
+ */
 CC_PalMutex CCSymCryptoMutex;
 CC_PalMutex CCAsymCryptoMutex;
 CC_PalMutex CCRndCryptoMutex;
@@ -42,7 +45,6 @@ CC_PalMutex CCApbFilteringRegMutex;
  * @param[out]     plain asset (16 bytes)
  *
  * @return 0 -success; otherwise failure
-
  */
 uint32_t CC_PROD_PkgVerify(CCProdAssetPkg_t *pPkgAsset,
                             const uint8_t      *pAssetId, uint32_t assetIdSize,
@@ -146,7 +148,7 @@ uint32_t  CC_PROD_BitListFromNum(uint32_t *pWordBuff,
 /* Count number of zeroes in 32-bit word */
 uint32_t  CC_PROD_GetZeroCount(uint32_t *pBuff,
                                uint32_t buffWordSize,
-                               uint32_t  *pZeroCount)               {
+                               uint32_t  *pZeroCount) 				{
         uint32_t val;
         uint32_t index = 0;
 
@@ -156,7 +158,7 @@ uint32_t  CC_PROD_GetZeroCount(uint32_t *pBuff,
                 val = val - ((val >> 1) & 0x55555555);
                 val = (val & 0x33333333) + ((val >> 2) & 0x33333333);
                 val = ((((val + (val >> 4)) & 0xF0F0F0F) * 0x1010101) >> 24);
-                *pZeroCount += (32 - val);
+                *pZeroCount	+= (32 - val);
         }
         /* All 0's and all 1's is forbidden */
         if ((*pZeroCount == 0) || (*pZeroCount == buffWordSize*CC_BITS_IN_32BIT_WORD)) {
@@ -168,97 +170,97 @@ uint32_t  CC_PROD_GetZeroCount(uint32_t *pBuff,
 
 static uint32_t VerifyPidVal(void)
 {
-    uint32_t pidReg[CC_BSV_PID_SIZE_WORDS] = {0};
-    uint32_t pidVal1[CC_BSV_PID_SIZE_WORDS] = {CC_BSV_PID_0_VAL, CC_BSV_PID_1_VAL, CC_BSV_PID_2_VAL, CC_BSV_PID_3_VAL, CC_BSV_PID_4_VAL};
-    uint32_t pidVal2[CC_BSV_PID_SIZE_WORDS] = {CC_BSV_PID_0_VAL, CC_BSV_PID_1_VAL, CC_BSV_PID_2_1_VAL, CC_BSV_PID_3_VAL, CC_BSV_PID_4_VAL};
+	uint32_t pidReg[CC_BSV_PID_SIZE_WORDS] = {0};
+	uint32_t pidVal1[CC_BSV_PID_SIZE_WORDS] = {CC_BSV_PID_0_VAL, CC_BSV_PID_1_VAL, CC_BSV_PID_2_VAL, CC_BSV_PID_3_VAL, CC_BSV_PID_4_VAL};
+	uint32_t pidVal2[CC_BSV_PID_SIZE_WORDS] = {CC_BSV_PID_0_VAL, CC_BSV_PID_1_VAL, CC_BSV_PID_2_1_VAL, CC_BSV_PID_3_VAL, CC_BSV_PID_4_VAL};
 
-    pidReg[0] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, PERIPHERAL_ID_0));
-    pidReg[1] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, PERIPHERAL_ID_1));
-    pidReg[2] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, PERIPHERAL_ID_2));
-    pidReg[3] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, PERIPHERAL_ID_3));
-    pidReg[4] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, PERIPHERAL_ID_4));
+	pidReg[0] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, PERIPHERAL_ID_0));
+	pidReg[1] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, PERIPHERAL_ID_1));
+	pidReg[2] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, PERIPHERAL_ID_2));
+	pidReg[3] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, PERIPHERAL_ID_3));
+	pidReg[4] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, PERIPHERAL_ID_4));
 
-    if ((CC_PalMemCmp((uint8_t*)pidVal1, (uint8_t*)pidReg, sizeof(pidVal1)) != 0) &&
-            (CC_PalMemCmp((uint8_t*)pidVal2, (uint8_t*)pidReg, sizeof(pidVal2)) != 0)) {
-        return CC_PROD_INIT_ERR;
-    }
+	if ((CC_PalMemCmp((uint8_t*)pidVal1, (uint8_t*)pidReg, sizeof(pidVal1)) != 0) &&
+			(CC_PalMemCmp((uint8_t*)pidVal2, (uint8_t*)pidReg, sizeof(pidVal2)) != 0)) {
+		return CC_PROD_INIT_ERR;
+	}
 
-    return CC_OK;
+	return CC_OK;
 }
 
 static uint32_t VerifyCidVal(void)
 {
-    uint32_t cidReg[CC_BSV_CID_SIZE_WORDS] = {0};
-    uint32_t cidVal[CC_BSV_CID_SIZE_WORDS] = {CC_BSV_CID_0_VAL, CC_BSV_CID_1_VAL, CC_BSV_CID_2_VAL, CC_BSV_CID_3_VAL};
+	uint32_t cidReg[CC_BSV_CID_SIZE_WORDS] = {0};
+	uint32_t cidVal[CC_BSV_CID_SIZE_WORDS] = {CC_BSV_CID_0_VAL, CC_BSV_CID_1_VAL, CC_BSV_CID_2_VAL, CC_BSV_CID_3_VAL};
 
-    cidReg[0] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, COMPONENT_ID_0));
-    cidReg[1] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, COMPONENT_ID_1));
-    cidReg[2] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, COMPONENT_ID_2));
-    cidReg[3] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, COMPONENT_ID_3));
+	cidReg[0] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, COMPONENT_ID_0));
+	cidReg[1] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, COMPONENT_ID_1));
+	cidReg[2] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, COMPONENT_ID_2));
+	cidReg[3] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, COMPONENT_ID_3));
 
-    if (CC_PalMemCmp((uint8_t*)cidVal, (uint8_t*)cidReg, sizeof(cidVal)) != 0){
-        return CC_PROD_INIT_ERR;
-    }
+	if (CC_PalMemCmp((uint8_t*)cidVal, (uint8_t*)cidReg, sizeof(cidVal)) != 0){
+		return CC_PROD_INIT_ERR;
+	}
 
-    return CC_OK;
+	return CC_OK;
 }
 
 uint32_t  CCProd_Init(void)
 {
-    uint32_t rc = CC_OK;
-    uint32_t reg = 0, tempVal = 0;
+	uint32_t rc = CC_OK;
+	uint32_t reg = 0, tempVal = 0;
 
-    rc = CC_PalInit();
-    if (rc != 0) {
-        return CC_PROD_INIT_ERR;
-    }
+	rc = CC_PalInit();
+	if (rc != 0) {
+		return CC_PROD_INIT_ERR;
+	}
 
-    /* verify peripheral ID (PIDR) */
-    rc = VerifyPidVal();
-    if (rc != 0) {
-        rc = CC_PROD_INIT_ERR;
-        goto end_init;
-    }
+	/* verify peripheral ID (PIDR) */
+	rc = VerifyPidVal();
+	if (rc != 0) {
+		rc = CC_PROD_INIT_ERR;
+		goto end_init;
+	}
 
-    /* verify component ID (CIDR) */
-    rc = VerifyCidVal();
-    if (rc != 0) {
-        rc = CC_PROD_INIT_ERR;
-        goto end_init;
-    }
+	/* verify component ID (CIDR) */
+	rc = VerifyCidVal();
+	if (rc != 0) {
+		rc = CC_PROD_INIT_ERR;
+		goto end_init;
+	}
 
-    /* turn off the DFA since Cerberus doen't support it */
-    reg = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, HOST_AO_LOCK_BITS));
-    CC_REG_FLD_SET(0, HOST_AO_LOCK_BITS, HOST_FORCE_DFA_ENABLE, reg, 0x0);
-    CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, HOST_AO_LOCK_BITS)  ,reg );
-    tempVal = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF,HOST_AO_LOCK_BITS));
-    if(tempVal != reg) {
-        rc = CC_PROD_INIT_ERR;
-        goto end_init;
-    }
+	/* turn off the DFA since Cerberus doen't support it */
+	reg = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, HOST_AO_LOCK_BITS));
+	CC_REG_FLD_SET(0, HOST_AO_LOCK_BITS, HOST_FORCE_DFA_ENABLE, reg, 0x0);
+	CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, HOST_AO_LOCK_BITS)  ,reg );
+	tempVal = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF,HOST_AO_LOCK_BITS));
+	if(tempVal != reg) {
+		rc = CC_PROD_INIT_ERR;
+		goto end_init;
+	}
 
-    CC_REG_FLD_SET(0, HOST_AO_LOCK_BITS, HOST_DFA_ENABLE_LOCK, reg, CC_TRUE);
-    CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, HOST_AO_LOCK_BITS)  ,reg );
-    tempVal = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF,HOST_AO_LOCK_BITS));
-    if(tempVal != reg) {
-        rc = CC_PROD_INIT_ERR;
-        goto end_init;
-    }
+	CC_REG_FLD_SET(0, HOST_AO_LOCK_BITS, HOST_DFA_ENABLE_LOCK, reg, CC_TRUE);
+	CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, HOST_AO_LOCK_BITS)  ,reg );
+	tempVal = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF,HOST_AO_LOCK_BITS));
+	if(tempVal != reg) {
+		rc = CC_PROD_INIT_ERR;
+		goto end_init;
+	}
 
-    CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_DFA_IS_ON), 0x0UL);
+	CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_DFA_IS_ON), 0x0UL);
 
 #ifdef BIG__ENDIAN
 /* Set DMA endianess to big */
-    CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, HOST_ENDIAN), 0xCCUL);
+	CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, HOST_ENDIAN), 0xCCUL);
 #else /* LITTLE__ENDIAN */
-    CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, HOST_ENDIAN), 0x00UL);
+	CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, HOST_ENDIAN), 0x00UL);
 #endif
 
-    end_init:
-    if (rc != CC_OK) {
-        CCPROD_Fini();
-    }
-    return rc;
+	end_init:
+	if (rc != CC_OK) {
+		CCPROD_Fini();
+	}
+	return rc;
 }
 
 

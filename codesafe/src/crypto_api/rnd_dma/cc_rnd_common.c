@@ -38,7 +38,7 @@
 #define RND_ROT32(x) ( (x) >> 16 | (x) << 16 )
 
 /* inverse the bytes order in a word */
-#define RND_REVERSE32(x)  ( ((RND_ROT32((x)) & 0xff00ff00UL) >> 8) | ((RND_ROT32((x)) & 0x00ff00ffUL) << 8) )
+#define RND_REVERSE32(x)  ( ((RND_ROT32((x)) & 0xff00ff00UL) >> 8) | ((RND_ROT32((x)) & 0x00ff00ffUL) << 8) )  
 
 /**************** Global Data to be read by RNG function ****************/
 
@@ -48,34 +48,34 @@
 
 /********************************************************************************
   @brief This function subtracts a value from a large vector presented in the buffer.
-         The LSB of the counter is stored in the left most cell.
-
-  @return signed value of carry (borrow)
+         The LSB of the counter is stored in the left most cell.        
+ 
+  @return signed value of carry (borrow)  
  */
 
 static uint8_t AddInt8ValueToUin8Vector(uint8_t  *vect, /*! [in]  vect - the buffer containing the vector. */
-                    int8_t    val,  /*! [in]  val  - the value to add/subtract (according to its sign). */
-                    uint32_t  vectSizeInBytes) /*! [in]  vectSizeInBytes - the vector size in bytes. */
+					int8_t    val,  /*! [in]  val  - the value to add/subtract (according to its sign). */
+					uint32_t  vectSizeInBytes) /*! [in]  vectSizeInBytes - the vector size in bytes. */
 {
         /* DECLARATIONS */
 
         /* loop index */
-    uint32_t i;
-    int32_t temp;
+	uint32_t i;
+	int32_t temp;
 
-    /* FUNCTION LOGIC */
+	/* FUNCTION LOGIC */
 
-    temp = val;
+	temp = val;
 
         for (i = 0; i < vectSizeInBytes; i++) {
                 temp = vect[i] + val;
                 vect[i] = (uint32_t)temp & 0xFF;
                 val = (temp >> 8) & 0xFF;
-    }
+	}
 
-    return val;
+	return val;
 
-}/* End of AddInt8ValueToUin8Vector() */
+}/* End of AddInt8ValueToUin8Vector() */ 
 
 
 
@@ -88,19 +88,19 @@ static uint8_t AddInt8ValueToUin8Vector(uint8_t  *vect, /*! [in]  vect - the buf
 
 /****************************************************************************************/
 /**
-
-  @brief The function set the RND Generate vector function, provided by the User.
-
-  @param [in/out] rndContext_ptr  - Pointer to the RND context buffer.
+  
+  @brief The function set the RND Generate vector function, provided by the User. 
+  
+  @param [in/out] rndContext_ptr  - Pointer to the RND context buffer.  
   @param [in] rndGenerateVectFunc - The pointer to RND Generate vector function.
-
-  @return CCError_t - no return value
+ 
+  @return CCError_t - no return value  
  */
 CCError_t CC_RndSetGenerateVectorFunc(CCRndContext_t *rndContext_ptr,
-                       CCRndGenerateVectWorkFunc_t rndGenerateVectFunc)
+					   CCRndGenerateVectWorkFunc_t rndGenerateVectFunc)
 {
 
-    CHECK_AND_RETURN_ERR_UPON_FIPS_ERROR();
+	CHECK_AND_RETURN_ERR_UPON_FIPS_ERROR();
 
         /* check parameters */
         if (rndContext_ptr == NULL)
@@ -109,7 +109,7 @@ CCError_t CC_RndSetGenerateVectorFunc(CCRndContext_t *rndContext_ptr,
                 return CC_RND_GEN_VECTOR_FUNC_ERROR;
 
 
-        rndContext_ptr->rndGenerateVectFunc = rndGenerateVectFunc;
+        rndContext_ptr->rndGenerateVectFunc = rndGenerateVectFunc; 
 
         return 0;
 }
@@ -123,45 +123,45 @@ CCError_t CC_RndSetGenerateVectorFunc(CCRndContext_t *rndContext_ptr,
 
 
 /**********************************************************************************************************/
-/**
+/** 
   @brief The function generates a random vector Rand in range  1 < RandVect < MaxVect
               by testing candidates (described and used in FIPS 186-4: B.1.2, B.4.2 etc.):
          The function performs the following:
          1.  Check input parameters, in partial, check that value of max. vector > 3 (our requirement).
-         2.  If maxVect != 0 (maxVect is provided), then calculate required size of random
+         2.  If maxVect != 0 (maxVect is provided), then calculate required size of random 
              equaled to actual bit size of MaxVector, else set it = rndSizeInBits.
-         3.  Calls the CC_RndGenerateVector() function for generating random vector
+         3.  Calls the CC_RndGenerateVector() function for generating random vector 
              RndVect of required size.
          4.  If maxVect is provided, then:
               4.0. Subtract maxVect  -= 2;
               4.1. Sets all high bits of RndVect, greatest than MSBit of MaxVector, to 0.
-              4.2. If size of random vector > 16 bytes, then:
-                      4.2.1. Compares high 16 bytes of randVect to maxVect.
+              4.2. If size of random vector > 16 bytes, then: 
+                      4.2.1. Compares high 16 bytes of randVect to maxVect. 
                       4.2.2. If condition is not satisfied, then generate new high 16 bytes
                              of rndVect and go to step 4.2.1.
-              4.3. Compare the full RndVect with MaxVector. If condition is not satisfied,
+              4.3. Compare the full RndVect with MaxVector. If condition is not satisfied, 
                    then generate new random RndVect and go to step 4.1, else go to 6.
          5. Else if maxVect is not provided, then set MSBit of rndVect to 1.
-         6. Output the result and Exit.
-
+         6. Output the result and Exit. 
+ 
           Note: Random and Max vectors are given as sequence of bytes, where LSB is most left byte
-                and MSB = most right one.
-
+                and MSB = most right one. 
+ 
   @param rndContext_ptr [in/out] - Pointer to the RND context buffer.
-  @param rndSizeInBits [in]   - If maxVect_ptr is not given, then rndSizeInBits defining the exact size (in bits)
-                         of generated random vector. If maxVect is given, then it defines the
-                      size (rounded up to bytes) of the maxVect_ptr buffer.
+  @param rndSizeInBits [in]   - If maxVect_ptr is not given, then rndSizeInBits defining the exact size (in bits) 
+                         of generated random vector. If maxVect is given, then it defines the 
+ 	                  size (rounded up to bytes) of the maxVect_ptr buffer. 
   @param maxVect_ptr [in]     - The pointer to vector defining a high limit
-                         of random vector.
-  @param rndVect_ptr [in,out] - The output buffer for the random vector.
-
+                         of random vector.  
+  @param rndVect_ptr [in,out] - The output buffer for the random vector. 
+ 	
   @return CCError_t  - On success CC_OK is returned, on failure - a value,
-              defined in cc_rnd_error.h.
+       		  defined in cc_rnd_error.h.
  */
 CEXPORT_C CCError_t CC_RndGenerateVectorInRange(
-                                                    CCRndContext_t *rndContext_ptr,
-                                                    size_t   rndSizeInBits,
-                                                    uint8_t  *maxVect_ptr,
+                                                    CCRndContext_t *rndContext_ptr, 
+                                                    size_t   rndSizeInBits, 
+                                                    uint8_t  *maxVect_ptr, 
                                                     uint8_t  *rndVect_ptr )
 {
         /* FUNCTION DECLARATIONS */
@@ -179,15 +179,15 @@ CEXPORT_C CCError_t CC_RndGenerateVectorInRange(
         CCRndGenerateVectWorkFunc_t RndGenerateVectFunc;
 
         /* FUNCTION LOGIC */
-    CHECK_AND_RETURN_ERR_UPON_FIPS_ERROR();
+	CHECK_AND_RETURN_ERR_UPON_FIPS_ERROR();
 
         /*  Check input parameters */
         if (rndVect_ptr == NULL)
                 return CC_RND_VECTOR_OUT_PTR_ERROR;
 
-    /* verify that rndSizeInBits is not greater than 2^19 -1 */
-    if (rndSizeInBits > 0x7FFFF)
-        return CC_RND_VECTOR_OUT_SIZE_ERROR;
+	/* verify that rndSizeInBits is not greater than 2^19 -1 */
+	if (rndSizeInBits > 0x7FFFF)
+		return CC_RND_VECTOR_OUT_SIZE_ERROR; 
 
     /* given size of random vector in bytes */
     rndSizeInBytes = CALC_FULL_BYTES(rndSizeInBits);
@@ -239,8 +239,8 @@ CEXPORT_C CCError_t CC_RndGenerateVectorInRange(
         /* if maxVect < 4 then return an error */
         if (maxVectSizeBits < 3 || (maxVectSizeBits == 3 && maxVect_ptr[0] < 4)) {
                 Error = CC_RND_MAX_VECTOR_IS_TOO_SMALL_ERROR;
-        goto End;
-    }
+		goto End;
+	}
 
         /* temporary subtract 2 from maxVect */
         AddInt8ValueToUin8Vector(maxVect_ptr, -2/*val*/, maxVectSizeBytes);
@@ -261,8 +261,8 @@ CEXPORT_C CCError_t CC_RndGenerateVectorInRange(
         }
 
         /* calculate count of extra 0-bits for mask shifting */
-        shift = (int8_t)(8 - (maxVectSizeBits & 7))&7;
-        mask = 0xFF >> shift;
+        shift = (int8_t)(8 - (maxVectSizeBits & 7))&7;   
+        mask = 0xFF >> shift; 
 
         /* main loop for generating random number    */
         /*-------------------------------------------*/
@@ -325,10 +325,10 @@ CEXPORT_C CCError_t CC_RndGenerateVectorInRange(
 
 End:
 
-    if (Error != CC_OK) {
-        CC_PalMemSetZero(rndVect_ptr, rndSizeInBytes);
+	if (Error != CC_OK) {
+		CC_PalMemSetZero(rndVect_ptr, rndSizeInBytes);
                 return Error;
-    }
+	}
 
 
         if (maxVect_ptr != NULL) {
@@ -352,28 +352,28 @@ End:
 
 
 /**********************************************************************************************************/
-/**
+/** 
  * @brief The RndGenerateWordsArrayInRange function generates a random words vector in range:
  *            1 < RndVect < MaxVect,   using the FIPS-PUB 186-2 standard appendix 3 :
- *
+ * 
  *        The function generates random array  using CC_RndGenerateVectorInRange function and
  *        conversion of bytes to words.
- *
+ * 
  *         Note: RndVect and MaxVect arrayss are given as sequence of words, where LSWord is most left byte
- *               and MSWord - most right.
+ *               and MSWord - most right. 
  *
  * @param rndContext_ptr [in/out]  - Pointer to the RND context buffer.
- * @param rndSizeInBits [in]   - If maxVect_ptr is not given, then rndSizeInBits defining the exact size (in bits)
- *                        of generated random vector. If maxVect is given, then it defines the
- *                    size (rounded up to words) of the maxVect_ptr buffer. The size must be not greate
- *                than CC_RND_MAX_SIZE_OF_OUTPUT_BYTES/4
+ * @param rndSizeInBits [in]   - If maxVect_ptr is not given, then rndSizeInBits defining the exact size (in bits) 
+ *                        of generated random vector. If maxVect is given, then it defines the 
+ *	                  size (rounded up to words) of the maxVect_ptr buffer. The size must be not greate 
+ *      		  than CC_RND_MAX_SIZE_OF_OUTPUT_BYTES/4
  * @param maxVect_ptr [in]     - The pointer to vector defining a high limit of random vector.
- * @param rndVect_ptr [out]    - The output buffer for the random vector.
+ * @param rndVect_ptr [out]    - The output buffer for the random vector. 
  * @param tmp_ptr [int]        - The temp buffer for the random generation. The size must be not
- *                less, than rndSizeInBits converted to words (rounded up).
- *
+ *      		  less, than rndSizeInBits converted to words (rounded up). 
+ * 
  * @return CCError_t  - On success CC_OK is returned, on failure - a value,
- *                defined in cc_rnd_error.h.
+ *      		  defined in cc_rnd_error.h.
  */
 CCError_t RndGenerateWordsArrayInRange(CCRndContext_t *rndContext_ptr,
                                        uint32_t   rndSizeInBits,
@@ -395,8 +395,8 @@ CCError_t RndGenerateWordsArrayInRange(CCRndContext_t *rndContext_ptr,
         if (rndSizeInBits == 0 || rndSizeInWords*4 > CC_RND_MAX_GEN_VECTOR_SIZE_BYTES)
                 return CC_RND_VECTOR_SIZE_ERROR;
 
-        /* copy the maxVector into temp buffer and set endiannes as LE bytes  *
-        *  array                                  */
+        /* copy the maxVector into temp buffer and set endiannes as LE bytes  * 
+        *  array							      */
         CC_PalMemMove((uint8_t*)tmp_ptr, (uint8_t*)maxVect_ptr, rndSizeInWords*sizeof(uint32_t));
 
 #ifdef BIG__ENDIAN

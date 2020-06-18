@@ -61,8 +61,8 @@ uint32_t CCCertLoadCertificate(CCSbFlashReadFunc flashRead_func,
 
         /* Verify there is no wrap around in the certificate size*/
         if ((pCertHeader->certSize + SB_CERT_RSA_KEY_SIZE_IN_WORDS) < pCertHeader->certSize){
-            CC_PAL_LOG_ERR("Certificate size too big\n");
-            return CC_BOOT_IMG_VERIFIER_INV_INPUT_PARAM;
+        	CC_PAL_LOG_ERR("Certificate size too big\n");
+        	return CC_BOOT_IMG_VERIFIER_INV_INPUT_PARAM;
         }
 
         /* Make sure certificate size is within range (certificate size + signature size) */

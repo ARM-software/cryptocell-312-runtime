@@ -18,17 +18,17 @@
 /******************************************************************************/
 uint32_t Test_PalCLIRegisterCommand(struct Test_PalCliCommand *commandToRegister)
 {
-    if (FreeRTOS_CLIRegisterCommand(
-        (CLI_Command_Definition_t *)commandToRegister) == pdFAIL)
-        return 1;
+	if (FreeRTOS_CLIRegisterCommand(
+		(CLI_Command_Definition_t *)commandToRegister) == pdFAIL)
+		return 1;
 
-    return 0;
+	return 0;
 }
 
 /******************************************************************************/
 const char *Test_PalCLIGetParameter(const char *commandString,
-            uint32_t wantedParamIndx, uint32_t *paramStringLength)
+			uint32_t wantedParamIndx, uint32_t *paramStringLength)
 {
-    return FreeRTOS_CLIGetParameter(commandString, wantedParamIndx,
-                    (BaseType_t *)paramStringLength);
+	return FreeRTOS_CLIGetParameter(commandString, wantedParamIndx,
+					(BaseType_t *)paramStringLength);
 }

@@ -22,84 +22,84 @@ static uint8_t memInitialised = 0;
 /******************************************************************************/
 void *Test_PalMalloc(size_t size)
 {
-    if (!size)
-        return NULL;
+	if (!size)
+		return NULL;
 
-    return malloc(size);
+	return malloc(size);
 }
 
 /******************************************************************************/
 void Test_PalFree(void *pvAddress)
 {
-    if (pvAddress == NULL)
-        return;
+	if (pvAddress == NULL)
+		return;
 
-    free(pvAddress);
+	free(pvAddress);
 }
 
 /******************************************************************************/
 void *Test_PalRealloc(void *pvAddress, size_t newSize)
 {
-    if (pvAddress == NULL)
-        return NULL;
+	if (pvAddress == NULL)
+		return NULL;
 
-    return realloc(pvAddress, newSize);
+	return realloc(pvAddress, newSize);
 }
 
 /******************************************************************************/
 void *Test_PalDMAContigBufferAlloc(size_t size)
 {
-    return Test_PalMalloc(size);
+	return Test_PalMalloc(size);
 }
 
 /******************************************************************************/
 void Test_PalDMAContigBufferFree(void *pvAddress)
 {
-    Test_PalFree(pvAddress);
+	Test_PalFree(pvAddress);
 }
 
 /******************************************************************************/
 void *Test_PalDMAContigBufferRealloc(void *pvAddress, size_t newSize)
 {
-    return Test_PalRealloc(pvAddress, newSize);
+	return Test_PalRealloc(pvAddress, newSize);
 }
 
 /******************************************************************************/
 unsigned long Test_PalGetDMABaseAddr(void)
 {
-    return 0;
+	return 0;
 }
 
 /******************************************************************************/
 unsigned long Test_PalGetUnmanagedBaseAddr(void)
 {
-    return unmanagedBaseAddr;
+	return unmanagedBaseAddr;
 }
 
 /******************************************************************************/
 uint32_t Test_PalMemInit(unsigned long newDMABaseAddr,
-             unsigned long newUnmanagedBaseAddr,
-             size_t DMAsize)
+			 unsigned long newUnmanagedBaseAddr,
+			 size_t DMAsize)
 {
-    if(memInitialised) {
-        TEST_PRINTF_ERROR("Memory is already initialised");
-        return 1;
-    }
+	if(memInitialised) {
+		TEST_PRINTF_ERROR("Memory is already initialised");
+		return 1;
+	}
 
-    (void)newDMABaseAddr;
-    (void)DMAsize;
-    unmanagedBaseAddr = newUnmanagedBaseAddr;
-    memInitialised = 1;
+	(void)newDMABaseAddr;
+	(void)DMAsize;
+	unmanagedBaseAddr = newUnmanagedBaseAddr;
+	memInitialised = 1;
 
-    return 0;
+	return 0;
 }
 
 /******************************************************************************/
 uint32_t Test_PalMemFin(void)
 {
-    unmanagedBaseAddr = 0;
-    memInitialised = 0;
+	unmanagedBaseAddr = 0;
+	memInitialised = 0;
 
-    return 0;
+	return 0;
 }
 

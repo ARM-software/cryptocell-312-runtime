@@ -31,19 +31,19 @@ extern "C"
 /*! The CryptoCell FFCDH module errors */
 
 /*! Invalid input argument pointer. */
-#define CC_FFCDH_INVALID_ARGUMENT_POINTER_ERROR         (CC_FFCDH_MODULE_ERROR_BASE + 0x00UL)
+#define CC_FFCDH_INVALID_ARGUMENT_POINTER_ERROR			(CC_FFCDH_MODULE_ERROR_BASE + 0x00UL)
 /*! Invalid input argument size. */
-#define CC_FFCDH_INVALID_ARGUMENT_SIZE_ERROR            (CC_FFCDH_MODULE_ERROR_BASE + 0x01UL)
+#define CC_FFCDH_INVALID_ARGUMENT_SIZE_ERROR			(CC_FFCDH_MODULE_ERROR_BASE + 0x01UL)
 /*! Invalid pointer to DH Context structure. */
-#define CC_FFCDH_INVALID_CONTEXT_PTR_ERROR          (CC_FFCDH_MODULE_ERROR_BASE + 0x02UL)
+#define CC_FFCDH_INVALID_CONTEXT_PTR_ERROR			(CC_FFCDH_MODULE_ERROR_BASE + 0x02UL)
 /*! Invalid DH Context validation Tag.*/
 #define CC_FFCDH_CONTEXT_VALIDATION_TAG_ERROR                   (CC_FFCDH_MODULE_ERROR_BASE + 0x03UL)
 /*! Invalid FFCDH Scheme ID. */
 #define CC_FFCDH_INVALID_SCHEM_ID_ERROR                         (CC_FFCDH_MODULE_ERROR_BASE + 0x04UL)
 /*! Invalid FFCDH parameters set ID. */
-#define CC_FFCDH_INVALID_DOMAIN_SIZES_SET_ID_ERROR      (CC_FFCDH_MODULE_ERROR_BASE + 0x05UL)
+#define CC_FFCDH_INVALID_DOMAIN_SIZES_SET_ID_ERROR		(CC_FFCDH_MODULE_ERROR_BASE + 0x05UL)
 /*! Invalid FFCDH Key confirmation mode. */
-#define CC_FFCDH_INVALID_CONFIRM_MODE_ERROR             (CC_FFCDH_MODULE_ERROR_BASE + 0x06UL)
+#define CC_FFCDH_INVALID_CONFIRM_MODE_ERROR		        (CC_FFCDH_MODULE_ERROR_BASE + 0x06UL)
 /*! Invalid FFCDH User party ID. */
 #define CC_FFCDH_INVALID_USER_PARTY_ID_ERROR                    (CC_FFCDH_MODULE_ERROR_BASE + 0x07UL)
 /*! Invalid FFCDH key derivation function mode. */
@@ -51,21 +51,21 @@ extern "C"
 /*! Invalid FFCDH Key validation mode. */
 #define CC_FFCDH_INVALID_VALIDAT_MODE_ERROR                     (CC_FFCDH_MODULE_ERROR_BASE + 0x09UL)
 /*! Invalid HASH operation mode.*/
-#define CC_FFCDH_INVALID_HASH_MODE_ERROR                (CC_FFCDH_MODULE_ERROR_BASE + 0x0AUL)
+#define CC_FFCDH_INVALID_HASH_MODE_ERROR		        (CC_FFCDH_MODULE_ERROR_BASE + 0x0AUL)
 /*! Invalid HASH operation digest size is too low.*/
 #define CC_FFCDH_INVALID_LOW_HASH_SIZE_ERROR                    (CC_FFCDH_MODULE_ERROR_BASE + 0x0BUL)
 /*! Invalid HMAC result size is too low.*/
-#define CC_FFCDH_INVALID_HMAC_SALT_PARAMS_ERROR             (CC_FFCDH_MODULE_ERROR_BASE + 0x0CUL)
+#define CC_FFCDH_INVALID_HMAC_SALT_PARAMS_ERROR		        (CC_FFCDH_MODULE_ERROR_BASE + 0x0CUL)
 /*! Invalid private key size. */
 #define CC_FFCDH_INVALID_PRIVATE_KEY_SIZE_ERROR                 (CC_FFCDH_MODULE_ERROR_BASE + 0x10UL)
 /*! Invalid private key value. */
 #define CC_FFCDH_INVALID_PRIVATE_KEY_VALUE_ERROR                (CC_FFCDH_MODULE_ERROR_BASE + 0x11UL)
 /*! Invalid public key size. */
-#define CC_FFCDH_INVALID_PUBLIC_KEY_SIZE_ERROR                  (CC_FFCDH_MODULE_ERROR_BASE + 0x12UL)
+#define CC_FFCDH_INVALID_PUBLIC_KEY_SIZE_ERROR                 	(CC_FFCDH_MODULE_ERROR_BASE + 0x12UL)
 /*! Invalid public key value. */
 #define CC_FFCDH_INVALID_PUBLIC_KEY_VALUE_ERROR                 (CC_FFCDH_MODULE_ERROR_BASE + 0x13UL)
 /*! Invalid key status mode: static or ephemeral. */
-#define CC_FFCDH_INVALID_KEY_STATUS_ERROR           (CC_FFCDH_MODULE_ERROR_BASE + 0x14UL)
+#define CC_FFCDH_INVALID_KEY_STATUS_ERROR			(CC_FFCDH_MODULE_ERROR_BASE + 0x14UL)
 /*! Invalid rewriting of previously inserted parameter. */
 #define CC_FFCDH_ILLEGAL_TRY_REWRITE_PARAM_ERROR                (CC_FFCDH_MODULE_ERROR_BASE + 0x15UL)
 /*! Invalid optional data parameters (pointer, size). */
@@ -85,17 +85,17 @@ extern "C"
 /*! Error on parsing and comparing of Partner Info data . */
 #define CC_FFCDH_PARTN_INFO_PARSING_DATA_ERROR                  (CC_FFCDH_MODULE_ERROR_BASE + 0x21UL)
 /*! Invalid output pointer to Keying Data. */
-#define CC_FFCDH_KEYING_DATA_PTR_INVALID_ERROR          (CC_FFCDH_MODULE_ERROR_BASE + 0x22UL)
+#define CC_FFCDH_KEYING_DATA_PTR_INVALID_ERROR			(CC_FFCDH_MODULE_ERROR_BASE + 0x22UL)
 /*! Invalid pointer to Keying Data size. */
-#define CC_FFCDH_KEYING_DATA_SIZE_PTR_INVALID_ERROR     (CC_FFCDH_MODULE_ERROR_BASE + 0x23UL)
+#define CC_FFCDH_KEYING_DATA_SIZE_PTR_INVALID_ERROR		(CC_FFCDH_MODULE_ERROR_BASE + 0x23UL)
 /*! Invalid size of output Keying Data buffer given by the user. */
-#define CC_FFCDH_KEYING_DATA_SIZE_INVALID_ERROR         (CC_FFCDH_MODULE_ERROR_BASE + 0x24UL)
+#define CC_FFCDH_KEYING_DATA_SIZE_INVALID_ERROR			(CC_FFCDH_MODULE_ERROR_BASE + 0x24UL)
 /*! Invalid pointer to MacTag output buffer. */
-#define CC_FFCDH_MAC_TAG_PTR_INVALID_ERROR          (CC_FFCDH_MODULE_ERROR_BASE + 0x25UL)
+#define CC_FFCDH_MAC_TAG_PTR_INVALID_ERROR			(CC_FFCDH_MODULE_ERROR_BASE + 0x25UL)
 /*! Invalid size of MacTag output buffer. */
-#define CC_FFCDH_MAC_TAG_SIZE_INVALID_ERROR         (CC_FFCDH_MODULE_ERROR_BASE + 0x26UL)
+#define CC_FFCDH_MAC_TAG_SIZE_INVALID_ERROR			(CC_FFCDH_MODULE_ERROR_BASE + 0x26UL)
 /*! Calculated MacTag not matches to value, provided by the partner. */
-#define CC_FFCDH_MAC_TAG_DATA_INVALID_ERROR         (CC_FFCDH_MODULE_ERROR_BASE + 0x27UL)
+#define CC_FFCDH_MAC_TAG_DATA_INVALID_ERROR			(CC_FFCDH_MODULE_ERROR_BASE + 0x27UL)
 /* Invalid FFC DH Domain pointer. */
 #define CC_FFCDH_INVALID_DOMAIN_PTR_ERROR                       (CC_FFCDH_MODULE_ERROR_BASE + 0x30UL)
 /*! Invalid validation Tag of user passed FFC Domain. */
@@ -110,7 +110,7 @@ extern "C"
 #define CC_FFCDH_INVALID_PUBL_KEY_PTR_ERROR                     (CC_FFCDH_MODULE_ERROR_BASE + 0x35UL)
 
 /*! FFC DH is not supported */
-#define CC_FFCDH_IS_NOT_SUPPORTED               (CC_FFCDH_MODULE_ERROR_BASE + 0xFFUL)
+#define CC_FFCDH_IS_NOT_SUPPORTED				(CC_FFCDH_MODULE_ERROR_BASE + 0xFFUL)
 
 
 /************************ Enums ********************************/

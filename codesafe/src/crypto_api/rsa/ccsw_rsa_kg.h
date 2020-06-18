@@ -34,8 +34,8 @@ extern "C"
    @param [in] KeyGenData_ptr - a pointer to a structure required for the KeyGen
           operation.
  * @param rndCtx_ptr - The pointer to structure, containing context ID and void
- *              pointer to RND State structure, which should be converted to
- *              actual type inside of the function according to used platform
+ *      	    pointer to RND State structure, which should be converted to
+ *      	    actual type inside of the function according to used platform
  *                  (External or CC). Also contains the RND generate vecotr function pointer.
 
    @return CCError_t - CC_OK,
@@ -47,13 +47,13 @@ extern "C"
                          CC_RSA_INVALID_EXPONENT_SIZE
 */
 CEXPORT_C CCError_t CC_SwRsaKgGenerateKeyPair(
-            CCRndContext_t *rndContext_ptr,
-            uint8_t             *PubExp_ptr,
-            uint16_t             PubExpSizeInBytes,
-            uint32_t             KeySize,
-            CCSwRsaUserPrivKey_t *UserPrivKey_ptr,
-            CCSwRsaUserPubKey_t  *UserPubKey_ptr,
-            CCSwRsaKgData_t      *KeyGenData_ptr);
+			CCRndContext_t *rndContext_ptr,
+			uint8_t             *PubExp_ptr,
+			uint16_t             PubExpSizeInBytes,
+			uint32_t             KeySize,
+			CCSwRsaUserPrivKey_t *UserPrivKey_ptr,
+			CCSwRsaUserPubKey_t  *UserPubKey_ptr,
+			CCSwRsaKgData_t      *KeyGenData_ptr);
 
 
 /***********************************************************************************************/
@@ -72,8 +72,8 @@ CEXPORT_C CCError_t CC_SwRsaKgGenerateKeyPair(
                            This structure is used as input to the CC_RsaPrimEncryped API.
    @param [in] KeyGenData_ptr - a pointer to a structure required for the KeyGen operation.
  * @param [in/out] RndCtx_ptr - The pointer to structure, containing context ID and void
- *              pointer to RND State structure, which should be converted to
- *              actual type inside of the function according to used platform
+ *      	    pointer to RND State structure, which should be converted to
+ *      	    actual type inside of the function according to used platform
  *                  (External or CC). Also contains the RND generate vecotr function pointer.
 
    @return CCError_t - CC_OK,
@@ -86,13 +86,13 @@ CEXPORT_C CCError_t CC_SwRsaKgGenerateKeyPair(
 */
 
 CEXPORT_C CCError_t CC_SwRsaKgGenerateKeyPairCRT(
-                CCRndContext_t *rndContext_ptr,
-                uint8_t             *PubExp_ptr,
-                uint16_t             PubExpSizeInBytes,
-                uint32_t             KeySize,
-                CCSwRsaUserPrivKey_t *UserPrivKey_ptr,
-                CCSwRsaUserPubKey_t  *UserPubKey_ptr,
-                CCSwRsaKgData_t      *KeyGenData_ptr);
+				CCRndContext_t *rndContext_ptr,
+				uint8_t             *PubExp_ptr,
+				uint16_t             PubExpSizeInBytes,
+				uint32_t             KeySize,
+				CCSwRsaUserPrivKey_t *UserPrivKey_ptr,
+				CCSwRsaUserPubKey_t  *UserPubKey_ptr,
+				CCSwRsaKgData_t      *KeyGenData_ptr);
 
 #ifdef __cplusplus
 }

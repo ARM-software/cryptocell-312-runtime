@@ -11,7 +11,7 @@
 
 /*!
  @file
- @brief This file contains CryptoCell PAL platform-dependent compiler-related
+ @brief This file contains CryptoCell PAL platform-dependent compiler-related 
  definitions.
  */
 
@@ -26,7 +26,7 @@
 /*! Associate a symbol with a link section. */
 #define CC_PAL_COMPILER_SECTION(sectionName)  __attribute__((section(sectionName)))
 
-/*! Mark symbol as used, that is, prevent the garbage collector from
+/*! Mark symbol as used, that is, prevent the garbage collector from 
 dropping it. */
 #define CC_PAL_COMPILER_KEEP_SYMBOL __attribute__((used))
 
@@ -61,7 +61,7 @@ dropping it. */
 /*! Associate a symbol with a link section. */
 #define CC_PAL_COMPILER_SECTION(sectionName)  __attribute__((section(sectionName)))
 
-/*! Mark a symbol as used, that is, prevent garbage collector from
+/*! Mark a symbol as used, that is, prevent garbage collector from 
 dropping it. */
 #define CC_PAL_COMPILER_KEEP_SYMBOL __attribute__((used))
 
@@ -97,7 +97,7 @@ dropping it. */
 /*! Associate a symbol with a link section. */
 #define CC_PAL_COMPILER_SECTION(sectionName)  __attribute__((section(sectionName)))
 
-/*! Mark a symbol as used, that is, prevent garbage collector from
+/*! Mark a symbol as used, that is, prevent garbage collector from 
 dropping it. */
 #define CC_PAL_COMPILER_KEEP_SYMBOL __attribute__((used))
 
@@ -134,7 +134,7 @@ dropping it. */
 /*! Associate a symbol with a link section. */
 #define CC_PAL_COMPILER_SECTION(sectionName)  __attribute__((section(sectionName)))
 
-/*! Mark a symbol as used, that is, prevent garbage collector from
+/*! Mark a symbol as used, that is, prevent garbage collector from 
 dropping it. */
 #define CC_PAL_COMPILER_KEEP_SYMBOL __attribute__((used))
 

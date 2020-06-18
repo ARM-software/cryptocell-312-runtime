@@ -50,8 +50,8 @@
 CEXPORT_C CCError_t CC_EcpkiKeyPairGenerateBase(
                                            CCRndContext_t              *pRndContext,         /*in/out*/
                                            const CCEcpkiDomain_t       *pDomain,             /*in*/
-                                           const uint32_t              *ecX_ptr,             /*in*/
-                                           const uint32_t              *ecY_ptr,             /*in*/
+                                           const uint32_t	           *ecX_ptr,             /*in*/
+                                           const uint32_t	           *ecY_ptr,             /*in*/
                                            CCEcpkiUserPrivKey_t        *pUserPrivKey,        /*out*/
                                            CCEcpkiUserPublKey_t        *pUserPublKey,        /*out*/
                                            CCEcpkiKgTempData_t         *pTempBuff,           /*in*/

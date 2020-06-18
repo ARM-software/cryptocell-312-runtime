@@ -32,7 +32,7 @@
 /************************ Global Data *************************/
 
 #ifdef DEBUG_OAEP_SEED
-#include "CRYS_RSA_PSS21_defines.h"
+#include "CRYS_RSA_PSS21_defines.h"	
 extern uint8_t SaltDB[NUM_OF_SETS_TEST_VECTORS][NUM_OF_TEST_VECTOR_IN_SET][CC_RSA_PSS_SALT_LENGTH];
 extern uint16_t Global_Set_Index;
 extern uint16_t Global_vector_Index;
@@ -52,13 +52,13 @@ extern uint16_t Global_vector_Index;
 CCError_t RsaPssOaepEncode(
                                    CCRndContext_t *rndContext_ptr, /* random functions context */
                                    CCPkcs1HashFunc_t hashFunc,     /* PKCS1 hash mode enum */
-                                   CCPkcs1Mgf_t MGF,               /* MGF function type enum */
-                                   uint8_t *M_ptr,                     /* a pointer to the message to be encoded */
+                                   CCPkcs1Mgf_t MGF,               /* MGF function type enum */                                                          
+                                   uint8_t *M_ptr,                     /* a pointer to the message to be encoded */                                         
                                    uint16_t MSize,                     /* the message size in bytes */
                                    uint8_t *P_ptr,                     /* a pointer to the label; can be empty string */
                                    size_t   PSize,                     /* the size of the label in bytes */
-                                   uint16_t emLen, /* The value is set before the call */
-                                   CCRsaPrimeData_t  *PrimeData_ptr,/* temp buffer */
+                                   uint16_t emLen, /* The value is set before the call */ 
+                                   CCRsaPrimeData_t  *PrimeData_ptr,/* temp buffer */ 
                                    uint8_t  *EMInput_ptr,              /* encoded message output */
                                    CCPkcs1Version_t PKCS1_ver)
 {
@@ -71,8 +71,8 @@ CCError_t RsaPssOaepEncode(
         /*For PKCS1 Ver21 standard: emLen = k = Public mod N size*/
         /*Used for output of MGF1 function ; the size is at most emLen */
         uint8_t *MaskDB_Ptr =((CCRsaOaepData_t*)((void*)PrimeData_ptr->InternalBuff))->MaskDB;
-        uint32_t HashOutputSize;
-        uint16_t TmpSize, I;
+        uint32_t HashOutputSize;   
+        uint16_t TmpSize, I; 
         uint8_t *TmpByte_ptr;
         uint8_t *EM_ptr = &EMInput_ptr[1];
         uint8_t VersionConstant;   /*Used to distinguish between Ver 2.1 and others for some memory manipulations*/
@@ -106,47 +106,47 @@ CCError_t RsaPssOaepEncode(
 
         /*Initializing the first Byte to Zero*/
         EMInput_ptr[0] = 0;
-
+        
         /* get HASH output size */
         switch (hashFunc) {
-        case CC_HASH_MD5_mode :
-                HashOutputSize = CC_HASH_MD5_DIGEST_SIZE_IN_BYTES;
+        case CC_HASH_MD5_mode : 
+                HashOutputSize = CC_HASH_MD5_DIGEST_SIZE_IN_BYTES;                                                                             
                 break;
-        case CC_HASH_SHA1_mode:
+        case CC_HASH_SHA1_mode: 
                 HashOutputSize = CC_HASH_SHA1_DIGEST_SIZE_IN_BYTES;
                 break;
-        case CC_HASH_SHA224_mode:
+        case CC_HASH_SHA224_mode: 
                 HashOutputSize = CC_HASH_SHA224_DIGEST_SIZE_IN_BYTES;
                 break;
-        case CC_HASH_SHA256_mode:
+        case CC_HASH_SHA256_mode: 
                 HashOutputSize = CC_HASH_SHA256_DIGEST_SIZE_IN_BYTES;
                 break;
-        case CC_HASH_SHA384_mode:
+        case CC_HASH_SHA384_mode: 
                 HashOutputSize = CC_HASH_SHA384_DIGEST_SIZE_IN_BYTES;
                 break;
-        case CC_HASH_SHA512_mode:
+        case CC_HASH_SHA512_mode: 
                 HashOutputSize = CC_HASH_SHA512_DIGEST_SIZE_IN_BYTES;
                 break;
-        default:
+        default:  
                 return CC_RSA_HASH_ILLEGAL_OPERATION_MODE_ERROR;
-        }
-        // RL Version = 2
+        } 
+        // RL Version = 2     
         if (PKCS1_ver == CC_PKCS1_VER21)
                 VersionConstant = 2;
         else
-                VersionConstant = 1;
+                VersionConstant = 1;     
 
 /*------------------------------------------------------------*
  * Step 1 : If the length of P is greater than                *
- *           the input limitation for the hash                *
- *           function (2^29 octets for SHA-1)                 *
+ *           the input limitation for the hash                *      
+ *           function (2^29 octets for SHA-1)                 * 
  *           then output "parameter string too long" and stop *
  *                                                            *
  *           In PKCS1_Ver2.1 L = P                            *
  *------------------------------------------------------------*/
 
-/* if the P  larger then 2^29 which is the input limitation for HASH
-   return error (to prevent an overflow on the transition to bits ) */
+/* if the P  larger then 2^29 which is the input limitation for HASH 
+   return error (to prevent an overflow on the transition to bits ) */   
         if (PSize >= (1 << 29))
                 return CC_RSA_BASE_OAEP_ENCODE_PARAMETER_STRING_TOO_LONG;
 
@@ -154,7 +154,7 @@ CCError_t RsaPssOaepEncode(
  * Step 2 : If ||M|| > emLen-2hLen-1 then output   *
  *   "message too long" and stop.                  *
  *                                                 *
- * for PKCS1_Ver2.1 Step 1 <b>:            *
+ * for PKCS1_Ver2.1 Step 1 <b>:			   *
  * If ||M|| > emLen - 2hLen - 2                    *
  *-------------------------------------------------*/
 
@@ -163,12 +163,12 @@ CCError_t RsaPssOaepEncode(
 
 /*-----------------------------------------------------*
  * Step 3 : Generate an octet string PS consisting of  *
- *           emLen-||M||-2hLen-1 zero octets.          *
+ *           emLen-||M||-2hLen-1 zero octets.          * 
  *           The length of PS may be 0.                *
  *                                                     *
- * PKCS1_VER21 Step 2 <b>                  *
- *       Generate an octet string PS consisting of *
- *           emLen-||M||-2hLen-2 zero octets.          *
+ * PKCS1_VER21 Step 2 <b> 			       *
+ * 	     Generate an octet string PS consisting of *
+ *           emLen-||M||-2hLen-2 zero octets.          * 
  *           The length of PS may be 0                 *
  *-----------------------------------------------------*/
         CC_PalMemSetZero((uint8_t*)&EM_ptr[2*HashOutputSize], emLen-MSize-2*HashOutputSize-VersionConstant);
@@ -227,8 +227,8 @@ CCError_t RsaPssOaepEncode(
                         goto End;
                 }
         }
-        /*Copy the Hash result to the proper place in the output buffer*/
-        CC_PalMemCopy(&EM_ptr[HashOutputSize], (uint8_t *)(((CCRsaOaepData_t*)((void*)PrimeData_ptr->InternalBuff))->HashResultBuff), HashOutputSize);
+        /*Copy the Hash result to the proper place in the output buffer*/     
+        CC_PalMemCopy(&EM_ptr[HashOutputSize], (uint8_t *)(((CCRsaOaepData_t*)((void*)PrimeData_ptr->InternalBuff))->HashResultBuff), HashOutputSize);   
 
 /*---------------------------------------------------------*
  * Step 5 : Concatenate pHash, PS, the message M,          *
@@ -236,12 +236,12 @@ CCError_t RsaPssOaepEncode(
  * PKCS1_VER21 Step 2 <c>                                  *
  *      Concatenate pHash, PS, the message M,              *
  *       and other padding to form a data block DB as      *
- *       DB = pHash || PS || 01 || M                       *
+ *       DB = pHash || PS || 01 || M                       * 
  *---------------------------------------------------------*/
         /* EM_ptr[emLen-MSize-1]=0x01;*/
         EM_ptr[emLen - MSize - 1 - (VersionConstant-1)] = 0x01;/*because emLen = PubNSize; but EM_ptr points to place 1*/
-    if (MSize > 0) // need to copy only if there is data
-        CC_PalMemCopy((uint8_t*)&EM_ptr[emLen - MSize - (VersionConstant - 1)], M_ptr, MSize);/*because emLen = PubNSize; but EM_ptr points to place 1 */
+	if (MSize > 0) // need to copy only if there is data
+		CC_PalMemCopy((uint8_t*)&EM_ptr[emLen - MSize - (VersionConstant - 1)], M_ptr, MSize);/*because emLen = PubNSize; but EM_ptr points to place 1 */
 
 /*--------------------------------------------------------------*
  * Step 6 : Generate a random octet string seed of length hLen. *
@@ -270,26 +270,26 @@ CCError_t RsaPssOaepEncode(
         case CC_PKCS1_MGF1:
 
                 Error = RsaOaepMGF1(
-                                         HashOutputSize,                                                          /*hashLen*/
-                                         &EM_ptr[0],                                                              /*mgfSeed*/
-                                         HashOutputSize,                                                          /*seedLen*/
-                                         emLen-HashOutputSize-(VersionConstant-1),                                /*maskLen*/
-                                         &(((CCRsaOaepData_t*)((void*)PrimeData_ptr->InternalBuff))->MaskDB[0]), /*mask*/
-                                         hashFunc,                                                                /*hashMode*/
-                                         (uint8_t *)PrimeData_ptr->DataIn,                                        /*1-st tempBuff*/
-                                         (uint8_t *)PrimeData_ptr->DataOut);                                      /*2-nd tempBuff*/
+                                         HashOutputSize,                                                          /*hashLen*/        
+                                         &EM_ptr[0],                                                              /*mgfSeed*/        
+                                         HashOutputSize,                                                          /*seedLen*/        
+                                         emLen-HashOutputSize-(VersionConstant-1),                                /*maskLen*/        
+                                         &(((CCRsaOaepData_t*)((void*)PrimeData_ptr->InternalBuff))->MaskDB[0]), /*mask*/           
+                                         hashFunc,                                                                /*hashMode*/       
+                                         (uint8_t *)PrimeData_ptr->DataIn,                                        /*1-st tempBuff*/  
+                                         (uint8_t *)PrimeData_ptr->DataOut);                                      /*2-nd tempBuff*/  
 
                 if (Error != CC_OK) {
                         goto End;
                 }
                 break;
 
-        /*Currently for PKCS1 Ver 2.1 only MGF1 is implemented*/
-        case CC_PKCS1_NO_MGF:
-        default:
+        /*Currently for PKCS1 Ver 2.1 only MGF1 is implemented*/                                                            
+        case CC_PKCS1_NO_MGF:  
+        default:                                 
                 Error = CC_RSA_MGF_ILLEGAL_ARG_ERROR;
                 goto End;
-        }
+        }                                                       
 
         /*----------------------------------------------*
         *  Step 8 : PKCS1_VER21 Step 2.f:               *
@@ -326,13 +326,13 @@ CCError_t RsaPssOaepEncode(
 
                 break;
 
-                /*Currently for PKCS1 Ver 2.1 only MGF1 is implemented*/
-        case CC_PKCS1_NO_MGF:
-        default:
+                /*Currently for PKCS1 Ver 2.1 only MGF1 is implemented*/                                                                
+        case CC_PKCS1_NO_MGF:  
+        default:                               
                 Error = CC_RSA_MGF_ILLEGAL_ARG_ERROR;
                 goto End;
 
-        }/* end of MGF type switch */
+        }/* end of MGF type switch */                   
 
 /*-----------------------------------------------*
  * Step 10: Let maskedSeed = seed \xor seedMask. *
@@ -345,7 +345,7 @@ CCError_t RsaPssOaepEncode(
                 *(TmpByte_ptr + I)^=((CCRsaOaepData_t*)((void*)PrimeData_ptr->InternalBuff))->SeedMask[I];
 
 /*---------------------------------------------*
- *  * Step 11:  PKCS1_VER21 Step 2.i:          *
+ *  * Step 11:  PKCS1_VER21 Step 2.i:	       *
  * Let EM = 0x00 || maskedSeed || maskedDB.    *
  * This step is done !                         *
  *---------------------------------------------*/
@@ -360,30 +360,30 @@ CCError_t RsaPssOaepEncode(
         CC_PalMemSetZero((PrimeData_ptr->InternalBuff), sizeof(PrimeData_ptr->InternalBuff));
         return Error;
 
-}
+}    
 #endif /* !defined(CC_NO_RSA_ENCRYPT_SUPPORT) && !defined(_INTERNAL_CC_NO_RSA_VERIFY_SUPPORT)*/
 
 #if !defined(CC_NO_RSA_DECRYPT_SUPPORT) && !defined(_INTERNAL_CC_NO_RSA_SIGN_SUPPORT)
 
 /**
    @brief
-   RsaPssOaepDecode implements the Decoding operation according to the
-   PKCS#1 as defined in PKCS#1 v2.1 and PKCS#1 v2.0
+   RsaPssOaepDecode implements the Decoding operation according to the 
+   PKCS#1 as defined in PKCS#1 v2.1 and PKCS#1 v2.0 
 */
 CCError_t RsaPssOaepDecode(
-                                   CCPkcs1HashFunc_t hashFunc,
-                                   CCPkcs1Mgf_t MGF,
+                                   CCPkcs1HashFunc_t hashFunc,   
+                                   CCPkcs1Mgf_t MGF,                                                                         
                                    uint8_t  *EM_ptr,
                                    uint16_t EMSize,
                                    uint8_t *P_ptr,
                                    size_t  PSize,
-                                   CCRsaPrimeData_t  *PrimeData_ptr, /*Only for stack memory save*/
+                                   CCRsaPrimeData_t  *PrimeData_ptr, /*Only for stack memory save*/                                     
                                    uint8_t *M_ptr,
                                    size_t  *MSize_ptr)
 {
         /* FUNCTION DECLERATIONS */
 
-        uint8_t HashOutputSize;
+        uint8_t HashOutputSize;   
         /* The return error identifier */
         CCError_t Error = CC_OK;
         uint8_t  *maskedDB_ptr;
@@ -397,32 +397,32 @@ CCError_t RsaPssOaepDecode(
         /* FUNCTION LOGIC */
 
         /* .................. initializing local variables ................... */
-        /* ------------------------------------------------------------------- */
-
+        /* ------------------------------------------------------------------- */   
+        
         /* get hash output size */
         switch (hashFunc) {
-        case CC_HASH_MD5_mode : /*MD5 is not recomended in PKCS1 ver 2.1 standard,
+        case CC_HASH_MD5_mode : /*MD5 is not recomended in PKCS1 ver 2.1 standard, 
                                     henceit is not supported */
                 return CC_RSA_HASH_ILLEGAL_OPERATION_MODE_ERROR;
-        case CC_HASH_SHA1_mode:
+        case CC_HASH_SHA1_mode: 
                 HashOutputSize = CC_HASH_SHA1_DIGEST_SIZE_IN_WORDS*CC_32BIT_WORD_SIZE;
                 break;
-        case CC_HASH_SHA224_mode:
+        case CC_HASH_SHA224_mode: 
                 HashOutputSize = CC_HASH_SHA224_DIGEST_SIZE_IN_WORDS*CC_32BIT_WORD_SIZE;
-                break;
-        case CC_HASH_SHA256_mode:
+                break;                                          
+        case CC_HASH_SHA256_mode: 
                 HashOutputSize = CC_HASH_SHA256_DIGEST_SIZE_IN_WORDS*CC_32BIT_WORD_SIZE;
                 break;
-        case CC_HASH_SHA384_mode:
+        case CC_HASH_SHA384_mode: 
                 HashOutputSize = CC_HASH_SHA384_DIGEST_SIZE_IN_WORDS*CC_32BIT_WORD_SIZE;
                 break;
-        case CC_HASH_SHA512_mode:
+        case CC_HASH_SHA512_mode: 
                 HashOutputSize = CC_HASH_SHA512_DIGEST_SIZE_IN_WORDS*CC_32BIT_WORD_SIZE;
                 break;
-        default:
+        default: 
                 return CC_RSA_HASH_ILLEGAL_OPERATION_MODE_ERROR;
-        }
-
+        } 
+              
 /*For PKCS1 Ver 2.1 P=L*/
 /*--------------------------------------------------------*
  * Step 1: if the length of P is greater than the input   *
@@ -457,25 +457,25 @@ CCError_t RsaPssOaepDecode(
         case CC_PKCS1_MGF1:
 
                 Error = RsaOaepMGF1(
-                                         HashOutputSize,                                                             /*hashLen*/
-                                         maskedDB_ptr,                                                               /*mgfSeed - in*/
-                                         (uint16_t)(EMSize - HashOutputSize),                                        /*seedLen*/
-                                         HashOutputSize,                                                             /*maskLen*/
-                                         &(((CCRsaOaepData_t*)((void*)PrimeData_ptr->InternalBuff))->SeedMask[0]),  /*mask - out*/
-                                         hashFunc,                                                                   /*hashMode*/
-                                         (uint8_t *)PrimeData_ptr->DataIn,                                           /*1-st tempBuff*/
-                                         (uint8_t *)PrimeData_ptr->DataOut);                                         /*2-nd tempBuff*/
+                                         HashOutputSize,                                                             /*hashLen*/       
+                                         maskedDB_ptr,                                                               /*mgfSeed - in*/       
+                                         (uint16_t)(EMSize - HashOutputSize),                                        /*seedLen*/       
+                                         HashOutputSize,                                                             /*maskLen*/       
+                                         &(((CCRsaOaepData_t*)((void*)PrimeData_ptr->InternalBuff))->SeedMask[0]),  /*mask - out*/          
+                                         hashFunc,                                                                   /*hashMode*/      
+                                         (uint8_t *)PrimeData_ptr->DataIn,                                           /*1-st tempBuff*/ 
+                                         (uint8_t *)PrimeData_ptr->DataOut);                                         /*2-nd tempBuff*/ 
                 if (Error != CC_OK) {
                         return Error;
                 }
                 break;
 
-        /*Currently for PKCS1 Ver 2.1 only MGF1 is implemented*/
-        case CC_PKCS1_NO_MGF:
-        default:
+        /*Currently for PKCS1 Ver 2.1 only MGF1 is implemented*/                                                                
+        case CC_PKCS1_NO_MGF:  
+        default:                                 
                 return CC_RSA_MGF_ILLEGAL_ARG_ERROR;
 
-        }
+        }                       
 
 /*-------------------------------------------------------*
  * Step 5: Let seed = maskedSeed xor seedMask.           *
@@ -489,7 +489,7 @@ CCError_t RsaPssOaepDecode(
  * PKCS1 Ver2.1: Step <3> <e>                            *
  *-------------------------------------------------------*/
         Error=RsaOaepMGF1(
-                               HashOutputSize,
+                               HashOutputSize, 
                                EM_ptr,
                                HashOutputSize,
                                EMSize - HashOutputSize,
@@ -503,10 +503,10 @@ CCError_t RsaPssOaepDecode(
 
 /*-------------------------------------------------------*
  * Step 7: Let DB = maskedDB xor dbMask.                 *
- *         PKCS1 Ver2.1: Step <3> <f>                    *
+ *         PKCS1 Ver2.1: Step <3> <f>                    * 
  *-------------------------------------------------------*/
-        TmpSize = EMSize - HashOutputSize;
-        TmpByte_ptr = &EM_ptr[0] + HashOutputSize;
+        TmpSize = EMSize - HashOutputSize;  
+        TmpByte_ptr = &EM_ptr[0] + HashOutputSize; 
         for (I = 0; I < TmpSize; I++)
                 TmpByte_ptr[I] ^= ((CCRsaOaepData_t*)((void*)PrimeData_ptr->InternalBuff))->MaskDB[I];
 
@@ -566,12 +566,12 @@ CCError_t RsaPssOaepDecode(
                 if (Error!=CC_OK) {
                         goto End;
                 }
-        }
+        }   
 
 
 /*---------------------------------------------------------*
- * Step 9: Separate DB into an octet string pHash'         *
- *         consisting of the first hLen octets of DB,      *
+ * Step 9: Separate DB into an octet string pHash'         * 
+ *         consisting of the first hLen octets of DB,      * 
  *         a (possibly empty) octet string PS consisting   *
  *         of consecutive zero octets following pHash',    *
  *         and a message M as DB = pHash' || PS || 01 || M *
@@ -580,12 +580,12 @@ CCError_t RsaPssOaepDecode(
  *                                                         *
  * PKCS1 Ver2.1: Step <3> <g>                              *
  *---------------------------------------------------------*/
-        TmpSize = EMSize - 2*HashOutputSize;
+        TmpSize = EMSize - 2*HashOutputSize;    
         TmpByte_ptr = &EM_ptr[0] + 2*HashOutputSize;
         for (I = 0; I < TmpSize; I++) {
-                if (TmpByte_ptr[I] != 0x00)
+                if (TmpByte_ptr[I] != 0x00) 
                         break;
-        }
+        } 
 
         if (TmpByte_ptr[I] != 0x01){
                 Error = CC_RSA_OAEP_DECODE_ERROR;
@@ -598,10 +598,10 @@ CCError_t RsaPssOaepDecode(
  * Step 10: If pHash' does not equal pHash, output      *
  *          "decoding error" and stop.                  *
  *                                                      *
- * PKCS1 Ver2.1: Step <3> <g>                           *
+ * PKCS1 Ver2.1: Step <3> <g>                           * 
  *------------------------------------------------------*/
         if (CC_PalMemCmp(&EM_ptr[0] + HashOutputSize,
-                        (uint8_t *)(((CCRsaOaepData_t*)((void*)PrimeData_ptr->InternalBuff))->HashResultBuff),
+                        (uint8_t *)(((CCRsaOaepData_t*)((void*)PrimeData_ptr->InternalBuff))->HashResultBuff), 
                         HashOutputSize)) {
                 Error = CC_RSA_OAEP_DECODE_ERROR;
                 goto End;
@@ -624,7 +624,7 @@ CCError_t RsaPssOaepDecode(
         /* at this point TmpByte_ptr points to 01 */
         TmpByte_ptr += 1;
 
-        /* at this point TmpByte_ptr points to M  */
+        /* at this point TmpByte_ptr points to M  */ 
         CC_PalMemCopy( M_ptr, TmpByte_ptr, *MSize_ptr );
 
         End:
@@ -646,23 +646,23 @@ CCError_t RsaPssOaepDecode(
 /**********************************************************************************************************/
 
 /* -------------------------------------------------------------
- *  Function Name: RsaOaepMGF1
- *  Date:   09-1-2005
- *  Author: Ohad Shperling
+ *	Function Name: RsaOaepMGF1
+ *	Date:   09-1-2005
+ *	Author:	Ohad Shperling
  *
- *  Inputs:
- *  Outputs:
+ *	Inputs:
+ *	Outputs:
  *
- *  Algorithm: according to PKCS1-v.2_1
+ *	Algorithm: according to PKCS1-v.2_1 
  *
- *  Update History:
- *  Date:       Description:
+ *	Update History:
+ *	Date:		Description:
  * ----------------------------------------------------------- */
-CCError_t RsaOaepMGF1( uint16_t hLen,                  /*hashLen*/
-                               uint8_t *Z_ptr,                 /*mgfSeed*/
-                               uint16_t ZSize,                 /*seedLen*/
-                               uint32_t L,                     /*maskLen*/
-                               uint8_t  *Mask_ptr,             /*mask*/
+CCError_t RsaOaepMGF1( uint16_t hLen,                  /*hashLen*/  
+                               uint8_t *Z_ptr,                 /*mgfSeed*/  
+                               uint16_t ZSize,                 /*seedLen*/  
+                               uint32_t L,                     /*maskLen*/  
+                               uint8_t  *Mask_ptr,             /*mask*/     
                                CCPkcs1HashFunc_t hashFunc, /*hashMode*/
                                uint8_t  *T_Buf,                /*1-st tempBuff*/
                                uint8_t  *T_TMP_Buf)            /*2-nd tempBuff*/
@@ -683,7 +683,7 @@ CCError_t RsaOaepMGF1( uint16_t hLen,                  /*hashLen*/
 
 
 /*---------------------------------------------------------------------*
- * Step 1:  If l > 2^32 hLen, output "mask too long" and stop.          *
+ * Step 1:	If l > 2^32 hLen, output "mask too long" and stop.          *
  *---------------------------------------------------------------------*/
 
         /* note: check L > (uint32_t)(CC_RSA_MGF_2_POWER_32 *hLen) not needed
@@ -699,10 +699,10 @@ CCError_t RsaOaepMGF1( uint16_t hLen,                  /*hashLen*/
 
 /*---------------------------------------------------------------------*
  * Step 3:  For counter from 0 to  | l / hLen | -1 , do the following: *
- *          a.  Convert counter to an octet string C of length 4       *
+ *          a.	Convert counter to an octet string C of length 4       *
  *              with the primitive I2OSP:                              *
  *               C = I2OSP (counter, 4)                                *
- *          b.  Concatenate the hash of the seed Z and C to the octet  *
+ *          b.	Concatenate the hash of the seed Z and C to the octet  *
  *               string T:   T = T || Hash (Z || C)                    *
  *---------------------------------------------------------------------*/
         Output_ptr = T;
@@ -714,7 +714,7 @@ CCError_t RsaOaepMGF1( uint16_t hLen,                  /*hashLen*/
         for (Counter = 0; Counter < CounterMaxSize; Counter++) {
 
                 /*--------------------------------------------------------------------
-                 *          a.  Convert counter to an octet string C of length 4
+                 *          a.	Convert counter to an octet string C of length 4
                  *              with the primitive I2OSP:   C = I2OSP (counter, 4)
                  *--------------------------------------------------------------------*/
 
@@ -729,7 +729,7 @@ CCError_t RsaOaepMGF1( uint16_t hLen,                  /*hashLen*/
                 CC_PalMemCopy(&T_TMP[0] + ZSize, &Tmp32Bit, sizeof(uint32_t));
 
                 /*--------------------------------------------------------------------
-                 *          b.  Concatenate the hash of the seed Z and C to the octet
+                 *          b.	Concatenate the hash of the seed Z and C to the octet
                  *               string T: T = T || Hash (Z || C)
                  *--------------------------------------------------------------------*/
 

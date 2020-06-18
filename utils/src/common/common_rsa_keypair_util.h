@@ -13,8 +13,8 @@
 #include "cc_pka_hw_plat_defs.h"
 
 typedef struct {
-    uint8_t pNBuff[SB_CERT_RSA_KEY_SIZE_IN_BYTES];
-    uint8_t pNpBuff[NP_SIZE_IN_BYTES];
+	uint8_t pNBuff[SB_CERT_RSA_KEY_SIZE_IN_BYTES];
+	uint8_t pNpBuff[NP_SIZE_IN_BYTES];
 }DxRsaKeyNandNp_t;
 
 /**

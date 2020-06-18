@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001-2019, Arm Limited and Contributors. All rights reserved.
+ * Copyright (c) 2001-2020, Arm Limited and Contributors. All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause OR Arm’s non-OSI source license
  */
@@ -14,13 +14,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include <openssl/objects.h>
-#include <openssl/pem.h>
-#include <openssl/evp.h>
-#include <openssl/rand.h>
-#include <openssl/bn.h>
-#include <openssl/aes.h>
-#include <openssl/err.h>
 #include "common_rsa_keypair.h"
 #include "common_crypto_asym.h"
 #include "common_util_log.h"
@@ -29,7 +22,7 @@
 
 /* Global defines */
 #define Nullptr (void *)0
-#define SIZE_OF_DATA_FOR_DERIVATION 22
+#define SIZE_OF_DATA_FOR_DERIVATION	22
 
 /**
  * @brief The SIGN_RELEASE releases the allocated memory from the sign operation.
@@ -37,37 +30,37 @@
 
 #define SIGN_RELEASE(fname) \
 {\
-    if (status < 0) \
-        printf("\n%s failed.\n", fname); \
-    if (pRsaPubKey) \
-        RSA_free (pRsaPubKey); \
-    if (bio) \
-        BIO_free (bio); \
-    if (md_ctx) \
-        EVP_MD_CTX_destroy(md_ctx); \
-    return (status); \
+	if (status < 0) \
+		printf("\n%s failed.\n", fname); \
+	if (pRsaPubKey) \
+		RSA_free (pRsaPubKey); \
+	if (bio) \
+		BIO_free (bio); \
+	if (md_ctx) \
+		EVP_MD_CTX_destroy(md_ctx); \
+	return (status); \
 }
 
 #define SIGN21_RELEASE(fname) \
 {\
-    if (status < 0) \
-        printf("\n%s failed.\n", fname); \
-    if (pRsaPrivKey) \
-        RSA_free (pRsaPrivKey); \
-    return (status); \
+	if (status < 0) \
+		printf("\n%s failed.\n", fname); \
+	if (pRsaPrivKey) \
+		RSA_free (pRsaPrivKey); \
+	return (status); \
 }
 /**
  * @brief The RSA_LOADKEY_RELEASE releases the allocated memory from the loading key operation.
  */
 #define RSA_LOADKEY_RELEASE(msg) \
 {\
-    if(status < 0) \
-        printf("\n%s\n", msg); \
-    if (rsa_pkey) \
-        RSA_free (rsa_pkey); \
-    if (out) \
-        BIO_free (out); \
-    return status; \
+	if(status < 0) \
+		printf("\n%s\n", msg); \
+	if (rsa_pkey) \
+		RSA_free (rsa_pkey); \
+	if (out) \
+		BIO_free (out); \
+	return status; \
 }
 
 /**
@@ -75,19 +68,19 @@
  */
 #define CALCULATE_NP_RELEASE(msg) \
 {\
-    if(status < 0) \
-        printf("\n%s\n", msg); \
-    if (N_Temp) \
-        free(N_Temp); \
-    if(NP_res) \
-        free(NP_res); \
-    BN_free (bn_r); \
-    BN_free (bn_a); \
-    BN_free (bn_p); \
-    BN_free (bn_n); \
-    BN_free (bn_quo); \
-    BN_free (bn_rem); \
-    return (status); \
+	if(status < 0) \
+		printf("\n%s\n", msg); \
+	if (N_Temp) \
+		free(N_Temp); \
+	if(NP_res) \
+		free(NP_res); \
+	BN_free (bn_r); \
+	BN_free (bn_a); \
+	BN_free (bn_p); \
+	BN_free (bn_n); \
+	BN_free (bn_quo); \
+	BN_free (bn_rem); \
+	return (status); \
 }
 
 /**
@@ -95,19 +88,19 @@
  */
 #define CALCULATE_H_RELEASE(msg) \
 {\
-    if(status < 0) \
-        printf("\n%s\n", msg); \
-    if (N_Temp) \
-        free(N_Temp); \
-    if(H_res) \
-        free(H_res); \
-    if (H_resTemp) \
-        OPENSSL_free(H_resTemp); \
-    BN_free (bn_two); \
-    BN_free (bn_twos); \
-    BN_free (bn_n); \
-    BN_free (bn_h); \
-    return (status); \
+	if(status < 0) \
+		printf("\n%s\n", msg); \
+	if (N_Temp) \
+		free(N_Temp); \
+	if(H_res) \
+		free(H_res); \
+	if (H_resTemp) \
+		OPENSSL_free(H_resTemp); \
+	BN_free (bn_two); \
+	BN_free (bn_twos); \
+	BN_free (bn_n); \
+	BN_free (bn_h); \
+	return (status); \
 }
 
 #define MAX_IMAGE_CHUNK (1024)  // 1K byte
@@ -165,8 +158,8 @@ char N_Const[] =
  */
  /*********************************************************/
 int Sign_v15(RSA *pRsaPrivKey, char *DataIn_ptr,  // IG - merge with common implementation
-             int DataInSize, char *Signature_ptr,
-             char *Key_ptr);
+			 int DataInSize, char *Signature_ptr,
+			 char *Key_ptr);
 
 /**
  * @brief The Sign_v21 generates RSA signature using PKCS#1 v2.1 algorithm.
@@ -182,11 +175,11 @@ int Sign_v15(RSA *pRsaPrivKey, char *DataIn_ptr,  // IG - merge with common impl
  */
  /*********************************************************/
 int Sign_v21(RSA *pRsaPrivKey, char *DataIn_ptr,
-             int DataInSize, char *Signature_ptr);
+			 int DataInSize, char *Signature_ptr);
 
 /**
 * @brief The function SBU_GetNFromKeyPairAndCalcH Reads RSA key from the file using passphrase,
-*       and returns its decrypted value and its calculated Hash
+*		and returns its decrypted value and its calculated Hash
 *
 * @param[in] PemEncryptedFileName_ptr - file name
 * @param[in] pwdFileName - file name of the password

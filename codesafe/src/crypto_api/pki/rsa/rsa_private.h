@@ -24,30 +24,30 @@ extern "C"
 
 
 typedef union {
-    struct {
+	struct {
 /* the Barrett mod N tag  NP for N-modulus - used in the modular multiplication and
   exponentiation, calculated in CC_RsaPrivKeyBuild function */
-        uint32_t NP[CC_PKA_BARRETT_MOD_TAG_BUFF_SIZE_IN_WORDS];
+		uint32_t NP[CC_PKA_BARRETT_MOD_TAG_BUFF_SIZE_IN_WORDS];
 
-    }NonCrt;
+	}NonCrt;
 
-    struct {
+	struct {
 /* the Barrett mod P tag  PP for P-factor - used in the modular multiplication and
   exponentiation, calculated in CC_RsaPrivKeyBuild function */
-        uint32_t PP[CC_PKA_BARRETT_MOD_TAG_BUFF_SIZE_IN_WORDS];
+		uint32_t PP[CC_PKA_BARRETT_MOD_TAG_BUFF_SIZE_IN_WORDS];
 
 /* the Barrett mod Q tag  QP for Q-factor - used in the modular multiplication and
   exponentiation, calculated in CC_RsaPubKeyBuild function */
-        uint32_t QP[CC_PKA_BARRETT_MOD_TAG_BUFF_SIZE_IN_WORDS];
+		uint32_t QP[CC_PKA_BARRETT_MOD_TAG_BUFF_SIZE_IN_WORDS];
 
-    }Crt;
+	}Crt;
 
 }RsaPrivKeyDb_t;
 
 CCError_t RsaInitPrivKeyDb(CCRsaPrivKey_t *pPrivKey);
 
 CCError_t RsaExecPrivKeyExp(CCRsaPrivKey_t    *pPrivKey,
-            CCRsaPrimeData_t *pPrivData);
+			CCRsaPrimeData_t *pPrivData);
 
 #ifdef __cplusplus
 }

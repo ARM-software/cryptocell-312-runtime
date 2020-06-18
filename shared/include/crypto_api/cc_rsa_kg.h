@@ -53,7 +53,7 @@ extern "C"
 Cryptography Using Reversible Algorithms for the Financial Services Industry (rDSA).
 
 \note   To be FIPS Publication 186-4: Digital Signature Standard (DSS) [5.1] compliant use only the following:
-    key sizes (in bits): 2048, 3072, 4096 and public exponent value 0x10001.
+	key sizes (in bits): 2048, 3072, 4096 and public exponent value 0x10001.
 
 @return CC_OK on success.
 @return A non-zero value from cc_rsa_error.h or cc_rnd_error.h on failure.
@@ -64,12 +64,12 @@ CIMPORT_C CCError_t CC_RsaKgKeyPairGenerate(
                                         uint8_t             *pubExp_ptr,            /*!< [in]  The pointer to the public exponent (public key). */
                                         size_t               pubExpSizeInBytes,     /*!< [in]  The public exponent size in bytes. */
                                         size_t               keySize,               /*!< [in]  The size of the key, in bits. Supported sizes are
-                                                   2048, 3072 and 4096 bit. */
+											       2048, 3072 and 4096 bit. */
                                         CCRsaUserPrivKey_t *userPrivKey_ptr,     /*!< [out] Pointer to the private-key structure. */
                                         CCRsaUserPubKey_t  *userPubKey_ptr,      /*!< [out] Pointer to the public-key structure. */
-                    CCRsaKgData_t      *keyGenData_ptr,      /*!< [in]  Pointer to a temporary structure required for the KeyGen operation. */
+					CCRsaKgData_t      *keyGenData_ptr,      /*!< [in]  Pointer to a temporary structure required for the KeyGen operation. */
                                         CCRsaKgFipsContext_t    *pFipsCtx        /*!< [in]  Pointer to temporary buffer used in case FIPS certification if required
-                                                (may be NULL for all other cases). */
+											    (may be NULL for all other cases). */
 );
 
 /***********************************************************************************************/
@@ -93,7 +93,7 @@ CIMPORT_C CCError_t CC_RsaKgKeyPairCrtGenerate(
                                         CCRsaUserPubKey_t  *userPubKey_ptr,     /*!< [out] Pointer to the public-key structure. */
                                         CCRsaKgData_t      *keyGenData_ptr,     /*!< [in] Pointer to a temporary structure required for the KeyGen operation. */
                                         CCRsaKgFipsContext_t    *pFipsCtx       /*!< [in] Pointer to temporary buffer used in case FIPS certification if required
-                                              (may be NULL for all other cases). */
+											  (may be NULL for all other cases). */
 );
 
 

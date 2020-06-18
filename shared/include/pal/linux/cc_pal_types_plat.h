@@ -15,7 +15,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-typedef uintptr_t       CCVirtAddr_t;
+typedef uintptr_t	    CCVirtAddr_t;
 typedef uint32_t            CCBool_t;
 typedef uint32_t            CCStatus;
 

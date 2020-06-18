@@ -19,12 +19,12 @@
 /* The smallest resolution in no_os is seconds */
 void Test_PalDelay(const uint32_t usec)
 {
-    /* Rounds up */
-    uint32_t secs = (usec + 999) / 1000;
+	/* Rounds up */
+	uint32_t secs = (usec + 999) / 1000;
 
-    /* Gets the end time */
-    uint32_t retTime = time(0) + secs;
+	/* Gets the end time */
+	uint32_t retTime = time(0) + secs;
 
-    /* Loop until end time arrives */
-    while (time(0) < retTime);
+	/* Loop until end time arrives */
+	while (time(0) < retTime);
 }

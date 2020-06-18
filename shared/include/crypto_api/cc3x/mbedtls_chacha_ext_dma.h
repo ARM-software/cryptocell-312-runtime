@@ -12,7 +12,7 @@
 
 /*!
  @file
- @brief This file contains all the CryptoCell ChaCha external DMA APIs, their
+ @brief This file contains all the CryptoCell ChaCha external DMA APIs, their 
  enums and definitions.
  */
 
@@ -29,29 +29,29 @@ extern "C"
 #endif
 
 /*!
-  @brief This function initializes the external DMA control.
-
-  It configures the ChaCha mode, the initial hash value, and other
+  @brief This function initializes the external DMA control. 
+  
+  It configures the ChaCha mode, the initial hash value, and other 
   configurations in the ChaCha engine.
 
   @return \c 0 on success.
   @return A non-zero value from mbedtls_ext_dma_error.h on failure.
  */
 int mbedtls_ext_dma_chacha_init(
-            /*! [in] The nonce buffer.  */
+			/*! [in] The nonce buffer.  */
             uint8_t *  pNonce,
             /*! [in] The nonce size flag.  */
-            mbedtls_chacha_nonce_size_t         nonceSizeFlag,
+			mbedtls_chacha_nonce_size_t         nonceSizeFlag,
             /*! [in] The key buffer.  */
-            uint8_t *  pKey,
+			uint8_t *  pKey,
             /*! [in] The size of the key buffer. Must be 32 bytes.  */
-            uint32_t    keySizeBytes,
+			uint32_t    keySizeBytes,
             /*! [in] Initial counter value.  */
-            uint32_t    initialCounter,
+			uint32_t    initialCounter,
             /*! [in] The ChaCha operation: Encrypt or Decrypt. */
-            mbedtls_chacha_encrypt_mode_t  EncryptDecryptFlag,
+			mbedtls_chacha_encrypt_mode_t  EncryptDecryptFlag,
             /*! [in] Input data length in bytes */
-            uint32_t    dataSize
+			uint32_t    dataSize
             );
 
 

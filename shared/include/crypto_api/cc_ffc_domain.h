@@ -66,8 +66,8 @@ extern "C"
 
 /* check that ptr != NULL and outSize <= buffSize */
 #define CHECK_PTR_AND_SIZE(pOut, outSize, buffSize) { \
-    if((pOut == NULL) err = CC_FFCDH_INVALID_ARGUMENT_POINTER_ERROR; goto End; \
-    if((outSize > buffSize) err = CC_FFCDH_INVALID_ARGUMENT_SIZE_ERROR; goto End; \
+	if((pOut == NULL) err = CC_FFCDH_INVALID_ARGUMENT_POINTER_ERROR; goto End; \
+	if((outSize > buffSize) err = CC_FFCDH_INVALID_ARGUMENT_SIZE_ERROR; goto End; \
 }
 
 /* primality testing definitions */
@@ -78,7 +78,7 @@ extern "C"
 #define CC_FFC_DOMAIN_VALIDATION_TAG   0xFFCD8000
 
 #define CC_FFC_DOMAIN_TMP_BUFF_SIZE_IN_WORDS  \
-    (5*CC_FFC_DOMAIN_MAX_GENER_ORDER_SIZE_IN_WORDS + 3*CC_FFC_DOMAIN_MAX_MOD_BUFFER_SIZE_IN_WORDS + 3)
+	(5*CC_FFC_DOMAIN_MAX_GENER_ORDER_SIZE_IN_WORDS + 3*CC_FFC_DOMAIN_MAX_MOD_BUFFER_SIZE_IN_WORDS + 3)
 
 
 /************************ Enums ********************************/
@@ -98,8 +98,8 @@ typedef enum
 /*! FFC DH Domain validation mode definitions:
     NIST SP 56A Rev. 2, */
 typedef enum {
-    CC_FFC_DOMAIN_VALIDAT_FULL_MODE,    /*!< full validation */
-    CC_FFC_DOMAIN_TRUSTED_DATA_MODE,    /*!< minimal checking: sizes and pointers;
+	CC_FFC_DOMAIN_VALIDAT_FULL_MODE,    /*!< full validation */
+	CC_FFC_DOMAIN_TRUSTED_DATA_MODE,    /*!< minimal checking: sizes and pointers;
                                                    this mode may be used on user's responsibility and
                                                    only when he obtains full assurance about Domain data */
         CC_FFC_DOMAIN_VALIDAT_NUM_OFF_MODE, /*!< not allowed value */
@@ -109,7 +109,7 @@ typedef enum {
 /*! FFC DH Domain parameters sets definition: NIST SP 56A Rev. 2, sec. 5.8.1, tab.6. */
 typedef enum
 {
-    /* domain sets according to SP 800-56A rev.2. */
+	/* domain sets according to SP 800-56A rev.2. */
         CC_FFC_PARAMS_SET_FA,  /*!< FA - min. parameters sizes and security strength */
         CC_FFC_PARAMS_SET_FB,  /*!< FB - middle 1 */
         CC_FFC_PARAMS_SET_FC,  /*!< FC - middle 2 (max.sizes allowed for FFC-DH) */
@@ -122,7 +122,7 @@ typedef enum
 /*! FFC DH Domain parameters sets definition: NIST SP 56A Rev. 2, sec. 5.8.1, tab.6. */
 typedef enum
 {
-    /* domain sets according to SP 800-56A rev.2. */
+	/* domain sets according to SP 800-56A rev.2. */
         CC_FFC_USE_GIVEN_SEED,    /*!< generate domain from given Seed */
         CC_FFC_GENERATE_NEW_SEED, /*!< generate new seed and Domain */
         CC_FFC_SEED_NOT_USED,     /*!< seed not used in appropriate function. */
@@ -138,9 +138,9 @@ typedef enum
 /*! Temporary data buffer structure for domain parameters generation in DH. */
 typedef struct CCFfcDomainTmpBuff_t
 {
-    /* The aligned input and output temp buffers */
-    /*! Temporary buffer. */
-    uint32_t TmpBuff[CC_FFC_DOMAIN_TMP_BUFF_SIZE_IN_WORDS];
+	/* The aligned input and output temp buffers */
+	/*! Temporary buffer. */
+	uint32_t TmpBuff[CC_FFC_DOMAIN_TMP_BUFF_SIZE_IN_WORDS];
 }CCFfcDomainTmpBuff_t;
 
 
@@ -167,12 +167,12 @@ typedef struct CCFfcDomain_t {
     uint32_t hashDigestSize;         /*!< size in bytes of HASH digest for chosen mode. */
     uint32_t hashBlockSize;          /*!< size in bytes of HASH block for chosen mode. */
     uint32_t indexOfGenerator;       /*!< index, of currently created FFC Generator (allows create different
-                                          Generators for existed prime P, Order Q, and Seed). */
+	                                      Generators for existed prime P, Order Q, and Seed). */
     uint32_t validTag;  /*!< validation tag.*/
 }CCFfcDomain_t;
 
 #define FFC_DOMAIN_SIZE_BYTES  ((2*CC_FFC_DOMAIN_MAX_MOD_SIZE_IN_WORDS + 2*CC_FFC_DOMAIN_MAX_GENER_ORDER_SIZE_IN_WORDS + \
-        CC_FFC_DOMAIN_BARRETT_TAG_MAX_SIZE_IN_WORDS + 10) * CC_32BIT_WORD_SIZE)
+		CC_FFC_DOMAIN_BARRETT_TAG_MAX_SIZE_IN_WORDS + 10) * CC_32BIT_WORD_SIZE)
 
 /***************************************************************************/
 /*!< Set of FFC Domain parameters size approved by NIST SP 800-56A rev.2. tab.6,8
@@ -182,10 +182,10 @@ typedef struct CCFfcDomain_t {
  */
 typedef struct CCFfcDomainParamSizes_t
 {
-    uint32_t maxSecurStrength;  /*!< Maximum security strength supported, in bytes. */
-    uint32_t primeSize;         /*!< Field (prime P) size in bytes. */
-    uint32_t orderSize;         /*!< Subgroup order Q size in bytes. */
-    uint32_t minHashLen;        /*!< Minimum length of HASH output in bytes. */
+	uint32_t maxSecurStrength;  /*!< Maximum security strength supported, in bytes. */
+	uint32_t primeSize;         /*!< Field (prime P) size in bytes. */
+	uint32_t orderSize;         /*!< Subgroup order Q size in bytes. */
+	uint32_t minHashLen;        /*!< Minimum length of HASH output in bytes. */
 } CCFfcDomainParamSizes_t;
 
 
@@ -207,16 +207,16 @@ typedef struct CCFfcDomainParamSizes_t
 
 /*! Define and initialize HASH parameters array */
 //CCFfcDhHashBlockAndDigestSizes_t DhHashBlockAndDigestSizes[(uint32_t)CC_FFCDH_HASH_NUM_OFF_MODE] =
-//                           CC_FFC_SHA_PARAMETERS_SIZES_IN_BYTES;
+//	                         CC_FFC_SHA_PARAMETERS_SIZES_IN_BYTES;
 
 //
 ///*! Temporary buffer structure . */
 //typedef struct CCFfcDhKgCheckTemp_t
 //{
-//  /*! Temporary buffer. */
-//  uint32_t   checkTempBuff[3*CC_FFC_DOMAIN_MAX_MOD_SIZE_IN_WORDS];
-//  /*! Temporary buffer. */
-//  CCFfcDomainTmpBuff_t    domainBuff;
+//	/*! Temporary buffer. */
+//	uint32_t   checkTempBuff[3*CC_FFC_DOMAIN_MAX_MOD_SIZE_IN_WORDS];
+//	/*! Temporary buffer. */
+//	CCFfcDomainTmpBuff_t    domainBuff;
 //}CCFfcDomainCheckTemp_t;
 
 
@@ -242,22 +242,22 @@ given by enumerator ID of type CCFfcDhParamSetId_t. </li></ol>
 
 */
 CIMPORT_C CCError_t CC_FfcGenerateDomainFromSeed(
-                CCFfcDomain_t *pDomain,        /*!< [out] pointer to  FFC Domain structure. */
-                CCRndContext_t *pRndContext,   /*!< [in] random generation function context. */
-                size_t primeSizeBits,          /*!< [in] size of domain's prime modulus in bits (see requirements above). */
-                size_t orderSizeBits,          /*!< [in] size of domain's sub-group order in bits (see requirements above). */
-                uint8_t  *pSeed,               /*!< [in] pointer to the seed for domain generation and validation; */
-                size_t   seedSizeBytes,        /*!< [in] seed size in bytes */
-                uint32_t genCounter,           /*!< [in] exact value of count of main loop iterations, required for generation
-                                     FFC Domain from given Seed. If actual count is not equal to given,
-                                     then the function returns an error. */
-                CCFfcParamSetId_t ffcParamSetId,/*!< [in] enumerator, defining the set of FFC domain parameters
-                                     according to SP 56A rev.2 section 5.5.1.1, tab.1. */
-                CCFfcHashOpMode_t ffcHashMode, /*!< [in] enumerator ID of SHAx HASH mode. Note: HASH SHA1 mode may be
-                                     used only with SA set of domain parameters (sec. 5.8.1, tab.6). */
-                uint8_t generIndex,            /*!< [in] an index of FFC Generator,  allowing to generate different FFC generators with
-                                    the same FFC parameters prime P and Order Q, existed in the domain. */
-                CCFfcDomainTmpBuff_t *pTmpBuff /*!< [in] pointer to FFC Domain temp buffer structure. */
+				CCFfcDomain_t *pDomain,        /*!< [out] pointer to  FFC Domain structure. */
+				CCRndContext_t *pRndContext,   /*!< [in] random generation function context. */
+				size_t primeSizeBits,          /*!< [in] size of domain's prime modulus in bits (see requirements above). */
+				size_t orderSizeBits,          /*!< [in] size of domain's sub-group order in bits (see requirements above). */
+				uint8_t  *pSeed,               /*!< [in] pointer to the seed for domain generation and validation; */
+				size_t   seedSizeBytes,        /*!< [in] seed size in bytes */
+				uint32_t genCounter,           /*!< [in] exact value of count of main loop iterations, required for generation
+									 FFC Domain from given Seed. If actual count is not equal to given,
+									 then the function returns an error. */
+				CCFfcParamSetId_t ffcParamSetId,/*!< [in] enumerator, defining the set of FFC domain parameters
+								     according to SP 56A rev.2 section 5.5.1.1, tab.1. */
+				CCFfcHashOpMode_t ffcHashMode, /*!< [in] enumerator ID of SHAx HASH mode. Note: HASH SHA1 mode may be
+									 used only with SA set of domain parameters (sec. 5.8.1, tab.6). */
+				uint8_t generIndex,            /*!< [in] an index of FFC Generator,  allowing to generate different FFC generators with
+								    the same FFC parameters prime P and Order Q, existed in the domain. */
+				CCFfcDomainTmpBuff_t *pTmpBuff /*!< [in] pointer to FFC Domain temp buffer structure. */
 );
 
 /*******************************************************************************************/
@@ -275,19 +275,19 @@ given by enumerator ID of type CCFfcDhParamSetId_t. </li></ol>
 @return A non-zero value on failure as defined cc_dh_error.h, cc_rnd_error.h.
  */
 CIMPORT_C CCError_t CC_FfcGenerateDomainAndSeed(
-                CCFfcDomain_t *pDomain,         /*!< [out] pointer to  FFC Domain structure. */
-                CCRndContext_t *pRndContext,    /*!< [in] random generation function context. */
-                size_t primeSizeBits,           /*!< [in] size of domain's prime modulus in bits (see requirements above). */
-                size_t orderSizeBits,           /*!< [in] size of domain's sub-group order in bits (see requirements above). */
-                size_t seedSizeBytes,           /*!< [in] required size of the seed in bytes; it must be not less than
-                                                     HASH security strength, defined in given ffcParamsSet. */
-                CCFfcParamSetId_t ffcParamSetId,/*!< [in] enumerator, defining the set of FFC domain parameters
-                                                     according to SP 56A rev.2 section 5.5.1.1, tab.1. */
-                CCFfcHashOpMode_t ffcHashMode,  /*!< [in] enumerator ID of SHAx HASH mode. Note: HASH SHA1 mode may be
-                                                     used only with SA set of domain parameters (sec. 5.8.1, tab.6). */
-                uint8_t generIndex,             /*!< [in] an index of FFC Generator, allowing to generate different FFC generators with
-                                                     the same FFC parameters prime P and Order Q, existed in the domain. */
-                CCFfcDomainTmpBuff_t *pTmpBuff  /*!< [in] pointer to FFC Domain temp buffer structure. */
+				CCFfcDomain_t *pDomain,         /*!< [out] pointer to  FFC Domain structure. */
+				CCRndContext_t *pRndContext,    /*!< [in] random generation function context. */
+				size_t primeSizeBits,           /*!< [in] size of domain's prime modulus in bits (see requirements above). */
+				size_t orderSizeBits,           /*!< [in] size of domain's sub-group order in bits (see requirements above). */
+				size_t seedSizeBytes,           /*!< [in] required size of the seed in bytes; it must be not less than
+									                 HASH security strength, defined in given ffcParamsSet. */
+				CCFfcParamSetId_t ffcParamSetId,/*!< [in] enumerator, defining the set of FFC domain parameters
+								                     according to SP 56A rev.2 section 5.5.1.1, tab.1. */
+				CCFfcHashOpMode_t ffcHashMode,  /*!< [in] enumerator ID of SHAx HASH mode. Note: HASH SHA1 mode may be
+									                 used only with SA set of domain parameters (sec. 5.8.1, tab.6). */
+				uint8_t generIndex,             /*!< [in] an index of FFC Generator, allowing to generate different FFC generators with
+								                     the same FFC parameters prime P and Order Q, existed in the domain. */
+				CCFfcDomainTmpBuff_t *pTmpBuff  /*!< [in] pointer to FFC Domain temp buffer structure. */
 );
 
 
@@ -305,34 +305,34 @@ primes P,Q from the given Seed and compares calculated and received parameters a
 @return A non-zero value on failure, as defined in cc_dh_error.h, cc_rnd_error.h.
  */
 CIMPORT_C CCError_t CC_FfcValidateAndImportDomain(
-                CCFfcDomain_t *pDomain,          /*!< [out] pointer to  FFC Domain structure. */
-                CCRndContext_t *pRndContext,     /*!< [in] optional (used on Full Validation mode only), random generation
-                                                           function context. */
-                uint8_t *pPrime,                 /*!< [in] pointer to prime modulus of the finite field (P). */
-                size_t  primeSizeBits,           /*!< [in] prime P size in bits. */
-                uint8_t *pOrder,                 /*!< [in] pointer to the order Q of the generator. */
-                size_t  orderSizeBits,           /*!< [in] order size in bits. */
-                uint8_t *pGenerator,             /*!< [in] pointer to generator G of subgroup of FFC. */
-                size_t  generSizeBytes,          /*!< [in] generator G size in bytes (see note bellow). */
-                uint8_t *pSeed,                  /*!< [in] optional (used on Full Validation mode only), pointer to the Seed,
-                                                           if the Seed is not given, then should be set to NULL. */
-                size_t  seedSizeBytes,           /*!< [in] optional size of Seed in bytes; if Seed not given, then
-                                                      should be set to 0. */
-                CCFfcParamSetId_t ffcParamSetId, /*!< [in] enumerator, defining the set of FFC domain parameters
-                                                      according to SP 56A rev.2 section 5.5.1.1, tab.1. */
-                CCFfcHashOpMode_t ffcHashMode,   /*!< [in] enumerator ID of SHAx HASH mode. Note: HASH SHA1 mode may be
-                                                      used only with SA set of domain parameters (sec. 5.8.1, tab.6). */
-                uint32_t genCounter,             /*!< [in] optional, counter of main iterations loop, performed during
-                                                      domain generation with Seed. */
-                    uint8_t generIndex,          /*!< [in] an index of FFC Generator, allowing to generate different FFC generators with
-                                                          the same FFC parameters prime P and Order Q, existed in the domain. */
-                CCFfcDomainValidMode_t validMode,/*!< [in] enumerator, defining validation mode of of domain parameters:
-                                                     "full" (approved by FIPS standard), "partial"
-                                                      and "trusted" (validated previously); using of both second
-                                                      modes is not approved by standards and is fully on the user
-                                                      responsibility. */
-                CCFfcDomainTmpBuff_t *pTmpBuff   /*!< [in] optional pointer to FFC Domain temp buffer structure. Used only
-                                                       on Full validation mode, on Trusted mode may be set to NULL. */
+				CCFfcDomain_t *pDomain,          /*!< [out] pointer to  FFC Domain structure. */
+				CCRndContext_t *pRndContext,     /*!< [in] optional (used on Full Validation mode only), random generation
+				                                           function context. */
+				uint8_t *pPrime,                 /*!< [in] pointer to prime modulus of the finite field (P). */
+				size_t  primeSizeBits,           /*!< [in] prime P size in bits. */
+				uint8_t *pOrder,                 /*!< [in] pointer to the order Q of the generator. */
+				size_t  orderSizeBits,           /*!< [in] order size in bits. */
+				uint8_t *pGenerator,             /*!< [in] pointer to generator G of subgroup of FFC. */
+				size_t  generSizeBytes,          /*!< [in] generator G size in bytes (see note bellow). */
+				uint8_t *pSeed,                  /*!< [in] optional (used on Full Validation mode only), pointer to the Seed,
+				                                           if the Seed is not given, then should be set to NULL. */
+				size_t  seedSizeBytes,           /*!< [in] optional size of Seed in bytes; if Seed not given, then
+									                  should be set to 0. */
+				CCFfcParamSetId_t ffcParamSetId, /*!< [in] enumerator, defining the set of FFC domain parameters
+									                  according to SP 56A rev.2 section 5.5.1.1, tab.1. */
+				CCFfcHashOpMode_t ffcHashMode,   /*!< [in] enumerator ID of SHAx HASH mode. Note: HASH SHA1 mode may be
+									                  used only with SA set of domain parameters (sec. 5.8.1, tab.6). */
+				uint32_t genCounter,             /*!< [in] optional, counter of main iterations loop, performed during
+									                  domain generation with Seed. */
+        			uint8_t generIndex,          /*!< [in] an index of FFC Generator, allowing to generate different FFC generators with
+        			                                      the same FFC parameters prime P and Order Q, existed in the domain. */
+				CCFfcDomainValidMode_t validMode,/*!< [in] enumerator, defining validation mode of of domain parameters:
+									                 "full" (approved by FIPS standard), "partial"
+									                  and "trusted" (validated previously); using of both second
+									                  modes is not approved by standards and is fully on the user
+									                  responsibility. */
+				CCFfcDomainTmpBuff_t *pTmpBuff   /*!< [in] optional pointer to FFC Domain temp buffer structure. Used only
+				                                       on Full validation mode, on Trusted mode may be set to NULL. */
 );
 
 
@@ -350,24 +350,24 @@ out - actual size. </li></ol>
 @return A non-zero value on failure as defined cc_dh_error.h, cc_rnd_error.h.
 */
 CIMPORT_C CCError_t CC_FfcExportDomain(
-                CCFfcDomain_t *pDomain,          /*!< [in] pointer to FFC Domain to be exported. */
-                uint8_t *pPrime,                 /*!< [out] pointer to prime modulus of the finite field (P). */
-                size_t  *pPrimeSize,             /*!< [in/out] pointer to prime P size in bytes. */
-                uint8_t *pGenerator,             /*!< [out] pointer to generator of subgroup (G). */
-                size_t  *pGeneratorSize,         /*!< [in/out] pointer to generator G size in bytes. */
-                uint8_t *pOrder,                 /*!< [out] pointer to the order of the generator G. */
-                size_t  *pOrderSize,             /*!< [in/out] pointer to order of generator Q size in bytes. */
-                uint8_t *pSeed,                  /*!< [out] optional, pointer to the Seed, used for Domain generation;
-                                                      if Seed is not required, then the pointer and size should be NULL. */
-                size_t  *pSeedSize,              /*!< [in/out] optional, size of the Seed in bytes - if the Seed not exist,
-                                                      in the Domain, the function sets the size = 0. */
-                CCFfcParamSetId_t *pFfcParamSetId, /*!< [in] pointer to enumerator ID, defining the set of FFC domain parameters
-                                                       parameters according to SP 56A rev.2 section 5.5.1.1, tab.1. */
-                CCFfcHashOpMode_t *pFfcHashMode,  /*!< [in] pointer to enumerator ID of SHAx HASH mode. Note: HASH SHA1 mode
-                                                       may be used only with SA set of domain parameters (sec. 5.8.1, tab.6). */
-                uint32_t *pGenCounter,            /*!< [out] pointer to count of iterations, which were performed
-                                                       during Domain generation. */
-                uint8_t  *pIndexOfGenerator       /*!< pointer to index, of  FFC Generator existed in the Domain. */
+				CCFfcDomain_t *pDomain,          /*!< [in] pointer to FFC Domain to be exported. */
+				uint8_t *pPrime,                 /*!< [out] pointer to prime modulus of the finite field (P). */
+				size_t  *pPrimeSize,             /*!< [in/out] pointer to prime P size in bytes. */
+				uint8_t *pGenerator,             /*!< [out] pointer to generator of subgroup (G). */
+				size_t  *pGeneratorSize,         /*!< [in/out] pointer to generator G size in bytes. */
+				uint8_t *pOrder,                 /*!< [out] pointer to the order of the generator G. */
+				size_t  *pOrderSize,             /*!< [in/out] pointer to order of generator Q size in bytes. */
+				uint8_t *pSeed,                  /*!< [out] optional, pointer to the Seed, used for Domain generation;
+								                      if Seed is not required, then the pointer and size should be NULL. */
+				size_t  *pSeedSize,              /*!< [in/out] optional, size of the Seed in bytes - if the Seed not exist,
+								                      in the Domain, the function sets the size = 0. */
+				CCFfcParamSetId_t *pFfcParamSetId, /*!< [in] pointer to enumerator ID, defining the set of FFC domain parameters
+								                       parameters according to SP 56A rev.2 section 5.5.1.1, tab.1. */
+				CCFfcHashOpMode_t *pFfcHashMode,  /*!< [in] pointer to enumerator ID of SHAx HASH mode. Note: HASH SHA1 mode
+								                       may be used only with SA set of domain parameters (sec. 5.8.1, tab.6). */
+				uint32_t *pGenCounter,            /*!< [out] pointer to count of iterations, which were performed
+								                       during Domain generation. */
+				uint8_t  *pIndexOfGenerator       /*!< pointer to index, of  FFC Generator existed in the Domain. */
 );
 
 
@@ -383,11 +383,11 @@ according to sec. A.2.3. and sets it into Domain structure. </li></ol>
 @return A non-zero value on failure as defined cc_dh_error.h, cc_rnd_error.h.
 */
 CIMPORT_C CCError_t CC_FfcCreateNewGenerator(
-                CCFfcDomain_t *pDomain,        /*!< [in/out] pointer to  FFC Domain structure. */
-                CCRndContext_t *pRndContext,   /*!< [in] random generation function context. */
-                uint8_t index,                 /*!< [in] index allowing to generate some FFC generators with
-                                                    the same FFC parameters prime P and Order Q, existed in the domain. */
-                CCFfcDomainTmpBuff_t *pTmpBuff /*!< [in] pointer to FFC Domain temp buffer structure. */
+				CCFfcDomain_t *pDomain,        /*!< [in/out] pointer to  FFC Domain structure. */
+				CCRndContext_t *pRndContext,   /*!< [in] random generation function context. */
+				uint8_t index,                 /*!< [in] index allowing to generate some FFC generators with
+								                    the same FFC parameters prime P and Order Q, existed in the domain. */
+				CCFfcDomainTmpBuff_t *pTmpBuff /*!< [in] pointer to FFC Domain temp buffer structure. */
 );
 
 #ifdef __cplusplus

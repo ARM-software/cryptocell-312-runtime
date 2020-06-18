@@ -50,7 +50,7 @@ extern "C"
 #define PKA_RSA_KEY_3072_AUX_PRIME_RM_TST_COUNT 27
 #define PKA_RSA_KEY_3072_PQ_PRIME_RM_TST_COUNT   3
 
-#define CC_RSA_MAX_VALID_KEY_SIZE_VALUE_IN_WORDS        CC_RSA_MAX_VALID_KEY_SIZE_VALUE_IN_BITS / CC_BITS_IN_32BIT_WORD
+#define CC_RSA_MAX_VALID_KEY_SIZE_VALUE_IN_WORDS      	CC_RSA_MAX_VALID_KEY_SIZE_VALUE_IN_BITS / CC_BITS_IN_32BIT_WORD
 
 #define LLF_PKI_PKA_DEBUG 1
 
@@ -77,23 +77,23 @@ typedef struct
 }RsaKgIntBuff_t;
 
 CCError_t RsaGenPandQ(CCRndContext_t *rndContext_ptr,
-                 size_t          KeySize,
-                 uint32_t        eSizeInBits,
-                 uint32_t       *pPubExp,
-                 CCRsaKgData_t  *KeyGenData_ptr);
+			     size_t 	     KeySize,
+			     uint32_t 	     eSizeInBits,
+			     uint32_t       *pPubExp,
+			     CCRsaKgData_t  *KeyGenData_ptr);
 
 CCError_t RsaPrimeTestCall(CCRndContext_t *rndContext_ptr,
-                 uint32_t *P_ptr,
-                 int32_t   sizeWords,
-                 int32_t   rabinTestsCount,
-                 int8_t   *isPrime_ptr,
-                 uint32_t *TempBuff_ptr,
-                 CCRsaDhPrimeTestMode_t primeTestMode);
+			     uint32_t *P_ptr,
+			     int32_t   sizeWords,
+			     int32_t   rabinTestsCount,
+			     int8_t   *isPrime_ptr,
+			     uint32_t *TempBuff_ptr,
+			     CCRsaDhPrimeTestMode_t primeTestMode);
 
-CCError_t RsaCalculateNandD(CCRsaPubKey_t    *pCcPubKey, /*!< [in] pointer to the public key structure */
-                CCRsaPrivKey_t   *pCcPrivKey, /*!< [in] pointer to the private key structure */
-                CCRsaKgData_t    *KeyGenData_ptr, /*!< [in] pointer to a structure required for the KeyGen operation, holding P and Q */
-                            uint32_t          primeSizeInBits); /*!< [in] Size of the prime factors in bits. */
+CCError_t RsaCalculateNandD(CCRsaPubKey_t  	 *pCcPubKey, /*!< [in] pointer to the public key structure */
+			    CCRsaPrivKey_t 	 *pCcPrivKey, /*!< [in] pointer to the private key structure */
+			    CCRsaKgData_t  	 *KeyGenData_ptr, /*!< [in] pointer to a structure required for the KeyGen operation, holding P and Q */
+                            uint32_t  	   	  primeSizeInBits); /*!< [in] Size of the prime factors in bits. */
 
 
 CCError_t RsaCalculateCrtParams(uint32_t *pPubExp,      /*!< [in]  Pointer to the public exponent. */

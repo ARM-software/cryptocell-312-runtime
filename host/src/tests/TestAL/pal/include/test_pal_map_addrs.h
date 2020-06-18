@@ -20,14 +20,14 @@ extern "C" {
 #define VALID_MAPPED_ADDR(addr) ((addr != 0) && (addr != 0xFFFFFFFF))
 
 /* Bit Masks - Used by Linux */
-#define BM_READ     0x01 /* Pages may be read */
-#define BM_WRITE    0x02 /* Pages may be written */
-#define BM_EXEC     0x04 /* Pages may be executed */
-#define BM_NONE     0x08 /* Pages may not be accessed */
-#define BM_SHARED   0x10 /* Share this mapping */
-#define BM_PRIVATE  0x20 /* Create a private copy-on-write mapping */
-#define BM_FIXED    0x40 /* Don't interpret addr as a hint:
-                place the mapping at exactly that address. */
+#define BM_READ		0x01 /* Pages may be read */
+#define BM_WRITE	0x02 /* Pages may be written */
+#define BM_EXEC		0x04 /* Pages may be executed */
+#define BM_NONE		0x08 /* Pages may not be accessed */
+#define BM_SHARED	0x10 /* Share this mapping */
+#define BM_PRIVATE	0x20 /* Create a private copy-on-write mapping */
+#define BM_FIXED	0x40 /* Don't interpret addr as a hint:
+				place the mapping at exactly that address. */
 
 /******************************************************************************/
 /*
@@ -57,7 +57,7 @@ void *Test_PalIOMap(void *physAddr, size_t size);
  * @return a valid virtual address or null in case of failure.
  */
 void *Test_PalMapAddr(void *physAddr, void *startingAddr, const char *filename,
-                size_t size, uint8_t protAndFlagsBitMask);
+				size_t size, uint8_t protAndFlagsBitMask);
 
 /******************************************************************************/
 /*

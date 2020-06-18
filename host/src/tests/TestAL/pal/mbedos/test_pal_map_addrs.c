@@ -21,24 +21,24 @@
 /******************************************************************************/
 void *Test_PalIOMap(void *physAddr, size_t size)
 {
-    (void)size;
-    return physAddr;
+	(void)size;
+	return physAddr;
 }
 
 /******************************************************************************/
 void *Test_PalMapAddr(void *physAddr, void *startingAddr, const char *filename,
-                size_t size, uint8_t protAndFlagsBitMask)
+				size_t size, uint8_t protAndFlagsBitMask)
 {
-    (void)startingAddr;
-    (void)filename;
-    (void)size;
-    (void)protAndFlagsBitMask;
-    return physAddr;
+	(void)startingAddr;
+	(void)filename;
+	(void)size;
+	(void)protAndFlagsBitMask;
+	return physAddr;
 }
 
 /******************************************************************************/
 void Test_PalUnmapAddr(void *virtAddr, size_t size)
 {
-    (void)virtAddr;
-    (void)size;
+	(void)virtAddr;
+	(void)size;
 }

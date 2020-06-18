@@ -30,10 +30,10 @@ extern uint32_t *pRndWorkBuff;
  *        The function is used in Self, Instantiation and Reseeding functions.
  *
   * @ppSourceOut[out] - The pointer to to pointer to the entropy source buffer.
- *                   The buffer contains one empty word for using by CRYS level
- *                   and then buffer for output the rng source.
+ *      		     The buffer contains one empty word for using by CRYS level
+ *      		     and then buffer for output the rng source.
  * @pSourceOutSize[out] - The pointer to the size in bytes of entropy source
- *                      in - required size, output - actual size.
+ *      			    in - required size, output - actual size.
  *
  * @return uint32_t - On success 0 is returned, otherwise indicates failure.
  */

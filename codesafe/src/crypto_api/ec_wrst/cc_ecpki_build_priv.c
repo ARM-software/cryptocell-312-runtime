@@ -31,32 +31,32 @@
  *                    CC_EcpkiPrivKeyBuild function                            *
  **********************************************************************************/
 /**
- * The function checks and imports (builds) private key and EC domain into
- * structure of defined type.
- *
+ * The function checks and imports (builds) private key and EC domain into 
+ * structure of defined type. 
+ * 
  *  This function should be called before using of the private key. Input
  *  domain structure must be initialized by EC parameters and auxiliary
  *  values, using CC_EcpkiGetDomain or CC_EcpkiSetDomain functions.
- *
+ *  
  *  The function does the following:
- *      - Checks validity of incoming variables and pointers;
- *      - Converts private key to words arrays with little endian order
+ *  	- Checks validity of incoming variables and pointers; 
+ *  	- Converts private key to words arrays with little endian order 
  *        of the words and copies it in the UserPrivKey buffer.
  *      - Copies EC domain into UserPrivKey  buffer.
- *
- * @author reuvenl (8/11/2014)
+ *  
+ * @author reuvenl (8/11/2014) 
  * @param pDomain - The pointer to EC domain structure.
  * @param pPrivKeyIn - The pointer to private key data.
- * @param PrivKeySizeInBytes - The size of private key data in bytes.
- * @param pUserPrivKey - The pointer to private key structure.
- *
- * @return CEXPORT_C CCError_t
+ * @param PrivKeySizeInBytes - The size of private key data in bytes. 
+ * @param pUserPrivKey - The pointer to private key structure. 
+ * 
+ * @return CEXPORT_C CCError_t 
  */
 CEXPORT_C CCError_t CC_EcpkiPrivKeyBuild(
-                                             const CCEcpkiDomain_t *pDomain,        /*in */
+                                             const CCEcpkiDomain_t *pDomain,        /*in */   
                                              const uint8_t             *pPrivKeyIn,     /*in*/
                                              size_t                    privKeySizeInBytes,/*in*/
-                                             CCEcpkiUserPrivKey_t  *pUserPrivKey    /*out*/)
+                                             CCEcpkiUserPrivKey_t  *pUserPrivKey    /*out*/) 
 {
         /* FUNCTION DECLARATIONS */
 
@@ -65,7 +65,7 @@ CEXPORT_C CCError_t CC_EcpkiPrivKeyBuild(
         /*  EC domain info structure and parameters */
         uint32_t  orderSizeInBytes;
         /* the err return code identifier */
-        CCError_t err = CC_OK;
+        CCError_t err = CC_OK; 
 
         /* FUNCTION LOGIC */
         CHECK_AND_RETURN_ERR_UPON_FIPS_ERROR();
@@ -97,7 +97,7 @@ CEXPORT_C CCError_t CC_EcpkiPrivKeyBuild(
 
         /* loading the private key (little endian)*/
         err = CC_CommonConvertMsbLsbBytesToLswMswWords(
-                                                         pPrivKey->PrivKey, sizeof(pPrivKey->PrivKey),
+                                                         pPrivKey->PrivKey, sizeof(pPrivKey->PrivKey), 
                                                          pPrivKeyIn, privKeySizeInBytes);
         if (err != CC_OK) {
                 err = CC_ECPKI_BUILD_KEY_INVALID_PRIV_KEY_DATA_ERROR;
@@ -107,8 +107,8 @@ CEXPORT_C CCError_t CC_EcpkiPrivKeyBuild(
         /* check the value of the private key */
         if (privKeySizeInBytes == orderSizeInBytes) {
                 if (CC_CommonCmpLsWordsUnsignedCounters(
-                                                          pPrivKey->PrivKey, (uint16_t)(privKeySizeInBytes+3)/sizeof(uint32_t),
-                                                          pDomain->ecR, (uint16_t)(privKeySizeInBytes+3)/sizeof(uint32_t)) !=
+                                                          pPrivKey->PrivKey, (uint16_t)(privKeySizeInBytes+3)/sizeof(uint32_t), 
+                                                          pDomain->ecR, (uint16_t)(privKeySizeInBytes+3)/sizeof(uint32_t)) != 
                     CC_COMMON_CmpCounter2GreaterThenCounter1) {
                         err = CC_ECPKI_BUILD_KEY_INVALID_PRIV_KEY_DATA_ERROR;
                         goto End;
@@ -129,10 +129,10 @@ CEXPORT_C CCError_t CC_EcpkiPrivKeyBuild(
         /* ................ set the private key validation tag ................... */
         pUserPrivKey->valid_tag = CC_ECPKI_PRIV_KEY_VALIDATION_TAG;
 
-        End:
+        End:      
         /* if the created structure is not valid - clear it */
         if (err != CC_OK) {
-                CC_PalMemSetZero(pUserPrivKey, sizeof(CCEcpkiUserPrivKey_t));
+                CC_PalMemSetZero(pUserPrivKey, sizeof(CCEcpkiUserPrivKey_t)); 
         }
 
         return err;

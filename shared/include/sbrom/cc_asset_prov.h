@@ -18,19 +18,19 @@ extern "C"
 #endif
 #include "cc_bitops.h"
 
-#define ASSET_PROV_TOKEN    0x41736574UL
-#define ASSET_PROV_VERSION      0x10000UL
+#define ASSET_PROV_TOKEN  	0x41736574UL
+#define ASSET_PROV_VERSION  	0x10000UL
 
-#define KPICV_KEY_SIZE      16
-#define KPROV_KEY_SIZE      16
-#define KPROV_DATA_IN_SIZE  8
-#define ASSET_NONCE_SIZE    12
-#define ASSET_RESERVED_SIZE     8
-#define ASSET_RESERVED_WORD_SIZE    (8/CC_32BIT_WORD_SIZE)
-#define ASSET_TAG_SIZE      16
-#define ASSET_BLOCK_SIZE    16
-#define MAX_ASSET_SIZE      512
-#define ASSET_ADATA_SIZE    (3*CC_32BIT_WORD_SIZE+ASSET_RESERVED_SIZE)  // token||version||assetId||reserved
+#define KPICV_KEY_SIZE		16
+#define KPROV_KEY_SIZE		16
+#define KPROV_DATA_IN_SIZE	8
+#define ASSET_NONCE_SIZE  	12
+#define ASSET_RESERVED_SIZE  	8
+#define ASSET_RESERVED_WORD_SIZE  	(8/CC_32BIT_WORD_SIZE)
+#define ASSET_TAG_SIZE  	16
+#define ASSET_BLOCK_SIZE  	16
+#define MAX_ASSET_SIZE  	512
+#define ASSET_ADATA_SIZE  	(3*CC_32BIT_WORD_SIZE+ASSET_RESERVED_SIZE)  // token||version||assetId||reserved
 
 typedef struct {
         uint32_t  token;

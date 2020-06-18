@@ -13,9 +13,9 @@
  @file
  @brief This file contains functions for memory mapping.
 
-       \note None of the described functions validate the input parameters, so
-       that the behavior of the APIs in case of an illegal parameter is dependent
-       on the behavior of the operating system.
+       \note None of the described functions validate the input parameters, so 
+	   that the behavior of the APIs in case of an illegal parameter is dependent 
+	   on the behavior of the operating system.
  */
 
 #ifndef _CC_PAL_MEMMAP_H
@@ -37,7 +37,7 @@ extern "C"
 -----------------------------------*/
 
 /*!
-  @brief This function returns the base virtual address that maps the base
+  @brief This function returns the base virtual address that maps the base 
   physical address.
 
   @return \c 0 on success.
@@ -45,27 +45,27 @@ extern "C"
  */
 uint32_t CC_PalMemMap(
         /*! [in] The starting physical address of the I/O range to be mapped. */
-        CCDmaAddr_t physicalAddress,
+		CCDmaAddr_t physicalAddress,
         /*! [in] The number of bytes that were mapped. */
-        uint32_t mapSize,
-        /*! [out] A pointer to the base virtual address to which the physical
-        pages were mapped. */
-        uint32_t **ppVirtBuffAddr);
+		uint32_t mapSize,
+        /*! [out] A pointer to the base virtual address to which the physical 
+		pages were mapped. */
+		uint32_t **ppVirtBuffAddr);
 
 
 /*!
-  @brief This function unmaps a specified address range that was previously
+  @brief This function unmaps a specified address range that was previously 
   mapped by #CC_PalMemMap.
 
   @return \c 0 on success.
   @return A non-zero value in case of failure.
  */
 uint32_t CC_PalMemUnMap(
-        /*! [in] A pointer to the base virtual address to which the physical
-        pages were mapped. */
+		/*! [in] A pointer to the base virtual address to which the physical 
+		pages were mapped. */
         uint32_t *pVirtBuffAddr,
         /*! [in] The number of bytes that were mapped. */
-        uint32_t mapSize);
+		uint32_t mapSize);
 
 #ifdef __cplusplus
 }

@@ -4,17 +4,17 @@
 /* Stored in TestAL only for no_os
  * In other cases, these are stored in kernel's directory */
 
-#define MPS2_PLUS_MEM_SYSTEM_RAM            0x20000000
-#define MPS2_PLUS_MEM_SYSTEM_RAM_LEN        0x007FFFFF
+#define MPS2_PLUS_MEM_SYSTEM_RAM			0x20000000
+#define MPS2_PLUS_MEM_SYSTEM_RAM_LEN		0x007FFFFF
 
-#define MPS2_PLUS_MEM_PSRAM                 0x21000000
-#define MPS2_PLUS_MEM_PSRAM_LEN             0x21FFFFFF /* 16MB */
+#define MPS2_PLUS_MEM_PSRAM					0x21000000
+#define MPS2_PLUS_MEM_PSRAM_LEN				0x21FFFFFF /* 16MB */
 
-#define MPS2_PLUS_MEM_UNMANAGED_BASE_ADDR   MPS2_PLUS_MEM_PSRAM
-#define MPS2_PLUS_MEM_UNMANAGED_AREA_LEN    0x001FFFFF /* 2MB */
+#define MPS2_PLUS_MEM_UNMANAGED_BASE_ADDR	MPS2_PLUS_MEM_PSRAM
+#define MPS2_PLUS_MEM_UNMANAGED_AREA_LEN	0x001FFFFF /* 2MB */
 
-#define MPS2_PLUS_MEM_DMA_BASE_ADDR         0x21200000
-#define MPS2_PLUS_MEM_DMA_AREA_LEN          0x00DFFFFF /* 14MB */
+#define MPS2_PLUS_MEM_DMA_BASE_ADDR			0x21200000
+#define MPS2_PLUS_MEM_DMA_AREA_LEN			0x00DFFFFF /* 14MB */
 
 /******************************************************************************/
 /* board_addrs.h definitions are supposed to be used by other projects.

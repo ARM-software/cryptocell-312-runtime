@@ -28,7 +28,7 @@
  * @return - CC_SUCCESS for success, CC_FAIL for failure.
  */
 CCError_t CC_PalRequestIrq(uint32_t irq, IrqHandlerPtr funcPtr,
-            const char *name, uint8_t nameLength, void *args);
+			const char *name, uint8_t nameLength, void *args);
 
 /**
  * @brief This function removes an interrupt handler.

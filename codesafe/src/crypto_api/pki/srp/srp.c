@@ -18,13 +18,13 @@ extern const int8_t regTemps[PKA_MAX_COUNT_OF_PHYS_MEM_REGS];
 #define SRP_NP_VALID 1
 
 // v=g^x%N
-uint32_t  SrpPwdVerifierCalc(mbedtls_srp_digest xBuff,
-                             mbedtls_srp_modulus    pwdVerifier,
-                             mbedtls_srp_context    *pCtx)
+uint32_t  SrpPwdVerifierCalc(mbedtls_srp_digest	xBuff,
+                             mbedtls_srp_modulus	pwdVerifier,
+                             mbedtls_srp_context	*pCtx)
 {
-    CCError_t   rc = 0;
-    uint32_t    genWord;
-    uint32_t    pkaRegCount = 7; // adding 2 for HW temp regs PKA_REG_T0 & PKA_REG_T1
+    CCError_t 	rc = 0;
+    uint32_t	genWord;
+    uint32_t	pkaRegCount = 7; // adding 2 for HW temp regs PKA_REG_T0 & PKA_REG_T1
     /* usage of PKA registers */
     int8_t  rN = PKA_REG_N;
     int8_t  rNp = PKA_REG_NP;
@@ -73,9 +73,9 @@ uint32_t   SrpHostSharedSecretCalc(mbedtls_srp_modulus   userPubKeyA,
                                    mbedtls_srp_modulus  sharedSecret,
                                    mbedtls_srp_context  *pCtx)
 {
-    CCError_t   rc = 0;
-    uint32_t    status;
-    uint32_t    pkaRegCount = 8; // adding 2 for HW temp regs PKA_REG_T0 & PKA_REG_T1
+    CCError_t 	rc = 0;
+    uint32_t 	status;
+    uint32_t	pkaRegCount = 8; // adding 2 for HW temp regs PKA_REG_T0 & PKA_REG_T1
     /* usage of PKA registers */
     int8_t  rN = PKA_REG_N;
     int8_t  rNp = PKA_REG_NP;
@@ -165,11 +165,11 @@ uint32_t   SrpUserSharedSecretCalc(mbedtls_srp_modulus   hostPubKeyB,
                                    mbedtls_srp_modulus  sharedSecret,
                                    mbedtls_srp_context  *pCtx)
 {
-    CCError_t   rc = 0;
-    uint32_t    status;
-    uint32_t    genWord;
+    CCError_t 	rc = 0;
+    uint32_t 	status;
+    uint32_t	genWord;
     // For 4KBytes PKA we have 10 PKA registers that supports 3072 bit modulus
-    uint32_t    pkaRegCount = 10; // adding 2 for HW temp regs PKA_REG_T0 & PKA_REG_T1
+    uint32_t	pkaRegCount = 10; // adding 2 for HW temp regs PKA_REG_T0 & PKA_REG_T1
     /* usage of PKA registers */
     int8_t  rN = PKA_REG_N;
     int8_t  rNp = PKA_REG_NP;
@@ -244,14 +244,14 @@ uint32_t   SrpUserSharedSecretCalc(mbedtls_srp_modulus   hostPubKeyB,
 
 
 /* calculates B = (k*v+ g^b)%N */
-uint32_t  SrpHostPublicKeyCalc(mbedtls_srp_modulus  pwdVerifier,    // in
-                               mbedtls_srp_modulus  hostPubKeyB,    // out
-                               mbedtls_srp_context  *pCtx)      // in
+uint32_t  SrpHostPublicKeyCalc(mbedtls_srp_modulus	pwdVerifier,  	// in
+                               mbedtls_srp_modulus	hostPubKeyB,   	// out
+                               mbedtls_srp_context	*pCtx)		// in
 {
-    CCError_t   rc = 0;
-    uint32_t    status;
-    uint32_t    genWord;
-    uint32_t    pkaRegCount = 8; // adding 2 for HW temp regs PKA_REG_T0 & PKA_REG_T1
+    CCError_t 	rc = 0;
+    uint32_t 	status;
+    uint32_t	genWord;
+    uint32_t	pkaRegCount = 8; // adding 2 for HW temp regs PKA_REG_T0 & PKA_REG_T1
     /* usage of PKA registers */
     int8_t  rN = PKA_REG_N;
     int8_t  rNp = PKA_REG_NP;
@@ -313,13 +313,13 @@ uint32_t  SrpHostPublicKeyCalc(mbedtls_srp_modulus  pwdVerifier,    // in
 }
 
 /* calculates A = (g^a)%N */
-uint32_t  SrpUserPublicKeyCalc(mbedtls_srp_modulus  userPubKeyA,    // out
-                               mbedtls_srp_context  *pCtx)      // in
+uint32_t  SrpUserPublicKeyCalc(mbedtls_srp_modulus	userPubKeyA,   	// out
+                               mbedtls_srp_context	*pCtx)		// in
 {
-    CCError_t   rc = 0;
-    uint32_t    status;
-    uint32_t    genWord;
-    uint32_t    pkaRegCount = 6; // adding 2 for HW temp regs PKA_REG_T0 & PKA_REG_T1
+    CCError_t 	rc = 0;
+    uint32_t 	status;
+    uint32_t	genWord;
+    uint32_t	pkaRegCount = 6; // adding 2 for HW temp regs PKA_REG_T0 & PKA_REG_T1
     /* usage of PKA registers */
     int8_t  rN = PKA_REG_N;
     int8_t  rNp = PKA_REG_NP;

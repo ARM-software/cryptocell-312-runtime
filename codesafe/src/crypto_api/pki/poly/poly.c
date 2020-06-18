@@ -17,12 +17,12 @@
 
 /* PKA registers*/
 
-#define  PRIME_REG  regTemps[0]
-#define  NP_REG     regTemps[1]
-#define  ACC_REG    regTemps[2]
-#define  KEY_R_REG  regTemps[3]
-#define  KEY_S_REG  regTemps[4]
-#define  DATA_REG   regTemps[5]
+#define  PRIME_REG 	regTemps[0]	
+#define  NP_REG 	regTemps[1]	
+#define  ACC_REG 	regTemps[2]	
+#define  KEY_R_REG	regTemps[3]	
+#define  KEY_S_REG	regTemps[4]	
+#define  DATA_REG	regTemps[5]
 #define  POLY_PKA_REGS_NUM (6+2) // +2 temp registers
 
 /* Macro for read non aligned word from RAM */
@@ -40,12 +40,12 @@ static const uint32_t g_PolyNp[] = {0x00000000,0x00000000,0x00000080};
 
 
 /**
- * The function loads  remaining bytes (not full block) of data together with
+ * The function loads  remaining bytes (not full block) of data together with 
  * setting of rxtra bit according to Poly1305 algorithm.
- *
- * Assuming register size is 128+64 bits according to PKA multiplier 64x!6
+ *  
+ * Assuming register size is 128+64 bits according to PKA multiplier 64x!6 
  * Note - this function assumes the PKA engine is already working
- *
+ * 
  */
 static void PolyAccRemainBlock(
         const uint8_t *pSrc,     /*!< [in] Pointer to source (little endian) buffer, aligned down to 32-bit word . */
@@ -81,15 +81,15 @@ static void PolyAccRemainBlock(
 
 
 
-/***********    PolyAccCalc   function      **********************/
+/***********    PolyAccCalc   function      **********************/ 
 
 /**
  * @brief performs internal opeartions on PKA buffer to calculate the POLY accumulator.
- *  Acc = ((Acc+block)*r) % p.
+ * 	Acc = ((Acc+block)*r) % p.
  *
  * @return  CC_OK On success, otherwise indicates failure
  */
-static uint32_t PolyAccCalc(const uint8_t *pSrc,     /*!< [in] The pointer to the data buff. */
+static uint32_t PolyAccCalc(const uint8_t *pSrc,     /*!< [in] The pointer to the data buff. */      
                             size_t   size,      /*!< [in] The size in bytes of data. */
                             bool     isPolyAeadMode)      /*!< [in] Flag indicating padding 0's to short buffer */
 {
@@ -184,15 +184,15 @@ static uint32_t PolyAccCalc(const uint8_t *pSrc,     /*!< [in] The pointer to th
 /***********    PolyMacCalc   function      **********************/
 /**
  * @brief Generates the POLY mac according to RFC 7539 section 2.5.1
- *
+ *         
  * @return  CC_OK On success, otherwise indicates failure
  */
-CCError_t PolyMacCalc(mbedtls_poly_key  key,        /*!< [in] Poniter to 256 bits of KEY. */
-                      const uint8_t         *pAddData,  /*!< [in] Optional - pointer to additional data if any */
-                      size_t            addDataSize,    /*!< [in] The size in bytes of the additional data */
-                      const uint8_t     *pDataIn,   /*!< [in] Pointer to data buffer to calculate MAC on */
-                      size_t            dataInSize, /*!< [in] The size in bytes of the additional data */
-                      mbedtls_poly_mac  macRes,     /*!< [out] The calculated MAC */
+CCError_t PolyMacCalc(mbedtls_poly_key	key,		/*!< [in] Poniter to 256 bits of KEY. */
+                      const uint8_t		    *pAddData,	/*!< [in] Optional - pointer to additional data if any */
+                      size_t			addDataSize,	/*!< [in] The size in bytes of the additional data */
+                      const uint8_t		*pDataIn,	/*!< [in] Pointer to data buffer to calculate MAC on */
+                      size_t			dataInSize,	/*!< [in] The size in bytes of the additional data */
+                      mbedtls_poly_mac	macRes,		/*!< [out] The calculated MAC */
                       bool              isPolyAeadMode)  /*!< [in] Boolean indicating if the Poly MAC operation is part of AEAD or just poly */
 
 {

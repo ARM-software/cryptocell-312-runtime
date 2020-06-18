@@ -25,13 +25,13 @@
 #include "mbedtls/md.h"
 
 CCUtilError_t mbedtls_util_key_derivation( mbedtls_util_keytype_t             keyType,
-                      mbedtls_util_keydata             *pUserKey,
-                    mbedtls_util_prftype_t             prfType,
+					  mbedtls_util_keydata             *pUserKey,
+				    mbedtls_util_prftype_t             prfType,
                                     CCHashOperationMode_t       hashMode,
-                                    const uint8_t               *pLabel,
-                                    size_t                      labelSize,
-                                    const uint8_t               *pContextData,
-                                    size_t                      contextSize,
+                                    const uint8_t               *pLabel, 
+                                    size_t                      labelSize, 
+                                    const uint8_t               *pContextData, 
+                                    size_t                      contextSize, 
                                     uint8_t                     *pDerivedKey,
                                     size_t                      derivedKeySize)
 {
@@ -48,7 +48,7 @@ CCUtilError_t mbedtls_util_key_derivation( mbedtls_util_keytype_t             ke
         const mbedtls_md_info_t *mdInfo = NULL;
 
         CHECK_AND_RETURN_ERR_UPON_FIPS_ERROR();
-
+        
         /* Check input */
         if(pDerivedKey == NULL)
                 return CC_UTIL_ILLEGAL_PARAMS_ERROR;
@@ -57,10 +57,10 @@ CCUtilError_t mbedtls_util_key_derivation( mbedtls_util_keytype_t             ke
         if ((CC_UTIL_PRF_CMAC != prfType) && (CC_UTIL_PRF_HMAC != prfType)) {
                 return CC_UTIL_INVALID_PRF_TYPE;
         }
-
+        
         if ((CC_UTIL_PRF_HMAC == prfType) && (hashMode >= CC_HASH_MD5_mode)){
-                return CC_UTIL_INVALID_HASH_MODE;
-        }
+                return CC_UTIL_INVALID_HASH_MODE;                
+        }        
         origDerivedKeySize = derivedKeySize;
         /* Check key type */
         switch (keyType) {
@@ -78,7 +78,7 @@ CCUtilError_t mbedtls_util_key_derivation( mbedtls_util_keytype_t             ke
                 if (!pUserKey->pKey) {
                         return CC_UTIL_INVALID_KEY_TYPE;
                 }
-
+                
                 utilKeyType = UTIL_USER_KEY;
                 break;
         default:
@@ -107,10 +107,10 @@ CCUtilError_t mbedtls_util_key_derivation( mbedtls_util_keytype_t             ke
                 prfUpperLimit = CC_UTIL_AES_CMAC_RESULT_SIZE_IN_BYTES;
         } else { /* CC_UTIL_PRF_HMAC */
                 if (CC_TRUE == HmacSupportedHashModes_t[hashMode]) {
-            mdInfo = mbedtls_md_info_from_string( HashAlgMode2mbedtlsString[hashMode] );
-            if( mdInfo == NULL ){
-                return CC_UTIL_INVALID_HASH_MODE;
-            }
+			mdInfo = mbedtls_md_info_from_string( HashAlgMode2mbedtlsString[hashMode] );
+			if( mdInfo == NULL ){
+				return CC_UTIL_INVALID_HASH_MODE;
+			}
                         prfUpperLimit = HmacHashInfo_t[hashMode].hashResultSize;
                 } else {
                         return CC_UTIL_UNSUPPORTED_HASH_MODE;
@@ -119,7 +119,7 @@ CCUtilError_t mbedtls_util_key_derivation( mbedtls_util_keytype_t             ke
 
         i = 1;
         numIteration = (derivedKeySize + prfUpperLimit - 1) / prfUpperLimit;
-        length = derivedKeySize*8;
+        length = derivedKeySize*8;        
         if (length > 0xFF){
                 dataSize = CC_UTIL_FIX_DATA_MAX_SIZE_IN_BYTES;
         } else {
@@ -129,14 +129,14 @@ CCUtilError_t mbedtls_util_key_derivation( mbedtls_util_keytype_t             ke
         dataSize += labelSize+contextSize;
 
         if (labelSize!=0) {
-                CC_PalMemCopy((uint8_t*)&dataIn[i], pLabel, labelSize);
+                CC_PalMemCopy((uint8_t*)&dataIn[i], pLabel, labelSize); 
                 i+=labelSize;
         }
 
         dataIn[i++] = 0x00;
 
         if (contextSize!=0) {
-                CC_PalMemCopy((uint8_t*)&dataIn[i], pContextData, contextSize);
+                CC_PalMemCopy((uint8_t*)&dataIn[i], pContextData, contextSize); 
                 i+=contextSize;
         }
 
@@ -145,7 +145,7 @@ CCUtilError_t mbedtls_util_key_derivation( mbedtls_util_keytype_t             ke
                 lengthReverse = ((length & 0xFF00)>>8) | ((length & 0xFF)<<8);
                 CC_PalMemCopy((uint8_t*)&dataIn[i], (uint8_t*)&lengthReverse, 2);
         } else {
-                CC_PalMemCopy((uint8_t*)&dataIn[i], (uint8_t*)&length, 1);
+                CC_PalMemCopy((uint8_t*)&dataIn[i], (uint8_t*)&length, 1);  
         }
 
         srcToCopy = ((CC_UTIL_PRF_CMAC == prfType) ? tmp : (uint8_t*)&hmacResultBuff);
@@ -153,14 +153,14 @@ CCUtilError_t mbedtls_util_key_derivation( mbedtls_util_keytype_t             ke
                 dataIn[0] = iterationNum+1;
                 if(CC_UTIL_PRF_CMAC == prfType) {
                         rc = UtilCmacDeriveKey(utilKeyType, (CCAesUserKeyData_t*)pUserKey, dataIn, dataSize, tmp);
-                }
+                }                 
                 else { /* CC_UTIL_PRF_HMAC */
-            rc = mbedtls_md_hmac( mdInfo,
-                          pUserKey->pKey,
-                          pUserKey->keySize,
-                          dataIn,
-                          dataSize,
-                          (unsigned char*)hmacResultBuff );
+			rc = mbedtls_md_hmac( mdInfo,
+					      pUserKey->pKey,
+					      pUserKey->keySize,
+					      dataIn,
+					      dataSize,
+					      (unsigned char*)hmacResultBuff );
                 }
 
                 if (rc != CC_SUCCESS){
@@ -173,15 +173,15 @@ CCUtilError_t mbedtls_util_key_derivation( mbedtls_util_keytype_t             ke
                         bytesToCopy = prfUpperLimit;
                         derivedKeySize -= prfUpperLimit;
                 } else{
-                    bytesToCopy = derivedKeySize;
+                	bytesToCopy = derivedKeySize;
                 }
 
                 if(bytesToCopy<=(origDerivedKeySize-iterationNum*prfUpperLimit) /*to avoid memory corruption*/&&
-                        ( bytesToCopy<=CC_HASH_RESULT_SIZE_IN_WORDS*sizeof(uint32_t) ) /*to remove static analyzer warnings*/)
+                		( bytesToCopy<=CC_HASH_RESULT_SIZE_IN_WORDS*sizeof(uint32_t) ) /*to remove static analyzer warnings*/)
                 {
-                    CC_PalMemCopy((uint8_t*)&pDerivedKey[iterationNum*prfUpperLimit], srcToCopy, bytesToCopy);
+                	CC_PalMemCopy((uint8_t*)&pDerivedKey[iterationNum*prfUpperLimit], srcToCopy, bytesToCopy);
                 }else{
-                    return CC_UTIL_DATA_OUT_SIZE_INVALID_ERROR;
+                	return CC_UTIL_DATA_OUT_SIZE_INVALID_ERROR;
                 }
         }
 

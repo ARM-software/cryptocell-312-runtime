@@ -32,8 +32,8 @@ extern "C"
 
 
 typedef struct {
-    uint16_t hashResultSize;
-    CCHashOperationMode_t hashMode;
+	uint16_t hashResultSize;
+	CCHashOperationMode_t hashMode;
 }RsaHash_t;
 
 extern const RsaHash_t RsaHashInfo_t[CC_RSA_HASH_NumOfModes];
@@ -48,18 +48,18 @@ extern const mbedtls_md_type_t RsaHash_CC_mbedtls_Info[CC_HASH_NumOfModes];
 
 ***************/
 
-#define ASN1_BOOLEAN        1
-#define ASN1_INTEGER        2
-#define ASN1_BIT_STRING     3
-#define ASN1_OCTET_STRING   4
-#define ASN1_NULL       5
-#define ASN1_OBJECT_IDENTIFIER  6
-#define ASN1_SEQUENCE       16 /* 0x10 */
-#define ASN1_SET        17 /* 0x11 */
-#define ASN1_PRINTABLE_STRING   19 /* 0x13 */
-#define ASN1_TELETEX_STRING 20 /* 0x14 */
-#define ASN1_IA5STRING      22 /* 0x16 */
-#define ASN1_UTC_TIME           23 /* 0x17 */
+#define ASN1_BOOLEAN		1
+#define ASN1_INTEGER		2
+#define ASN1_BIT_STRING 	3
+#define ASN1_OCTET_STRING	4
+#define ASN1_NULL		5
+#define ASN1_OBJECT_IDENTIFIER	6
+#define ASN1_SEQUENCE		16 /* 0x10 */
+#define ASN1_SET		17 /* 0x11 */
+#define ASN1_PRINTABLE_STRING	19 /* 0x13 */
+#define ASN1_TELETEX_STRING	20 /* 0x14 */
+#define ASN1_IA5STRING		22 /* 0x16 */
+#define ASN1_UTC_TIME	        23 /* 0x17 */
 
 /**********************
  structures definition
@@ -69,9 +69,9 @@ extern const mbedtls_md_type_t RsaHash_CC_mbedtls_Info[CC_HASH_NumOfModes];
 /* Hash algorithm ID (DER code) structure type */
 #define HASH_DER_CODE_MAX_SIZE_BYTES 24
 typedef struct HashDerCode_t {
-    uint32_t algIdSizeBytes;
-    CCHashOperationMode_t hashMode;
-    uint8_t algId[HASH_DER_CODE_MAX_SIZE_BYTES];
+	uint32_t algIdSizeBytes;
+	CCHashOperationMode_t hashMode;
+	uint8_t algId[HASH_DER_CODE_MAX_SIZE_BYTES];
 }HashDerCode_t;
 
 /* For security goal the padding string PS in EME-PKCS1-v1_5 encodding method
@@ -86,14 +86,14 @@ typedef struct HashDerCode_t {
 
 /************************ Structs  ******************************/
 typedef struct CCRsaOaepData_t{
-    uint8_t  MaskDB[CC_RSA_OAEP_ENCODE_MAX_MASKDB_SIZE];
-    uint8_t  SeedMask[CC_RSA_OAEP_ENCODE_MAX_SEEDMASK_SIZE];
+	uint8_t  MaskDB[CC_RSA_OAEP_ENCODE_MAX_MASKDB_SIZE];
+	uint8_t  SeedMask[CC_RSA_OAEP_ENCODE_MAX_SEEDMASK_SIZE];
 #ifdef USE_MBEDTLS_CRYPTOCELL
     mbedtls_md_context_t hash_ctx;
 #else
-    CCHashUserContext_t HashUsercontext;
+	CCHashUserContext_t HashUsercontext;
 #endif
-    CCHashResultBuf_t         HashResultBuff;
+	CCHashResultBuf_t         HashResultBuff;
 }CC_PAL_COMPILER_TYPE_MAY_ALIAS CCRsaOaepData_t;
 
 /************************ Public Variables **********************/
@@ -112,30 +112,30 @@ typedef struct CCRsaOaepData_t{
  * @param hashMode - hash mode ID (enum).
  * @param pM - The Pointer to the Message M. In case of Sign it is a hash (H).
  * @param MSize - Denotes the Message size: for Sig/Ver = hashSize,
- *                for Enc/Dec <= K-hashAlgIdSize-PSS_MIN_LEN-3.
+ *	              for Enc/Dec <= K-hashAlgIdSize-PSS_MIN_LEN-3.
  * @param pOut - The pointer to a buffer which is at least K octets long.
  *
  * @return CCError_t
  */
 CCError_t RsaEmsaPkcs1v15Encode(
-        uint32_t K,
-            CCHashOperationMode_t hashMode,
-        uint8_t     *pM, /*mess.digest*/
-        uint32_t     MSize,
-        uint8_t     *pOut);
+		uint32_t K,
+	        CCHashOperationMode_t hashMode,
+		uint8_t     *pM, /*mess.digest*/
+		uint32_t     MSize,
+		uint8_t     *pOut);
 
 
 
 /**********************************************************************************************************/
 
 CCError_t RsaOaepMGF1( uint16_t hLen, /*size in Bytes*/
-                uint8_t * Z_ptr,
-                uint16_t ZSize,/*size in Bytes*/
-                uint32_t L,
-                uint8_t  *Mask_ptr,
-                CCPkcs1HashFunc_t hashFunc,
-                uint8_t  *T_Buf,    /*T_Buf is a buffer used for data manipulation for the function to use instead of allocating the space on stack*/
-                uint8_t  *T_TMP_Buf);/*T_TMP_Buf is a buffer used for data manipulation for the function to use instead of allocating the space on stack*/
+			    uint8_t * Z_ptr,
+			    uint16_t ZSize,/*size in Bytes*/
+			    uint32_t L,
+			    uint8_t  *Mask_ptr,
+			    CCPkcs1HashFunc_t hashFunc,
+			    uint8_t  *T_Buf,	/*T_Buf is a buffer used for data manipulation for the function to use instead of allocating the space on stack*/
+			    uint8_t  *T_TMP_Buf);/*T_TMP_Buf is a buffer used for data manipulation for the function to use instead of allocating the space on stack*/
 
 /**********************************************************************************************************/
 /**
@@ -175,7 +175,7 @@ CCError_t RsaPssOaepDecode(CCPkcs1HashFunc_t hashFunc,
 /**
  * @brief
  * This function does implements the functionality of PKCS1 Ver 2.1 Sign
- *  operation after the Hash operation
+ *	operation after the Hash operation
  *
  * Before using that function a Hash must be completed on the Data.
  * The function is called after the call to Hash_Finish
@@ -197,9 +197,9 @@ CCError_t RsaPssSign21(CCRndContext_t *rndContext_ptr,
 
 /**********************************************************************************************************/
 /**
-    Function Name: RsaPssVerify21
-    Date:   06-12-2004
-    Author: Ohad Shperling
+ 	Function Name: RsaPssVerify21
+ 	Date:   06-12-2004
+ 	Author:	Ohad Shperling
 
 
     \brief RsaPssVerify21 implements EMSA-PSS-Verify algorithm
@@ -223,7 +223,7 @@ CCError_t RsaPssVerify21(RSAPubContext_t *Context_ptr);
  *
  *            Note: 1. MSBit of RandVect must be set to 1.
  *                  2. Words order of output vector is set from LS word to MS
- *                 word.
+ *      	       word.
  *
  *        This function is used in PKI RSA for random generation according to ANS X9.31 standard.
  *        If PKI_RSA is not supported, the function does nothing.
@@ -288,9 +288,9 @@ CIMPORT_C CCError_t CC_RsaSignInit(
                             CCRsaHashOpMode_t rsaHashMode,             /*!< [in]  The enumerator value, defining the hash function to be used: SHA-1,SHA224/256/384/512, MD5 (MD5 allowed only in v1.5).
                                                                                         The hash functions recommended by PKCS#1 v2.1 are: 256/384/512. Also allowed "After" HASH modes for said functions. */
                             CCPkcs1Mgf_t MGF,                           /*!< [in]  The mask generation function. PKCS#1 v2.1 defines MGF1, so the only value allowed here is CC_PKCS1_MGF1. */
-                            size_t SaltLen,                 /*!< [in]  The Length of the Salt buffer (relevant for PKCS#1 Ver 2.1 only, typically lengths is 0 or hLen). FIPS 186-4 requires,
+                            size_t SaltLen,				    /*!< [in]  The Length of the Salt buffer (relevant for PKCS#1 Ver 2.1 only, typically lengths is 0 or hLen). FIPS 186-4 requires,
                                                                                        that SaltLen <= hlen. If SaltLen > KeySize - hLen - 2, the function returns an error. */
-                            CCPkcs1Version_t PKCS1_ver          /*!< [in]  Ver 1.5 or 2.1, according to the functionality required. */
+                            CCPkcs1Version_t PKCS1_ver		    /*!< [in]  Ver 1.5 or 2.1, according to the functionality required. */
 );
 
 /**********************************************************************************************************/
@@ -383,7 +383,7 @@ CIMPORT_C CCError_t CC_RsaVerifyUpdate(
 
 CIMPORT_C CCError_t CC_RsaVerifyFinish(
                             CCRsaPubUserContext_t *UserContext_ptr,      /*!< [in]  A pointer to the public Context structure of the User. */
-                            uint8_t *Sig_ptr                                /*!< [in]  A pointer to the signature to be verified.
+					        uint8_t *Sig_ptr                                /*!< [in]  A pointer to the signature to be verified.
                                                                                         The length of the signature is PubKey_ptr->N.len bytes (that is, the size of the modulus, in bytes). */
 );
 

@@ -35,26 +35,26 @@ extern "C"
     - b'1: 1 - loss samples, 0 - no loss;
     - b'2: 1 - time exceeding, 0 - no time exceeding.
     In case of sample loss or time exceed b`0 must be 0 */
-#define CC_RND_NOT_INSTANTIATED                 0UL
-#define CC_RND_INSTANTIATED                 1UL
-#define CC_RND_INSTANTRESEED_AUTOCORR_ERRORS    2UL
-#define CC_RND_INSTANTRESEED_TIME_EXCEED        4UL
-#define CC_RND_INSTANTRESEED_LESS_ENTROPY       8UL
+#define CC_RND_NOT_INSTANTIATED             	0UL
+#define CC_RND_INSTANTIATED                	1UL
+#define CC_RND_INSTANTRESEED_AUTOCORR_ERRORS 	2UL
+#define CC_RND_INSTANTRESEED_TIME_EXCEED     	4UL
+#define CC_RND_INSTANTRESEED_LESS_ENTROPY    	8UL
 
 /* The 2-bit field in the StateFlag, defining the working or KAT modes:
      - b`9,8: 0 - working mode, 1 - KAT DRBG mode, 2 - KAT TRNG mode, 3 - KAT
        DRBG or/and TRNG mode */
 #define CC_RND_WORK_Mode                  (0UL << 8)
-#define CC_RND_KAT_DRBG_Mode              (1UL << 8)
+#define CC_RND_KAT_DRBG_Mode 	          (1UL << 8)
 #define CC_RND_KAT_TRNG_Mode              (2UL << 8)
-#define CC_RND_KAT_Mode               CC_RND_KAT_DRBG_Mode
+#define CC_RND_KAT_Mode 	          CC_RND_KAT_DRBG_Mode
 
 /* The bit-field in the StateFlag, defining that the previous generated random
    block is valid for comparison with current block or not */
 #define CC_RND_PreviousIsValid          (1UL << 16)
 
 /* RND WorkBuffer = ESTIM_BUFF || ENTROPY_SOURCE_BUFF. Size of buffer = 1KB = *
-*  1024 words.  Max size (in words) of internal buffers:              */
+*  1024 words.  Max size (in words) of internal buffers:		      */
 #define CC_RND_FULL_ENTROPY_SOURCE_BUFF_SIZE_WORDS 504
 #define CC_RND_ESTIM_BUFF_SIZE_WORDS           386 /*256+128+2*/
 #define CC_RND_ENTROPY_SOURCE_BUFF_SIZE_WORDS     1024/*2+504+504+12+1+padding */
@@ -72,9 +72,9 @@ extern "C"
 #define CC_RND_H_BUFF_OFFSET   0
 #define CC_RND_EC_BUFF_OFFSET  256
 
-/* Validation tag for random working state: should be set by:             *
+/* Validation tag for random working state: should be set by:   	      *
    RndInstantiateOrReseed function on not continued mode or by           *
-*  LLF_RND_StartTrngHW function on continued mode                     */
+*  LLF_RND_StartTrngHW function on continued mode       		      */
 #define CC_RND_WORK_STATE_VALID_TAG  0X0123ABCD
 
 /*Values for entropy flag*/
@@ -95,17 +95,17 @@ extern "C"
    structure containing the user given Parameters */
 typedef struct  CCRndParams_t
 {
-    CC_PalTrngParams_t  userParams;
+	CC_PalTrngParams_t  userParams;
 
-    /* parameters defining TRNG */
-    CCRndMode_t TrngMode;
+	/* parameters defining TRNG */
+	CCRndMode_t TrngMode;
 
-    /* allowed ring oscillator lengths: bits 0,1,2,3  */
-    uint32_t  RoscsAllowed;
+	/* allowed ring oscillator lengths: bits 0,1,2,3  */
+	uint32_t  RoscsAllowed;
 
-    /* sampling interval: count of ring oscillator cycles between
-       consecutive bits sampling */
-    uint32_t  SubSamplingRatio;
+	/* sampling interval: count of ring oscillator cycles between
+	   consecutive bits sampling */
+	uint32_t  SubSamplingRatio;
 
 }CCRndParams_t;
 

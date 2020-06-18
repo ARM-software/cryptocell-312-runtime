@@ -11,7 +11,7 @@
 
 /*!
  @file
- @brief This file contains all of the definitions and structures used for the
+ @brief This file contains all of the definitions and structures used for the 
  Secure Boot and Secure Debug.
  */
 
@@ -42,43 +42,43 @@ typedef uint32_t CCSbCertSocId_t[HASH_RESULT_SIZE_IN_WORDS];
 
 /********* Function pointer definitions ***********/
 
-/*! @brief Typedef of the pointer to the Flash read function that you
+/*! @brief Typedef of the pointer to the Flash read function that you  
 must implement.
 
-The Flash read function is called to read the certificates and SW modules from
+The Flash read function is called to read the certificates and SW modules from 
 flash memory.
 
-  @note It is your responsibility to verify that this function does not copy
+  @note It is your responsibility to verify that this function does not copy 
   data from restricted memory regions.
  */
 typedef uint32_t (*CCSbFlashReadFunc) (
                      /*! [in] The address for reading from flash memory. */
-                     CCAddr_t flashAddress,
-                     /*! [out] A pointer to the RAM destination address to
-                     write the data to. */
-                     uint8_t *memDst,
+					 CCAddr_t flashAddress,
+                     /*! [out] A pointer to the RAM destination address to 
+					 write the data to. */
+					 uint8_t *memDst,
                      /*! [in] The size to read in bytes. */
-                     uint32_t sizeToRead,
+					 uint32_t sizeToRead,
                      /*! [in] For partner use. */
-                     void* context
+					 void* context
                      );
 
 
-/*! @brief Typedef of the pointer to the Flash write function that you must
+/*! @brief Typedef of the pointer to the Flash write function that you must 
 implement.
 
-  The Flash write function is called to write authenticated and decrypted SW
+  The Flash write function is called to write authenticated and decrypted SW 
   modules to flash memory. */
 typedef uint32_t (*CCBsvFlashWriteFunc) (
                     /*! [in] The address for writing to flash memory. */
-                    CCAddr_t flashAddress,
-                    /*! [out] A pointer to the RAM source to read the
-                    data from. */
-                    uint8_t *memSrc,
+					CCAddr_t flashAddress,
+                    /*! [out] A pointer to the RAM source to read the 
+					data from. */
+					uint8_t *memSrc,
                     /*! [in] The size to write in bytes. */
-                    uint32_t sizeToWrite,
+					uint32_t sizeToWrite,
                     /*! [in] For partner use. */
-                    void* context
+					void* context 
                     );
 
 /********* End of Function pointer definitions ***********/

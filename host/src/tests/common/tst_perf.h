@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause OR Arm’s non-OSI source license
  */
 
- /*
+ /* 
   CRYS tester performance statistics functions
   */
 
@@ -14,28 +14,28 @@
 #include <stdint.h>
 
 typedef enum {
-    TST_PERF_OP_NULL,
-    TST_PERF_OP_RSA_ENC_PRIM,
-    TST_PERF_OP_RSA_ENC_1_5,
-    TST_PERF_OP_RSA_ENC_2_1,
-    TST_PERF_OP_RSA_DEC_PRIM,
-    TST_PERF_OP_RSA_DEC_1_5,
-    TST_PERF_OP_RSA_DEC_2_1,
-    TST_PERF_OP_RSA_SIGN_1_5,
-    TST_PERF_OP_RSA_SIGN_2_1,
-    TST_PERF_OP_RSA_VER_1_5,
-    TST_PERF_OP_RSA_VER_2_1,
-    TST_PERF_OP_ECC_SIGN,
-    TST_PERF_OP_ECC_VER,
-    TST_PERF_OP_NUM
+	TST_PERF_OP_NULL,
+	TST_PERF_OP_RSA_ENC_PRIM,
+	TST_PERF_OP_RSA_ENC_1_5,
+	TST_PERF_OP_RSA_ENC_2_1,
+	TST_PERF_OP_RSA_DEC_PRIM,
+	TST_PERF_OP_RSA_DEC_1_5,
+	TST_PERF_OP_RSA_DEC_2_1,
+	TST_PERF_OP_RSA_SIGN_1_5,
+	TST_PERF_OP_RSA_SIGN_2_1,
+	TST_PERF_OP_RSA_VER_1_5,
+	TST_PERF_OP_RSA_VER_2_1,
+	TST_PERF_OP_ECC_SIGN,
+	TST_PERF_OP_ECC_VER,
+	TST_PERF_OP_NUM
 } TST_PerfOpType_t;
 
 
 typedef struct {
-    uint32_t opCount; /* Number of operations measured */
-    uint64_t totalVal; /* Accumulated cycles/uSec */
-    uint64_t maxVal; /* Maximum cycles/usec */
-    uint64_t minVal; /* Minimum cycles/usec */
+	uint32_t opCount; /* Number of operations measured */
+	uint64_t totalVal; /* Accumulated cycles/uSec */
+	uint64_t maxVal; /* Maximum cycles/usec */
+	uint64_t minVal; /* Minimum cycles/usec */
 } PerfStats_t;
 
 #ifdef TST_PERF
@@ -56,7 +56,7 @@ void TST_PerfStatsCycleFin(void);
 #define TST_PERF_END(perfData, op)
 #define TST_PERF_REPORT()
 #define TST_PERF_FIN()
-#endif
+#endif 
 
 
 

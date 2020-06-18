@@ -27,7 +27,7 @@ int CC_PalInit(void)
 
     CC_PalLogInit();
 
-    rc =    CC_PalDmaInit(0, 0);
+    rc = 	CC_PalDmaInit(0, 0);
     if (rc != CC_OK) {
             return rc;
     }

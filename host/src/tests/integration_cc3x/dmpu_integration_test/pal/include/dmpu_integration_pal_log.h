@@ -45,7 +45,7 @@
 
 /** print an debug message */
 #if defined(TEST_DEBUG)
-#define DMPUIT_PRINT_DBG(format, ...)   \
+#define DMPUIT_PRINT_DBG(format, ...) 	\
                 do {\
                     DMPUIT_PRINT_FUNC_AND_LEVEL("debug"); \
                     DMPUIT_PRINT(format, ##__VA_ARGS__); \

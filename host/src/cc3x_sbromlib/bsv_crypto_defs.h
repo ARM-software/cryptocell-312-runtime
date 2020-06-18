@@ -18,15 +18,15 @@ extern "C"
 */
 
 /*! AES CMAC result size in words. */
-#define CC_BSV_CMAC_RESULT_SIZE_IN_WORDS    4  /* 128b */
+#define	CC_BSV_CMAC_RESULT_SIZE_IN_WORDS 	4  /* 128b */
 /*! AES CMAC result size in Bytes. */
-#define CC_BSV_CMAC_RESULT_SIZE_IN_BYTES    16 /* 128b */
+#define	CC_BSV_CMAC_RESULT_SIZE_IN_BYTES 	16 /* 128b */
 /*! AES CCM 128bit key size in Bytes. */
-#define CC_BSV_CCM_KEY_SIZE_BYTES               16
+#define CC_BSV_CCM_KEY_SIZE_BYTES           	16
 /*! AES CCM 128bit key size in words. */
-#define CC_BSV_CCM_KEY_SIZE_WORDS               4
+#define CC_BSV_CCM_KEY_SIZE_WORDS           	4
 /*! AES CCM NONCE size in Bytes. */
-#define CC_BSV_CCM_NONCE_SIZE_BYTES     12
+#define CC_BSV_CCM_NONCE_SIZE_BYTES		12
 
 
 /*! Definitions for AES key types. */

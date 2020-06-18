@@ -35,27 +35,27 @@ extern const uint8_t ecpki_supported_hash_modes[CC_ECPKI_HASH_NumOfModes];
 /************************ Public Functions ********************************/
 
 /**************************************************************************
- *                EcdsaVerifyInit  function
+ *	              EcdsaVerifyInit  function
  **************************************************************************/
 /**
    @brief  Prepares a context that is used by the Update and Finish functions
            but does not perform elliptic curve cryptographic processing
 
                     The function:
-                        - Receives and decrypts user data (working context).
+                        - Receives and decrypts user data (working context). 
                         - Checks input parameters of  ECDSA Vrifying primitive.
                         - Calls hash init function.
                         - Initializes variables and structures for calling next functions.
                         - Encrypts and releases working context.
-
-                        NOTE: Using of HASH functions with HASH size great, than EC modulus size,
+                        
+                        NOTE: Using of HASH functions with HASH size great, than EC modulus size, 
                         is not recommended!
 
    @param[in,out] pVerifyUserContext - A pointer to the user buffer for verifying database.
    @param[in] pSignerPublKey - A pointer to a Signer public key structure.
    @param[in] hashMode - The enumerator variable defines the hash function to be used.
-
-   @return <b>CCError_t</b>: <br>
+   
+   @return <b>CCError_t</b>: <br> 
                          CC_OK<br>
                          CC_ECDSA_VERIFY_INVALID_USER_CONTEXT_PTR_ERROR <br>
                          CC_ECDSA_VERIFY_INVALID_SIGNER_PUBL_KEY_PTR_ERROR <br>
@@ -73,7 +73,7 @@ CEXPORT_C CCError_t EcdsaVerifyInit(
         /* The return error identifier */
         CCError_t err = CC_OK;
         /* defining a pointer to the active context allcated by the CCM */
-        EcdsaVerifyContext_t *pWorkingContext;
+        EcdsaVerifyContext_t *pWorkingContext;         
 #ifdef USE_MBEDTLS_CRYPTOCELL
         const mbedtls_md_info_t *md_info=NULL;
 #endif
@@ -121,7 +121,7 @@ CEXPORT_C CCError_t EcdsaVerifyInit(
                 goto End;
         }
 
-        pWorkingContext->hashMode = hashMode;
+        pWorkingContext->hashMode = hashMode;        
         pWorkingContext->hashResultSizeWords = ecpki_hash_info[pWorkingContext->hashMode].hashResultSize;
 
         if (ecpki_hash_info[pWorkingContext->hashMode].hashMode < CC_HASH_NumOfModes) {
@@ -161,31 +161,31 @@ CEXPORT_C CCError_t EcdsaVerifyInit(
                 CC_PalMemSetZero(pVerifyUserContext, sizeof(CCEcdsaVerifyUserContext_t));
         }
 
-        return err;
+        return err;        
 
 }/* EcdsaVerifyInit */
 
 
 /**************************************************************************
- *                EcdsaVerifyUpdate function
+ *	              EcdsaVerifyUpdate function
  **************************************************************************/
 /**
-   @brief  Performs a hash  operation on data allocated by the user
+   @brief  Performs a hash  operation on data allocated by the user 
            before finally verifying its signature.
-
-           In case user divides signing data by block, he must call the Update function
+  
+           In case user divides signing data by block, he must call the Update function 
            continuously a number of times until processing of the entire data block is complete.
-
-       NOTE: Using of HASH functions with HASH size greater, than EC modulus size,
+           
+       NOTE: Using of HASH functions with HASH size greater, than EC modulus size, 
              is not recommended.
 
    @param [in,out] pVerifyUserContext - The pointer to the user buffer for verifying database.
-   @param [in] pMessageDataIn - The message data for calculating Hash.
+   @param [in] pMessageDataIn - The message data for calculating Hash.   	
    @param [in]dataInSize - The size of the message data block, in bytes. The data size,
-                   passed on each call of the function, besides the last call, must be
-                   a multiple of the HASH block size according to used HASH mode.
-
-   @return <b>CCError_t</b>: <br>
+                   passed on each call of the function, besides the last call, must be 
+                   a multiple of the HASH block size according to used HASH mode.  
+   
+   @return <b>CCError_t</b>: <br> 
                          CC_OK<br>
                          CC_ECDSA_VERIFY_INVALID_USER_CONTEXT_PTR_ERROR <br>
                          CC_ECDSA_VERIFY_USER_CONTEXT_VALIDATION_TAG_ERROR <br>
@@ -195,7 +195,7 @@ CEXPORT_C CCError_t EcdsaVerifyInit(
  **/
 CEXPORT_C CCError_t EcdsaVerifyUpdate(
                                              CCEcdsaVerifyUserContext_t *pVerifyUserContext, /*in/out*/
-                                             uint8_t                        *pMessageDataIn,     /* in */
+                                             uint8_t                        *pMessageDataIn,     /* in */ 
                                              size_t                         dataInSize          /* in */ )
 {
         /* FUNCTION DECLARATIONS */
@@ -205,7 +205,7 @@ CEXPORT_C CCError_t EcdsaVerifyUpdate(
         /* defining a pointer to the active context allcated by the CCM */
         EcdsaVerifyContext_t *pWorkingContext;
 
-        /* FUNCTION LOGIC */
+        /* FUNCTION LOGIC */   
 
         /* sign working context */
         pWorkingContext = (EcdsaVerifyContext_t*)&pVerifyUserContext->context_buff;
@@ -256,7 +256,7 @@ CEXPORT_C CCError_t EcdsaVerifyUpdate(
                         goto End;
                 }
                 /* Copy the DataIn_ptr to the HASH_Result */
-                CC_PalMemCopy((uint8_t *)pWorkingContext->hashResult,pMessageDataIn,dataInSize);
+                CC_PalMemCopy((uint8_t *)pWorkingContext->hashResult,pMessageDataIn,dataInSize);              
         }
 
         End:
@@ -268,23 +268,23 @@ CEXPORT_C CCError_t EcdsaVerifyUpdate(
                 CC_PalMemSetZero(pVerifyUserContext, sizeof(CCEcdsaVerifyUserContext_t));
         }
 
-        return err;
+        return err;       
 
 }/* EcdsaVerifyUpdate */
 
 
 
 /**************************************************************************
- *                EcdsaVerifyFinish function
+ *	              EcdsaVerifyFinish function
  **************************************************************************/
 /**
-   @brief  Performs initialization of variables and structures,
-           calls the hash function for the last block of data (if necessary),
-           than calls EcWrstDsaVerify function for verifying signature
+   @brief  Performs initialization of variables and structures, 
+           calls the hash function for the last block of data (if necessary),  
+           than calls EcWrstDsaVerify function for verifying signature  
            according to EC DSA algorithm.
 
-       NOTE: Using of HASH functions with HASH size greater, than EC modulus size,
-             is not recommended!
+       NOTE: Using of HASH functions with HASH size greater, than EC modulus size, 
+             is not recommended!	   
              Algorithm according ANS X9.62 standard
 
    @param[in] pVerifyUserContext - A pointer to the user buffer for verifying the database.
@@ -297,11 +297,11 @@ CEXPORT_C CCError_t EcdsaVerifyUpdate(
                           CC_ECDSA_VERIFY_USER_CONTEXT_VALIDATION_TAG_ERROR <br>
                           CC_ECDSA_VERIFY_INVALID_SIGNATURE_IN_PTR_ERROR <br>
                           CC_ECDSA_VERIFY_ILLEGAL_HASH_OP_MODE_ERROR <br>
-                          CC_ECDSA_VERIFY_INVALID_SIGNATURE_SIZE_ERROR <br>
+                          CC_ECDSA_VERIFY_INVALID_SIGNATURE_SIZE_ERROR <br>			  
                           CC_ECDSA_VERIFY_INCONSISTENT_VERIFY_ERROR <br>
 **/
 CEXPORT_C CCError_t EcdsaVerifyFinish(
-                                             CCEcdsaVerifyUserContext_t *pVerifyUserContext,  /*in*/
+                                             CCEcdsaVerifyUserContext_t *pVerifyUserContext,  /*in*/ 
                                              uint8_t                        *pSignatureIn,        /*in*/
                                              size_t                         SignatureSizeBytes  /*in*/)
 {
@@ -316,10 +316,10 @@ CEXPORT_C CCError_t EcdsaVerifyFinish(
         CCEcpkiPublKey_t  *PublKey_ptr;
         /*  EC domain ID and pointer to the current domain */
         /*  pointer to the current domain */
-        CCEcpkiDomain_t   *pDomain;
+        CCEcpkiDomain_t   *pDomain;   
 
-        uint32_t  *pMessRepres, *pSignatureC, *pSignatureD;
-        uint32_t   hashSizeWords;
+        uint32_t  *pMessRepres, *pSignatureC, *pSignatureD;      
+        uint32_t   hashSizeWords;                                                               
         uint32_t   orderSizeInBytes, orderSizeInWords;
 
         /* FUNCTION LOGIC */
@@ -357,10 +357,10 @@ CEXPORT_C CCError_t EcdsaVerifyFinish(
                 goto End;
         }
 
-        PublKey_ptr = (CCEcpkiPublKey_t *)&pWorkingContext->ECDSA_SignerPublKey.PublKeyDbBuff;
+        PublKey_ptr = (CCEcpkiPublKey_t *)&pWorkingContext->ECDSA_SignerPublKey.PublKeyDbBuff; 
 
         /* Initializing domain parameters */
-        pDomain = &PublKey_ptr->domain;
+        pDomain = &PublKey_ptr->domain; 
         orderSizeInBytes  =  CALC_FULL_BYTES(pDomain->ordSizeInBits);
         orderSizeInWords  =  CALC_FULL_32BIT_WORDS(pDomain->ordSizeInBits);
 
@@ -382,7 +382,7 @@ CEXPORT_C CCError_t EcdsaVerifyFinish(
         }
 
         /*  Initialization of  EcWrstDsaVerify arguments */
-        hashSizeWords        = pWorkingContext->hashResultSizeWords;
+        hashSizeWords        = pWorkingContext->hashResultSizeWords;                                                                 
         /* Temp buffers */
         pSignatureC       = ((EcWrstDsaVerifyDb_t*)(pWorkingContext->ccEcdsaVerIntBuff))->tempBuff;
         pSignatureD       = pSignatureC + orderSizeInWords; /* Max lengths of C in whole words */
@@ -396,23 +396,23 @@ CEXPORT_C CCError_t EcdsaVerifyFinish(
 
         /* Derive message representative = leftmost OrderSizeInBits bits of HASH_Result */
         if (pDomain->ordSizeInBits >= 32*hashSizeWords) {
-                CC_CommonReverseMemcpy((uint8_t*)pMessRepres,
-                                          (uint8_t*)(pWorkingContext->hashResult), 4*hashSizeWords);
+                CC_CommonReverseMemcpy((uint8_t*)pMessRepres, 
+                                          (uint8_t*)(pWorkingContext->hashResult), 4*hashSizeWords); 
         } else {
-                EcWrstDsaTruncateMsg(pMessRepres,
+                EcWrstDsaTruncateMsg(pMessRepres, 
                                       (uint8_t*)(pWorkingContext->hashResult), pDomain->ordSizeInBits);
 
         }
 
-        /* Convert signature data to words array with little entian order of  *
-        *  words                                  */
+        /* Convert signature data to words array with little entian order of  * 
+        *  words							      */
         pSignatureC[orderSizeInWords-1] = 0;
         CC_CommonReverseMemcpy((uint8_t*)pSignatureC, pSignatureIn, orderSizeInBytes);
         pSignatureD[orderSizeInWords-1] = 0;
         CC_CommonReverseMemcpy((uint8_t*)pSignatureD, pSignatureIn + orderSizeInBytes, orderSizeInBytes);
 
-        /*------------------------------*/
-        /* Verifying operation      */
+        /*------------------------------*/ 
+        /* Verifying operation  	*/
         /*------------------------------*/
         err =  EcWrstDsaVerify(PublKey_ptr, pMessRepres, orderSizeInWords, pSignatureC, pSignatureD);
         if (err != CC_OK) {
@@ -434,39 +434,39 @@ CEXPORT_C CCError_t EcdsaVerifyFinish(
 
 
 /**************************************************************************
- *                CC_EcdsaVerify integrated function
+ *	              CC_EcdsaVerify integrated function
  **************************************************************************/
 /**
-   @brief  Performs all ECDSA verifying operations simultaneously.
-
-           This function simply calls the Init, Update and Finish functions continuously.
-
-       NOTE: Using of HASH functions with HASH size great, than EC modulus size,
+   @brief  Performs all ECDSA verifying operations simultaneously. 
+                   
+           This function simply calls the Init, Update and Finish functions continuously.  
+           
+       NOTE: Using of HASH functions with HASH size great, than EC modulus size, 
              is not recommended!
              Algorithm according ANS X9.62 standard
-
+           
 
    @param[in]  pVerifyUserContext - A pointer to the user buffer for verifying database.
    @param[in]  pUserPublKey       - A pointer to a user public key structure.
    @param[in]  hashMode              - The enumerator variable defines the hash function to be used.
-   @param[in]  pMessageDataIn     - Message data for calculating hash.
-   @param[in]  messageSizeInBytes    - Size of block of message data in bytes.
-   @param[in]  pSignatureIn       - A pointer to a buffer for output of signature.
+   @param[in]  pMessageDataIn     - Message data for calculating hash.   			
+   @param[in]  messageSizeInBytes    - Size of block of message data in bytes.       
+   @param[in]  pSignatureIn       - A pointer to a buffer for output of signature. 
    @param[in]  SignatureSizeBytes    - Size of signature, in bytes (must be 2*orderSizeInBytes).
-
-   @return <b>CCError_t</b>: <br>
+                                       
+   @return <b>CCError_t</b>: <br> 
                         CC_OK <br>
-                        CC_ECDSA_VERIFY_INVALID_USER_CONTEXT_PTR_ERROR <br>
+                        CC_ECDSA_VERIFY_INVALID_USER_CONTEXT_PTR_ERROR <br> 
                         CC_ECDSA_VERIFY_USER_CONTEXT_VALIDATION_TAG_ERROR <br>
                         CC_ECDSA_VERIFY_INVALID_DOMAIN_ID_ERROR <br>
                         CC_ECDSA_VERIFY_INVALID_SIGNER_PUBL_KEY_PTR_ERROR <br>
                         CC_ECDSA_VERIFY_SIGNER_PUBL_KEY_VALIDATION_TAG_ERROR <br>
-                        CC_ECDSA_VERIFY_ILLEGAL_HASH_OP_MODE_ERROR <br>
+                        CC_ECDSA_VERIFY_ILLEGAL_HASH_OP_MODE_ERROR <br>                
                         CC_ECDSA_VERIFY_INVALID_MESSAGE_DATA_IN_PTR_ERROR <br>
-                        CC_ECDSA_VERIFY_INVALID_MESSAGE_DATA_IN_SIZE_ERROR <br>
-                        CC_ECDSA_VERIFY_INVALID_SIGNATURE_IN_PTR_ERROR <br>
+                        CC_ECDSA_VERIFY_INVALID_MESSAGE_DATA_IN_SIZE_ERROR <br>						                        
+                        CC_ECDSA_VERIFY_INVALID_SIGNATURE_IN_PTR_ERROR <br>						 
                         CC_ECDSA_VERIFY_INVALID_SIGNATURE_SIZE_ERROR <br>
-                        CC_ECDSA_VERIFY_INCONSISTENT_VERIFY_ERROR <br>
+                        CC_ECDSA_VERIFY_INCONSISTENT_VERIFY_ERROR <br> 
 **/
 CEXPORT_C CCError_t CC_EcdsaVerify (
                                         CCEcdsaVerifyUserContext_t *pVerifyUserContext,  /*in/out*/
@@ -474,7 +474,7 @@ CEXPORT_C CCError_t CC_EcdsaVerify (
                                         CCEcpkiHashOpMode_t        hashMode,            /*in*/
                                         uint8_t                        *pSignatureIn,        /*in*/
                                         size_t                         SignatureSizeBytes,  /*in*/
-                                        uint8_t                        *pMessageDataIn,      /*in*/
+                                        uint8_t                        *pMessageDataIn,      /*in*/ 
                                         size_t                         messageSizeInBytes  /*in*/)
 {
         /* FUNCTION DECLERATIONS */
@@ -494,8 +494,8 @@ CEXPORT_C CCError_t CC_EcdsaVerify (
         if (err!=CC_OK)
                 return err;
 
-        err = EcdsaVerifyFinish(pVerifyUserContext, pSignatureIn,
-                                      SignatureSizeBytes);
+        err = EcdsaVerifyFinish(pVerifyUserContext, pSignatureIn,    
+                                      SignatureSizeBytes);    
         return err;
 
 }/* END OF CC_EcdsaVerify */

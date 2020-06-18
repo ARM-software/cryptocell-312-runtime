@@ -187,8 +187,8 @@ static uint32_t SRP_shaInterleaveHK(uint8_t        *pInBuff,       /* in buff to
 
 uint32_t  SRP_InitAndkMultiplierCalc(mbedtls_srp_context *pCtx)
 {
-    CCError_t   rc = 0;
-    size_t          hashDigestSize;
+    CCError_t 	rc = 0;
+    size_t			hashDigestSize;
 
     // verify input
     if (pCtx == NULL) {
@@ -225,15 +225,15 @@ uint32_t  SRP_InitAndkMultiplierCalc(mbedtls_srp_context *pCtx)
 }
 
 uint32_t  SRP_uScrambleCalc(
-        mbedtls_srp_modulus ephemPubA,
-        mbedtls_srp_modulus ephemPubB,
-        mbedtls_srp_digest  uScramble,
-        mbedtls_srp_context *pCtx)
+        mbedtls_srp_modulus	ephemPubA,
+        mbedtls_srp_modulus	ephemPubB,
+        mbedtls_srp_digest	uScramble,
+        mbedtls_srp_context	*pCtx)
 {
-    CCError_t   rc = 0;
+    CCError_t 	rc = 0;
     CCHashResultBuf_t      hashResultBuff;
     size_t  modSize;
-    uint32_t    bytesToCopy = 0;
+    uint32_t	bytesToCopy = 0;
     mbedtls_md_context_t hash_ctx;
 
     const mbedtls_md_info_t *md_info=NULL;
@@ -324,13 +324,13 @@ uint32_t  SRP_uScrambleCalc(
 
 
 // credDigest = SHA(U|:|P)
-uint32_t  SRP_UserCredDigCalc(uint8_t   *pUserName,
+uint32_t  SRP_UserCredDigCalc(uint8_t	*pUserName, 
                               size_t        userNameSize,
-                              uint8_t   *pPwd,
+                              uint8_t	*pPwd,
                               size_t        pwdSize,
                               mbedtls_srp_context *pCtx)
 {
-    CCError_t   rc = 0;
+    CCError_t 	rc = 0;
     char  colonChar = ':';
     CCHashResultBuf_t      hashResultBuff;
     const mbedtls_md_info_t *md_info=NULL;
@@ -387,12 +387,12 @@ uint32_t  SRP_UserCredDigCalc(uint8_t   *pUserName,
 }
 
 // calc x = SHA(pSalt | pCtx->credDigest)
-uint32_t  SRP_xBuffCalc(uint8_t             *pSalt,
-                        size_t          saltSize,
-                        mbedtls_srp_digest  xBuff,  // out
-                        mbedtls_srp_context     *pCtx)
+uint32_t  SRP_xBuffCalc(uint8_t     		*pSalt,  
+                        size_t  		saltSize,
+                        mbedtls_srp_digest	xBuff,	// out
+                        mbedtls_srp_context 	*pCtx)
 {
-    CCError_t   rc = 0;
+    CCError_t 	rc = 0;
     CCHashResultBuf_t      hashResultBuff;
     const mbedtls_md_info_t *md_info=NULL;
     mbedtls_md_context_t hash_ctx;
@@ -443,11 +443,11 @@ uint32_t  SRP_xBuffCalc(uint8_t             *pSalt,
 
 
 //SHA(U)
-uint32_t  SRP_UserNameDigCalc(uint8_t   *pUserName,
+uint32_t  SRP_UserNameDigCalc(uint8_t	*pUserName, 
                               size_t        userNameSize,
-                              mbedtls_srp_context   *pCtx)
+                              mbedtls_srp_context 	*pCtx)
 {
-    CCError_t   rc = 0;
+    CCError_t 	rc = 0;
     CCHashResultBuf_t      hashResultBuff;
     const mbedtls_md_info_t *md_info=NULL;
 
@@ -479,24 +479,24 @@ uint32_t  SRP_UserNameDigCalc(uint8_t   *pUserName,
 }
 
 // SHA((SHA(N) XOR SHA(g))|SHA(U)|s|A|B|K)
-uint32_t  SRP_UserProofCalc2(uint8_t        *pSalt,
-                             size_t                 saltSize,
-                             mbedtls_srp_modulus        userPubKeyA,
-                             mbedtls_srp_modulus        hostPubKeyB,
-                             mbedtls_srp_sessionKey sessionKey,
-                             mbedtls_srp_digest userProof, // out
-                             mbedtls_srp_context    *pCtx)
+uint32_t  SRP_UserProofCalc2(uint8_t		*pSalt,
+                             size_t                	saltSize,
+                             mbedtls_srp_modulus     	userPubKeyA,
+                             mbedtls_srp_modulus     	hostPubKeyB,
+                             mbedtls_srp_sessionKey	sessionKey,
+                             mbedtls_srp_digest	userProof, // out
+                             mbedtls_srp_context 	*pCtx)
 {
-    CCError_t   rc = 0;
+    CCError_t 	rc = 0;
     CCHashResultBuf_t      hashResultBuff;
-    size_t          hashDigestSize;
-    size_t          modSize;
+    size_t   		hashDigestSize;
+    size_t  		modSize;
     uint32_t        i = 0;
     uint8_t         *pPubKey;
-    size_t          pubKeySize;
+    size_t  		pubKeySize;
     CCHashResultBuf_t   buff1 = {0};
     CCHashResultBuf_t   buff2 = {0};
-    CCHashOperationMode_t   hashMode;
+    CCHashOperationMode_t	hashMode;
     mbedtls_md_context_t hash_ctx;
 
     const mbedtls_md_info_t *md_info=NULL;
@@ -610,13 +610,13 @@ uint32_t  SRP_UserProofCalc2(uint8_t        *pSalt,
 
 // SHA(A|M1|K)
 uint32_t  SRP_HostProofCalc(mbedtls_srp_modulus  userPubKeyA,
-                            mbedtls_srp_digest  userProof,
-                            mbedtls_srp_sessionKey  sessionKey,
-                            mbedtls_srp_digest  hostProof,  // out
-                            mbedtls_srp_context     *pCtx)
+                            mbedtls_srp_digest	userProof,
+                            mbedtls_srp_sessionKey	sessionKey,
+                            mbedtls_srp_digest	hostProof,	// out
+                            mbedtls_srp_context 	*pCtx)
 {
-    CCError_t   rc = 0;
-    size_t      hashDigestSize;
+    CCError_t 	rc = 0;
+    size_t   	hashDigestSize;
     CCHashResultBuf_t      hashResultBuff;
     const mbedtls_md_info_t *md_info=NULL;
     mbedtls_md_context_t hash_ctx;
@@ -676,12 +676,12 @@ uint32_t  SRP_HostProofCalc(mbedtls_srp_modulus  userPubKeyA,
     return rc;
 }
 
-uint32_t  SRP_SessionKeyCalc(uint8_t        *pInBuff,       /* in buff to hash*/
-                               size_t       inBuffSize, /* in buffer size */
-                               mbedtls_srp_sessionKey   sessionKey, /* out hash interleave buff - shared secret */
-                               mbedtls_srp_context  *pCtx)
+uint32_t  SRP_SessionKeyCalc(uint8_t		*pInBuff,		/* in buff to hash*/
+                               size_t		inBuffSize,	/* in buffer size */
+                               mbedtls_srp_sessionKey	sessionKey,	/* out hash interleave buff - shared secret */
+                               mbedtls_srp_context 	*pCtx)
 {
-    CCError_t   rc = 0;
+    CCError_t 	rc = 0;
 
     //Verify inputs
     if ((pInBuff == NULL) ||

@@ -18,32 +18,32 @@
 
 void mbedtls_sha1_init( mbedtls_sha1_context *ctx )
 {
-    if( NULL == ctx  )
-    {
-        CC_PalAbort("\nctx is NULL\n");
-    }
-    CC_PalMemSetZero(ctx, sizeof( mbedtls_sha1_context ) );
+	if( NULL == ctx  )
+	{
+	    CC_PalAbort("\nctx is NULL\n");
+	}
+	CC_PalMemSetZero(ctx, sizeof( mbedtls_sha1_context ) );
 }
 
 void mbedtls_sha1_free( mbedtls_sha1_context *ctx )
 {
-    if( NULL == ctx  )
-    {
-        CC_PAL_LOG_ERR("\nctx is NULL\n");
-        return;
-    }
-    mbedtls_zeroize_internal( ctx, sizeof( mbedtls_sha1_context ) );
+	if( NULL == ctx  )
+	{
+	    CC_PAL_LOG_ERR("\nctx is NULL\n");
+	    return;
+	}
+	mbedtls_zeroize_internal( ctx, sizeof( mbedtls_sha1_context ) );
 }
 
 void mbedtls_sha1_clone( mbedtls_sha1_context *dst,
-                         const mbedtls_sha1_context *src )
+						 const mbedtls_sha1_context *src )
 {
-    if( NULL == src || NULL == dst )
-    {
-        CC_PalAbort("src or dst are NULL\n" );
-    }
+	if( NULL == src || NULL == dst )
+	{
+	    CC_PalAbort("src or dst are NULL\n" );
+	}
 
-    *dst = *src;
+	*dst = *src;
 }
 
 int mbedtls_sha1_starts_ret( mbedtls_sha1_context *ctx )
@@ -56,7 +56,7 @@ int mbedtls_sha1_starts_ret( mbedtls_sha1_context *ctx )
         return( MBEDTLS_ERR_SHA1_HW_ACCEL_FAILED );
     }
 
-    return( ret );
+	return( ret );
 }
 
 int mbedtls_internal_sha1_process( mbedtls_sha1_context *ctx, const unsigned char data[64] )
@@ -69,7 +69,7 @@ int mbedtls_internal_sha1_process( mbedtls_sha1_context *ctx, const unsigned cha
         return( MBEDTLS_ERR_SHA1_HW_ACCEL_FAILED );
     }
 
-    return( ret );
+	return( ret );
 }
 
 
@@ -86,7 +86,7 @@ int mbedtls_sha1_update_ret( mbedtls_sha1_context *ctx, const unsigned char *inp
         return( MBEDTLS_ERR_SHA1_HW_ACCEL_FAILED );
     }
 
-    return( ret );
+	return( ret );
 }
 
 

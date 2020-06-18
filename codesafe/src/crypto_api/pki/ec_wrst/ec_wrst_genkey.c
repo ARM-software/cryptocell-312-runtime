@@ -92,26 +92,26 @@ End:
 
 /***************  EcWrstGenKeyPair function  **************/
 /**
- * @brief Generates a pair of private and public keys
- *        in little endian ordinary (non-Montgomery) form.
- *
+ * @brief Generates a pair of private and public keys  
+ *        in little endian ordinary (non-Montgomery) form. 
+ *        
  *    The function performs the following:
- *      1. Checks the validity of all of the function inputs. If one of the received
- *         parameters is not valid, it returns an error.
+ *      1. Checks the validity of all of the function inputs. If one of the received 
+ *         parameters is not valid, it returns an error. 
  *      2. Cleans buffers and generates random private key.
  *      3. Calls the low level function PkaEcWrstScalarMult to generate EC public key.
  *      4. Outputs the user public and private key structures in little endian form.
- *      5. Cleans temporary buffers.
- *      6. Exits.
- *
+ *      5. Cleans temporary buffers. 
+ *      6. Exits. 
+ *  
  * @return  CC_OK On success, otherwise indicates failure
 */
 CEXPORT_C CCError_t EcWrstGenKeyPair(const CCEcpkiDomain_t  *pDomain,      /*!< [in] Pointer to current EC domain.*/
-                    CCEcpkiUserPrivKey_t   *pUserPrivKey, /*!< [out] Pointer to the generated private key structure.*/
-                    CCEcpkiUserPublKey_t   *pUserPublKey, /*!< [out] Pointer to the generated public key structure.*/
-                    CCEcpkiKgTempData_t   *pTempBuff)    /*!< [in] Pointer to temporary buffer.*/
+					CCEcpkiUserPrivKey_t   *pUserPrivKey, /*!< [out] Pointer to the generated private key structure.*/
+					CCEcpkiUserPublKey_t   *pUserPublKey, /*!< [out] Pointer to the generated public key structure.*/ 
+					CCEcpkiKgTempData_t   *pTempBuff)    /*!< [in] Pointer to temporary buffer.*/
 {
-
+        
     if (pDomain == NULL)
         return CC_ECPKI_DOMAIN_PTR_ERROR;
 

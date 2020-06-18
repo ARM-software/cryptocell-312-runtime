@@ -11,7 +11,7 @@
 
 /*!
  @file
- @brief This file contains all of the OEM production library APIs, their enums
+ @brief This file contains all of the OEM production library APIs, their enums 
  and definitions.
  */
 
@@ -23,7 +23,7 @@
 
 /************************ Defines ******************************/
 
-/*! The size of the OEM production library workspace in bytes. This workspace
+/*! The size of the OEM production library workspace in bytes. This workspace 
 is required by the library for internal use. */
 #define DMPU_WORKSPACE_MINIMUM_SIZE  1536
 
@@ -58,9 +58,9 @@ typedef enum {
  */
 typedef union {
         /*! The Hbk1 buffer, if used by the device. */
-        uint8_t hbk1[DMPU_HBK1_SIZE_IN_WORDS*CC_PROD_32BIT_WORD_SIZE];
+		uint8_t hbk1[DMPU_HBK1_SIZE_IN_WORDS*CC_PROD_32BIT_WORD_SIZE];
         /*! The full 256-bit Hbk buffer. */
-        uint8_t hbk[DMPU_HBK_SIZE_IN_WORDS*CC_PROD_32BIT_WORD_SIZE];
+		uint8_t hbk[DMPU_HBK_SIZE_IN_WORDS*CC_PROD_32BIT_WORD_SIZE];
 } CCDmpuHbkBuff_t;
 
 
@@ -68,21 +68,21 @@ typedef union {
 /*! The OEM production library input defines .*/
 typedef struct {
         /*! The type of Hbk: Hbk1 - 128 bits. Hbk - 256 bits. */
-        CCDmpuHBKType_t   hbkType;
+		CCDmpuHBKType_t   hbkType;
         /*! The Hbk buffer. */
-        CCDmpuHbkBuff_t   hbkBuff;
+		CCDmpuHbkBuff_t   hbkBuff;
         /*! The Kcp asset type: Not used, Plain-asset, or Package. */
-        CCAssetType_t     kcpDataType;
+		CCAssetType_t     kcpDataType;
         /*! The Kcp buffer, if \p kcpDataType is Plain-asset or package. */
-        CCAssetBuff_t     kcp;
+		CCAssetBuff_t     kcp;
         /*! The Kce asset type: Not used, Plain-asset, or Package. */
-        CCAssetType_t     kceDataType;
+		CCAssetType_t     kceDataType;
         /*! The Kce buffer, if \p kceDataType is Plain-asset or package. */
-        CCAssetBuff_t     kce;
+		CCAssetBuff_t     kce;
         /*! The minimal SW version of the OEM. */
-        uint32_t          oemMinVersion;
+		uint32_t          oemMinVersion;
         /*! The default DCU lock bits of the OEM. */
-        uint32_t          oemDcuDefaultLock[PROD_DCU_LOCK_WORD_SIZE];
+		uint32_t          oemDcuDefaultLock[PROD_DCU_LOCK_WORD_SIZE];
 }CCDmpuData_t;
 
 
@@ -99,14 +99,14 @@ typedef struct {
 */
 CIMPORT_C CCError_t  CCProd_Dmpu(
         /*! [in] The base address of CrytoCell HW registers. */
-        unsigned long   ccHwRegBaseAddr,
+		unsigned long   ccHwRegBaseAddr,
         /*! [in] A pointer to the defines structure of the OEM. */
-        CCDmpuData_t    *pDmpuData,
+		CCDmpuData_t    *pDmpuData,
         /*! [in] The base address of the workspace for internal use. */
-        unsigned long   workspaceBaseAddr,
-        /*! [in] The size of provided workspace. Must be at least
-        \p DMPU_WORKSPACE_MINIMUM_SIZE. */
-        uint32_t        workspaceSize
+		unsigned long   workspaceBaseAddr,
+        /*! [in] The size of provided workspace. Must be at least 
+		\p DMPU_WORKSPACE_MINIMUM_SIZE. */
+		uint32_t        workspaceSize 
 ) ;
 
 

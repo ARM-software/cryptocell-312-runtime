@@ -37,58 +37,58 @@ extern "C"
 /*************************** context Structs  ********************************/
 
 /*!
-   @brief   This function generates a public key and a TLS ServerKeyExchange
+   @brief	This function generates a public key and a TLS ServerKeyExchange 
    payload.
 
    This is the first function used by a TLS server for ECDHE ciphersuites.
 
-   @note    This function can be used only for curve 25519.
+   @note	This function can be used only for curve 25519.
 
-   @note    This function assumes that the ECP group (\c grp) of the
+   @note	This function assumes that the ECP group (\c grp) of the
             \p ctx context has already been properly set,
             for example, using mbedtls_ecp_group_load().
 
    @see     ecp.h
 
-   @return  \c 0 on success.
+   @return	\c 0 on success.
    @return  An \c MBEDTLS_ERR_ECP_XXX error code on failure.
  */
 
 int mbedtls_ecdh_make_params_edwards(
         /*! The ECDH context. */
-        mbedtls_ecdh_context *ctx,
+		mbedtls_ecdh_context *ctx,
         /*! The number of characters written. */
-        size_t *olen,
+		size_t *olen,
         /*! The destination buffer. */
-        unsigned char *buf,
+		unsigned char *buf,
         /*! The length of the destination buffer. */
-        size_t blen,
+		size_t blen,
         /*! The RNG function. */
-        int (*f_rng)(void *, unsigned char *, size_t),
+		int (*f_rng)(void *, unsigned char *, size_t),
         /*! The RNG context. */
-        void *p_rng
+		void *p_rng
                       );
 
 /*!
-   @brief   This function parses and processes a TLS ServerKeyExhange
+   @brief	This function parses and processes a TLS ServerKeyExhange
             payload.
 
-            This is the first function used by a TLS client for ECDHE ciphersuites.
-
+			This is the first function used by a TLS client for ECDHE ciphersuites.
+			
    @note    This function can be used only for curve 25519.
 
-   @see     ecp.h
+   @see		ecp.h
 
    @return  \c 0 on success.
    @return  An \c MBEDTLS_ERR_ECP_XXX error code on failure.
  */
 int mbedtls_ecdh_read_params_edwards(
         /*! The ECDH context. */
-        mbedtls_ecdh_context *ctx,
+		mbedtls_ecdh_context *ctx,
         /*! The pointer to the start of the input buffer. */
-        const unsigned char **buf,
+		const unsigned char **buf,
         /*! The address for one byte past the end of the buffer. */
-        const unsigned char *end
+		const unsigned char *end
         );
 
 

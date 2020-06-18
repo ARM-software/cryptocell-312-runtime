@@ -41,7 +41,7 @@ extern "C"
 
 /* The maximal count of allowed sizes of PKA operands or register-variables */
 #define RSA_PKA_MAX_COUNT_OF_REGS_SIZES                   8 /*PKA_MAX_COUNT_OF_REGS_SIZES */
-#define RSA_PKA_MAX_COUNT_OF_ADDITIONAL_REGS          10
+#define RSA_PKA_MAX_COUNT_OF_ADDITIONAL_REGS		  10
 #define RSA_PKA_SRAM_REGS_MEM_OFFSET_WORDS                RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR
 
 
@@ -95,24 +95,24 @@ extern "C"
 #define   PkaClr0           0x08
 #define   PkaClr            0x08
 #define   PkaOR             0x09
-#define   PkaCopy       0x09
+#define   PkaCopy	    0x09
 #define   PkaSetBit0        0x09
-#define   PkaXOR        0x0A
-#define   PkaFlip0      0x0A
+#define   PkaXOR  	    0x0A
+#define   PkaFlip0	    0x0A
 #define   PkaInvertBits     0x0A
-#define   PkaCompare        0x0A
-#define   PkaSHR0       0x0C
+#define   PkaCompare	    0x0A
+#define   PkaSHR0	    0x0C
 #define   PkaSHR1           0x0D
-#define   PkaSHL0       0x0E
-#define   PkaSHL1       0x0F
-#define   PkaLMul       0x10
-#define   PkaModMul     0x11
-#define   PkaModMulNR       0x12
-#define   PkaModExp     0x13
-#define   PkaDiv        0x14
-#define   PkaModInv         0x15
-#define   PkaHMul       0x17
-#define   PkaModMulAcc      0x18
+#define   PkaSHL0	    0x0E
+#define   PkaSHL1	    0x0F
+#define   PkaLMul	    0x10
+#define   PkaModMul	    0x11
+#define   PkaModMulNR	    0x12
+#define   PkaModExp	    0x13
+#define   PkaDiv 	    0x14
+#define   PkaModInv 	    0x15
+#define   PkaHMul	    0x17
+#define   PkaModMulAcc	    0x18
 #define   PkaModMulAccN     0x19
 #define   PkaSepInt         0x1A
 #define   PkaReduce         0x1B
@@ -138,7 +138,7 @@ do \
    volatile uint32_t output_reg_val; \
    do \
    { \
-    SB_HAL_READ_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_PIPE_RDY), output_reg_val ); \
+	SB_HAL_READ_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_PIPE_RDY), output_reg_val ); \
    }while( (output_reg_val & 0x01) != RSA_PKA_PIPE_READY ); \
 }while(0)
 
@@ -149,7 +149,7 @@ do \
    volatile uint32_t output_reg_val; \
    do \
    { \
-    SB_HAL_READ_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_DONE), output_reg_val); \
+	SB_HAL_READ_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_DONE), output_reg_val); \
    }while( (output_reg_val & 0x01) != RSA_PKA_OP_DONE ); \
 }while(0)
 
@@ -160,8 +160,8 @@ do \
 
 /*  ReadRegSizeInTable:  Readss the size from regsSizesTable entry */
 #define RSA_PKA_ReadRegSize(SizeBits, EntryNum, VirtualHwBaseAddr) \
-    RSA_PKA_WAIT_ON_PKA_DONE( VirtualHwBaseAddr ); \
-    SB_HAL_READ_REGISTER( (SB_REG_ADDR(VirtualHwBaseAddr,PKA_L0) + 4*(EntryNum)), \
+	RSA_PKA_WAIT_ON_PKA_DONE( VirtualHwBaseAddr ); \
+	SB_HAL_READ_REGISTER( (SB_REG_ADDR(VirtualHwBaseAddr,PKA_L0) + 4*(EntryNum)), \
                                 (SizeBits) )
 
 /******************************************************************/
@@ -195,173 +195,173 @@ do \
 
 /* MACRO DEFINITIONS FOR WORKING WITH INDIRECT ACCESS TO SRAM PKA DATA REGISTERS */
 
-    /*These registers  not included in the HW_CC definitions because they are HOST registers */
+	/*These registers  not included in the HW_CC definitions because they are HOST registers */
 #ifdef CC_SB_INDIRECT_SRAM_ACCESS
 /* MACRO DEFINITIONS FOR WORKING WITH INDIRECT ACCESS TO SRAM PKA DATA REGISTERS */
 
-    #define RSA_PKA_SRAM_WRITE_CLR(VirtualHwBaseAddr, SizeWords) \
-    for(; ii < 4*(((SizeWords)+3)/4) ; ii++) { \
-        SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_WDATA), 0); \
-    }
+	#define RSA_PKA_SRAM_WRITE_CLR(VirtualHwBaseAddr, SizeWords) \
+	for(; ii < 4*(((SizeWords)+3)/4) ; ii++) { \
+		SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_WDATA), 0); \
+	}
 
-    #ifndef BIG__ENDIAN
-    /* macro to load a value to SRAM with 32-bit access */
-    #define RSA_HW_PKI_HW_LOAD_VALUE_TO_PKA_MEM(VirtualHwBaseAddr, Addr, Val) \
-    do \
-    { \
-       SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_ADDR), ((Addr)+ RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR)); \
-       SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_WDATA), (Val)); \
-    }while(0)
-    #else
-    #define RSA_HW_PKI_HW_LOAD_VALUE_TO_PKA_MEM(VirtualHwBaseAddr, Addr, Val) \
-    do \
-    { \
-       uint32_t tempVal; \
-       UTIL_ReverseMemCopy((uint8_t*)&tempVal , (uint8_t*)&Val , sizeof(uint32_t) ); \
-       SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_ADDR), ((Addr)+ RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR)); \
-       SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_WDATA), (tempVal)); \
-    }while(0)
-    #endif
+	#ifndef BIG__ENDIAN
+	/* macro to load a value to SRAM with 32-bit access */
+	#define RSA_HW_PKI_HW_LOAD_VALUE_TO_PKA_MEM(VirtualHwBaseAddr, Addr, Val) \
+	do \
+	{ \
+	   SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_ADDR), ((Addr)+ RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR)); \
+	   SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_WDATA), (Val)); \
+	}while(0)
+	#else
+	#define RSA_HW_PKI_HW_LOAD_VALUE_TO_PKA_MEM(VirtualHwBaseAddr, Addr, Val) \
+	do \
+	{ \
+	   uint32_t tempVal; \
+	   UTIL_ReverseMemCopy((uint8_t*)&tempVal , (uint8_t*)&Val , sizeof(uint32_t) ); \
+	   SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_ADDR), ((Addr)+ RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR)); \
+	   SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_WDATA), (tempVal)); \
+	}while(0)
+	#endif
 
-    #ifndef BIG__ENDIAN
-    /* macro to load block to SRAM memory */
-    #define RSA_HW_PKI_HW_LOAD_BLOCK_TO_PKA_MEM(VirtualHwBaseAddr, Addr, ptr, SizeWords) \
-    do \
-    { \
-       uint32_t ii; \
-       SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_ADDR), ((Addr)+RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR)); \
-       for(ii = 0; ii < (SizeWords); ii++) \
-       { \
-           SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_WDATA), ((uint32_t*)(ptr))[ii]); \
-       } \
-       RSA_PKA_SRAM_WRITE_CLR(VirtualHwBaseAddr, SizeWords) \
-    }while(0)
-    /* defining a macro to load a block to the PKA data memory */
+	#ifndef BIG__ENDIAN
+	/* macro to load block to SRAM memory */
+	#define RSA_HW_PKI_HW_LOAD_BLOCK_TO_PKA_MEM(VirtualHwBaseAddr, Addr, ptr, SizeWords) \
+	do \
+	{ \
+	   uint32_t ii; \
+	   SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_ADDR), ((Addr)+RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR)); \
+	   for(ii = 0; ii < (SizeWords); ii++) \
+	   { \
+		   SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_WDATA), ((uint32_t*)(ptr))[ii]); \
+	   } \
+	   RSA_PKA_SRAM_WRITE_CLR(VirtualHwBaseAddr, SizeWords) \
+	}while(0)
+	/* defining a macro to load a block to the PKA data memory */
 
-    #else
-    #define RSA_HW_PKI_HW_LOAD_BLOCK_TO_PKA_MEM(VirtualHwBaseAddr, Addr, ptr, SizeWords) \
-    do \
-    { \
-       uint32_t ii; \
-       uint32_t tempWord; \
-       SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_ADDR), ((Addr)+RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR)); \
-       for(ii = 0; ii < (SizeWords); ii++) \
-       { \
-           UTIL_ReverseMemCopy((uint8_t*)&tempWord , (uint8_t*)&(ptr)[ii] , sizeof(uint32_t) ); \
-           SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_WDATA), tempWord); \
-       } \
-       RSA_PKA_SRAM_WRITE_CLR(VirtualHwBaseAddr, SizeWords) \
-    }while(0)
-    #endif
+	#else
+	#define RSA_HW_PKI_HW_LOAD_BLOCK_TO_PKA_MEM(VirtualHwBaseAddr, Addr, ptr, SizeWords) \
+	do \
+	{ \
+	   uint32_t ii; \
+	   uint32_t tempWord; \
+	   SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_ADDR), ((Addr)+RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR)); \
+	   for(ii = 0; ii < (SizeWords); ii++) \
+	   { \
+		   UTIL_ReverseMemCopy((uint8_t*)&tempWord , (uint8_t*)&(ptr)[ii] , sizeof(uint32_t) ); \
+		   SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_WDATA), tempWord); \
+	   } \
+	   RSA_PKA_SRAM_WRITE_CLR(VirtualHwBaseAddr, SizeWords) \
+	}while(0)
+	#endif
 
         /* macro to clear PKA memory: Addr must be alighned to PKA_WORD size */
-    #define RSA_HW_PKI_HW_CLEAR_PKA_MEM(VirtualHwBaseAddr, Addr, SizeWords) \
-    do \
-    { \
-       uint32_t ii; \
-       SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_ADDR), (Addr)); \
-       for( ii = 0; ii < (uint32_t)(SizeWords); ii++ ) \
-       { \
-        SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_WDATA), 0x0UL ); \
-       }\
-       RSA_PKA_SRAM_WRITE_CLR(VirtualHwBaseAddr, (SizeWords)); \
-    }while(0)
+	#define RSA_HW_PKI_HW_CLEAR_PKA_MEM(VirtualHwBaseAddr, Addr, SizeWords) \
+	do \
+	{ \
+	   uint32_t ii; \
+	   SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_ADDR), (Addr)); \
+	   for( ii = 0; ii < (uint32_t)(SizeWords); ii++ ) \
+	   { \
+		SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_WDATA), 0x0UL ); \
+	   }\
+	   RSA_PKA_SRAM_WRITE_CLR(VirtualHwBaseAddr, (SizeWords)); \
+	}while(0)
 
-    #ifndef BIG__ENDIAN
-    /* macro to read a value from the PKA data memory */
-    #define RSA_HW_PKI_HW_READ_VALUE_FROM_PKA_MEM(VirtualHwBaseAddr, Addr, Val) \
-    do \
-    { \
-       volatile uint32_t dummy; \
-       SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_RADDR), ((Addr)+ RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR)); \
-       SB_HAL_READ_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_RDATA), (dummy)); \
-       (Val) = dummy; \
-    }while(0)
-    #else
-    #define RSA_HW_PKI_HW_READ_VALUE_FROM_PKA_MEM(VirtualHwBaseAddr, Addr, Val) \
-    do \
-    { \
-       volatile uint32_t dummy; \
-       SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_RADDR), ((Addr)+ RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR)); \
-       SB_HAL_READ_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_RDATA), (dummy)); \
-       (Val) = dummy; \
-       UTIL_ReverseBuff((uint8_t*)&Val , sizeof(uint32_t) ); \
-    }while(0)
-    #endif
+	#ifndef BIG__ENDIAN
+	/* macro to read a value from the PKA data memory */
+	#define RSA_HW_PKI_HW_READ_VALUE_FROM_PKA_MEM(VirtualHwBaseAddr, Addr, Val) \
+	do \
+	{ \
+	   volatile uint32_t dummy; \
+	   SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_RADDR), ((Addr)+ RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR)); \
+	   SB_HAL_READ_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_RDATA), (dummy)); \
+	   (Val) = dummy; \
+	}while(0)
+	#else
+	#define RSA_HW_PKI_HW_READ_VALUE_FROM_PKA_MEM(VirtualHwBaseAddr, Addr, Val) \
+	do \
+	{ \
+	   volatile uint32_t dummy; \
+	   SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_RADDR), ((Addr)+ RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR)); \
+	   SB_HAL_READ_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_RDATA), (dummy)); \
+	   (Val) = dummy; \
+	   UTIL_ReverseBuff((uint8_t*)&Val , sizeof(uint32_t) ); \
+	}while(0)
+	#endif
 
-    #ifndef BIG__ENDIAN
-    /* defining a macro to read a block from the PKA data memory */
-    #define RSA_HW_PKI_HW_READ_BLOCK_FROM_PKA_MEM(VirtualHwBaseAddr, Addr, ptr, SizeWords) \
-    do \
-    { \
-       uint32_t ii; \
-       volatile uint32_t dummy; \
-       SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_RADDR), (Addr)); \
-       for(ii = 0; ii < (SizeWords); ii++) \
-       { \
-          SB_HAL_READ_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_RDATA), (dummy));\
-          ((uint32_t*)(ptr))[ii] = (dummy); \
-       } \
-    }while(0)
-    #else
-    #define RSA_HW_PKI_HW_READ_BLOCK_FROM_PKA_MEM(VirtualHwBaseAddr, Addr, ptr, SizeWords) \
-    do \
-    { \
-       uint32_t ii; \
-       volatile uint32_t dummy; \
-       SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_RADDR), (Addr)); \
-       for(ii = 0; ii < (SizeWords); ii++) \
-       { \
-          SB_HAL_READ_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_RDATA), (dummy));\
-          ((uint32_t*)(ptr))[ii] = (dummy); \
-          UTIL_ReverseBuff((uint8_t*)&(ptr)[ii] , sizeof(uint32_t) ); \
-       } \
-    }while(0)
-    #endif
+	#ifndef BIG__ENDIAN
+	/* defining a macro to read a block from the PKA data memory */
+	#define RSA_HW_PKI_HW_READ_BLOCK_FROM_PKA_MEM(VirtualHwBaseAddr, Addr, ptr, SizeWords) \
+	do \
+	{ \
+	   uint32_t ii; \
+	   volatile uint32_t dummy; \
+	   SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_RADDR), (Addr)); \
+	   for(ii = 0; ii < (SizeWords); ii++) \
+	   { \
+	      SB_HAL_READ_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_RDATA), (dummy));\
+	      ((uint32_t*)(ptr))[ii] = (dummy); \
+	   } \
+	}while(0)
+	#else
+	#define RSA_HW_PKI_HW_READ_BLOCK_FROM_PKA_MEM(VirtualHwBaseAddr, Addr, ptr, SizeWords) \
+	do \
+	{ \
+	   uint32_t ii; \
+	   volatile uint32_t dummy; \
+	   SB_HAL_WRITE_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_RADDR), (Addr)); \
+	   for(ii = 0; ii < (SizeWords); ii++) \
+	   { \
+	      SB_HAL_READ_REGISTER( SB_REG_ADDR(VirtualHwBaseAddr, PKA_SRAM_RDATA), (dummy));\
+	      ((uint32_t*)(ptr))[ii] = (dummy); \
+	      UTIL_ReverseBuff((uint8_t*)&(ptr)[ii] , sizeof(uint32_t) ); \
+	   } \
+	}while(0)
+	#endif
 
 #else //CC_SB_INDIRECT_SRAM_ACCESS=0 => direct access
-        /* MACRO DEFINITIONS FOR WORKING WITH INDIRECT ACCESS TO SRAM PKA DATA REGISTERS */
+    	/* MACRO DEFINITIONS FOR WORKING WITH INDIRECT ACCESS TO SRAM PKA DATA REGISTERS */
 
-    /*These registers  not included in the HW_CC definitions because they are HOST registers */
+	/*These registers  not included in the HW_CC definitions because they are HOST registers */
 
-    /* defining a macro to load a value to the PKA data memory */
-    #define RSA_HW_PKI_HW_LOAD_VALUE_TO_PKA_MEM( VirtualHwBaseAddr , Addr , Val ) \
-    do \
-    { \
-       *(uint32_t*)(((Addr) + RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR)) = (uint32_t)Val; \
-    }while(0)
-
-
-    /* defining a macro to load a block to the PKA data memory */
-    #define RSA_HW_PKI_HW_LOAD_BLOCK_TO_PKA_MEM( VirtualHwBaseAddr , Addr , ptr , SizeWords ) \
-    do \
-    { \
-        UTIL_MemCopy((uint8_t*)((Addr) + RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR),(uint8_t*)(ptr),(SizeWords)*sizeof(uint32_t)); \
-    }while(0)
+	/* defining a macro to load a value to the PKA data memory */
+	#define RSA_HW_PKI_HW_LOAD_VALUE_TO_PKA_MEM( VirtualHwBaseAddr , Addr , Val ) \
+	do \
+	{ \
+	   *(uint32_t*)(((Addr) + RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR)) = (uint32_t)Val; \
+	}while(0)
 
 
-    /* defining a macro to clear PKA data memory */
-    #define RSA_HW_PKI_HW_CLEAR_PKA_MEM( VirtualHwBaseAddr , Addr , SizeWords ) \
-    do \
-    { \
-        UTIL_MemSet((uint8_t*)((Addr) + RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR),0x0,(SizeWords)*sizeof(uint32_t)); \
-    }while(0)
+	/* defining a macro to load a block to the PKA data memory */
+	#define RSA_HW_PKI_HW_LOAD_BLOCK_TO_PKA_MEM( VirtualHwBaseAddr , Addr , ptr , SizeWords ) \
+	do \
+	{ \
+	    UTIL_MemCopy((uint8_t*)((Addr) + RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR),(uint8_t*)(ptr),(SizeWords)*sizeof(uint32_t)); \
+	}while(0)
 
 
-    /* defining a macro to read a value from the PKA data memory */
-    #define RSA_HW_PKI_HW_READ_VALUE_FROM_PKA_MEM( VirtualHwBaseAddr , Addr , Val ) \
-    do \
-    { \
-        Val = *(uint32_t*)((Addr) + RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR); \
-    }while(0)
+	/* defining a macro to clear PKA data memory */
+	#define RSA_HW_PKI_HW_CLEAR_PKA_MEM( VirtualHwBaseAddr , Addr , SizeWords ) \
+	do \
+	{ \
+	    UTIL_MemSet((uint8_t*)((Addr) + RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR),0x0,(SizeWords)*sizeof(uint32_t)); \
+	}while(0)
 
 
-    /* defining a macro to read a block from the PKA data memory */
-    #define RSA_HW_PKI_HW_READ_BLOCK_FROM_PKA_MEM( VirtualHwBaseAddr , Addr , ptr , SizeWords ) \
-    do \
-    { \
-        UTIL_MemCopy((uint8_t*)(ptr),(uint8_t*)((Addr) + RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR),(SizeWords)*sizeof(uint32_t)); \
-    }while(0)
+	/* defining a macro to read a value from the PKA data memory */
+	#define RSA_HW_PKI_HW_READ_VALUE_FROM_PKA_MEM( VirtualHwBaseAddr , Addr , Val ) \
+	do \
+	{ \
+	    Val = *(uint32_t*)((Addr) + RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR); \
+	}while(0)
+
+
+	/* defining a macro to read a block from the PKA data memory */
+	#define RSA_HW_PKI_HW_READ_BLOCK_FROM_PKA_MEM( VirtualHwBaseAddr , Addr , ptr , SizeWords ) \
+	do \
+	{ \
+	    UTIL_MemCopy((uint8_t*)(ptr),(uint8_t*)((Addr) + RSA_HW_PKI_PKA_DATA_REGS_MEMORY_OFFSET_ADDR),(SizeWords)*sizeof(uint32_t)); \
+	}while(0)
 
 #endif //CC_SB_INDIRECT_SRAM_ACCESS
 

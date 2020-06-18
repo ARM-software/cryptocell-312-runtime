@@ -117,7 +117,7 @@ uint8_t Test_PalBinarySemaphoreDestroy(Test_PalBinarySemaphore *ppBinSemphrId);
  * @return - 0 on success, 1 for failure.
  */
 uint8_t Test_PalBinarySemaphoreTake(Test_PalBinarySemaphore *ppBinSemphrId,
-                            uint32_t timeout);
+							uint32_t timeout);
 
 /******************************************************************************/
 /**

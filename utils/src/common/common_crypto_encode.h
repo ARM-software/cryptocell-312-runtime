@@ -22,9 +22,9 @@
 */
 /*********************************************************/
 int32_t CC_CommonBase64Encode(uint8_t *pBuff,
-                uint32_t  buffLen,
-                uint8_t *pEncBuff,
-                uint32_t *pEecBuffLen);
+			    uint32_t  buffLen,
+			    uint8_t *pEncBuff,
+			    uint32_t *pEecBuffLen);
 
 
 /**
@@ -37,9 +37,9 @@ int32_t CC_CommonBase64Encode(uint8_t *pBuff,
 */
 /*********************************************************/
 int32_t CC_CommonBase64Decode(uint8_t *pEncBuff,
-                uint32_t  encBuffLen,
-                uint8_t *pDecBuff,
-                uint32_t *pDecBuffLen);
+			    uint32_t  encBuffLen,
+			    uint8_t *pDecBuff,
+			    uint32_t *pDecBuffLen);
 
 
 

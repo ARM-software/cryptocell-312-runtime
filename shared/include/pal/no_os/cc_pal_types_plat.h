@@ -16,7 +16,7 @@
 #include <stdbool.h>
 
 /*! Type definition for virtual address. */
-typedef uintptr_t       CCVirtAddr_t;
+typedef uintptr_t	    CCVirtAddr_t;
 /*! Type Definition for boolean variable. */
 typedef uint32_t            CCBool_t;
 /*! Type definition for return status. */

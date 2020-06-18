@@ -160,8 +160,8 @@ unsigned long Test_PalGetUnmanagedBaseAddr(void);
  * @return rc - 0 for success, 1 for failure.
  */
 uint32_t Test_PalMemInit(unsigned long newDMABaseAddr,
-             unsigned long newUnmanagedBaseAddr,
-             size_t DMAsize);
+			 unsigned long newUnmanagedBaseAddr,
+			 size_t DMAsize);
 
 /******************************************************************************/
 /*

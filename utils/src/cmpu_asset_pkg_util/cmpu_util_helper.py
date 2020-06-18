@@ -1,6 +1,6 @@
 #!/usr/local/bin/python3
 #
-# Copyright (c) 2001-2019, Arm Limited and Contributors. All rights reserved.
+# Copyright (c) 2001-2020, Arm Limited and Contributors. All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause OR Arm’s non-OSI source license
 #
@@ -11,12 +11,13 @@ from datetime import datetime
 import sys
 import struct
 from ctypes import *
+from pathlib import Path
 
 #so name
 SBU_CRYPTO_LIB_DIR = "lib"
 SBU_CRYPTO_LIB_Name = SBU_CRYPTO_LIB_DIR + "/" + "lib_cmpuutil_crypto.so"
-SBU_OSSL_CRYPTO_LIB_Name = "libcrypto.so.1.0.0"
-SBU_OSSL_LIB_Name = "libssl.so.1.0.0"
+SBU_OSSL_CRYPTO_LIB_Name = "libcrypto.so.1.1"
+SBU_OSSL_LIB_Name = "libssl.so.1.1"
 
 
 CURRENT_PATH = sys.path[0]
@@ -35,11 +36,12 @@ def GetDLLPath(FileName):
 
     path_new = path + path_div + ".." + path_div
 
-    path_new = path_new + FileName
-    return path_new
+    absPath = str(Path(path_new).resolve())
+    absPath = absPath + path_div+ FileName
+    return absPath
 # End of GetDLLPath
 
-# 
+#
 # The function loads the crypto DLL and returns its handle
 def LoadDLLGetHandle():
     # Load the crypto libraries
@@ -57,7 +59,7 @@ def FreeDLLGetHandle(DllHandle):
 
 # Create a log file handle
 def create_log_file (log_file_path):
-    
+
     log_file = open(log_file_path, 'w')
     return log_file;
 

@@ -27,22 +27,22 @@ extern "C"
 /************************ Defines ******************************/
 
 /**********************************************************************************************************
- * CryptoCell ECC-25519 MODULE ERRORS    base address - 0x00F02100                *
+ * CryptoCell ECC-25519 MODULE ERRORS    base address - 0x00F02100 				  *
  **********************************************************************************************************/
 /*! Illegal input pointer */
 #define CC_EC_EDW_INVALID_INPUT_POINTER_ERROR                 (CC_EC_MONT_EDW_MODULE_ERROR_BASE + 0x00UL)
 /*! Illegal input size */
-#define CC_EC_EDW_INVALID_INPUT_SIZE_ERROR                (CC_EC_MONT_EDW_MODULE_ERROR_BASE + 0x01UL)
+#define CC_EC_EDW_INVALID_INPUT_SIZE_ERROR	              (CC_EC_MONT_EDW_MODULE_ERROR_BASE + 0x01UL)
 /*! Illegal scalar size */
-#define CC_EC_EDW_INVALID_SCALAR_SIZE_ERROR               (CC_EC_MONT_EDW_MODULE_ERROR_BASE + 0x02UL)
+#define CC_EC_EDW_INVALID_SCALAR_SIZE_ERROR	              (CC_EC_MONT_EDW_MODULE_ERROR_BASE + 0x02UL)
 /*! Illegal scalar data */
-#define CC_EC_EDW_INVALID_SCALAR_DATA_ERROR               (CC_EC_MONT_EDW_MODULE_ERROR_BASE + 0x03UL)
+#define CC_EC_EDW_INVALID_SCALAR_DATA_ERROR	              (CC_EC_MONT_EDW_MODULE_ERROR_BASE + 0x03UL)
 /*! Invalid RND context pointer */
 #define CC_EC_EDW_RND_CONTEXT_PTR_INVALID_ERROR              (CC_EC_MONT_EDW_MODULE_ERROR_BASE + 0x04UL)
 /*! Invalid RND generate vector functions pointer */
-#define CC_EC_EDW_RND_GEN_VECTOR_FUNC_ERROR               (CC_EC_MONT_EDW_MODULE_ERROR_BASE + 0x05UL)
+#define CC_EC_EDW_RND_GEN_VECTOR_FUNC_ERROR	              (CC_EC_MONT_EDW_MODULE_ERROR_BASE + 0x05UL)
 /*! Signing or verification operation failed */
-#define CC_EC_EDW_SIGN_VERIFY_FAILED_ERROR                (CC_EC_MONT_EDW_MODULE_ERROR_BASE + 0x20UL)
+#define CC_EC_EDW_SIGN_VERIFY_FAILED_ERROR	              (CC_EC_MONT_EDW_MODULE_ERROR_BASE + 0x20UL)
 /*! Illegal input pointer */
 #define CC_EC_MONT_INVALID_INPUT_POINTER_ERROR              (CC_EC_MONT_EDW_MODULE_ERROR_BASE + 0x30UL)
 /*! Illegal input size */

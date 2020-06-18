@@ -40,13 +40,13 @@ extern "C"
  *         on failure - a value from BootImagesVerifier_error.h
  */
 CCError_t CCCertValidateSWComps(CCSbFlashReadFunc flashRead_func,
-                  void *userContext,
-                  unsigned long hwBaseAddress,
-                  CCSbPubKeyIndexType_t keyIndex,
-                  CCSbCertParserSwCompsInfo_t *pSwImagesData,
-                  uint32_t *pSwImagesAddData,
-                  uint32_t *workspace_ptr,
-                  uint32_t workspaceSize);
+				  void *userContext,
+				  unsigned long hwBaseAddress,
+				  CCSbPubKeyIndexType_t keyIndex,
+				  CCSbCertParserSwCompsInfo_t *pSwImagesData,
+				  uint32_t *pSwImagesAddData,
+				  uint32_t *workspace_ptr,
+				  uint32_t workspaceSize);
 
 
 

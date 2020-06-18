@@ -34,7 +34,7 @@
  */
 CCError_t CC_PalInitIrq(void)
 {
-    return CC_SUCCESS;
+	return CC_SUCCESS;
 }
 
 /**

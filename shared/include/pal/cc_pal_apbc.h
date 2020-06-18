@@ -36,16 +36,16 @@ int32_t CC_PalApbcCntrValue(void);
 /*!
  @brief This function updates the atomic counter on each call to APB-C access.
 
- On each call to APB-C access, the counter is increased. At the end of each
+ On each call to APB-C access, the counter is increased. At the end of each 
  operation, the counter is decreased.
 
  @return \c 0 on success.
  @return A non-zero value on failure.
  */
 CCError_t CC_PalApbcModeSelect(
-               /*! [in] Determines the APB-C mode: TRUE (APB-C start access).
-               FALSE (APB-C finish access). */
-               CCBool isApbcInc
+               /*! [in] Determines the APB-C mode: TRUE (APB-C start access). 
+			   FALSE (APB-C finish access). */
+			   CCBool isApbcInc
                );
 
 

@@ -44,38 +44,38 @@ extern const uint8_t ecpki_supported_hash_modes[CC_ECPKI_HASH_NumOfModes];
 
 
 /**************************************************************************
- *                EcdsaSignInit function
+ *	              EcdsaSignInit function
  **************************************************************************/
 /**
-   \brief
-   The EcdsaSignInit functions user shall call first to perform the
+   \brief    
+   The EcdsaSignInit functions user shall call first to perform the 
    EC DSA Signing operation.
 
    The function performs the following steps:
-   -# Validates all the inputs of the function. If one of the received
-      parameters is not valid, the function returns an error.
-   -# Initializes the working context and other variables and structures.
-   -# Calls the CC_HashInit() function.
+   -# Validates all the inputs of the function. If one of the received 
+      parameters is not valid, the function returns an error. 
+   -# Initializes the working context and other variables and structures. 
+   -# Calls the CC_HashInit() function.   
    -# Exits the handler with the OK code.
 
    This function does not do ECDSA cryptographic processing. Rather, it
    prepares a context that is used by the Update() and Finish() functions.
-
+   
    NOTE: Using of HASH functions with HASH size great, than EC modulus size, is not recommended!
-
-
+   
+   
    @param[in,out] pSignUserContext A pointer to the user buffer for signing data.
-   @param[in]     pSignerPrivKey   A pointer to the private key that will be used to
+   @param[in] 	  pSignerPrivKey   A pointer to the private key that will be used to 
                                       sign the data.
    @param[in]     hashMode            Defines the hash mode used for DSA.
 
-   @return <b>CCError_t</b>: <br>
+   @return <b>CCError_t</b>: <br> 
                          CC_OK<br>
                          CC_ECDSA_SIGN_INVALID_USER_CONTEXT_PTR_ERROR
                          CC_ECDSA_SIGN_INVALID_USER_PRIV_KEY_PTR_ERROR
                          CC_ECDSA_SIGN_USER_PRIV_KEY_VALIDATION_TAG_ERROR
                          CC_ECDSA_SIGN_INVALID_DOMAIN_ID_ERROR
-                         CC_ECDSA_SIGN_ILLEGAL_HASH_OP_MODE_ERROR
+                         CC_ECDSA_SIGN_ILLEGAL_HASH_OP_MODE_ERROR		 
 */
 CEXPORT_C CCError_t EcdsaSignInit(CCEcdsaSignUserContext_t  *pSignUserContext, /*in/out*/
                                     CCEcpkiUserPrivKey_t      *pSignerPrivKey,   /*in*/
@@ -87,7 +87,7 @@ CEXPORT_C CCError_t EcdsaSignInit(CCEcdsaSignUserContext_t  *pSignUserContext, /
         /* The return error identifier */
         CCError_t err = CC_OK;
         /* defining a pointer to the active context allcated by the CCM */
-        EcdsaSignContext_t *pWorkingContext;
+        EcdsaSignContext_t *pWorkingContext;   
 #ifdef USE_MBEDTLS_CRYPTOCELL
         const mbedtls_md_info_t *md_info=NULL;
 #endif
@@ -133,7 +133,7 @@ CEXPORT_C CCError_t EcdsaSignInit(CCEcdsaSignUserContext_t  *pSignUserContext, /
                 goto End;
         }
 
-        pWorkingContext->hashMode = hashMode;
+        pWorkingContext->hashMode = hashMode;        
         pWorkingContext->hashResultSizeWords = ecpki_hash_info[pWorkingContext->hashMode].hashResultSize;
 
         if (ecpki_hash_info[pWorkingContext->hashMode].hashMode < CC_HASH_NumOfModes) {
@@ -174,42 +174,42 @@ CEXPORT_C CCError_t EcdsaSignInit(CCEcdsaSignUserContext_t  *pSignUserContext, /
                 CC_PalMemSetZero(pSignUserContext, sizeof(CCEcdsaSignUserContext_t));
         }
 
-        return err;
+        return err;     
 
 }/* _DX_ECDSA_SignInit */
 
 
 
 /**************************************************************************
- *                EcdsaSignUpdate function
+ *	              EcdsaSignUpdate function
  **************************************************************************/
 /**
-   @brief  Performs a hash  operation on data allocated by the user
+   @brief  Performs a hash  operation on data allocated by the user 
            before finally signing it.
-
-           In case user divides signing data by block, he must call the Update function
+  
+           In case user divides signing data by block, he must call the Update function 
            continuously a number of times until processing of the entire data block is complete.
-
-       NOTE: Using of HASH functions with HASH size great, than EC modulus size,
+ 
+       NOTE: Using of HASH functions with HASH size great, than EC modulus size, 
              is not recommended!
 
    @param [in,out] pSignUserContext - The pointer to the user buffer for signing the database.
-   @param [in] pMessageDataIn - The pointer to the message data block for calculating the HASH.
+   @param [in] pMessageDataIn - The pointer to the message data block for calculating the HASH.   	
    @param [in] dataInSize -  The size of the message data block, in bytes. The data size,
-                   passed on each call of the function, besides the last call, must be a multiple of
-                   the HASH block size according to used HASH mode.
-
-   @return <b>CCError_t</b>: <br>
+                   passed on each call of the function, besides the last call, must be a multiple of 
+                   the HASH block size according to used HASH mode.  
+   
+   @return <b>CCError_t</b>: <br> 
                          CC_OK<br>
                          CC_ECDSA_SIGN_INVALID_USER_CONTEXT_PTR_ERROR
                          CC_ECDSA_SIGN_USER_CONTEXT_VALIDATION_TAG_ERROR
-                         CC_ECDSA_SIGN_INVALID_MESSAGE_DATA_IN_PTR_ERROR
+                         CC_ECDSA_SIGN_INVALID_MESSAGE_DATA_IN_PTR_ERROR 
                          CC_ECDSA_SIGN_INVALID_MESSAGE_DATA_IN_SIZE_ERROR
                          CC_ECDSA_SIGN_ILLEGAL_HASH_OP_MODE_ERROR
  */
 CEXPORT_C CCError_t EcdsaSignUpdate(
                                            CCEcdsaSignUserContext_t  *pSignUserContext,  /*in/out*/
-                                           uint8_t                       *pMessageDataIn,    /* in */
+                                           uint8_t                       *pMessageDataIn,    /* in */ 
                                            size_t                        dataInSize         /* in */ )
 {
         /* FUNCTION DECLERATIONS */
@@ -218,7 +218,7 @@ CEXPORT_C CCError_t EcdsaSignUpdate(
         CCError_t err = CC_OK;
 
         /*  pointers to the inner contexts */
-        EcdsaSignContext_t *pWorkingContext;
+        EcdsaSignContext_t *pWorkingContext;         
 
         /* FUNCTION LOGIC */
 
@@ -270,7 +270,7 @@ CEXPORT_C CCError_t EcdsaSignUpdate(
                         goto End;
                 }
                 /* Copy the DataIn_ptr to the HASH_Result */
-                CC_PalMemCopy((uint8_t*)pWorkingContext->hashResult, pMessageDataIn, dataInSize);
+                CC_PalMemCopy((uint8_t*)pWorkingContext->hashResult, pMessageDataIn, dataInSize);             
         }
 
 
@@ -283,7 +283,7 @@ CEXPORT_C CCError_t EcdsaSignUpdate(
                 CC_PalMemSetZero(pSignUserContext, sizeof(CCEcdsaSignUserContext_t));
         }
 
-        return err;
+        return err;             
 
 }/* EcdsaSignUpdate */
 
@@ -291,29 +291,29 @@ CEXPORT_C CCError_t EcdsaSignUpdate(
 
 
 /**************************************************************************
- *                EcdsaSignFinishInt function
+ *	              EcdsaSignFinishInt function
  **************************************************************************/
 /**
-   @brief  Performs initialization of variables and structures, calls the hash function
+   @brief  Performs initialization of variables and structures, calls the hash function  
            for the last block of data (if necessary) and then calculates digital signature.
-
-           NOTE: Using of HASH functions with HASH size great, than EC modulus size,
+           
+           NOTE: Using of HASH functions with HASH size great, than EC modulus size, 
                  is not recommended!
              Algorithm according ANS X9.62 standard
 
    @param[in] pSignUserContext -  A pointer to the user buffer for signing database.
    @param[in,out] pRndContext - A pointer to the random generation function context.
    @param[in] pSignatureOut - A pointer to a buffer for output of signature.
-   @param[in,out] pSignatureOutSize- A pointer to the size of a user passed buffer
+   @param[in,out] pSignatureOutSize- A pointer to the size of a user passed buffer 
                      for signature (in), be not less than 2*orderSizeInBytes.
-   @param[out] isEphemerKeyInternal - A parameter defining whether the ephemeral key
+   @param[out] isEphemerKeyInternal - A parameter defining whether the ephemeral key 
                      is internal or external (1 or 0).
    @param[out] pEphemerKeyData - A pointer to external ephemeral key data. If it is given
-               (in case isEphemerKeyInternal=0), then the buffer must containing the
-               ephemeral private key of size equal to EC generator order size, where
+               (in case isEphemerKeyInternal=0), then the buffer must containing the 
+               ephemeral private key of size equal to EC generator order size, where 
                LS-word is left most and MS-word is right most one.
-
-   @return <b>CCError_t</b>: <br>
+ 
+   @return <b>CCError_t</b>: <br> 
                          CC_OK<br>
                          CC_ECDSA_SIGN_INVALID_USER_CONTEXT_PTR_ERROR <br>
                          CC_ECDSA_SIGN_USER_CONTEXT_VALIDATION_TAG_ERROR <br>
@@ -331,7 +331,7 @@ CEXPORT_C  CCError_t EcdsaSignFinishInt(
                                            uint8_t                        *pSignOut,         /*out*/
                                            size_t                         *pSignOutSize,     /*in/out*/
                                            uint32_t                        isEphemerKeyInternal,/*in*/
-                                           uint32_t                       *pEphemerKeyData   /*in*/)
+                                           uint32_t                       *pEphemerKeyData   /*in*/)            
 {
         /* FUNCTION DECLARATIONS */
 
@@ -349,8 +349,8 @@ CEXPORT_C  CCError_t EcdsaSignFinishInt(
         uint32_t  orderSizeInBytes = 0, orderSizeInWords = 0;
         uint32_t  *pSignC, *pSignD;
         uint32_t  *pMessRepres;
-        uint32_t  hashSizeWords;
-        uint32_t  *pTempBuff;
+        uint32_t  hashSizeWords; 
+        uint32_t  *pTempBuff;    
 
         /* FUNCTION LOGIC */
 
@@ -407,12 +407,12 @@ CEXPORT_C  CCError_t EcdsaSignFinishInt(
                 goto End;
         }
 
-        pPrivKey = (CCEcpkiPrivKey_t *)&pWorkingContext->ECDSA_SignerPrivKey.PrivKeyDbBuff;
+        pPrivKey = (CCEcpkiPrivKey_t *)&pWorkingContext->ECDSA_SignerPrivKey.PrivKeyDbBuff; 
         /* Initializing domain parameters */
         pDomain = &pPrivKey->domain;
         orderSizeInBytes =  CALC_FULL_BYTES(pDomain->ordSizeInBits);
         orderSizeInWords  =  CALC_FULL_32BIT_WORDS(pDomain->ordSizeInBits);
-        hashSizeWords  = pWorkingContext->hashResultSizeWords;
+        hashSizeWords  = pWorkingContext->hashResultSizeWords; 
 
         /* Temp buffers */
         pMessRepres = ((EcWrstDsaSignDb_t*)&pWorkingContext->ecdsaSignIntBuff)->tempBuff;
@@ -449,14 +449,14 @@ CEXPORT_C  CCError_t EcdsaSignFinishInt(
                 CC_CommonReverseMemcpy((uint8_t*)pMessRepres, (uint8_t*)(pWorkingContext->hashResult),
                                        sizeof(uint32_t)*hashSizeWords);
         } else {
-                EcWrstDsaTruncateMsg(pMessRepres,
+                EcWrstDsaTruncateMsg(pMessRepres, 
                                      (uint8_t*)(pWorkingContext->hashResult), pDomain->ordSizeInBits);
         }
 
 
         /* ********  Call LLF ECDSA Sinature function  ************ */
         err =  EcWrstDsaSign(
-                                     pRndContext, pPrivKey,
+                                     pRndContext, pPrivKey, 
                                      pMessRepres,
                                      isEphemerKeyInternal, pEphemerKeyData,
                                      pSignC, pSignD, pTempBuff);
@@ -483,10 +483,10 @@ CEXPORT_C  CCError_t EcdsaSignFinishInt(
                 goto End;
         }
 
-        *pSignOutSize = 2*orderSizeInBytes;
+        *pSignOutSize = 2*orderSizeInBytes;    
 
 
-        End:
+        End: 
         if (err != CC_OK) {
                 CC_PalMemSetZero(pSignOut, (2*orderSizeInBytes));
         }
@@ -496,14 +496,14 @@ CEXPORT_C  CCError_t EcdsaSignFinishInt(
         /* clear the users context  */
         CC_PalMemSetZero(pSignUserContext, sizeof(CCEcdsaSignUserContext_t));
 
-        return err;
+        return err;   
 
 }/* EcdsaSignFinish */
 
 
 
 /**************************************************************************
- *                CC_EcdsaSign - integrated function
+ *	              CC_EcdsaSign - integrated function
  **************************************************************************/
 /**
    @brief  Performs all of the ECDSA signing operations simultaneously.
@@ -519,11 +519,11 @@ This function simply calls the Init, Update and Finish functions continuously.
    @param[in,out] pSignUserContext - A pointer to the user buffer for signing database.
    @param[in]     pSignerPrivKey   - A pointer to a user private key structure.
    @param[in]     hashMode         - The enumerator variable defines hash function to be used.
-   @param[in]     pMessageDataIn   - A message data for calculation of hash.
+   @param[in] 	  pMessageDataIn   - A message data for calculation of hash.
    @param[in]     messageSizeInBytes  - A size of block of message data in bytes.
    @param[in]     SignOut_ptr      - A pointer to a buffer for output of signature.
    @param[in,out] SignOutSize_ptr  - A pointer to the size of user passed buffer for signature (in)
-                                        and size of actual signature (out). The size of buffer
+                                        and size of actual signature (out). The size of buffer 
                                         must be not less than 2*OrderSizeInBytes.
 
    @return <b>CCError_t
@@ -553,14 +553,14 @@ CEXPORT_C CCError_t CC_EcdsaSign(
                 return err;
 
         /*****  EcdsaSignUpdate  ********/
-        err = EcdsaSignUpdate(pSignUserContext, pMessageDataIn,
+        err = EcdsaSignUpdate(pSignUserContext, pMessageDataIn, 
                                     messageSizeInBytes);
         if (err!=CC_OK)
                 return err;
 
         /*****  EcdsaSignFinish  ********/
-        err = EcdsaSignFinish(pSignUserContext, pRndContext,
-                                    pSignOut, pSignOutSize);
+        err = EcdsaSignFinish(pSignUserContext, pRndContext,    
+                                    pSignOut, pSignOutSize);          
         return err;
 
 }/* END OF CC_EcdsaSign */

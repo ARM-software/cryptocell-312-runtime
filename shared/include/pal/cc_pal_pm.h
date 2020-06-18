@@ -11,7 +11,7 @@
 
 /*!
  @file
- @brief This file contains the definitions and APIs for power-management
+ @brief This file contains the definitions and APIs for power-management 
  implementation.
 
  This is a placeholder for platform-specific power management implementation.
@@ -34,13 +34,13 @@
 
 /*!
  @brief This function initiates an atomic counter.
-
+ 
  @return Void.
  */
 void CC_PalPowerSaveModeInit(void);
 
 /*!
- @brief This function returns the number of active registered CryptoCell
+ @brief This function returns the number of active registered CryptoCell 
  operations.
 
  @return The value of the atomic counter.
@@ -58,9 +58,9 @@ int32_t CC_PalPowerSaveModeStatus(void);
  @return A non-zero value on failure.
  */
 CCError_t CC_PalPowerSaveModeSelect(
-        /*! [in] TRUE: CryptoCell is active. FALSE: CryptoCell is idle. */
-        CCBool isPowerSaveMode
-        );
+		/*! [in] TRUE: CryptoCell is active. FALSE: CryptoCell is idle. */
+		CCBool isPowerSaveMode 
+		);
 
 
 /*!

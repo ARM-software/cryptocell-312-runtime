@@ -8,6 +8,9 @@ UTILS_LIB_PATH = ./lib
 UTILS_LIB_NAME = lib_oem_key_request.so
 UTILS_SCRIPTS_DIRNAME = $(UTIL_ROOT)
 
+include $(UTILS_ROOT)/src/Makefile.openssl
+
+UTILS_INC_PATH += $(OPENSSL_INC_DIR)
 
 DEPENDENCY_ON_EXISTENCE_OF = $(filter-out $(wildcard $(1)), $(1))
 

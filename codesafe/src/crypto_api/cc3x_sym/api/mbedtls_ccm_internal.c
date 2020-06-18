@@ -698,7 +698,7 @@ int mbedtls_ccm_star_nonce_generate(unsigned char * src_addr, uint32_t frame_cou
 
     if ((src_addr == NULL) || (nonce_buf == NULL))
     {
-        return MBEDTLS_ERR_CCM_BAD_INPUT;
+        return MBEDTLS_ERR_CCM_BAD_INPUT; 
     }
 
     if ((rc = mbedtls_ccm_get_security_level(size_of_t, &securityLevelField)) != 0)

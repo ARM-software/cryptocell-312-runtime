@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001-2019, Arm Limited and Contributors. All rights reserved.
+ * Copyright (c) 2001-2020, Arm Limited and Contributors. All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause OR Arm’s non-OSI source license
  */
@@ -54,7 +54,14 @@ SBUEXPORT_C int SBU_RSA_Sign(int pkcsVersion,
     unsigned char *pwd = NULL;
     int  ret_code;
 
-    OpenSSL_add_all_algorithms ();
+    ret_code = OPENSSL_init_crypto( OPENSSL_INIT_LOAD_CRYPTO_STRINGS    |
+                                    OPENSSL_INIT_ADD_ALL_CIPHERS        |
+                                    OPENSSL_INIT_ADD_ALL_DIGESTS,NULL);
+    /* OPENSSL_init_crypto returns 1 on success or 0 on error.*/
+    if (ret_code == 0) {
+        printf("OPENSSL_init_crypto failed \n");
+        return 1;
+    }
 
     /* parse the passphrase for a given file */
     if( strlen(pwdFileName) ) {
@@ -78,7 +85,7 @@ SBUEXPORT_C int SBU_RSA_Sign(int pkcsVersion,
         ret_code = Sign_v21(pRsaPrivKey, DataIn_ptr, DataInSize, Signature_ptr);
 
 END:
-    EVP_cleanup();
+
     return (ret_code);
 }
 

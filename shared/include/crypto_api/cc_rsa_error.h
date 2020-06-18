@@ -133,7 +133,7 @@ extern "C"
 /*! Illegal CRT second factor exponent size pointer (dQsize) . */
 #define CC_RSA_INVALID_CRT_SECOND_FACTOR_EXP_SIZE_PTR_ERROR (CC_RSA_MODULE_ERROR_BASE + 0x31UL)
 /*! Illegal CRT coefficient size pointer (qInvsize) . */
-#define CC_RSA_INVALID_CRT_COEFFICIENT_SIZE_PTR_ERROR        (CC_RSA_MODULE_ERROR_BASE + 0x32UL)
+#define CC_RSA_INVALID_CRT_COEFFICIENT_SIZE_PTR_ERROR		 (CC_RSA_MODULE_ERROR_BASE + 0x32UL)
 /*! Illegal CRT first factor size (Psize) . */
 #define CC_RSA_INVALID_CRT_FIRST_FACTOR_SIZE_ERROR         (CC_RSA_MODULE_ERROR_BASE + 0x33UL)
 /*! Illegal CRT second factor size (Qsize) . */
@@ -143,11 +143,11 @@ extern "C"
 /*! Illegal CRT second factor exponent size (dQsize) . */
 #define CC_RSA_INVALID_CRT_SECOND_FACTOR_EXP_SIZE_ERROR    (CC_RSA_MODULE_ERROR_BASE + 0x36UL)
 /*! Illegal CRT coefficient size (qInvsize) . */
-#define CC_RSA_INVALID_CRT_COEFFICIENT_SIZE_ERROR            (CC_RSA_MODULE_ERROR_BASE + 0x37UL)
+#define CC_RSA_INVALID_CRT_COEFFICIENT_SIZE_ERROR		     (CC_RSA_MODULE_ERROR_BASE + 0x37UL)
 /*! Key generation conditional test failed. */
-#define CC_RSA_KEY_GEN_CONDITIONAL_TEST_FAIL_ERROR       (CC_RSA_MODULE_ERROR_BASE + 0x38UL)
+#define	CC_RSA_KEY_GEN_CONDITIONAL_TEST_FAIL_ERROR	     (CC_RSA_MODULE_ERROR_BASE + 0x38UL)
 /*! Random generation in range failed. */
-#define CC_RSA_CAN_NOT_GENERATE_RAND_IN_RANGE            (CC_RSA_MODULE_ERROR_BASE + 0x39UL)
+#define	CC_RSA_CAN_NOT_GENERATE_RAND_IN_RANGE     	     (CC_RSA_MODULE_ERROR_BASE + 0x39UL)
 /*! Illegal CRT parameter size. */
 #define CC_RSA_INVALID_CRT_PARAMETR_SIZE_ERROR             (CC_RSA_MODULE_ERROR_BASE + 0x3AUL)
 /*! Illegal modulus. */
@@ -161,6 +161,7 @@ extern "C"
 /*! Key generation error. */
 #define CC_RSA_KEY_GENERATION_FAILURE_ERROR                (CC_RSA_MODULE_ERROR_BASE + 0x44UL)
 #define CC_RSA_INTERNAL_ERROR                              (CC_RSA_MODULE_ERROR_BASE + 0x45UL)
+#define CC_RSA_INVALID_INPUT_POINTER                       (CC_RSA_MODULE_ERROR_BASE + 0x46UL)
 
 
 /****************************************************************************************
@@ -185,9 +186,9 @@ extern "C"
 /*! Illegal message size (in no hash operation case). */
 #define CC_RSA_INVALID_MESSAGE_DATA_SIZE_IN_NO_HASH_CASE (CC_RSA_MODULE_ERROR_BASE+0x58UL)
 /*! Illegal message size. */
-#define CC_RSA_INVALID_MESSAGE_DATA_SIZE_IN_SSL_CASE       (CC_RSA_MODULE_ERROR_BASE+0x59UL)
+#define CC_RSA_INVALID_MESSAGE_DATA_SIZE_IN_SSL_CASE	   (CC_RSA_MODULE_ERROR_BASE+0x59UL)
 /*! PKCS#1 Ver 1.5 verify hash input inconsistent with hash mode derived from signature. */
-#define CC_RSA_PKCS15_VERIFY_BER_ENCODING_HASH_TYPE    (CC_RSA_MODULE_ERROR_BASE+0x60UL)  /*!< \internal PKCS#1 Ver 1.5 verify hash input inconsistent with hash mode derived from signature*/
+#define CC_RSA_PKCS15_VERIFY_BER_ENCODING_HASH_TYPE	   (CC_RSA_MODULE_ERROR_BASE+0x60UL)  /*!< \internal PKCS#1 Ver 1.5 verify hash input inconsistent with hash mode derived from signature*/
 /*! Illegal DER hash mode */
 #define CC_RSA_GET_DER_HASH_MODE_ILLEGAL                 (CC_RSA_MODULE_ERROR_BASE+0x61UL)
 

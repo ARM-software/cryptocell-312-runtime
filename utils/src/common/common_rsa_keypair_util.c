@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001-2019, Arm Limited and Contributors. All rights reserved.
+ * Copyright (c) 2001-2020, Arm Limited and Contributors. All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause OR Arm’s non-OSI source license
  */
@@ -49,6 +49,7 @@ int32_t CC_CommonGetNbuffFromKeyPair(int8_t *PemEncryptedFileName_ptr, int8_t *p
     uint8_t *pwd = NULL;
     RSA *rsa_pkey = NULL;
     int32_t i;
+    const BIGNUM *n;
 
     if ((NULL == pNbuff) ||
         (NULL == pNbuffSize) ||
@@ -78,7 +79,9 @@ int32_t CC_CommonGetNbuffFromKeyPair(int8_t *PemEncryptedFileName_ptr, int8_t *p
     }
 
     /* get the modulus from BIGNUM to uint8_t* */
-    BN_bn2bin(rsa_pkey->n, (uint8_t *)gN);
+    /* get n from RSA data */
+    RSA_get0_key(rsa_pkey, &n, NULL, NULL);
+    BN_bn2bin(n, (uint8_t *)gN);
     UTIL_LOG_BYTE_BUFF("gN", gN, SB_CERT_RSA_KEY_SIZE_IN_BYTES);
 
     /* copy the Np to the end of N */
@@ -117,6 +120,7 @@ int32_t CC_CommonGetNAndNpFromKeyPair(int8_t *PemEncryptedFileName_ptr, int8_t *
     RSA *rsa_pkey = NULL;
     DxRsaKeyNandNp_t *pNandNpBuff = (DxRsaKeyNandNp_t *)pNAndNp;
     int32_t i;
+    const BIGNUM *n;
 
     if ((NULL == pNAndNp) ||
         (NULL == pNAndNpSize) ||
@@ -147,10 +151,12 @@ int32_t CC_CommonGetNAndNpFromKeyPair(int8_t *PemEncryptedFileName_ptr, int8_t *
     }
 
     /* get the modulus from BIGNUM to uint8_t* */
-    BN_bn2bin(rsa_pkey->n, (uint8_t *)gN);
+    /* get n from RSA data */
+    RSA_get0_key(rsa_pkey, &n, NULL, NULL);
+    BN_bn2bin(n, (uint8_t *)gN);
 
     /* calculate the Np, and get the output as BIGNUM*/
-    if (CC_CommonRSACalculateNpInt(rsa_pkey->n, gNp, NP_BIN)) {
+    if (CC_CommonRSACalculateNpInt((BIGNUM *)n, gNp, NP_BIN)) {
         UTIL_LOG_ERR("Failed creating Np\n");
         goto END;
     }
@@ -191,6 +197,7 @@ int32_t CC_CommonGetNAndNpFromPubKey(int8_t *pubKeyFileName_ptr, uint8_t *pNAndN
     int32_t i;
     RSA *rsa_pkey = NULL;
     DxRsaKeyNandNp_t *pNandNpBuff = (DxRsaKeyNandNp_t *)pNAndNp;
+    const BIGNUM *n;
 
     if ((NULL == pNAndNp) ||
         (NULL == pNAndNpSize) ||
@@ -211,10 +218,12 @@ int32_t CC_CommonGetNAndNpFromPubKey(int8_t *pubKeyFileName_ptr, uint8_t *pNAndN
     }
 
     /* get the modulus from BIGNUM to uint8_t* */
-    BN_bn2bin(rsa_pkey->n, (uint8_t *)gN);
+    /* get n from RSA data */
+    RSA_get0_key(rsa_pkey, &n, NULL, NULL);
+    BN_bn2bin(n, (uint8_t *)gN);
 
     /* calculate the Np, and get the output as BIGNUM*/
-    if (CC_CommonRSACalculateNpInt(rsa_pkey->n, gNp, NP_BIN) != 0) {
+    if (CC_CommonRSACalculateNpInt((BIGNUM *)n, gNp, NP_BIN) != 0) {
         UTIL_LOG_ERR("Failed creating Np\n");
         goto END;
     }
@@ -302,6 +311,7 @@ int32_t CC_CommonCalcHBKFromFile(int8_t* pubKeyFileName_ptr, uint8_t *pHash, int
     int32_t status = -1;
     int32_t i;
     RSA *rsa_pkey = NULL;
+    const BIGNUM *n;
 
     rsa_pkey = RSA_new();
     if (NULL == rsa_pkey) {
@@ -314,11 +324,13 @@ int32_t CC_CommonCalcHBKFromFile(int8_t* pubKeyFileName_ptr, uint8_t *pHash, int
     }
 
     /* get the modulus from BIGNUM to uint8_t* */
-    BN_bn2bin(rsa_pkey->n, (uint8_t *)gN);
+    /* get n from RSA data */
+    RSA_get0_key(rsa_pkey, &n, NULL, NULL);
+    BN_bn2bin(n, (uint8_t *)gN);
     UTIL_LOG_BYTE_BUFF("gN", gN, SB_CERT_RSA_KEY_SIZE_IN_BYTES);
 
     /* calculate the Np, and get the output as BIGNUM*/
-    if (CC_CommonRSACalculateNpInt(rsa_pkey->n, gNp, NP_BIN) != 0) {
+    if (CC_CommonRSACalculateNpInt((BIGNUM *)n, gNp, NP_BIN) != 0) {
         UTIL_LOG_ERR("Failed creating Np\n");
         goto END;
     }

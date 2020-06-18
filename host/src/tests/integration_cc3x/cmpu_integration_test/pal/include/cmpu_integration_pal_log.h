@@ -45,7 +45,7 @@
 
 /** print an debug message */
 #if defined(TEST_DEBUG)
-#define CMPUIT_PRINT_DBG(format, ...)   \
+#define CMPUIT_PRINT_DBG(format, ...) 	\
                 do {\
                     CMPUIT_PRINT_FUNC_AND_LEVEL("debug"); \
                     CMPUIT_PRINT(format, ##__VA_ARGS__); \

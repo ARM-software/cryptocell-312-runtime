@@ -16,27 +16,27 @@ CCUtilError_t UtilCmacBuildDataForDerivation( const uint8_t               *pLabe
                                              size_t                      labelSize,
                                              const uint8_t               *pContextData,
                                              size_t                      contextSize,
-                                             uint8_t            *pDataIn,
-                                             size_t                 *pDataInSize,
+                                             uint8_t			*pDataIn,
+                                             size_t                	*pDataInSize,
                                              size_t                      derivedKeySize);
 /*!
  * This function is used to generate bytes stream for key derivation purposes.
  * The function gets an input data and can use use one of the following keys: KDR/Session/userKey.
  *
- * @param[in] keyType       - UTIL_USER_KEY / UTIL_ROOT_KEY
- * @param[in] pUserKey      - A pointer to the user's key buffer (case of CC_UTIL_USER_KEY).
- * @param[in] pDataIn       - A pointer to input buffer.
- * @param[in] dataInSize    - Size of data in bytes.
- * @param[out] pCmacResult  - A pointer to output buffer 16 bytes array.
+ * @param[in] keyType 		- UTIL_USER_KEY / UTIL_ROOT_KEY
+ * @param[in] pUserKey		- A pointer to the user's key buffer (case of CC_UTIL_USER_KEY).
+ * @param[in] pDataIn 		- A pointer to input buffer.
+ * @param[in] dataInSize 	- Size of data in bytes.
+ * @param[out] pCmacResult 	- A pointer to output buffer 16 bytes array.
  *
  * @return CC_UTIL_OK on success, otherwise failure
  *
  */
-CCUtilError_t UtilCmacDeriveKey(UtilKeyType_t       keyType,
-                CCAesUserKeyData_t      *pUserKey,
-                uint8_t         *pDataIn,
-                size_t                  dataInSize,
-                CCUtilAesCmacResult_t   pCmacResult);
+CCUtilError_t UtilCmacDeriveKey(UtilKeyType_t    	keyType,
+				CCAesUserKeyData_t     	*pUserKey,
+				uint8_t			*pDataIn,
+				size_t                	dataInSize,
+				CCUtilAesCmacResult_t   pCmacResult);
 
 
 #endif /* _CC_UTIL_CMAC_H */

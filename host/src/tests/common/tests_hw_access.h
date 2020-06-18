@@ -19,7 +19,7 @@ extern unsigned long    g_testHwEnvBaseAddr;
 
 /* inverse the bytes order in a word */
 #define REVERSE32(x)  ( ((ROT32((x)) & 0xff00ff00UL) >> 8) | ((ROT32((x)) & 0x00ff00ffUL) << 8) )
-
+					   
 #ifndef BIG__ENDIAN
 /* define word endiannes*/
 #define  SET_WORD_ENDIANESS
@@ -31,31 +31,31 @@ extern unsigned long    g_testHwEnvBaseAddr;
 #define SESSION_KEY_LEN_IN_BYTES 16
 
 /* LCS */
-#define TESTS_LCS_CM        0x0
-#define TESTS_LCS_DM        0x1
-#define TESTS_LCS_SEC_DISABLED  0x3
-#define TESTS_LCS_SEC_ENABLED   0x5
-#define TESTS_LCS_RMA       0x7
+#define TESTS_LCS_CM	 	0x0
+#define TESTS_LCS_DM	 	0x1
+#define TESTS_LCS_SEC_DISABLED	0x3
+#define TESTS_LCS_SEC_ENABLED	0x5
+#define TESTS_LCS_RMA		0x7
 
 /* errors */
-#define TEST_OK         0
-#define TEST_BURN_OTP_ERR   1
-#define TEST_BURN_OTP_KDR_ERR   2
-#define TEST_BURN_OTP_SCP_ERR   3
-#define TEST_BURN_OTP_LCS_ERR   4
-#define TEST_INVALID_PARAM_ERR  5
+#define TEST_OK 		0
+#define TEST_BURN_OTP_ERR 	1
+#define TEST_BURN_OTP_KDR_ERR 	2
+#define TEST_BURN_OTP_SCP_ERR 	3
+#define TEST_BURN_OTP_LCS_ERR 	4
+#define TEST_INVALID_PARAM_ERR 	5
 
 
 /* OTP memeory mapping */
 
-#define ENV_OTP_START_OFFSET        0x800UL
-#define TEST_OTP_SIZE_IN_WORDS      0x25
+#define ENV_OTP_START_OFFSET       	0x800UL
+#define TEST_OTP_SIZE_IN_WORDS 		0x25
 
 #define OTP_KRD_START_WORD_OFFSET    0x00
-#define OTP_KRD_SIZE_IN_WORDS        0x08
-#define OTP_KRD_SIZE_IN_BYTES        (OTP_KRD_SIZE_IN_WORDS * sizeof(uint32_t))
+#define OTP_KRD_SIZE_IN_WORDS 	     0x08
+#define OTP_KRD_SIZE_IN_BYTES 	     (OTP_KRD_SIZE_IN_WORDS * sizeof(uint32_t))
 #define OTP_SCP_START_WORD_OFFSET    0x08
-#define OTP_SCP_SIZE_IN_WORDS        0x02
+#define OTP_SCP_SIZE_IN_WORDS 	     0x02
 
 #define OTP_MANUFACTOR_FLAG_START_WORD_OFFSET 0x0A
 #define OTP_MANUFACTOR_FLAG_SIZE_IN_WORDS     0x01
@@ -77,120 +77,120 @@ extern unsigned long    g_testHwEnvBaseAddr;
 #define OTP_DM_DEF_HBK1_ZEROS_NUM_BITS 0x08
 
 #define OTP_KCE_START_WORD_OFFSET    0x0C
-#define OTP_KCE_SIZE_IN_WORDS        0x04
+#define OTP_KCE_SIZE_IN_WORDS 	     0x04
 #define OTP_HBK0_START_WORD_OFFSET   0x10
-#define OTP_HBK0_SIZE_IN_WORDS       0x04
+#define OTP_HBK0_SIZE_IN_WORDS 	     0x04
 #define OTP_HBK1_START_WORD_OFFSET   0x14
-#define OTP_HBK1_SIZE_IN_WORDS       0x04
+#define OTP_HBK1_SIZE_IN_WORDS 	     0x04
 #define OTP_SB_VER_START_WORD_OFFSET 0x18
 #define OTP_SB_VER_SIZE_IN_WORDS     0x01
 
 
-#define AIB_ADDR_REG_READ_ACCESS_BIT_SHIFT    0x10UL
+#define AIB_ADDR_REG_READ_ACCESS_BIT_SHIFT 	  0x10UL
 #define AIB_ADDR_REG_WRITE_ACCESS_BIT_SHIFT   0x11UL
 
-#define OTP_BASE_ADDR                0x00
-#define OTP_WRITE_ADDR               (0x1 << AIB_ADDR_REG_WRITE_ACCESS_BIT_SHIFT)
+#define OTP_BASE_ADDR			     0x00
+#define OTP_WRITE_ADDR           	 (0x1 << AIB_ADDR_REG_WRITE_ACCESS_BIT_SHIFT)
 #define OTP_READ_ADDR                (0x1 << AIB_ADDR_REG_READ_ACCESS_BIT_SHIFT)
 
 #ifdef BIG__ENDIAN
 #define TEST_CONVERT_BYTE_ARR_TO_WORD(inPtr, outWord) {\
-    outWord = (*inPtr<<24);\
-    outWord |= (*(inPtr+1)<<16);\
-    outWord |= (*(inPtr+2)<<8);\
-    outWord |= (*(inPtr+3));\
+	outWord = (*inPtr<<24);\
+	outWord |= (*(inPtr+1)<<16);\
+	outWord |= (*(inPtr+2)<<8);\
+	outWord |= (*(inPtr+3));\
 }
 #else
 #define TEST_CONVERT_BYTE_ARR_TO_WORD(inPtr, outWord) {\
-    outWord = (*(inPtr+3))<<24;\
-    outWord |= (*(inPtr+2))<<16;\
-    outWord |= (*(inPtr+1))<<8;\
-    outWord |= (*inPtr);\
+	outWord = (*(inPtr+3))<<24;\
+	outWord |= (*(inPtr+2))<<16;\
+	outWord |= (*(inPtr+1))<<8;\
+	outWord |= (*inPtr);\
 }
 #endif
 
 
 #define TEST_CALC_BUFF_ZEROS(wordBuf, buffWordSize, zeros) {\
-    int i = 0;\
-    int j = 0;\
-    int mask = 0;\
-    zeros = 0;\
-    for (i = 0; i< buffWordSize; i++) {\
-        for (j = 0; j<32; j++) {\
-            mask = 0x1;\
-            if (!(*(wordBuf+i) & (mask << j))) {\
-                zeros++;\
-            }\
-        }\
-    }\
+	int i = 0;\
+	int j = 0;\
+	int mask = 0;\
+	zeros = 0;\
+	for (i = 0; i< buffWordSize; i++) {\
+		for (j = 0; j<32; j++) {\
+			mask = 0x1;\
+			if (!(*(wordBuf+i) & (mask << j))) {\
+				zeros++;\
+			}\
+		}\
+	}\
 }
 
 
 #define READ_REG(offset) \
-        *(volatile uint32_t *)(g_testHwRegBaseAddr + (offset))
+		*(volatile uint32_t *)(g_testHwRegBaseAddr + (offset))
 
 #define WRITE_REG(offset, val)  { \
-    volatile uint32_t ii1; \
+	volatile uint32_t ii1; \
         (*(volatile uint32_t *)(g_testHwRegBaseAddr + (offset))) = (uint32_t)(val); \
         for(ii1=0; ii1<500; ii1++); \
 }
 
 
 #define READ_REE_REG(offset) \
-        (*(volatile uint32_t *)(g_testHwReeRegBaseAddr + (offset)));
+		(*(volatile uint32_t *)(g_testHwReeRegBaseAddr + (offset)));
 
 #define WRITE_REE_REG(offset, val)   { \
-    volatile uint32_t ii1; \
+	volatile uint32_t ii1; \
         (*(volatile uint32_t *)(g_testHwReeRegBaseAddr + (offset))) = (uint32_t)(val); \
         for(ii1=0; ii1<500; ii1++); \
 }
 
 
 #define GET_LCS(val) {\
-    do {\
-            val = READ_REG(DX_LCS_IS_VALID_REG_OFFSET);\
-    }while( !(val & 0x1));\
+	do {\
+        	val = READ_REG(DX_LCS_IS_VALID_REG_OFFSET);\
+   	}while( !(val & 0x1));\
     val = READ_REG(DX_LCS_REG_REG_OFFSET);\
     val &= 0xFF;\
     }
 
 #define WRITE_ENV(offset, val) { \
-    volatile uint32_t ii1; \
+	volatile uint32_t ii1; \
         (*(volatile uint32_t *)(g_testHwEnvBaseAddr + (offset))) = (uint32_t)(val); \
         for(ii1=0; ii1<500; ii1++);\
 }
 
 #define READ_ENV(offset) \
-    *(volatile uint32_t *)(g_testHwEnvBaseAddr + (offset))
+	*(volatile uint32_t *)(g_testHwEnvBaseAddr + (offset))
 
 
 #define WRITE_OTP(wordOffset, val) { \
-    volatile uint32_t ii1; \
+	volatile uint32_t ii1; \
         (*(volatile uint32_t *)(g_testHwEnvBaseAddr + ENV_OTP_START_OFFSET+ ((wordOffset)*sizeof(uint32_t)))) = (uint32_t)(val); \
         for(ii1=0; ii1<500; ii1++);\
 }
 
 #define READ_OTP(wordOffset) \
-    (*(volatile uint32_t *)(g_testHwEnvBaseAddr + ENV_OTP_START_OFFSET+ ((wordOffset)*sizeof(uint32_t))))
+	(*(volatile uint32_t *)(g_testHwEnvBaseAddr + ENV_OTP_START_OFFSET+ ((wordOffset)*sizeof(uint32_t))))
 
 
 
 /* Poll on the AIB bit */
 #define WAIT_ON_AIB_PROG_COMP_BIT() \
 do {\
-    int regVal;\
-    do {\
-        regVal = READ_REG(DX_AIB_FUSE_PROG_COMPLETED_REG_OFFSET);\
-    }while( !(regVal & 0x1 ));\
+	int regVal;\
+	do {\
+		regVal = READ_REG(DX_AIB_FUSE_PROG_COMPLETED_REG_OFFSET);\
+	}while( !(regVal & 0x1 ));\
 }while(0)
 
 /* Poll on the AIB acknowledge bit */
 #define WAIT_ON_AIB_ACK_BIT() \
 do {\
-    int regVal;\
-    do {\
-        regVal = READ_REG(DX_AIB_FUSE_ACK_REG_OFFSET);\
-    }while( !(regVal & 0x1));\
+	int regVal;\
+	do {\
+		regVal = READ_REG(DX_AIB_FUSE_ACK_REG_OFFSET);\
+	}while( !(regVal & 0x1));\
 }while(0)
 
 #define WRITE_AIB(addr, val) { \
@@ -201,15 +201,15 @@ do {\
 }
 
 #define READ_AIB(addr, val) { \
-        WRITE_REG(DX_HOST_AIB_ADDR_REG_REG_OFFSET, (OTP_BASE_ADDR|OTP_READ_ADDR)+addr); \
-        WAIT_ON_AIB_ACK_BIT(); \
-        val = READ_REG(DX_HOST_AIB_RDATA_REG_REG_OFFSET); \
+		WRITE_REG(DX_HOST_AIB_ADDR_REG_REG_OFFSET, (OTP_BASE_ADDR|OTP_READ_ADDR)+addr); \
+		WAIT_ON_AIB_ACK_BIT(); \
+		val = READ_REG(DX_HOST_AIB_RDATA_REG_REG_OFFSET); \
 }
 
 typedef enum otpHbkTypes_t{
-    TEST_OTP_HBK0_TYPE = 1, //HBK0
-    TEST_OTP_HBK1_TYPE = 2, //HBK1
-    TEST_OTP_HBK_256_TYPE = 4, //HBK
+	TEST_OTP_HBK0_TYPE = 1, //HBK0
+	TEST_OTP_HBK1_TYPE = 2, //HBK1
+	TEST_OTP_HBK_256_TYPE = 4, //HBK
 }OtpHbkTypes_t;
 
 

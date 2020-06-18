@@ -11,8 +11,8 @@
 
 /*!
  @file
- @brief This file contains the PAL layer log definitions.
-
+ @brief This file contains the PAL layer log definitions. 
+ 
  The log is disabled by default.
  */
 
@@ -99,7 +99,7 @@ static inline void CC_PalLogMaskSet(uint32_t setMask) {CC_UNUSED_PARAM(setMask);
 #endif
 #endif
 
-/*! Filter logging based on \p logMask, and dispatch to platform-specific
+/*! Filter logging based on \p logMask, and dispatch to platform-specific 
 logging mechanism. */
 #define _CC_PAL_LOG(level, format, ...)  \
     if (CC_PAL_logMask & CC_PAL_LOG_CUR_COMPONENT) \

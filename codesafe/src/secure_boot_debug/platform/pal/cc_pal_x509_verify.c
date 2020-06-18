@@ -13,24 +13,24 @@
 #include "secureboot_basetypes.h"
 /*!
 @brief This function checks validity period and should be implemented by customer.
-    <ul><li> The function gets as input start and end validiy period.</li>
-    <li> For each period the function gets indication flag.</li>
-    <li> if the flag is not 1 the value of current period wasn't defined be user.</li></ul>
+	<ul><li> The function gets as input start and end validiy period.</li>
+	<li> For each period the function gets indication flag.</li>
+	<li> if the flag is not 1 the value of current period wasn't defined be user.</li></ul>
 
-@return CC_OK   On success.
+@return CC_OK	On success.
 @return a non-zero value from sbrom_bsv_error.h on failure.
-*/
+*/    
 
 CCError_t CC_PalVerifyCertValidity(char *pNotBeforeStr,uint32_t notBeforeStrSize,uint8_t notBeforeStrFlag,
-    char *pNotAfterStr,uint32_t notAfterStrSize,uint8_t notAfterStrFlag){
+	char *pNotAfterStr,uint32_t notAfterStrSize,uint8_t notAfterStrFlag){
 
-    CC_UNUSED_PARAM(pNotBeforeStr);
-    CC_UNUSED_PARAM(pNotAfterStr);
-    CC_UNUSED_PARAM(notBeforeStrSize);
-    CC_UNUSED_PARAM(notBeforeStrFlag);
-    CC_UNUSED_PARAM(notAfterStrSize);
-    CC_UNUSED_PARAM(notAfterStrFlag);
+	CC_UNUSED_PARAM(pNotBeforeStr);
+	CC_UNUSED_PARAM(pNotAfterStr);
+	CC_UNUSED_PARAM(notBeforeStrSize);
+	CC_UNUSED_PARAM(notBeforeStrFlag);
+	CC_UNUSED_PARAM(notAfterStrSize);
+	CC_UNUSED_PARAM(notAfterStrFlag);
 
-    return 0;
+	return 0;
 }
 

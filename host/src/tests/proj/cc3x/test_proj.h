@@ -40,7 +40,7 @@ extern struct ProcessMappingArea_t processMap;
 
 
 /****************************************************************************/
-/*                              External API                                */
+/*   							External API  								*/
 /****************************************************************************/
 /*
  * @brief This function initializes platform, i.e maps its relevant memory regions.

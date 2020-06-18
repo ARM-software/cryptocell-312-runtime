@@ -18,72 +18,72 @@
 /******************************************************************************/
 uint8_t Test_PalMutexCreate(Test_PalMutex *ppMutexId)
 {
-    *ppMutexId = xSemaphoreCreateMutex(); /* function returns
-    SemaphoreHandle_t */
+	*ppMutexId = xSemaphoreCreateMutex(); /* function returns
+	SemaphoreHandle_t */
 
-    if (*ppMutexId == NULL)
-        return 1;
+	if (*ppMutexId == NULL)
+		return 1;
 
-    return 0;
+	return 0;
 }
 
 /******************************************************************************/
 uint8_t Test_PalMutexDestroy(Test_PalMutex *ppMutexId)
 {
-    vSemaphoreDelete(*ppMutexId);
-    return 0;
+	vSemaphoreDelete(*ppMutexId);
+	return 0;
 }
 
 /******************************************************************************/
 uint8_t Test_PalMutexLock(Test_PalMutex *ppMutexId, uint32_t timeout)
 {
-    if (!INFINITE)
-        timeout = timeout / portTICK_PERIOD_MS;
-    else
-        timeout = portMAX_DELAY;
+	if (!INFINITE)
+		timeout = timeout / portTICK_PERIOD_MS;
+	else
+		timeout = portMAX_DELAY;
 
-    return xSemaphoreTake(*ppMutexId, timeout) ? 0:1;
+	return xSemaphoreTake(*ppMutexId, timeout) ? 0:1;
 }
 
 /******************************************************************************/
 uint8_t Test_PalMutexUnlock(Test_PalMutex *ppMutexId)
 {
-    return xSemaphoreGive(*ppMutexId) ? 0:1;
+	return xSemaphoreGive(*ppMutexId) ? 0:1;
 }
 
 /******************************************************************************/
 uint8_t Test_PalBinarySemaphoreCreate(Test_PalBinarySemaphore *ppBinSemphrId)
 {
-    *ppBinSemphrId = xSemaphoreCreateBinary(); /* function returns
-    SemaphoreHandle_t */
+	*ppBinSemphrId = xSemaphoreCreateBinary(); /* function returns
+	SemaphoreHandle_t */
 
-    if (*ppBinSemphrId == NULL)
-        return 1;
+	if (*ppBinSemphrId == NULL)
+		return 1;
 
-    return 0;
+	return 0;
 }
 
 /******************************************************************************/
 uint8_t Test_PalBinarySemaphoreDestroy(Test_PalBinarySemaphore *ppBinSemphrId)
 {
-    vSemaphoreDelete(*ppBinSemphrId);
-    return 0;
+	vSemaphoreDelete(*ppBinSemphrId);
+	return 0;
 }
 
 /******************************************************************************/
 uint8_t Test_PalBinarySemaphoreTake(Test_PalBinarySemaphore *ppBinSemphrId,
-                            uint32_t timeout)
+							uint32_t timeout)
 {
-    if (!INFINITE)
-        timeout = timeout / portTICK_PERIOD_MS;
-    else
-        timeout = portMAX_DELAY;
+	if (!INFINITE)
+		timeout = timeout / portTICK_PERIOD_MS;
+	else
+		timeout = portMAX_DELAY;
 
-    return xSemaphoreTake(*ppBinSemphrId, timeout) ? 0:1;
+	return xSemaphoreTake(*ppBinSemphrId, timeout) ? 0:1;
 }
 
 /******************************************************************************/
 uint8_t Test_PalBinarySemaphoreGive(Test_PalBinarySemaphore *ppBinSemphrId)
 {
-    return xSemaphoreGive(*ppBinSemphrId) ? 0:1;
+	return xSemaphoreGive(*ppBinSemphrId) ? 0:1;
 }

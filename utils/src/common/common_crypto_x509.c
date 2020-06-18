@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001-2019, Arm Limited and Contributors. All rights reserved.
+ * Copyright (c) 2001-2020, Arm Limited and Contributors. All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause OR Arm’s non-OSI source license
  */
@@ -39,6 +39,7 @@
 #define MAX_EXT_VAL_LIST 80 // additional data
 #endif
 #define MAX_EXT_INT_VAL_LEN  80
+#define SN_LN_MAX_LEN   100
 
 /* multiple each byte by 3 for: each byte has 2 character representaion + ":" */
 #define MAX_EXT_VAL_LEN  (MAX_EXT_VAL_LIST *3 + EXT_PREFIX_LEN)
@@ -232,6 +233,8 @@ int32_t CC_CommonX509AddIntegerExtension(uint8_t *pCertBuff,
     uint8_t objId[MAX_OBJ_ID_LEN];
     uint8_t extValue[MAX_EXT_INT_VAL_LEN];
     int32_t writtenBytes = 0;
+    char SN[SN_LN_MAX_LEN];
+    char LN[SN_LN_MAX_LEN];
 
     /* validate inputs */
     if (NULL == pCertBuff) {
@@ -240,8 +243,10 @@ int32_t CC_CommonX509AddIntegerExtension(uint8_t *pCertBuff,
     }
 
     /* create new object */
+    snprintf(SN, sizeof(SN), "MyAlias%d%d", certType,extType);
+    snprintf(LN, sizeof(LN), "My Test Alias Extension%d%d", certType,extType);
     snprintf(objId, MAX_OBJ_ID_LEN, "2.20.%d.%d",certType,extType);
-    nid = OBJ_create(objId, "MyAlias", "My Test Alias Extension");
+    nid = OBJ_create(objId, SN, LN);
     if (OPEN_SSL_ERROR == nid) {
         UTIL_LOG_ERR("failed to OBJ_create\n");
         ERR_print_errors_fp(stderr);
@@ -308,6 +313,8 @@ int32_t CC_CommonX509AddStringExtension(uint8_t *pCertBuff,
     uint8_t extValue[MAX_EXT_VAL_LEN];
     int32_t writtenBytes = 0;
     int32_t pValIdx = 0;
+    char SN[SN_LN_MAX_LEN];
+    char LN[SN_LN_MAX_LEN];
 
     /* validate inputs */
     if ((NULL == pCertBuff) ||
@@ -317,8 +324,10 @@ int32_t CC_CommonX509AddStringExtension(uint8_t *pCertBuff,
         return (-1);
     }
     /* create new object */
+    snprintf(SN, sizeof(SN), "MyAlias%d%d", certType,extType);
+    snprintf(LN, sizeof(LN), "My Test Alias Extension%d%d", certType,extType);
     snprintf(objId, MAX_OBJ_ID_LEN, "2.20.%d.%d",certType,extType);
-    nid = OBJ_create(objId, "MyAlias", "My Test Alias Extension");
+    nid = OBJ_create(objId, SN, LN);
     if (OPEN_SSL_ERROR == nid) {
         UTIL_LOG_ERR("failed to OBJ_create\n");
         ERR_print_errors_fp(stderr);
@@ -387,13 +396,19 @@ int32_t CC_CommonX509SetKeyAndSign(uint8_t *pCertBuff,
     RSA  *pRsaKeyPair = NULL;
     uint8_t *pwd = NULL;
     EVP_PKEY *pKey     = NULL;
-    EVP_MD_CTX  mdCtx;
     EVP_PKEY_CTX *pKeyCtx = NULL;
+    EVP_MD_CTX  *mdCtx = EVP_MD_CTX_new();
 
+    if ( mdCtx == NULL )
+    {
+        UTIL_LOG_ERR("Failed with EVP_MD_CTX_new\n");
+        return(-1);
+    }
     /* validate inputs */
     if ((NULL == pCertBuff) ||
         (NULL == pKeyPairFileName)) {
-        UTIL_LOG_ERR("ilegal input\n");
+        UTIL_LOG_ERR("illegal input\n");
+        EVP_MD_CTX_free(mdCtx);
         return(-1);
     }
 
@@ -434,8 +449,8 @@ int32_t CC_CommonX509SetKeyAndSign(uint8_t *pCertBuff,
     }
 
 
-    EVP_MD_CTX_init(&mdCtx);
-    rc = EVP_DigestSignInit(&mdCtx, &pKeyCtx, EVP_sha256(), NULL, pKey);
+    EVP_MD_CTX_init(mdCtx);
+    rc = EVP_DigestSignInit(mdCtx, &pKeyCtx, EVP_sha256(), NULL, pKey);
     if (OPEN_SSL_ERROR == rc) {
         UTIL_LOG_ERR("failed to EVP_DigestSignInit\n");
         rc = 1;
@@ -470,7 +485,7 @@ int32_t CC_CommonX509SetKeyAndSign(uint8_t *pCertBuff,
     }
 
     UTIL_LOG_INFO("about to X509_sign_ctx\n");
-    rc = X509_sign_ctx(plCert, &mdCtx);
+    rc = X509_sign_ctx(plCert, mdCtx);
     if (OPEN_SSL_ERROR == rc) {
         UTIL_LOG_ERR("failed to X509_sign\n");
         rc = 1;
@@ -480,7 +495,8 @@ int32_t CC_CommonX509SetKeyAndSign(uint8_t *pCertBuff,
     UTIL_LOG_INFO("OK\n");
 
 END:
-    EVP_MD_CTX_cleanup(&mdCtx);
+    EVP_MD_CTX_reset(mdCtx);
+    EVP_MD_CTX_free(mdCtx);
     if (pRsaKeyPair != NULL) {
         RSA_free(pRsaKeyPair); // free pKey as well
     }

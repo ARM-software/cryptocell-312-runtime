@@ -55,48 +55,48 @@ extern "C"
 /* defines enumerator for all allowed PKA operations */
 typedef enum
 {
-    PKA_Terminate_ID    =  0,
-    PKA_Add_ID          =  1,
-    PKA_AddIm_ID        =  2,
-    PKA_Sub_ID          =  3,
-    PKA_SubIm_ID        =  4,
-    PKA_Neg_ID          =  5,
+	PKA_Terminate_ID    =  0,
+	PKA_Add_ID          =  1,
+	PKA_AddIm_ID        =  2,
+	PKA_Sub_ID          =  3,
+	PKA_SubIm_ID        =  4,
+	PKA_Neg_ID          =  5,
 
-    PKA_ModAdd_ID       =  6,
-    PKA_ModAddIm_ID     =  7,
-    PKA_ModSub_ID       =  8,
-    PKA_ModSubIm_ID     =  9,
-    PKA_ModNeg_ID       = 10,
+	PKA_ModAdd_ID       =  6,
+	PKA_ModAddIm_ID     =  7,
+	PKA_ModSub_ID       =  8,
+	PKA_ModSubIm_ID     =  9,
+	PKA_ModNeg_ID       = 10,
 
-    PKA_And_ID          = 11,
-    PKA_Tst0_ID         = 12,
-    PKA_Clr0_ID         = 13,
-    PKA_Clr_ID          = 14,
+	PKA_And_ID          = 11,
+	PKA_Tst0_ID         = 12,
+	PKA_Clr0_ID         = 13,
+	PKA_Clr_ID          = 14,
 
-    PKA_OR_ID           = 15,
-    PKA_Copy_ID         = 16,
-    PKA_SetBit0_ID      = 17,
+	PKA_OR_ID           = 15,
+	PKA_Copy_ID         = 16,
+	PKA_SetBit0_ID      = 17,
 
-    PKA_XOR_ID          = 18,
-    PKA_Flip0_ID        = 19,
-    PKA_InvBits_ID      = 20,
-    PKA_Compare_ID      = 21,
+	PKA_XOR_ID          = 18,
+	PKA_Flip0_ID        = 19,
+	PKA_InvBits_ID      = 20,
+	PKA_Compare_ID      = 21,
 
-    PKA_SHR0_ID         = 22,
-    PKA_SHR1_ID         = 23,
-    PKA_SHL0_ID         = 24,
-    PKA_SHL1_ID         = 25,
+	PKA_SHR0_ID         = 22,
+	PKA_SHR1_ID         = 23,
+	PKA_SHL0_ID         = 24,
+	PKA_SHL1_ID         = 25,
 
-    PKA_LMul_ID         = 26,
-    PKA_HMul_ID         = 27,
-    PKA_ModMul_ID       = 28,
-    PKA_ModMulNR_ID     = 29,
-    PKA_ModExp_ID       = 30,
+	PKA_LMul_ID         = 26,
+	PKA_HMul_ID         = 27,
+	PKA_ModMul_ID       = 28,
+	PKA_ModMulNR_ID     = 29,
+	PKA_ModExp_ID       = 30,
 
-    PKA_Div_ID          = 31,
-    PKA_ModInv_ID       = 32,
+	PKA_Div_ID          = 31,
+	PKA_ModInv_ID       = 32,
 
-    PKA_OpOffMode
+	PKA_OpOffMode
 
 } RSA_HW_PKI_PKA_OpID_t;
 
@@ -161,7 +161,7 @@ typedef  struct
  *            -  tab[0] = MaxSizeBits; //maximal size, usually this is exact modulus size in bits
  *            -  tab[1] = Extended size with extra bits, aligned to big words.
  *            -  other entrie,
-        uint32_t  Xs = PKA_SIZE_ENTRY_NOT_USED, means - not used.
+		uint32_t  Xs = PKA_SIZE_ENTRY_NOT_USED, means - not used.
  *
  * @param[in] opSizeInBits - Size of PKA operations (modulus) in bits. The value must be in interval
  *                          from defined Min. to Max. size bits.
@@ -171,8 +171,8 @@ typedef  struct
  *
  */
 void RSA_PKA_SetRegsSizesTab( uint32_t     opSizeInBits,
-                  int32_t      regSizeInPkaWords,
-                  unsigned long  VirtualHwBaseAddr);
+			      int32_t      regSizeInPkaWords,
+			      unsigned long  VirtualHwBaseAddr);
 
 
 /***********      PkaSetRegsMapTab function      **********************/
@@ -194,8 +194,8 @@ void RSA_PKA_SetRegsSizesTab( uint32_t     opSizeInBits,
  *
  */
 void RSA_PKA_SetRegsMapTab(int32_t   countOfRegs,
-               int32_t   regSizeInPkaWords,
-               unsigned long  VirtualHwBaseAddr);
+		       int32_t   regSizeInPkaWords,
+		       unsigned long  VirtualHwBaseAddr);
 
 
 
@@ -218,9 +218,9 @@ void RSA_PKA_SetRegsMapTab(int32_t   countOfRegs,
  * @return void
  *
  */
- void RSA_PKA_InitPka(uint32_t   opSizeInBits,  /*in*/
+ void RSA_PKA_InitPka(uint32_t   opSizeInBits,	/*in*/
                       uint32_t   regsCount,     /*in*/
-                      unsigned long  virtualHwBaseAddr) /*out*/;
+                      unsigned long  virtualHwBaseAddr)	/*out*/;
 
 
 /***********      RSA_HW_PKI_PKA_FinishPKA function      **********************/
@@ -256,14 +256,14 @@ void RSA_PKA_SetRegsMapTab(int32_t   countOfRegs,
  *        given some macros for calling this function according to each performed operation.
  *
  *     NOTES:
- *       -  Before executing modular operations, the modulus must be set into N=r0 register of PKA.
- *       -  Before modular multiplication and exponentiation must be calculated and set into NP=r1
+ *       -	Before executing modular operations, the modulus must be set into N=r0 register of PKA.
+ *       -	Before modular multiplication and exponentiation must be calculated and set into NP=r1
  *          register the Barrett modulus tag NP = 2**(sizeN+132) / N.
- *       -  In operations with immediate operands (IsImmediate bit = 1), the operand value (5-bit)
+ *       -	In operations with immediate operands (IsImmediate bit = 1), the operand value (5-bit)
  *          is treated as sign-extended. That means: low 4 bits are treated as unsigned operand
  *          value in range 0-15 and bit 5 is a sign (with extension to all high bits of register,
  *          in which the full operand shall be set).
- *       -  In shift operations the 5-bits shift operand is treated as unsigned value in range 0-31
+ *       -	In shift operations the 5-bits shift operand is treated as unsigned value in range 0-31
  *          (count of shifts is equaled to shift operand value + 1).
  *       -  The LMul operation gives the low half of multiplication result of length equaled to
  *          operation size. The leading not significant bits of the operands and result (including
@@ -280,14 +280,14 @@ void RSA_PKA_SetRegsMapTab(int32_t   countOfRegs,
  * @param[in] LenID    - ID of the length of operands according to register sizes table
  *                       (means the number of entry in the table). Valid values: 0...7.
  * @param[in] IsAImmed - If IsAImmed = 1, then operand A treated as immediate value, else -
- *                       as virtual register pointer. Valid values: 0,1.
+ *                       as virtual register pointer. Valid values:	0,1.
  * @param[in] OpA      - Operand A: an immediate value or virtual register pointer, according to IsAImmed
  *                       IsAImmed parameter. Valid values: 0 <= OpA <= 31.
  * @param[in] IsBImmed - If IsBImmed = 1, then operand B treated as immediate value, else -
- *                       as virtual register pointer. Valid values: 0,1.
+ *                       as virtual register pointer. Valid values:	0,1.
  * @param[in] OpB      - Operand B: an immediate value or virtual register pointer, according to IsAImmed
  *                       IsBImmed parameter. Valid values: 0 <= OpA <= 31.
- * @param[in] ResDiscard -  If ResDiscard = 1, then result is discarded.
+ * @param[in] ResDiscard -	If ResDiscard = 1, then result is discarded.
  * @param[in] Res        - Virtual register pointer for result data.
  *                         Valid values: 0 <= Res <= 31. Value Res = RES_DISCARD means result must be discarded.
  * @param[in] Tag        - The user defined value (Tag <= 31), used for indication goals.
@@ -302,16 +302,16 @@ void RSA_PKA_SetRegsMapTab(int32_t   countOfRegs,
  */
 
 
-CCError_t _RSA_PKA_ExecOperation( uint32_t      Opcode,      /*in*/
-                uint8_t       LenID,         /*in*/
-                uint8_t       IsAImmed,      /*in*/
-                int8_t        OpA,       /*in*/
-                uint8_t       IsBImmed,      /*in*/
-                int8_t        OpB,       /*in*/
-                uint8_t       ResDiscard,    /*in*/
-                int8_t        Res,       /*in*/
-                uint8_t       Tag,       /*in*/
-                    unsigned long      VirtualHwBaseAddr);
+CCError_t _RSA_PKA_ExecOperation( uint32_t      Opcode,		 /*in*/
+				uint8_t       LenID,		 /*in*/
+				uint8_t       IsAImmed,		 /*in*/
+				int8_t        OpA,		 /*in*/
+				uint8_t       IsBImmed,		 /*in*/
+				int8_t        OpB,		 /*in*/
+				uint8_t       ResDiscard,	 /*in*/
+				int8_t        Res,		 /*in*/
+				uint8_t       Tag, 		 /*in*/
+			        unsigned long      VirtualHwBaseAddr);
 
 /*************************************************************************/
 /* Macros for calling PKA operations (names according to operation issue */
@@ -431,11 +431,11 @@ CCError_t _RSA_PKA_ExecOperation( uint32_t      Opcode,      /*in*/
  * @return - no return parameters.
  *
  */
- void RSA_HW_PKI_PKA_CopyDataIntoPkaReg(uint32_t    dstReg,   /*out*/
-                       uint32_t    LenID,     /*in*/
-                       const  uint32_t  *src_ptr, /*in*/
-                       uint32_t    sizeWords,  /*in*/
-                       unsigned long  VirtualHwBaseAddr);
+ void RSA_HW_PKI_PKA_CopyDataIntoPkaReg(uint32_t    dstReg,	  /*out*/
+				       uint32_t    LenID,	  /*in*/
+				       const  uint32_t  *src_ptr, /*in*/
+				       uint32_t    sizeWords,  /*in*/
+				       unsigned long  VirtualHwBaseAddr);
 
 
 
@@ -458,10 +458,10 @@ CCError_t _RSA_PKA_ExecOperation( uint32_t      Opcode,      /*in*/
  * @return - no return parameters.
  *
  */
- void RSA_HW_PKI_PKA_CopyDataFromPkaReg(uint32_t *dst_ptr,      /*out*/
-                uint32_t  sizeWords,        /*in*/
-                uint32_t  srcReg,       /*in*/
-                unsigned long  VirtualHwBaseAddr);
+ void RSA_HW_PKI_PKA_CopyDataFromPkaReg(uint32_t *dst_ptr,		/*out*/
+			    uint32_t  sizeWords,		/*in*/
+			    uint32_t  srcReg,		/*in*/
+			    unsigned long  VirtualHwBaseAddr);
 
 
  /***********      RSA_HW_PKI_SET_MSB_ADDR      **********************/
@@ -489,12 +489,12 @@ void RSA_HW_PKI_SET_MSB_ADDR(unsigned long virtualAddress, uint32_t pkaAdrress);
  *
  */
 uint32_t  RSA_HW_PKA_CalcNpIntoPkaReg(uint32_t lenId,
-                uint32_t    sizeNbits,
-                int8_t      regN,
-                int8_t      regNp,   // out
-                int8_t      regTemp1,
-                int8_t      regTempN,
-                unsigned long VirtualHwBaseAddr) ;
+				uint32_t    sizeNbits,
+				int8_t      regN,
+				int8_t      regNp,   // out
+				int8_t      regTemp1,
+				int8_t      regTempN,
+				unsigned long VirtualHwBaseAddr) ;
 
 #ifdef __cplusplus
 }

@@ -27,18 +27,18 @@
 extern CC_PalMutex CCAsymCryptoMutex;
 
 
-/*********************************************************************/
+/*********************************************************************/ 
 /*!
-@brief The function performs EC Montgomery (Curve25519) scalar multiplication:
+@brief The function performs EC Montgomery (Curve25519) scalar multiplication: 
        resPoint = scalar * point.
-
- @return CCError_t
+  
+ @return CCError_t 
 */
 CCError_t EcMontScalarmult(
-                                uint32_t *resPoint,       /* [out] pointer to result point (compressed,
+                                uint32_t *resPoint,       /* [out] pointer to result point (compressed, 
                                                                    the size = ec modulus size) */
-                                uint32_t *scalar,         /* [in] pointer to the scalar, the size = ec order size) */
-                                uint32_t *inPoint,        /* [in] pointer to the input point (compressed,
+                                uint32_t *scalar,         /* [in] pointer to the scalar, the size = ec order size) */ 
+                                uint32_t *inPoint,        /* [in] pointer to the input point (compressed, 
                                                                        the size = ec modulus size)  */
                                 const CCEcMontDomain_t *pEcDomain /* [in] pointer to EC domain (curve). */)
 {
@@ -47,10 +47,10 @@ CCError_t EcMontScalarmult(
         uint32_t scalarSizeBits;
 
         /* get the hardware semaphore  */
-        err = CC_PalMutexLock(&CCAsymCryptoMutex, CC_INFINITE);
-        if (err != CC_SUCCESS) {
-            CC_PalAbort("Fail to acquire mutex\n");
-        }
+	    err = CC_PalMutexLock(&CCAsymCryptoMutex, CC_INFINITE);
+	    if (err != CC_SUCCESS) {
+		    CC_PalAbort("Fail to acquire mutex\n");
+	    }
 
         /* verify that the device is not in fatal error state before activating the PKA engine */
         CC_IS_FATAL_ERR_ON(err);
@@ -69,11 +69,11 @@ CCError_t EcMontScalarmult(
         }
 
         /* init PKA, mapping and sizes tables */
-        err = PkaInitPka(pEcDomain->ecModSizeInBits, 0,
+        err = PkaInitPka(pEcDomain->ecModSizeInBits, 0, 
                           &pkaRegsUsed/*regs.count*/);
 
         if (err != CC_SUCCESS) {
-                goto End;
+                goto End;        
         }
 
         scalarSizeBits = CC_CommonGetWordsCounterEffectiveSizeInBits(
@@ -81,11 +81,11 @@ CCError_t EcMontScalarmult(
 
         /* call EC scalar multiplication (with ladder) function */
         err = EcMontPkaScalMultWithLadder(
-                        resPoint,
-                        scalar,
-                        scalarSizeBits,
-                        inPoint,
-                        pEcDomain);
+                        resPoint,  
+                        scalar, 
+                        scalarSizeBits,    
+                        inPoint,   
+                        pEcDomain);     
 
 End:
 

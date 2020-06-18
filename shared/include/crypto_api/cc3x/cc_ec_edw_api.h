@@ -60,7 +60,7 @@ extern "C" {
 
 /*! EC_EDW temp buffer type definition. */
 typedef struct {
-    /*! Internal buffer. */
+	/*! Internal buffer. */
         uint32_t buff[CC_EC_EDW_TEMP_BUFF_SIZE_IN_32BIT_WORD];
  } CCEcEdwTempBuff_t;
 
@@ -76,16 +76,16 @@ typedef struct {
 @return A non-zero value on failure as defined cc_ec_mont_edw_error.h or cc_hash_error.h.
 */
 CIMPORT_C CCError_t CC_EcEdwSign (
-                      uint8_t       *pSign,                /*!< [out] Pointer to the detached signature. */
-                      size_t        *pSignSize,            /*!< [in/out] Pointer to the total size of the signature ;
-                                            In  - the buffer size, which (must be at least 2*EC order size);
-                                            Out - the actual size of output data. */
-                      const uint8_t *pMsg,                 /*!< [in] Pointer to the message. */
-                      size_t         msgSize,              /*!< [in] Message size in bytes: must be less, than
-                                            (CC_HASH_UPDATE_DATA_MAX_SIZE_IN_BYTES - 2*(EC_EDW modulus size)). */
-                      const uint8_t *pSignSecrKey,         /*!< [in] Pointer to the signer secret key (seed || pulKey) */
-                      size_t         secrKeySize,          /*!< [in] Size of signer secret key in bytes: (must be 2*EC order size). */
-                      CCEcEdwTempBuff_t *pTempBuff     /*!< [in] pointer to the temp buffer. */);
+				      uint8_t       *pSign,                /*!< [out] Pointer to the detached signature. */
+				      size_t        *pSignSize,            /*!< [in/out] Pointer to the total size of the signature ;
+										    In  - the buffer size, which (must be at least 2*EC order size);
+										    Out - the actual size of output data. */
+				      const uint8_t *pMsg,                 /*!< [in] Pointer to the message. */
+				      size_t         msgSize,              /*!< [in] Message size in bytes: must be less, than
+										    (CC_HASH_UPDATE_DATA_MAX_SIZE_IN_BYTES - 2*(EC_EDW modulus size)). */
+				      const uint8_t *pSignSecrKey,         /*!< [in] Pointer to the signer secret key (seed || pulKey) */
+				      size_t         secrKeySize,          /*!< [in] Size of signer secret key in bytes: (must be 2*EC order size). */
+				      CCEcEdwTempBuff_t *pTempBuff 	   /*!< [in] pointer to the temp buffer. */);
 
 
 
@@ -98,17 +98,17 @@ CIMPORT_C CCError_t CC_EcEdwSign (
 @return A non-zero value on failure as defined cc_ec_mont_edw_error.h or cc_hash_error.h.
 */
 CIMPORT_C CCError_t CC_EcEdwVerify(
-                       const uint8_t *pSign,                /*!< [in] Pointer to detached signature, i.e. the
-                                         signature is separated from the message. */
-                       size_t         signSize,             /*!< [in] Size of the signature in bytes, it must be
-                                         equal to two EC Order size in bytes. */
-                       const uint8_t *pSignPublKey,         /*!< [in] Pointer to signer public key. */
-                       size_t         publKeySize,          /*!< [in] Size of the signer public key in bytes; must be
-                                         equal to EC modulus size. */
-                       uint8_t       *pMsg,                 /*!< [in] Pointer to the message. */
-                       size_t         msgSize,              /*!< [in] Pointer to the message size in bytes. Must be less than
-                                         (CC_HASH_UPDATE_DATA_MAX_SIZE_IN_BYTES - 2*(EC_EDW modulus size)). */
-                       CCEcEdwTempBuff_t *pEcEdwTempBuff    /*!< [in] Pointer to temp buffer. */);
+				       const uint8_t *pSign,                /*!< [in] Pointer to detached signature, i.e. the
+										 signature is separated from the message. */
+				       size_t         signSize,             /*!< [in] Size of the signature in bytes, it must be
+										 equal to two EC Order size in bytes. */
+				       const uint8_t *pSignPublKey,         /*!< [in] Pointer to signer public key. */
+				       size_t         publKeySize,          /*!< [in] Size of the signer public key in bytes; must be
+										 equal to EC modulus size. */
+				       uint8_t       *pMsg,                 /*!< [in] Pointer to the message. */
+				       size_t         msgSize,              /*!< [in] Pointer to the message size in bytes. Must be less than
+										 (CC_HASH_UPDATE_DATA_MAX_SIZE_IN_BYTES - 2*(EC_EDW modulus size)). */
+				       CCEcEdwTempBuff_t *pEcEdwTempBuff    /*!< [in] Pointer to temp buffer. */);
 
 
 
@@ -122,38 +122,38 @@ CIMPORT_C CCError_t CC_EcEdwVerify(
 @return A non-zero value on failure as defined cc_ec_mont_edw_error.h or cc_hash_error.h.
 */
 CIMPORT_C CCError_t CC_EcEdwSeedKeyPair (
-                         const uint8_t *pSeed,                  /*!< [in] Pointer to the given seed. */
-                         size_t         seedSize,               /*!< [in] Size of the seed in bytes, must be equal the EC order size
-                                             in bytes. */
-                         uint8_t       *pSecrKey,               /*!< [out] Pointer to the secret key, including the seed, concatenated
-                                             with the public key. */
-                         size_t        *pSecrKeySize,           /*!< [in/out] Pointer to the size of the secret key buffer in bytes
-                                             (must be at least 2*EC order size). */
-                         uint8_t       *pPublKey,               /*!< [out] Pointer to the public key. */
-                         size_t        *pPublKeySize,           /*!< [in/out] Pointer to the size of the public key in bytes.
-                                                In  - the size of buffer must be at least EC modulus size;
-                                                Out - the actual size. */
-                         CCEcEdwTempBuff_t *pTempBuff       /*!< [in] Pointer to the temp buffer, for internal use. */);
+					     const uint8_t *pSeed,                  /*!< [in] Pointer to the given seed. */
+					     size_t         seedSize,               /*!< [in] Size of the seed in bytes, must be equal the EC order size
+											 in bytes. */
+					     uint8_t       *pSecrKey,               /*!< [out] Pointer to the secret key, including the seed, concatenated
+											 with the public key. */
+					     size_t        *pSecrKeySize,           /*!< [in/out] Pointer to the size of the secret key buffer in bytes
+											 (must be at least 2*EC order size). */
+					     uint8_t       *pPublKey,               /*!< [out] Pointer to the public key. */
+					     size_t        *pPublKeySize,           /*!< [in/out] Pointer to the size of the public key in bytes.
+											    In  - the size of buffer must be at least EC modulus size;
+											    Out - the actual size. */
+					     CCEcEdwTempBuff_t *pTempBuff  	    /*!< [in] Pointer to the temp buffer, for internal use. */);
 
 /*******************************************************************/
 /*!
  @brief The function randomly generates the EC Edwards ed25519 private and
-    public keys.
-    The generation is performed using EC Edwards ed25519 algorithm.
+	public keys.
+	The generation is performed using EC Edwards ed25519 algorithm.
 
 @return CC_OK on success,
 @return A non-zero value on failure as defined cc_ec_mont_edw_error.h, cc_hash_error.h or cc_rnd_error.
 */
 CIMPORT_C CCError_t CC_EcEdwKeyPair (
-                     uint8_t       *pSecrKey,               /*!< [out] Pointer to the secret key (including seed and public key). */
-                     size_t        *pSecrKeySize,           /*!< [in/out] Pointer to the size of the secret key in bytes,
-                                              (must be at least 2*EC order size). */
-                     uint8_t       *pPublKey,               /*!< [out] Pointer to the public key. */
-                     size_t        *pPublKeySize,           /*!< [in/out] - Pointer to the size of the public key in bytes.
-                                            In  - the size of buffer must be at least EC modulus size;
-                                            Out - the actual size. */
-                     CCRndContext_t *pRndContext,           /*!< [in/out] Pointer to the RND context buffer. */
-                     CCEcEdwTempBuff_t *pTempBuff           /*!< [in] Pointer to the temp buffer. */);
+					 uint8_t       *pSecrKey,               /*!< [out] Pointer to the secret key (including seed and public key). */
+					 size_t        *pSecrKeySize,           /*!< [in/out] Pointer to the size of the secret key in bytes,
+										      (must be at least 2*EC order size). */
+					 uint8_t       *pPublKey,               /*!< [out] Pointer to the public key. */
+					 size_t        *pPublKeySize,           /*!< [in/out] - Pointer to the size of the public key in bytes.
+											In  - the size of buffer must be at least EC modulus size;
+											Out - the actual size. */
+					 CCRndContext_t *pRndContext,           /*!< [in/out] Pointer to the RND context buffer. */
+					 CCEcEdwTempBuff_t *pTempBuff  	        /*!< [in] Pointer to the temp buffer. */);
 
 
 #ifdef __cplusplus

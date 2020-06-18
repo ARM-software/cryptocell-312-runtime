@@ -50,7 +50,7 @@ extern "C"
 /*! Illegal call to process additional data. */
 #define CC_AESCCM_ADDITIONAL_BLOCK_NOT_PERMITTED_ERROR   (CC_AESCCM_MODULE_ERROR_BASE + 0x0AUL)
 /*! Illegal dma buffer type. */
-#define CC_AESCCM_ILLEGAL_DMA_BUFF_TYPE_ERROR            (CC_AESCCM_MODULE_ERROR_BASE + 0x0BUL)
+#define CC_AESCCM_ILLEGAL_DMA_BUFF_TYPE_ERROR        	 (CC_AESCCM_MODULE_ERROR_BASE + 0x0BUL)
 /*! Illegal parameter size. */
 #define CC_AESCCM_ILLEGAL_PARAMETER_SIZE_ERROR           (CC_AESCCM_MODULE_ERROR_BASE + 0x0CUL)
 /*! Invalid parameter pointer. */
@@ -68,15 +68,15 @@ extern "C"
 /*! Text data input size is incorrect. */
 #define CC_AESCCM_NOT_ALL_DATA_WAS_PROCESSED_ERROR       (CC_AESCCM_MODULE_ERROR_BASE + 0x14UL)
 /*! Additional data was already processed (must be processed only once). */
-#define CC_AESCCM_ADATA_WAS_PROCESSED_ERROR          (CC_AESCCM_MODULE_ERROR_BASE + 0x15UL)
+#define CC_AESCCM_ADATA_WAS_PROCESSED_ERROR      	 (CC_AESCCM_MODULE_ERROR_BASE + 0x15UL)
 /*! Illegal Nonce size. */
-#define CC_AESCCM_ILLEGAL_NONCE_SIZE_ERROR       (CC_AESCCM_MODULE_ERROR_BASE + 0x16UL)
+#define CC_AESCCM_ILLEGAL_NONCE_SIZE_ERROR		 (CC_AESCCM_MODULE_ERROR_BASE + 0x16UL)
 /*! Illegal tag (MAC) size. */
-#define CC_AESCCM_ILLEGAL_TAG_SIZE_ERROR         (CC_AESCCM_MODULE_ERROR_BASE + 0x17UL)
+#define CC_AESCCM_ILLEGAL_TAG_SIZE_ERROR		 (CC_AESCCM_MODULE_ERROR_BASE + 0x17UL)
 /*! Illegal context size. */
-#define CC_AESCCM_CTX_SIZES_ERROR            (CC_AESCCM_MODULE_ERROR_BASE + 0x28UL)
+#define CC_AESCCM_CTX_SIZES_ERROR		   	 (CC_AESCCM_MODULE_ERROR_BASE + 0x28UL)
 /*! Illegal parameters. */
-#define CC_AESCCM_ILLEGAL_PARAMS_ERROR           (CC_AESCCM_MODULE_ERROR_BASE + 0x29UL)
+#define CC_AESCCM_ILLEGAL_PARAMS_ERROR		   	 (CC_AESCCM_MODULE_ERROR_BASE + 0x29UL)
 /*! AESCCM is not supported. */
 #define CC_AESCCM_IS_NOT_SUPPORTED                       (CC_AESCCM_MODULE_ERROR_BASE + 0xFFUL)
 

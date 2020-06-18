@@ -11,7 +11,7 @@ typedef unsigned int CCPalPerfData_t;
 
 /**
  * @brief   DSM environment bug - sometimes very long write operation.
- *     to overcome this bug we added while to make sure write opeartion is completed
+ * 	   to overcome this bug we added while to make sure write opeartion is completed
  *
  * @param[in]
  * *

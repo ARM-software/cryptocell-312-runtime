@@ -17,31 +17,31 @@
 
 void mbedtls_sha256_init( mbedtls_sha256_context *ctx )
 {
-    if( NULL == ctx  )
-    {
-        CC_PalAbort("\nctx is NULL\n");
-    }
-    CC_PalMemSetZero(ctx, sizeof( mbedtls_sha256_context ) );
+	if( NULL == ctx  )
+	{
+	    CC_PalAbort("\nctx is NULL\n");
+	}
+	CC_PalMemSetZero(ctx, sizeof( mbedtls_sha256_context ) );
 }
 
 void mbedtls_sha256_free( mbedtls_sha256_context *ctx )
 {
-    if( NULL == ctx  )
-    {
-        CC_PAL_LOG_ERR("\nctx is NULL\n");
-        return;
-    }
-    mbedtls_zeroize_internal( ctx, sizeof( mbedtls_sha256_context ) );
+	if( NULL == ctx  )
+	{
+	    CC_PAL_LOG_ERR("\nctx is NULL\n");
+	    return;
+	}
+	mbedtls_zeroize_internal( ctx, sizeof( mbedtls_sha256_context ) );
 }
 
 void mbedtls_sha256_clone( mbedtls_sha256_context *dst,
-                         const mbedtls_sha256_context *src )
+						 const mbedtls_sha256_context *src )
 {
     if( NULL == src || NULL == dst )
     {
         CC_PalAbort("src or dst are NULL\n" );
     }
-    *dst = *src;
+	*dst = *src;
 }
 
 /*
@@ -62,25 +62,25 @@ int mbedtls_sha256_starts_ret( mbedtls_sha256_context *ctx, int is224 )
             return MBEDTLS_ERR_SHA256_HW_ACCEL_FAILED;
     };
 
-    if( ret != 0 )
+	if( ret != 0 )
     {
         return( MBEDTLS_ERR_SHA256_HW_ACCEL_FAILED );
     }
 
-    return( ret );
+	return( ret );
 }
 
 int mbedtls_internal_sha256_process( mbedtls_sha256_context *ctx, const unsigned char data[64] )
 {
     int ret;
 
-    ret = mbedtls_sha_process_internal( ctx, data );
-    if( ret != 0 )
+	ret = mbedtls_sha_process_internal( ctx, data );
+	if( ret != 0 )
     {
         return( MBEDTLS_ERR_SHA256_HW_ACCEL_FAILED );
     }
 
-    return( ret );
+	return( ret );
 }
 
 
@@ -94,7 +94,7 @@ int mbedtls_sha256_update_ret( mbedtls_sha256_context *ctx, const unsigned char 
         return( MBEDTLS_ERR_SHA256_HW_ACCEL_FAILED );
     }
 
-    return( ret );
+	return( ret );
 }
 
 
@@ -106,24 +106,24 @@ int mbedtls_sha256_finish_ret( mbedtls_sha256_context *ctx, unsigned char output
     int ret;
     HashContext_t *pHashCtx = NULL;
 
-    if (NULL == ctx || NULL == output){
-        CC_PAL_LOG_ERR( "ctx or output buffer are NULL\n" );
-        return( MBEDTLS_ERR_SHA256_HW_ACCEL_FAILED );
-    }
+	if (NULL == ctx || NULL == output){
+		CC_PAL_LOG_ERR( "ctx or output buffer are NULL\n" );
+		return( MBEDTLS_ERR_SHA256_HW_ACCEL_FAILED );
+	}
 
     if (NULL == output){
         CC_PAL_LOG_ERR( "output is NULL\n" );
         return( MBEDTLS_ERR_SHA256_HW_ACCEL_FAILED );
     }
 
-    pHashCtx = (HashContext_t *)ctx;
-    ret = mbedtls_sha_finish_internal( ctx );
-    if( ret != 0 )
+	pHashCtx = (HashContext_t *)ctx;
+	ret = mbedtls_sha_finish_internal( ctx );
+	if( ret != 0 )
     {
         return( MBEDTLS_ERR_SHA256_HW_ACCEL_FAILED );
     }
 
-    /* Copy the result to the user buffer  */
+	/* Copy the result to the user buffer  */
     switch (pHashCtx->mode)
     {
         case HASH_SHA224:

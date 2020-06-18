@@ -12,9 +12,9 @@ extern "C"
 #endif
 
 
-uint32_t   mbedtls_hashUpdate(void   *pHashUserCtx,
-                        uint8_t     *pDataIn,
-                        size_t      dataInSize);
+uint32_t   mbedtls_hashUpdate(void	 *pHashUserCtx,
+                        uint8_t		*pDataIn,
+                        size_t     	dataInSize);
 
 void mbedtls_sha_init_internal( void *ctx );
 

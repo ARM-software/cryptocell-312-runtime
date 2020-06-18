@@ -26,11 +26,11 @@
 */
 /*********************************************************/
 int32_t CC_CommonAesCtrEncrypt(int8_t  *pDataIn,
-                  int32_t    dataInSize,
-                  int8_t   *pKey,
-                  int32_t    keySize,
-                  int8_t   *pIV,
-                  int8_t   *pEncBuff);
+			      int32_t    dataInSize,
+			      int8_t   *pKey,
+			      int32_t    keySize,
+			      int8_t   *pIV,
+			      int8_t   *pEncBuff);
 
 
 /**
@@ -46,9 +46,9 @@ int32_t CC_CommonAesCtrEncrypt(int8_t  *pDataIn,
 */
 /*********************************************************/
 int32_t CC_CommonAesCbcDecrypt(int8_t *pwdFileName,
-                  int8_t *pEncBuff,
-                  int32_t   encBuffSize,
-                  int8_t *pDecBuff);
+			      int8_t *pEncBuff,
+			      int32_t   encBuffSize,
+			      int8_t *pDecBuff);
 
 /**
  * @brief This function
@@ -61,11 +61,11 @@ int32_t CC_CommonAesCbcDecrypt(int8_t *pwdFileName,
 
  */
 int32_t CC_CommonAesCcmEncrypt(uint8_t *keyBuf,
-                  uint8_t *nonce, uint32_t nonceLen,
-                  uint8_t *aData, uint32_t aDatalen,
-                  uint8_t *plainTxt, uint32_t plainTxtLen,
-                  uint8_t *enBuff, uint32_t *enBuffLen,
-                  uint8_t *tagBuff, uint32_t tagBuffLen);
+			      uint8_t *nonce, uint32_t nonceLen,
+			      uint8_t *aData, uint32_t aDatalen,
+			      uint8_t *plainTxt, uint32_t plainTxtLen,
+			      uint8_t *enBuff, uint32_t *enBuffLen,
+			      uint8_t *tagBuff, uint32_t tagBuffLen);
 
 /**
 * @brief Encrypts (AES CMAC) a given data and returns it.
@@ -78,10 +78,10 @@ int32_t CC_CommonAesCcmEncrypt(uint8_t *keyBuf,
 */
 /*********************************************************/
 int32_t CC_CommonAesCmacEncrypt(int8_t *pDataIn,
-                   int32_t  dataInSize,
-                   int8_t *pKey,
-                   int32_t  keySize,
-                   int8_t *pOutput);
+			       int32_t  dataInSize,
+			       int8_t *pKey,
+			       int32_t  keySize,
+			       int8_t *pOutput);
 
 
 
@@ -117,9 +117,9 @@ int32_t CC_CommonCalcSha1(uint8_t *pDataIn, int32_t dataInSize, uint8_t *pHash);
 */
 /*********************************************************/
 int32_t CC_CommonAesEcbEncrypt(uint8_t  *pDataIn,
-                  uint32_t    dataInSize,
-                  uint8_t   *pKey,
-                  uint32_t    keySize,
-                  uint8_t   *pEncBuff);
+			      uint32_t    dataInSize,
+			      uint8_t   *pKey,
+			      uint32_t    keySize,
+			      uint8_t   *pEncBuff);
 
 #endif

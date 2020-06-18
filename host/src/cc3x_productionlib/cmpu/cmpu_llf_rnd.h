@@ -16,7 +16,7 @@
 #define CC_PROD_REQUIRED_ENTROPY_BITS                           256
 
 uint32_t CC_PROD_LLF_RND_GetTrngSource(uint32_t           **ppSourceOut,
-                       uint32_t           *pSourceOutSize,
+				       uint32_t           *pSourceOutSize,
                                        uint32_t *pRndWorkBuff);
 
 uint32_t CC_PROD_LLF_RND_VerifyGeneration(uint8_t *pBuff);

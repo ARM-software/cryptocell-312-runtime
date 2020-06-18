@@ -19,19 +19,19 @@
 #define BITS_IN_32BIT_WORD 32
 
 /* Peripheral ID registers values */
-#define TEST_PID_0_VAL      0x000000C0UL
-#define TEST_PID_1_VAL      0x000000B0UL
-#define TEST_PID_2_VAL      0x0000001BUL
-#define TEST_PID_3_VAL      0x00000000UL
-#define TEST_PID_4_VAL      0x00000004UL
-#define TEST_PID_SIZE_WORDS     5
+#define TEST_PID_0_VAL		0x000000C0UL
+#define TEST_PID_1_VAL		0x000000B0UL
+#define TEST_PID_2_VAL		0x0000001BUL
+#define TEST_PID_3_VAL		0x00000000UL
+#define TEST_PID_4_VAL		0x00000004UL
+#define TEST_PID_SIZE_WORDS		5
 
 /* Component ID registers values */
-#define TEST_CID_0_VAL      0x0DUL
-#define TEST_CID_1_VAL      0xF0UL
-#define TEST_CID_2_VAL      0x05UL
-#define TEST_CID_3_VAL      0xB1UL
-#define TEST_CID_SIZE_WORDS     4
+#define TEST_CID_0_VAL		0x0DUL
+#define TEST_CID_1_VAL		0xF0UL
+#define TEST_CID_2_VAL		0x05UL
+#define TEST_CID_3_VAL		0xB1UL
+#define TEST_CID_SIZE_WORDS		4
 
 /* HW KEYS */
 #define TEST_SB_HUK_KEY            0
@@ -54,26 +54,26 @@
 
 /* poll NVM register to be assure that the NVM boot is finished (and LCS and the keys are valid) */
 #define WAIT_NVM_IDLE() \
-    do {                                            \
-        uint32_t regVal;                                \
-        do {                                        \
-            regVal = TEST_READ_TEE_CC_REG(CC_REG_OFFSET(HOST_RGF, NVM_IS_IDLE));            \
-            regVal = CC_REG_FLD_GET(0, NVM_IS_IDLE, VALUE, regVal);         \
-        }while( !regVal );                              \
-    }while(0)
+	do { 											\
+		uint32_t regVal; 								\
+		do { 										\
+			regVal = TEST_READ_TEE_CC_REG(CC_REG_OFFSET(HOST_RGF, NVM_IS_IDLE));        	\
+			regVal = CC_REG_FLD_GET(0, NVM_IS_IDLE, VALUE, regVal);			\
+		}while( !regVal ); 								\
+	}while(0)
 
 /* turn off DFA  */
 #define TURN_DFA_OFF() {\
-    uint32_t regVal;                            \
-    regVal = TEST_READ_TEE_CC_REG(CC_REG_OFFSET(HOST_RGF, HOST_AO_LOCK_BITS));          \
-    CC_REG_FLD_SET(0, HOST_AO_LOCK_BITS, HOST_FORCE_DFA_ENABLE, regVal, 0); \
-    CC_REG_FLD_SET(0, HOST_AO_LOCK_BITS, HOST_DFA_ENABLE_LOCK, regVal, 1);  \
-    TEST_WRITE_TEE_CC_REG(CC_REG_OFFSET(HOST_RGF, HOST_AO_LOCK_BITS)  ,regVal );    \
-    TEST_WRITE_TEE_CC_REG(CC_REG_OFFSET(HOST_RGF, AES_DFA_IS_ON)  ,0 );         \
+	uint32_t regVal;							\
+	regVal = TEST_READ_TEE_CC_REG(CC_REG_OFFSET(HOST_RGF, HOST_AO_LOCK_BITS));          \
+	CC_REG_FLD_SET(0, HOST_AO_LOCK_BITS, HOST_FORCE_DFA_ENABLE, regVal, 0);	\
+	CC_REG_FLD_SET(0, HOST_AO_LOCK_BITS, HOST_DFA_ENABLE_LOCK, regVal, 1); 	\
+	TEST_WRITE_TEE_CC_REG(CC_REG_OFFSET(HOST_RGF, HOST_AO_LOCK_BITS)  ,regVal );	\
+	TEST_WRITE_TEE_CC_REG(CC_REG_OFFSET(HOST_RGF, AES_DFA_IS_ON)  ,0 );			\
 }
 
 /****************************************************************************/
-/*                              External API                                */
+/*   							External API  								*/
 /*
  * @brief This function Maps the proj HW.
  *

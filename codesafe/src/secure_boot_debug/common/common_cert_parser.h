@@ -15,7 +15,7 @@
 typedef struct {
         CCSbCertTypes_t certType;
         CCSbCertHeader_t certHeader;
-        uint8_t     *pCertBody;
+        uint8_t		*pCertBody;
         uint32_t certBodySize;
 } CertFieldsInfo_t;
 
@@ -45,8 +45,8 @@ uint32_t CCCertLoadCertificate(CCSbFlashReadFunc flashRead_func,
 CCError_t CCCertFieldsParse(BufferInfo32_t  *pCertInfo,
                             BufferInfo32_t  *pWorkspaceInfo,
                             CertFieldsInfo_t  *pCertFields,
-                            uint32_t    **ppCertStartSign,
-                            uint32_t    *pCertSignedSize,
+                            uint32_t	**ppCertStartSign,
+                            uint32_t	*pCertSignedSize,
                             BufferInfo32_t  *pX509HeaderInfo);
 
 

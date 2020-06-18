@@ -24,13 +24,13 @@
 
 /**
    @brief This function verifies the secure debug package size and returns the
-   pointer to each of the certificates within the package.
+   pointer to each of the certificates within the package. 
   from the ASN.1 first package we read the first certificate size.
   We jump to the following certificate and read its size from the ASN.1 header.
   If the sum of both certificates smaller than the certificate package size,
   we assume we have key certificate as well. And set the certificate pointers
   according to the ASN.1 header sizes of each certificate.
-  In any case we need to compare each certificate size and the certificate package
+  In any case we need to compare each certificate size and the certificate package 
   total size with the maximum possible value of the certificate sizes.
  */
 CCError_t CCCertSecDbgParse(uint32_t   *pDebugCertPkg,
@@ -43,9 +43,9 @@ CCError_t CCCertSecDbgParse(uint32_t   *pDebugCertPkg,
         uint32_t rc = 0;
         CCSbCertAsn1Data_t asn1DataCert1;
         CCSbCertAsn1Data_t asn1DataCert2;
-        uint32_t    cert2WordOffset;
+        uint32_t	cert2WordOffset;
         CCSbCertAsn1Data_t asn1DataCert3;
-        uint32_t    cert3WordOffset;
+        uint32_t	cert3WordOffset;
         uint32_t  numOfCert = 0;
         uint32_t  *pCertPkg = pDebugCertPkg;
         uint32_t  *pCertFirst;
@@ -238,27 +238,27 @@ uint32_t CCCertLoadCertificate(CCSbFlashReadFunc flashRead_func,
    Copy the public key into workspace
    Call SB_X509_ParseCertExtensions() to get pointers for:
       Proprietary header pointer
-      Copy Np into workspace following N
+      Copy Np into workspace following N 
       Proprietary Certificate body pointer
    Call UTIL_X509GetSignature(), and copy the signature into workspace, after Np.
  */
 uint32_t CCCertFieldsParse(BufferInfo32_t  *pCertInfo,
                            BufferInfo32_t  *pWorkspaceInfo,
                            CertFieldsInfo_t  *pCertFields,
-                           uint32_t **ppCertStartSign,
-                           uint32_t *pCertSignedSize,
+                           uint32_t	**ppCertStartSign,
+                           uint32_t	*pCertSignedSize,
                            BufferInfo32_t  *pX509HeaderInfo)
 {
         uint32_t rc = 0;
         uint32_t  certSignedSize = 0;
-        uint32_t    certStartOffest;
+        uint32_t	certStartOffest;
         CCSbCertHeader_t *lpCertHeader;
         uint8_t *lpNp;
         CCSbSignature_t *lpSignature;
         unsigned long startAddr = (unsigned long)pCertInfo->pBuffer;
         unsigned long endAddr = (unsigned long)pCertInfo->pBuffer + pCertInfo->bufferSize + sizeof(CCSbCertAsn1Data_t);
         CCX509CertHeaderInfo_t   *pX509UserData = NULL;
-        uint8_t     *pX509Cert = (uint8_t *)pCertInfo->pBuffer;
+        uint8_t		*pX509Cert = (uint8_t *)pCertInfo->pBuffer;
         workspaceInt_t  *lpWorkspaceInt;
 
         if ((pWorkspaceInfo == NULL) ||
@@ -338,7 +338,7 @@ error:
 }
 
 uint32_t CCCertGetUnsignedDataOffset(uint32_t *pCert,
-                     uint32_t *pUnsignedDataOffset)
+				     uint32_t *pUnsignedDataOffset)
 {
         CCError_t rc = CC_OK;
         uint8_t *plCert = (uint8_t *)pCert;
@@ -346,8 +346,8 @@ uint32_t CCCertGetUnsignedDataOffset(uint32_t *pCert,
         uint32_t certSizeFullWords;
 
         if ((pCert == NULL)||(pUnsignedDataOffset == NULL)){
-        return CC_BOOT_IMG_VERIFIER_INV_INPUT_PARAM;
-    }
+		return CC_BOOT_IMG_VERIFIER_INV_INPUT_PARAM;
+	}
 
         rc = UTIL_Asn1ReadItemVerifyTagFW((uint8_t **)&plCert,
                                           &asn1DataCert1,

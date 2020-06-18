@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001-2019, Arm Limited and Contributors. All rights reserved.
+ * Copyright (c) 2001-2020, Arm Limited and Contributors. All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause OR Arm’s non-OSI source license
  */
@@ -174,24 +174,31 @@ int32_t Sign_v21(RSA   *pRsaPrivKey,
 {
     uint8_t pDigest[HASH_SHA256_DIGEST_SIZE_IN_BYTES] = {0};
     uint32_t uDigestLen = HASH_SHA256_DIGEST_SIZE_IN_BYTES;
-    EVP_MD_CTX md_ctx;
     uint8_t EM[SB_CERT_RSA_KEY_SIZE_IN_BYTES] = {0};
     uint8_t pDecrypted[SB_CERT_RSA_KEY_SIZE_IN_BYTES] = {0};
     int32_t status = -1;
+    EVP_MD_CTX *md_ctx = EVP_MD_CTX_new();
 
     if ((NULL == pRsaPrivKey) ||
         (NULL == pDataIn) ||
         (NULL == pSignature)) {
         UTIL_LOG_ERR("ilegal input\n");
+        EVP_MD_CTX_free(md_ctx);
         return(status);
     }
-    /* hash the message */
-    EVP_MD_CTX_init(&md_ctx);
-    EVP_DigestInit(&md_ctx, EVP_sha256());
-    EVP_DigestUpdate(&md_ctx, (const void*) pDataIn, dataInSize);
-    EVP_DigestFinal(&md_ctx, pDigest, &uDigestLen);
-    EVP_MD_CTX_cleanup(&md_ctx);
+    if ( md_ctx == NULL )
+    {
+        UTIL_LOG_ERR("Failed with EVP_MD_CTX_new\n");
+        return(status);
+    }
 
+    /* hash the message */
+    EVP_MD_CTX_init(md_ctx);
+    EVP_DigestInit(md_ctx, EVP_sha256());
+    EVP_DigestUpdate(md_ctx, (const void*) pDataIn, dataInSize);
+    EVP_DigestFinal(md_ctx, pDigest, &uDigestLen);
+    EVP_MD_CTX_reset(md_ctx);
+    EVP_MD_CTX_free(md_ctx);
     /* compute the PSS padded data */
     if (!RSA_padding_add_PKCS1_PSS(pRsaPrivKey, EM, pDigest, EVP_sha256(), RSA_SALT_LEN)) {
         return(status);
@@ -237,7 +244,7 @@ int32_t Verify_v21(RSA *pRsaPubKey,
 {
     uint8_t pDigest[HASH_SHA256_DIGEST_SIZE_IN_BYTES] = {0};
     uint32_t uDigestLen = HASH_SHA256_DIGEST_SIZE_IN_BYTES;
-    EVP_MD_CTX md_ctx;
+    EVP_MD_CTX *md_ctx = EVP_MD_CTX_new();
     uint8_t EM[SB_CERT_RSA_KEY_SIZE_IN_BYTES] = {0};
     uint8_t pDecrypted[SB_CERT_RSA_KEY_SIZE_IN_BYTES] = {0};
     int32_t status = -1;
@@ -246,15 +253,17 @@ int32_t Verify_v21(RSA *pRsaPubKey,
         (NULL == pDataIn) ||
         (NULL == pSignature)) {
         UTIL_LOG_ERR("ilegal input\n");
+        EVP_MD_CTX_free(md_ctx);
         return(status);
     }
 
     /* hash the message */
-    EVP_MD_CTX_init(&md_ctx);
-    EVP_DigestInit(&md_ctx, EVP_sha256());
-    EVP_DigestUpdate(&md_ctx, (const void*) pDataIn, dataInSize);
-    EVP_DigestFinal(&md_ctx, pDigest, &uDigestLen);
-    EVP_MD_CTX_cleanup(&md_ctx);
+    EVP_MD_CTX_init(md_ctx);
+    EVP_DigestInit(md_ctx, EVP_sha256());
+    EVP_DigestUpdate(md_ctx, (const void*) pDataIn, dataInSize);
+    EVP_DigestFinal(md_ctx, pDigest, &uDigestLen);
+    EVP_MD_CTX_reset(md_ctx);
+    EVP_MD_CTX_free(md_ctx);
 
     /* decrypt the signature to get the hash */
     if (RSA_public_decrypt(SB_CERT_RSA_KEY_SIZE_IN_BYTES, pSignature, pDecrypted, pRsaPubKey, RSA_NO_PADDING) == -1) {
@@ -296,7 +305,8 @@ int32_t CC_CommonRsaVerify(int32_t  pkcsVersion,
     RSA  *pRsaPubKey = NULL;
     int32_t status = -1;
     uint8_t pubKeyExp[] = {0x01, 0x00, 0x01};
-
+    BIGNUM * n;
+    BIGNUM * e;
     if ((NULL == pPubKey) ||
         (NULL == pDataIn) ||
         (NULL == pSignature)) {
@@ -311,14 +321,22 @@ int32_t CC_CommonRsaVerify(int32_t  pkcsVersion,
     }
 
     /* set the modulus  and exponent from int8_t * into RSA key as BIGNUM */
-    pRsaPubKey->n = BN_bin2bn(pPubKey, SB_CERT_RSA_KEY_SIZE_IN_BYTES, NULL);
-    if (NULL == pRsaPubKey->n) {
-        UTIL_LOG_ERR("Failed BN_bin2bn for n\n");
+    n = BN_new();
+    if (NULL == n) {
+        UTIL_LOG_ERR("Failed to allocate n\n");
         goto END;
     }
-    pRsaPubKey->e = BN_bin2bn(pubKeyExp, sizeof(pubKeyExp),NULL);
-    if (NULL == pRsaPubKey->e) {
-        UTIL_LOG_ERR("Failed BN_bin2bn for e\n");
+    BN_bin2bn(pPubKey, SB_CERT_RSA_KEY_SIZE_IN_BYTES, n);
+    e = BN_new();
+    if (NULL == e) {
+        UTIL_LOG_ERR("Failed to allocate e\n");
+        /* n is already allocated - free it */
+        BN_free(n);
+        goto END;
+    }
+    BN_bin2bn(pubKeyExp, sizeof(pubKeyExp), e);
+    if ( 0 == RSA_set0_key( pRsaPubKey, n, e, NULL) ) {
+        UTIL_LOG_ERR("Failed to RSA_set0_key for pRsaPubKey\n");
         goto END;
     }
 
@@ -331,6 +349,7 @@ int32_t CC_CommonRsaVerify(int32_t  pkcsVersion,
 
     END:
     if (pRsaPubKey != NULL) {
+        /* RSA_free also frees n and e, once RSA_set0_key is called */
         RSA_free(pRsaPubKey);
     }
     return status;
@@ -437,6 +456,8 @@ int32_t CC_CommonRsaEncrypt(int32_t pkcsVersion,
     RSA  *pRsaPubKey = NULL;
     int32_t status = -1;
     uint8_t pubKeyExp[] = {0x01, 0x00, 0x01};
+    BIGNUM * n;
+    BIGNUM * e;
 
     if ((NULL == pPubKey) ||
         (NULL == pDataIn) ||
@@ -452,14 +473,22 @@ int32_t CC_CommonRsaEncrypt(int32_t pkcsVersion,
     }
 
     /* set the modulus  and exponent from int8_t * into RSA key as BIGNUM */
-    pRsaPubKey->n = BN_bin2bn(pPubKey, SB_CERT_RSA_KEY_SIZE_IN_BYTES, NULL);
-    if (NULL == pRsaPubKey->n) {
-        UTIL_LOG_ERR("Failed BN_bin2bn for n\n");
+    n = BN_new();
+    if (NULL == n) {
+        UTIL_LOG_ERR("Failed to allocate n\n");
         goto rsaEncryptEnd;
     }
-    pRsaPubKey->e = BN_bin2bn(pubKeyExp, sizeof(pubKeyExp),NULL);
-    if (NULL == pRsaPubKey->e) {
-        UTIL_LOG_ERR("Failed BN_bin2bn for e\n");
+    BN_bin2bn(pPubKey, SB_CERT_RSA_KEY_SIZE_IN_BYTES, n);
+    e = BN_new();
+    if (NULL == e) {
+        UTIL_LOG_ERR("Failed to allocate e\n");
+        /* n is already allocated - free it */
+        BN_free(n);
+        goto rsaEncryptEnd;
+    }
+    BN_bin2bn(pubKeyExp, sizeof(pubKeyExp), e);
+    if ( 0 == RSA_set0_key( pRsaPubKey, n, e, NULL) ) {
+        UTIL_LOG_ERR("Failed to RSA_set0_key for pRsaPubKey\n");
         goto rsaEncryptEnd;
     }
 
@@ -474,6 +503,7 @@ int32_t CC_CommonRsaEncrypt(int32_t pkcsVersion,
 
     rsaEncryptEnd:
     if (pRsaPubKey != NULL) {
+        /* RSA_free also frees n and e, once RSA_set0_key is called */
         RSA_free(pRsaPubKey);
     }
     return status;

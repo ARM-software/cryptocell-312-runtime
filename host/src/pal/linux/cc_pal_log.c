@@ -20,21 +20,21 @@ uint32_t CC_PAL_logMask = 0xFFFFFFFF;
 
 void CC_PalLogInit(void)
 {
-    static int initOnce = 0;
+	static int initOnce = 0;
 
-    if (!initOnce)
-        openlog("CC.Proc.", SYSLOG_OPTIONS, LOG_USER);
-    initOnce = 1;
+	if (!initOnce)
+		openlog("CC.Proc.", SYSLOG_OPTIONS, LOG_USER);
+	initOnce = 1;
 }
 
 void CC_PalLogLevelSet(int setLevel)
 {
-    CC_PAL_logLevel = setLevel;
+	CC_PAL_logLevel = setLevel;
 }
 
 void CC_PalLogMaskSet(uint32_t setMask)
 {
-    CC_PAL_logMask = setMask;
+	CC_PAL_logMask = setMask;
 }
 
 void CC_PalLog(int level, const char * format, ...)

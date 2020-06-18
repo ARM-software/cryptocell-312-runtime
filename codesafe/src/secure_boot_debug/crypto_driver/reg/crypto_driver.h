@@ -22,12 +22,12 @@ extern "C"
 /*!
  * @brief This function gives the functionality of integrated hash
  *
- * @param[in] hwBaseAddress     - CryptoCell base address
- * @param[out] hashResult   - the HASH result.
+ * @param[in] hwBaseAddress 	- CryptoCell base address
+ * @param[out] hashResult 	- the HASH result.
  *
  */
-#define SBROM_CryptoHash(wBaseAddress, inputDataAddr, dataSize, hashBuff)       \
-    CC_BsvSHA256(hwBaseAddress, (uint8_t *)inputDataAddr, (size_t)dataSize, hashBuff);
+#define SBROM_CryptoHash(wBaseAddress, inputDataAddr, dataSize, hashBuff)		\
+	CC_BsvSHA256(hwBaseAddress, (uint8_t *)inputDataAddr, (size_t)dataSize, hashBuff);
 
 
 

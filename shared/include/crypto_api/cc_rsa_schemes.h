@@ -47,27 +47,27 @@ CIMPORT_C CCError_t CC_RsaSchemesEncrypt(
                         CCRndContext_t *rndContext_ptr,         /*!< [in/out] Pointer to the RND context buffer. */
                         CCRsaUserPubKey_t  *UserPubKey_ptr,     /*!< [in]  Pointer to the public key data structure. */
                         CCRsaPrimeData_t   *PrimeData_ptr,      /*!< [in]  Pointer to a temporary structure that is internally used as workspace for the
-                                           Encryption operation. */
+								           Encryption operation. */
                         CCRsaHashOpMode_t hashFunc,             /*!< [in]  The HASH function to be used. One of the supported SHA-x HASH modes, as defined
-                                           in ::CCRsaHashOpMode_t (MD5 is not supported).*/
+								           in ::CCRsaHashOpMode_t (MD5 is not supported).*/
                         uint8_t  *L,                            /*!< [in]  The label input pointer. Relevant for Public-Key Cryptography Standards (PKCS) #1 RSA
-                                       Cryptography Specifications Version 2.1 only. NULL by default.
-                                           NULL for Public-Key Cryptography Standards (PKCS) #1: RSA Encryption Standard Version 1.5. */
+									   Cryptography Specifications Version 2.1 only. NULL by default.
+								           NULL for Public-Key Cryptography Standards (PKCS) #1: RSA Encryption Standard Version 1.5. */
                         size_t    Llen,                         /*!< [in]  The label length. Relevant for Public-Key Cryptography Standards (PKCS) #1 RSA Cryptography
-                                       Specifications Version 2.1 only. Zero by default. Must be <=2048. Zero for Public-Key Cryptography
-                                       Standards (PKCS) #1: RSA Encryption Standard Version 1.5. */
+									   Specifications Version 2.1 only. Zero by default. Must be <=2048. Zero for Public-Key Cryptography
+									   Standards (PKCS) #1: RSA Encryption Standard Version 1.5. */
                         CCPkcs1Mgf_t MGF,                       /*!< [in]  The mask generation function. [PKCS1_2.1] defines MGF1, so the only value
-                                       allowed here is CC_PKCS1_MGF1. */
+									   allowed here is CC_PKCS1_MGF1. */
                         uint8_t   *DataIn_ptr,                  /*!< [in]  Pointer to the data to encrypt. */
                         size_t     DataInSize,                  /*!< [in]  The size (in bytes) of the data to encrypt. The data size must be:
                                                                            <ul><li>For Public-Key Cryptography Standards (PKCS) #1 RSA Cryptography Specifications
-                                           Version 2.1, DataSize <= modulus size - 2*HashLen - 2.</li>
+										   Version 2.1, DataSize <= modulus size - 2*HashLen - 2.</li>
                                                                            <li>For Public-Key Cryptography Standards (PKCS) #1: RSA Encryption Standard Version 1.5,
-                                           DataSize <= modulus size - 11.</li></ul> */
+									       DataSize <= modulus size - 11.</li></ul> */
                         uint8_t   *Output_ptr,                  /*!< [out] Pointer to the encrypted data. The buffer must be at least modulus size bytes long. */
                         CCPkcs1Version_t  PKCS1_ver             /*!< [in] Public-Key Cryptography Standards (PKCS) #1: RSA Encryption Standard Version 1.5 or
-                                      Public-Key Cryptography Standards (PKCS) #1 RSA Cryptography Specifications Version 2.1,
-                                      according to the functionality required. */
+									  Public-Key Cryptography Standards (PKCS) #1 RSA Cryptography Specifications Version 2.1,
+									  according to the functionality required. */
 );
 
 /*!
@@ -75,7 +75,7 @@ CIMPORT_C CCError_t CC_RsaSchemesEncrypt(
    as defined in section 8.1 of Public-Key Cryptography Standards (PKCS) #1 RSA Cryptography Specifications Version 2.1.
 
    \note It is not recommended to use hash MD5 in Public-Key Cryptography Standards (PKCS) #1 RSA Cryptography
-     Specifications Version 2.1, therefore it is not supported.
+	 Specifications Version 2.1, therefore it is not supported.
 
    This function combines the RSA encryption primitive and the
    EME-OAEP encoding method, to provide an RSA-based encryption
@@ -84,7 +84,7 @@ CIMPORT_C CCError_t CC_RsaSchemesEncrypt(
    (PKCS) #1 RSA Cryptography Specifications Version 2.1.
 */
 #define CC_RsaOaepEncrypt(rndContext_ptr, UserPubKey_ptr,PrimeData_ptr,HashMode,L,Llen,MGF,Data_ptr,DataSize,Output_ptr)\
-    CC_RsaSchemesEncrypt(rndContext_ptr, UserPubKey_ptr,PrimeData_ptr,HashMode,L,Llen,MGF,Data_ptr,DataSize,Output_ptr,CC_PKCS1_VER21)
+	CC_RsaSchemesEncrypt(rndContext_ptr, UserPubKey_ptr,PrimeData_ptr,HashMode,L,Llen,MGF,Data_ptr,DataSize,Output_ptr,CC_PKCS1_VER21)
 
 /*!
    @brief
@@ -92,7 +92,7 @@ CIMPORT_C CCError_t CC_RsaSchemesEncrypt(
    as defined in section 8.2 of Public-Key Cryptography Standards (PKCS) #1 RSA Cryptography Specifications Version 2.1.
 */
 #define CC_RsaPkcs1V15Encrypt(rndContext_ptr, UserPubKey_ptr,PrimeData_ptr,DataIn_ptr,DataInSize,Output_ptr)\
-    CC_RsaSchemesEncrypt(rndContext_ptr, UserPubKey_ptr,PrimeData_ptr,CC_RSA_HASH_NO_HASH_mode,NULL,0,CC_PKCS1_NO_MGF,DataIn_ptr,DataInSize, Output_ptr,CC_PKCS1_VER15)
+	CC_RsaSchemesEncrypt(rndContext_ptr, UserPubKey_ptr,PrimeData_ptr,CC_RSA_HASH_NO_HASH_mode,NULL,0,CC_PKCS1_NO_MGF,DataIn_ptr,DataInSize, Output_ptr,CC_PKCS1_VER15)
 
 
 /**********************************************************************************************************/
@@ -108,36 +108,36 @@ It should not be called directly. Instead, use macros ::CC_RsaOaepDecrypt or ::C
 CIMPORT_C CCError_t CC_RsaSchemesDecrypt(
                                 CCRsaUserPrivKey_t  *UserPrivKey_ptr,    /*!< [in]  Pointer to the private-key data structure of the user. */
                                 CCRsaPrimeData_t    *PrimeData_ptr,      /*!< [in]  Pointer to a temporary structure that is internally used as workspace
-                                            for the decryption operation. */
+										    for the decryption operation. */
                                 CCRsaHashOpMode_t  hashFunc,             /*!< [in]  The HASH function to be used. One of the supported SHA-x HASH modes,
-                                            as defined in ::CCRsaHashOpMode_t (MD5 is not supported). */
+										    as defined in ::CCRsaHashOpMode_t (MD5 is not supported). */
                                 uint8_t                 *L,              /*!< [in]  The label input pointer. Relevant for Public-Key Cryptography Standards (PKCS) #1
-                                            RSA Cryptography Specifications Version 2.1 only. NULL by default.
-                                            NULL for Public-Key Cryptography Standards (PKCS) #1: RSA Encryption Standard
-                                            Version 1.5. */
+										    RSA Cryptography Specifications Version 2.1 only. NULL by default.
+										    NULL for Public-Key Cryptography Standards (PKCS) #1: RSA Encryption Standard
+										    Version 1.5. */
                                 size_t                  Llen,            /*!< [in]  The label length. Relevant for Public-Key Cryptography Standards (PKCS) #1 RSA
-                                            Cryptography Specifications Version 2.1 only. Zero by default.
-                                            Zero for Public-Key Cryptography Standards (PKCS) #1: RSA Encryption Standard
-                                            Version 1.5. */
+										    Cryptography Specifications Version 2.1 only. Zero by default.
+										    Zero for Public-Key Cryptography Standards (PKCS) #1: RSA Encryption Standard
+										    Version 1.5. */
                                 CCPkcs1Mgf_t        MGF,                 /*!< [in]  The mask generation function. Public-Key Cryptography Standards (PKCS) #1 RSA Cryptography
-                                            Specifications Version 2.1 defines MGF1, so the only
-                                            value allowed here is CC_PKCS1_MGF1. */
+										    Specifications Version 2.1 defines MGF1, so the only
+										    value allowed here is CC_PKCS1_MGF1. */
                                 uint8_t                 *DataIn_ptr,     /*!< [in]  Pointer to the data to decrypt. */
                                 size_t                  DataInSize,      /*!< [in]  The size (in bytes) of the data to decrypt. DataSize must be &le;
-                                            the modulus size. */
+										    the modulus size. */
                                 uint8_t                 *Output_ptr,     /*!< [in]  Pointer to the decrypted data. The buffer must be at least
-                                            PrivKey_ptr->N.len bytes long (i.e. the modulus size in bytes). */
+										    PrivKey_ptr->N.len bytes long (i.e. the modulus size in bytes). */
                                 size_t                  *OutputSize_ptr, /*!< [in]  Pointer to the byte size of the buffer pointed to by Output_buffer.
-                                            The size must be:
+										    The size must be:
                                                                                     <ul><li> For Public-Key Cryptography Standards (PKCS) #1 RSA Cryptography Specifications
-                                                 Version 2.1: Modulus size > OutputSize >= (modulus size - 2*HashLen - 2).</li>
+											     Version 2.1: Modulus size > OutputSize >= (modulus size - 2*HashLen - 2).</li>
                                                                                     <li> For Public-Key Cryptography Standards (PKCS) #1: RSA Encryption Standard Version 1.5:
-                                             Modulus size > OutputSize >= (modulus size - 11).
+											 Modulus size > OutputSize >= (modulus size - 11).
                                                                                          The value pointed by OutputSize_ptr is updated after decryption with
-                                             the actual number of bytes that are loaded to Output_ptr.</li></ul> */
+											 the actual number of bytes that are loaded to Output_ptr.</li></ul> */
                                 CCPkcs1Version_t      PKCS1_ver          /*!< [in] Public-Key Cryptography Standards (PKCS) #1: RSA Encryption Standard Version 1.5 or
-                                           Public-Key Cryptography Standards (PKCS) #1 RSA Cryptography Specifications Version 2.1,
-                                           according to the functionality required. */
+										   Public-Key Cryptography Standards (PKCS) #1 RSA Cryptography Specifications Version 2.1,
+										   according to the functionality required. */
 );
 
 /**********************************************************************************************************/
@@ -156,7 +156,7 @@ CIMPORT_C CCError_t CC_RsaSchemesDecrypt(
 
 */
 #define CC_RsaOaepDecrypt(UserPrivKey_ptr,PrimeData_ptr,HashMode,L,Llen,MGF,Data_ptr,DataSize,Output_ptr,OutputSize_ptr)\
-    CC_RsaSchemesDecrypt(UserPrivKey_ptr,PrimeData_ptr,HashMode,L,Llen,MGF,Data_ptr,DataSize,Output_ptr,OutputSize_ptr,CC_PKCS1_VER21)
+	CC_RsaSchemesDecrypt(UserPrivKey_ptr,PrimeData_ptr,HashMode,L,Llen,MGF,Data_ptr,DataSize,Output_ptr,OutputSize_ptr,CC_PKCS1_VER21)
 
 
 /**
@@ -164,7 +164,7 @@ CIMPORT_C CCError_t CC_RsaSchemesDecrypt(
    in PKCS#1 v2.1 8.2.
 */
 #define CC_RsaPkcs1V15Decrypt(UserPrivKey_ptr,PrimeData_ptr,DataIn_ptr,DataInSize,Output_ptr,OutputSize_ptr)\
-    CC_RsaSchemesDecrypt(UserPrivKey_ptr,PrimeData_ptr,CC_RSA_HASH_NO_HASH_mode,NULL,0,CC_PKCS1_NO_MGF,DataIn_ptr,DataInSize,Output_ptr,OutputSize_ptr,CC_PKCS1_VER15)
+	CC_RsaSchemesDecrypt(UserPrivKey_ptr,PrimeData_ptr,CC_RSA_HASH_NO_HASH_mode,NULL,0,CC_PKCS1_NO_MGF,DataIn_ptr,DataInSize,Output_ptr,OutputSize_ptr,CC_PKCS1_VER15)
 
 /**********************************************************************************************************/
 /*!
@@ -183,29 +183,29 @@ CIMPORT_C CCError_t CC_RsaSign(
                    CCRsaPrivUserContext_t *UserContext_ptr,   /*!< [in]  Pointer to a temporary context for internal use. */
                    CCRsaUserPrivKey_t *UserPrivKey_ptr,          /*!< [in]  Pointer to the private-key data structure of the user.
                                                                             The representation (pair or quintuple) and hence the algorithm (CRT or not CRT)
-                                        is determined by the Private Key build function -
+									    is determined by the Private Key build function -
                                                                             ::CC_RsaPrivKeyBuild or ::CC_RsaPrivKeyCrtBuild. */
                    CCRsaHashOpMode_t rsaHashMode,                /*!< [in]  One of the supported SHA-x HASH modes, as defined in ::CCRsaHashOpMode_t.
-                                        (MD5 is not supported). */
+									    (MD5 is not supported). */
                    CCPkcs1Mgf_t MGF,                             /*!< [in]  The mask generation function. Public-Key Cryptography Standards (PKCS) #1 RSA Cryptography Specifications
-                                        Version 2.1 defines only MGF1, so the only value allowed for it is CC_PKCS1_MGF1. */
+									    Version 2.1 defines only MGF1, so the only value allowed for it is CC_PKCS1_MGF1. */
                    size_t       SaltLen,                         /*!< [in]  The Length of the Salt buffer (relevant for Public-Key Cryptography Standards (PKCS) #1 RSA Cryptography
-                                        Specifications Version 2.1 only, typically lengths is 0 or hash Len).
+									    Specifications Version 2.1 only, typically lengths is 0 or hash Len).
                                                                             FIPS Publication 186-4: Digital Signature Standard (DSS) requires, that SaltLen <= hash len.
-                                        If SaltLen > KeySize - hash Len - 2, the function returns an error.  */
+									    If SaltLen > KeySize - hash Len - 2, the function returns an error.  */
                    uint8_t     *DataIn_ptr,                      /*!< [in]  Pointer to the input data to be signed.
                                                                             The size of the scatter/gather list representing the data buffer is limited to 128
-                                        entries, and the size of each entry is limited to 64KB (fragments larger than
-                                        64KB are broken into fragments <= 64KB). */
+									    entries, and the size of each entry is limited to 64KB (fragments larger than
+									    64KB are broken into fragments <= 64KB). */
                    size_t      DataInSize,                       /*!< [in]  The size (in bytes) of the data to sign. */
                    uint8_t     *Output_ptr,                      /*!< [out] Pointer to the signature. The buffer must be at least PrivKey_ptr->N.len bytes
-                                        long (i.e. the modulus size in bytes). */
+									    long (i.e. the modulus size in bytes). */
                    size_t      *OutputSize_ptr,                  /*!< [in/out] Pointer to the signature size value - the input value is the signature
-                                           buffer size allocated, the output value is the signature size used.
+									       buffer size allocated, the output value is the signature size used.
                                                                                he buffer must be equal to PrivKey_ptr->N.len bytes long
-                                           (i.e. the modulus size in bytes). */
+									       (i.e. the modulus size in bytes). */
                    CCPkcs1Version_t PKCS1_ver                    /*!< [in]  Public-Key Cryptography Standards (PKCS) #1: RSA Encryption Standard Version 1.5 or Public-Key Cryptography
-                                        Standards (PKCS) #1 RSA Cryptography Specifications Version 2.1, according to the functionality required. */
+									    Standards (PKCS) #1 RSA Cryptography Specifications Version 2.1, according to the functionality required. */
 );
 
 
@@ -218,7 +218,7 @@ For more details, see Public-Key Cryptography Standards (PKCS) #1: RSA Encryptio
  */
 
 #define CC_RsaPkcs1V15Sign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,hashFunc,DataIn_ptr,DataInSize,Output_ptr,OutputSize_ptr)\
-    CC_RsaSign(rndContext_ptr, (UserContext_ptr),(UserPrivKey_ptr),(hashFunc),(CC_PKCS1_NO_MGF),0,(DataIn_ptr),(DataInSize),(Output_ptr),(OutputSize_ptr),CC_PKCS1_VER15)
+	CC_RsaSign(rndContext_ptr, (UserContext_ptr),(UserPrivKey_ptr),(hashFunc),(CC_PKCS1_NO_MGF),0,(DataIn_ptr),(DataInSize),(Output_ptr),(OutputSize_ptr),CC_PKCS1_VER15)
 
 
 /*!
@@ -229,7 +229,7 @@ it assumes that the data in has already been hashed using SHA-1.
 \note The data_in size is already known after the Hash.
 */
 #define CC_RsaPkcs1V15Sha1Sign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,DataIn_ptr,Output_ptr,OutputSize_ptr)\
-    CC_RsaSign(rndContext_ptr, (UserContext_ptr),(UserPrivKey_ptr),(CC_RSA_After_SHA1_mode),(CC_PKCS1_NO_MGF),0,(DataIn_ptr),CC_HASH_SHA1_DIGEST_SIZE_IN_BYTES,(Output_ptr),(OutputSize_ptr),CC_PKCS1_VER15)
+	CC_RsaSign(rndContext_ptr, (UserContext_ptr),(UserPrivKey_ptr),(CC_RSA_After_SHA1_mode),(CC_PKCS1_NO_MGF),0,(DataIn_ptr),CC_HASH_SHA1_DIGEST_SIZE_IN_BYTES,(Output_ptr),(OutputSize_ptr),CC_PKCS1_VER15)
 
 /*!
 @brief CC_RsaPkcs1V15Md5Sign implements the RSASSA-PKCS1v15 algorithm as defined in Public-Key Cryptography Standards (PKCS) #1:
@@ -240,7 +240,7 @@ hashed using MD5.
 */
 
 #define CC_RsaPkcs1V15Md5Sign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,DataIn_ptr,Output_ptr,OutputSize_ptr)\
-    CC_RsaSign(rndContext_ptr, (UserContext_ptr),(UserPrivKey_ptr),CC_RSA_After_MD5_mode,CC_PKCS1_NO_MGF,0,(DataIn_ptr),CC_HASH_MD5_DIGEST_SIZE_IN_BYTES,(Output_ptr),(OutputSize_ptr),CC_PKCS1_VER15)
+	CC_RsaSign(rndContext_ptr, (UserContext_ptr),(UserPrivKey_ptr),CC_RSA_After_MD5_mode,CC_PKCS1_NO_MGF,0,(DataIn_ptr),CC_HASH_MD5_DIGEST_SIZE_IN_BYTES,(Output_ptr),(OutputSize_ptr),CC_PKCS1_VER15)
 
 
 /*!
@@ -251,7 +251,7 @@ it assumes that the data in has already been hashed using SHA-224.
 \note The data_in size is already known after the Hash.
 */
 #define CC_RsaPkcs1V15Sha224Sign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,DataIn_ptr,Output_ptr,OutputSize_ptr)\
-    CC_RsaSign(rndContext_ptr, (UserContext_ptr),(UserPrivKey_ptr),(CC_RSA_After_SHA224_mode),(CC_PKCS1_NO_MGF),0,(DataIn_ptr),CC_HASH_SHA224_DIGEST_SIZE_IN_BYTES,(Output_ptr),(OutputSize_ptr),CC_PKCS1_VER15)
+	CC_RsaSign(rndContext_ptr, (UserContext_ptr),(UserPrivKey_ptr),(CC_RSA_After_SHA224_mode),(CC_PKCS1_NO_MGF),0,(DataIn_ptr),CC_HASH_SHA224_DIGEST_SIZE_IN_BYTES,(Output_ptr),(OutputSize_ptr),CC_PKCS1_VER15)
 
 
 /*!
@@ -262,7 +262,7 @@ it assumes that the data in has already been hashed using SHA-256.
 \note The data_in size is already known after the Hash.
 */
 #define CC_RsaPkcs1V15Sha256Sign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,DataIn_ptr,Output_ptr,OutputSize_ptr)\
-    CC_RsaSign(rndContext_ptr, (UserContext_ptr),(UserPrivKey_ptr),(CC_RSA_After_SHA256_mode),(CC_PKCS1_NO_MGF),0,(DataIn_ptr),CC_HASH_SHA256_DIGEST_SIZE_IN_BYTES,(Output_ptr),(OutputSize_ptr),CC_PKCS1_VER15)
+	CC_RsaSign(rndContext_ptr, (UserContext_ptr),(UserPrivKey_ptr),(CC_RSA_After_SHA256_mode),(CC_PKCS1_NO_MGF),0,(DataIn_ptr),CC_HASH_SHA256_DIGEST_SIZE_IN_BYTES,(Output_ptr),(OutputSize_ptr),CC_PKCS1_VER15)
 
 /*!
 @brief CC_RsaPkcs1V15Sha1Sign implements the RSASSA-PKCS1v15 algorithm as defined in Public-Key Cryptography Standards (PKCS) #1: RSA Encryption
@@ -272,7 +272,7 @@ it assumes that the data in has already been hashed using SHA-384.
 \note The data_in size is already known after the Hash.
 */
 #define CC_RsaPkcs1V15Sha384Sign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,DataIn_ptr,Output_ptr,OutputSize_ptr)\
-    CC_RsaSign(rndContext_ptr, (UserContext_ptr),(UserPrivKey_ptr),(CC_RSA_After_SHA384_mode),(CC_PKCS1_NO_MGF),0,(DataIn_ptr),CC_HASH_SHA384_DIGEST_SIZE_IN_BYTES,(Output_ptr),(OutputSize_ptr),CC_PKCS1_VER15)
+	CC_RsaSign(rndContext_ptr, (UserContext_ptr),(UserPrivKey_ptr),(CC_RSA_After_SHA384_mode),(CC_PKCS1_NO_MGF),0,(DataIn_ptr),CC_HASH_SHA384_DIGEST_SIZE_IN_BYTES,(Output_ptr),(OutputSize_ptr),CC_PKCS1_VER15)
 
 
 /*!
@@ -282,7 +282,7 @@ Standard Version 1.5, but without performing a HASH function - it assumes that t
 \note The data_in size is already known after the Hash.
 */
 #define CC_RsaPkcs1V15Sha512Sign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,DataIn_ptr,Output_ptr,OutputSize_ptr)\
-    CC_RsaSign(rndContext_ptr, (UserContext_ptr),(UserPrivKey_ptr),(CC_RSA_After_SHA512_mode),(CC_PKCS1_NO_MGF),0,(DataIn_ptr),CC_HASH_SHA512_DIGEST_SIZE_IN_BYTES,(Output_ptr),(OutputSize_ptr),CC_PKCS1_VER15)
+	CC_RsaSign(rndContext_ptr, (UserContext_ptr),(UserPrivKey_ptr),(CC_RSA_After_SHA512_mode),(CC_PKCS1_NO_MGF),0,(DataIn_ptr),CC_HASH_SHA512_DIGEST_SIZE_IN_BYTES,(Output_ptr),(OutputSize_ptr),CC_PKCS1_VER15)
 
 
 
@@ -297,7 +297,7 @@ The actual macro that is used by the user is ::CC_RsaPssSign.
 */
 
 #define CC_RsaPssSign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,hashFunc,MGF,SaltLen,DataIn_ptr,DataInSize,Output_ptr,OutputSize_ptr)\
-    CC_RsaSign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,hashFunc,MGF,SaltLen,DataIn_ptr,DataInSize,Output_ptr,OutputSize_ptr,CC_PKCS1_VER21)
+	CC_RsaSign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,hashFunc,MGF,SaltLen,DataIn_ptr,DataInSize,Output_ptr,OutputSize_ptr,CC_PKCS1_VER21)
 
 
 /*!
@@ -311,7 +311,7 @@ The actual macro that is used by the users is ::CC_RsaPssSha1Sign.
 */
 
 #define CC_RsaPssSha1Sign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,MGF,SaltLen,DataIn_ptr,Output_ptr,OutputSize_ptr)\
-    CC_RsaSign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,CC_RSA_After_SHA1_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA1_DIGEST_SIZE_IN_BYTES,Output_ptr,OutputSize_ptr,CC_PKCS1_VER21)
+	CC_RsaSign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,CC_RSA_After_SHA1_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA1_DIGEST_SIZE_IN_BYTES,Output_ptr,OutputSize_ptr,CC_PKCS1_VER21)
 
 
 /*!
@@ -325,7 +325,7 @@ The actual macro that is used by the users is ::CC_RsaPssSha224Sign.
 */
 
 #define CC_RsaPssSha224Sign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,MGF,SaltLen,DataIn_ptr,Output_ptr,OutputSize_ptr)\
-    CC_RsaSign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,CC_RSA_After_SHA224_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA224_DIGEST_SIZE_IN_BYTES,Output_ptr,OutputSize_ptr,CC_PKCS1_VER21)
+	CC_RsaSign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,CC_RSA_After_SHA224_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA224_DIGEST_SIZE_IN_BYTES,Output_ptr,OutputSize_ptr,CC_PKCS1_VER21)
 
 
 /*!
@@ -339,7 +339,7 @@ The actual macro that is used by the users is ::CC_RsaPssSha256Sign.
 */
 
 #define CC_RsaPssSha256Sign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,MGF,SaltLen,DataIn_ptr,Output_ptr,OutputSize_ptr)\
-    CC_RsaSign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,CC_RSA_After_SHA256_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA256_DIGEST_SIZE_IN_BYTES,Output_ptr,OutputSize_ptr,CC_PKCS1_VER21)
+	CC_RsaSign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,CC_RSA_After_SHA256_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA256_DIGEST_SIZE_IN_BYTES,Output_ptr,OutputSize_ptr,CC_PKCS1_VER21)
 
 
 /*!
@@ -353,7 +353,7 @@ The actual macro that is used by the users is ::CC_RsaPssSha384Sign.
 */
 
 #define CC_RsaPssSha384Sign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,MGF,SaltLen,DataIn_ptr,Output_ptr,OutputSize_ptr)\
-    CC_RsaSign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,CC_RSA_After_SHA384_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA384_DIGEST_SIZE_IN_BYTES,Output_ptr,OutputSize_ptr,CC_PKCS1_VER21)
+	CC_RsaSign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,CC_RSA_After_SHA384_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA384_DIGEST_SIZE_IN_BYTES,Output_ptr,OutputSize_ptr,CC_PKCS1_VER21)
 
 
 /*!
@@ -367,7 +367,7 @@ The actual macro that is used by the users is ::CC_RsaPssSha512Sign.
 */
 
 #define CC_RsaPssSha512Sign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,MGF,SaltLen,DataIn_ptr,Output_ptr,OutputSize_ptr)\
-    CC_RsaSign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,CC_RSA_After_SHA512_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA512_DIGEST_SIZE_IN_BYTES,Output_ptr,OutputSize_ptr,CC_PKCS1_VER21)
+	CC_RsaSign(rndContext_ptr, UserContext_ptr,UserPrivKey_ptr,CC_RSA_After_SHA512_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA512_DIGEST_SIZE_IN_BYTES,Output_ptr,OutputSize_ptr,CC_PKCS1_VER21)
 
 
 /**********************************************************************************************************/
@@ -387,32 +387,32 @@ CIMPORT_C CCError_t CC_RsaVerify(
                             CCRsaPubUserContext_t *UserContext_ptr,   /*!< [in]  Pointer to a temporary context for internal use. */
                             CCRsaUserPubKey_t *UserPubKey_ptr,           /*!< [in]  Pointer to the public key data structure of the user. */
                             CCRsaHashOpMode_t rsaHashMode,               /*!< [in]  One of the supported SHA-x HASH modes, as defined in ::CCRsaHashOpMode_t.
-                                            (MD5 is not supported). */
+										    (MD5 is not supported). */
                             CCPkcs1Mgf_t MGF,                            /*!< [in]  The mask generation function. Public-Key Cryptography Standards (PKCS) #1 RSA
-                                                Cryptography Specifications Version 2.1 defines only MGF1, so the only
-                                            value allowed for it is CC_PKCS1_MGF1. */
+									            Cryptography Specifications Version 2.1 defines only MGF1, so the only
+										    value allowed for it is CC_PKCS1_MGF1. */
                             size_t      SaltLen,                         /*!< [in]  The Length of the Salt buffer. Relevant only for Public-Key Cryptography Standards
-                                            (PKCS) #1 RSA Cryptography Specifications Version 2.1.
-                                            Typical lengths are 0 or hash Len (20 for SHA-1).
+										    (PKCS) #1 RSA Cryptography Specifications Version 2.1.
+										    Typical lengths are 0 or hash Len (20 for SHA-1).
                                                                                     The maximum length allowed is [modulus size - hash Len - 2]. */
                             uint8_t     *DataIn_ptr,                     /*!< [in]  Pointer to the input data to be verified.
                                                                                     The size of the scatter/gather list representing the data buffer is
-                                            limited to 128 entries, and the size of each entry is limited to 64KB
-                                                (fragments larger than 64KB are broken into fragments <= 64KB). */
+										    limited to 128 entries, and the size of each entry is limited to 64KB
+									            (fragments larger than 64KB are broken into fragments <= 64KB). */
                             size_t      DataInSize,                      /*!< [in]  The size (in bytes) of the data whose signature is to be verified. */
                             uint8_t     *Sig_ptr,                        /*!< [in]  Pointer to the signature to be verified.
                                                                                     The length of the signature is PubKey_ptr->N.len bytes
-                                            (i.e. the modulus size in bytes). */
+										    (i.e. the modulus size in bytes). */
                             CCPkcs1Version_t PKCS1_ver                   /*!< [in]  Public-Key Cryptography Standards (PKCS) #1: RSA Encryption Standard Version 1.5 or
-                                            Public-Key Cryptography Standards (PKCS) #1 RSA Cryptography Specifications Version
-                                            2.1, according to the functionality required. */
+										    Public-Key Cryptography Standards (PKCS) #1 RSA Cryptography Specifications Version
+										    2.1, according to the functionality required. */
 );
 /*!
 @brief CRYS_RSA_PKCS1v15_Verify implements the Public-Key Cryptography Standards (PKCS) #1: RSA Encryption
 Standard Version 1.5 Verify algorithm.
 */
 #define CC_RsaPkcs1V15Verify(UserContext_ptr,UserPubKey_ptr,hashFunc,DataIn_ptr,DataInSize,Sig_ptr)\
-    CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,hashFunc,CC_PKCS1_NO_MGF,0,DataIn_ptr,DataInSize,Sig_ptr,CC_PKCS1_VER15)
+	CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,hashFunc,CC_PKCS1_NO_MGF,0,DataIn_ptr,DataInSize,Sig_ptr,CC_PKCS1_VER15)
 
 
 /*!
@@ -421,7 +421,7 @@ it assumes the DataIn_ptr data has already been hashed using MD5.
 */
 
 #define CC_RsaPkcs1V15Md5Verify(UserContext_ptr,UserPubKey_ptr,DataIn_ptr,Sig_ptr)\
-    CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_MD5_mode,CC_PKCS1_NO_MGF,0,DataIn_ptr,CC_HASH_MD5_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER15)
+	CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_MD5_mode,CC_PKCS1_NO_MGF,0,DataIn_ptr,CC_HASH_MD5_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER15)
 
 
 /*!
@@ -430,7 +430,7 @@ it assumes that the DataIn_ptr data has already been hashed using SHA1.
 
 */
 #define CC_RsaPkcs1V15Sha1Verify(UserContext_ptr,UserPubKey_ptr,DataIn_ptr,Sig_ptr)\
-    CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA1_mode,CC_PKCS1_NO_MGF,0,DataIn_ptr,CC_HASH_SHA1_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER15)
+	CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA1_mode,CC_PKCS1_NO_MGF,0,DataIn_ptr,CC_HASH_SHA1_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER15)
 
 /*!
 @brief CC_RsaPkcs1V15Sha224Verify implements the RSASSA-PKCS1v15 Verify algorithm as defined in PKCS#1 v1.5, but without operating the HASH function -
@@ -438,7 +438,7 @@ it assumes that the DataIn_ptr data has already been hashed using SHA224.
 
 */
 #define CC_RsaPkcs1V15Sha224Verify(UserContext_ptr,UserPubKey_ptr,DataIn_ptr,Sig_ptr)\
-    CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA224_mode,CC_PKCS1_NO_MGF,0,DataIn_ptr,CC_HASH_SHA224_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER15)
+	CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA224_mode,CC_PKCS1_NO_MGF,0,DataIn_ptr,CC_HASH_SHA224_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER15)
 
 /*!
 @brief CC_RsaPkcs1V15Sha256Verify implements the RSASSA-PKCS1v15 Verify algorithm as defined in PKCS#1 v1.5, but without operating the HASH function -
@@ -446,7 +446,7 @@ it assumes that the DataIn_ptr data has already been hashed using SHA256.
 
 */
 #define CC_RsaPkcs1V15Sha256Verify(UserContext_ptr,UserPubKey_ptr,DataIn_ptr,Sig_ptr)\
-    CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA256_mode,CC_PKCS1_NO_MGF,0,DataIn_ptr,CC_HASH_SHA256_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER15)
+	CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA256_mode,CC_PKCS1_NO_MGF,0,DataIn_ptr,CC_HASH_SHA256_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER15)
 
 /*!
 @brief CC_RsaPkcs1V15Sha384Verify implements the RSASSA-PKCS1v15 Verify algorithm as defined in PKCS#1 v1.5, but without operating the HASH function -
@@ -454,7 +454,7 @@ it assumes that the DataIn_ptr data has already been hashed using SHA384.
 
 */
 #define CC_RsaPkcs1V15Sha384Verify(UserContext_ptr,UserPubKey_ptr,DataIn_ptr,Sig_ptr)\
-    CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA384_mode,CC_PKCS1_NO_MGF,0,DataIn_ptr,CC_HASH_SHA384_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER15)
+	CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA384_mode,CC_PKCS1_NO_MGF,0,DataIn_ptr,CC_HASH_SHA384_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER15)
 
 /*!
 @brief CC_RsaPkcs1V15Sha512Verify implements the RSASSA-PKCS1v15 Verify algorithm as defined in PKCS#1 v1.5, but without operating the HASH function -
@@ -462,14 +462,14 @@ it assumes that the DataIn_ptr data has already been hashed using SHA512.
 
 */
 #define CC_RsaPkcs1V15Sha512Verify(UserContext_ptr,UserPubKey_ptr,DataIn_ptr,Sig_ptr)\
-    CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA512_mode,CC_PKCS1_NO_MGF,0,DataIn_ptr,CC_HASH_SHA512_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER15)
+	CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA512_mode,CC_PKCS1_NO_MGF,0,DataIn_ptr,CC_HASH_SHA512_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER15)
 
 /*!
 @brief CC_RsaPssVerify implements the RSASSA-PKCS1v21 Verify algorithm as defined in PKCS#1 v2.1.
 */
 
 #define CC_RsaPssVerify(UserContext_ptr,UserPubKey_ptr,hashFunc,MGF,SaltLen,DataIn_ptr,DataInSize,Sig_ptr)\
-    CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,hashFunc,MGF,SaltLen,DataIn_ptr,DataInSize,Sig_ptr,CC_PKCS1_VER21)
+	CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,hashFunc,MGF,SaltLen,DataIn_ptr,DataInSize,Sig_ptr,CC_PKCS1_VER21)
 
 /*!
 @brief CC_RsaPssSha1Verify implements the PKCS1v21 Verify algorithm as defined in PKCS#1 v2.1, but without operating the HASH function -
@@ -477,14 +477,14 @@ it assumes the DataIn_ptr has already been hashed using SHA1.
 */
 
 #define CC_RsaPssSha1Verify(UserContext_ptr,UserPubKey_ptr,MGF,SaltLen,DataIn_ptr,Sig_ptr)\
-    CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA1_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA1_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER21)
+	CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA1_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA1_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER21)
 /*!
 @brief CC_RsaPssSha224Verify implements the PKCS1v21 Verify algorithm as defined in PKCS#1 v2.1, but without operating the HASH function -
 it assumes the DataIn_ptr has already been hashed using SHA224.
 */
 
 #define CC_RsaPssSha224Verify(UserContext_ptr,UserPubKey_ptr,MGF,SaltLen,DataIn_ptr,Sig_ptr)\
-    CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA224_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA224_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER21)
+	CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA224_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA224_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER21)
 
 /*!
 @brief CC_RsaPssSha256Verify implements the PKCS1v21 Verify algorithm as defined in PKCS#1 v2.1, but without operating the HASH function -
@@ -492,7 +492,7 @@ it assumes the DataIn_ptr has already been hashed using SHA256.
 */
 
 #define CC_RsaPssSha256Verify(UserContext_ptr,UserPubKey_ptr,MGF,SaltLen,DataIn_ptr,Sig_ptr)\
-    CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA256_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA256_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER21)
+	CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA256_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA256_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER21)
 
 
 /*!
@@ -502,7 +502,7 @@ it assumes the DataIn_ptr has already been hashed using SHA384.
 */
 
 #define CC_RsaPssSha384Verify(UserContext_ptr,UserPubKey_ptr,MGF,SaltLen,DataIn_ptr,Sig_ptr)\
-    CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA384_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA384_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER21)
+	CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA384_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA384_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER21)
 
 
 /*!
@@ -511,7 +511,7 @@ it assumes the DataIn_ptr has already been hashed using SHA512.
 */
 
 #define CC_RsaPssSha512Verify(UserContext_ptr,UserPubKey_ptr,MGF,SaltLen,DataIn_ptr,Sig_ptr)\
-    CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA512_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA512_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER21)
+	CC_RsaVerify(UserContext_ptr,UserPubKey_ptr,CC_RSA_After_SHA512_mode,MGF,SaltLen,DataIn_ptr,CC_HASH_SHA512_DIGEST_SIZE_IN_BYTES,Sig_ptr,CC_PKCS1_VER21)
 
 /**********************************************************************************************************/
 

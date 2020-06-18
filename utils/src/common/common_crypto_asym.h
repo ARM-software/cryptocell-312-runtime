@@ -31,10 +31,10 @@
  */
 /*********************************************************/
 int32_t CC_CommonRsaVerify(int32_t  pkcsVersion,
-             int8_t *pPubKey,
-             int8_t *pDataIn,
-             int32_t  dataInSize,
-             int8_t *pSignature);
+			 int8_t *pPubKey,
+			 int8_t *pDataIn,
+			 int32_t  dataInSize,
+			 int8_t *pSignature);
 
 
 /**
@@ -54,11 +54,11 @@ int32_t CC_CommonRsaVerify(int32_t  pkcsVersion,
  */
 /*********************************************************/
 int32_t CC_CommonRsaSign(int32_t pkcsVersion,
-               int8_t *DataIn_ptr,
-               uint32_t  DataInSize,
-               int8_t *PemEncryptedFileName_ptr,
-               int8_t *Key_ptr,
-               int8_t *Signature_ptr);
+		       int8_t *DataIn_ptr,
+		       uint32_t  DataInSize,
+		       int8_t *PemEncryptedFileName_ptr,
+		       int8_t *Key_ptr,
+		       int8_t *Signature_ptr);
 
 
 
@@ -79,10 +79,10 @@ int32_t CC_CommonRsaSign(int32_t pkcsVersion,
  */
 /*********************************************************/
 int32_t CC_CommonRsaEncrypt(int32_t pkcsVersion,
-              int8_t *pPubKey,
-              int8_t *pDataIn,
-              int32_t  dataInSize,
-              int8_t *pEncData);
+			  int8_t *pPubKey,
+			  int8_t *pDataIn,
+			  int32_t  dataInSize,
+			  int8_t *pEncData);
 
 
 /**
@@ -102,11 +102,11 @@ int32_t CC_CommonRsaEncrypt(int32_t pkcsVersion,
  */
 /*********************************************************/
 int32_t CC_CommonRsaDecrypt(int32_t pkcsVersion,
-              int8_t *pPemEncryptedFileName,
-              int8_t *pKeyPwd,
-              int8_t *pEnDataIn,
-              int32_t  enDataInSize,
-              int8_t *pData);
+			  int8_t *pPemEncryptedFileName,
+			  int8_t *pKeyPwd,
+			  int8_t *pEnDataIn,
+			  int32_t  enDataInSize,
+			  int8_t *pData);
 
 
 /**

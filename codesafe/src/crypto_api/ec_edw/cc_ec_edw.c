@@ -16,27 +16,27 @@
 #include "ec_edw_local.h"
 
 /******************************************************************************/
-/**  Ed25519 Sign/Verify two types APIs: 1. For signature concatenated with   *
+/**  Ed25519 Sign/Verify two types APIs: 1. For signature concatenated with   * 
  *    message; 2. For detached signature and message with separate in/out      */
 /******************************************************************************/
 /******************************************************************************/
 /**
- * The function creates EC Edwards signature on the message.
- *
- *    Note: Used detached form of signature, separated from the message.
+ * The function creates EC Edwards signature on the message. 
+ *  
+ *    Note: Used detached form of signature, separated from the message. 
  *          Implemented algorithm of Bernstein D. etc. sign ed25519.
- *
+ *  
  *  @return CC_OK on success,
  *  @return A non-zero value on failure as defined mbedtls_cc_ec_mont_edw_error.h.
  */
 CEXPORT_C CCError_t CC_EcEdwSign (
         uint8_t       *pSign,                /*!< [out] Pointer to the detached signature. */
         size_t        *pSignSize,            /*!< [in/out] Pointer to the total size of the signature ;
-                                                            In  - the buffer size, which (must be at least 2*EC order size);
+                                                            In  - the buffer size, which (must be at least 2*EC order size); 
                                                             Out - the actual size of output data. */
         const uint8_t *pMsg,                 /*!< [in] Pointer to the message. */
         size_t         msgSize,              /*!< [in] Message size in bytes: must be less, than
-                                                            (CC_HASH_UPDATE_DATA_MAX_SIZE_IN_BYTES - 2*(EC_EDW modulus size)). */
+                                                            (CC_HASH_UPDATE_DATA_MAX_SIZE_IN_BYTES - 2*(EC_EDW modulus size)). */                       
         const uint8_t *pSignSecrKey,         /*!< [in] Pointer to the signer secret key (seed || pulKey) */
         size_t         secrKeySize,          /*!< [in] Size of signer secret key in bytes: (must be 2*EC order size). */
         CCEcEdwTempBuff_t *pTempBuff)  /*!< [in] pointer to the temp buffer. */
@@ -87,13 +87,13 @@ CEXPORT_C CCError_t CC_EcEdwSign (
 
 /******************************************************************************/
 /**
- * The function verifies the EC Edwards ed25519 signature on the message.
- *
+ * The function verifies the EC Edwards ed25519 signature on the message. 
+ *  
  *    Note: The input signature is in detached form, i.e. separated from the
  *          message.
- *
+ *  
  *     Verification is performed using EC Edwards ed25519 signature algorithm.
- *
+ *  
  * @return CC_OK on success,
  * @return A non-zero value on failure as defined mbedtls_cc_ec_mont_edw_error.h.
  */
@@ -144,11 +144,11 @@ CEXPORT_C CCError_t CC_EcEdwVerify(
 }
 
 
-/*******************************************************************/
+/*******************************************************************/ 
 /**          Edwards Key Pair generation from seeds API            */
-/*******************************************************************/
+/*******************************************************************/ 
 /**
- @brief The function randomly generates Ec ed25519 private and public keys
+ @brief The function randomly generates Ec ed25519 private and public keys 
         using given seed.
 
         The generation is performed using EC Edwards ed25519 algorithm.
@@ -166,8 +166,8 @@ CEXPORT_C CCError_t CC_EcEdwSeedKeyPair (
                                                                              (must be at least 2*EC order size). */
         uint8_t       *pPublKey,               /*!< [out] Pointer to the public key. */
         size_t        *pPublKeySize,           /*!< [in/out] Pointer to the size of the public key in bytes.
-                                                                                In  - the size of buffer must be at least EC modulus size;
-                                                                                Out - the actual size. */
+                                                                                In  - the size of buffer must be at least EC modulus size; 
+                                                                                Out - the actual size. */ 
         CCEcEdwTempBuff_t *pTempBuff)
 {
     CCError_t err = CC_OK;
@@ -212,9 +212,9 @@ CEXPORT_C CCError_t CC_EcEdwSeedKeyPair (
 }
 
 
-/*******************************************************************/
+/*******************************************************************/ 
 /**          Edwards Key Pair (random) generation  API             */
-/*******************************************************************/
+/*******************************************************************/ 
 /**
  @brief The function randomly generates the EC Edwards ed25519 private and
          public keys.
@@ -230,8 +230,8 @@ CEXPORT_C CCError_t CC_EcEdwKeyPair (
                                                                           (must be at least 2*EC order size). */
         uint8_t       *pPublKey,               /*!< [out] Pointer to the public key. */
         size_t        *pPublKeySize,           /*!< [in/out] - Pointer to the size of the public key in bytes.
-                                                                            In  - the size of buffer must be at least EC modulus size;
-                                                                            Out - the actual size. */
+                                                                            In  - the size of buffer must be at least EC modulus size; 
+                                                                            Out - the actual size. */ 
         CCRndContext_t *pRndContext,       /*!< [in/out] Pointer to the RND context buffer. */
         CCEcEdwTempBuff_t *pTempBuff)
 {
@@ -247,7 +247,7 @@ CEXPORT_C CCError_t CC_EcEdwKeyPair (
 
     /* check parameters */
     if (pSecrKey == NULL || pSecrKeySize == NULL ||
-            pPublKey == NULL || pPublKeySize == NULL ||
+            pPublKey == NULL || pPublKeySize == NULL || 
             pTempBuff == NULL) {
         return   CC_EC_EDW_INVALID_INPUT_POINTER_ERROR;
     }

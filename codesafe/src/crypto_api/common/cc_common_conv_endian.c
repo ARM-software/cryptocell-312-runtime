@@ -30,18 +30,18 @@
  **
  * @brief This function executes a reverse bytes copying from one buffer to another buffer.
  *
- *        Overlapping of buffers is not allowed, excluding the case, when destination and source
- *        buffers are the same.
+ *        Overlapping of buffers is not allowed, excluding the case, when destination and source 
+ *        buffers are the same. 
  *        Example of a 5 byte buffer:
  *
- *        dst_ptr[4] = src_ptr[0]
- *        dst_ptr[3] = src_ptr[1]
- *        dst_ptr[2] = src_ptr[2]
- *        dst_ptr[1] = src_ptr[3]
- *        dst_ptr[0] = src_ptr[4]
+ *        dst_ptr[4] = src_ptr[0]     
+ *        dst_ptr[3] = src_ptr[1]     
+ *        dst_ptr[2] = src_ptr[2]     
+ *        dst_ptr[1] = src_ptr[3]     
+ *        dst_ptr[0] = src_ptr[4]     
  *
  * @param[in] dst_ptr - The pointer to destination buffer.
- * @param[in] src_ptr - The pointer to source buffer.
+ * @param[in] src_ptr - The pointer to source buffer. 
  * @param[in] size    - The size in bytes.
  *
  */
@@ -54,7 +54,7 @@ CCError_t CC_CommonReverseMemcpy( uint8_t *dst_ptr , uint8_t *src_ptr , uint32_t
 
         /* FUNCTION LOGIC */
 
-        /* check overlapping */
+        /* check overlapping */                        
         if ((dst_ptr > src_ptr && dst_ptr < (src_ptr + size)) ||
             (dst_ptr < src_ptr && (dst_ptr + size) >= src_ptr)) {
                 return CC_COMMON_DATA_OUT_DATA_IN_OVERLAP_ERROR;
@@ -78,7 +78,7 @@ CCError_t CC_CommonReverseMemcpy( uint8_t *dst_ptr , uint8_t *src_ptr , uint32_t
                 }
         }
 
-        return CC_OK;
+        return CC_OK;  
 
 }/* END OF CC_CommonReverseMemcpy */
 
@@ -87,9 +87,9 @@ CCError_t CC_CommonReverseMemcpy( uint8_t *dst_ptr , uint8_t *src_ptr , uint32_t
 
 /***********************************************************************/
 /**
- * @brief This function converts in place words byffer to bytes buffer with
+ * @brief This function converts in place words byffer to bytes buffer with 
  *        reversed endianity of output array.
- *
+ *  
  *        The function can convert:
  *           - big endian bytes array to words array with little endian order
  *             of words and backward.
@@ -99,14 +99,14 @@ CCError_t CC_CommonReverseMemcpy( uint8_t *dst_ptr , uint8_t *src_ptr , uint32_t
  *      according to processor used.
  *      2. Implementation is given for both big and little endianness of
  *      processor.
- *
- * @param[in]  buf_ptr - The 32-bits pointer to input/output buffer.
+ *        
+ * @param[in]  buf_ptr - The 32-bits pointer to input/output buffer. 
  * @param[in]  sizeWords - The size in words (sizeWords > 0).
- *
- * @return - no return value.
+ *  
+ * @return - no return value. 
  */
 void CC_CommonInPlaceConvertBytesWordsAndArrayEndianness(
-                                                        uint32_t *buf_ptr,
+                                                        uint32_t *buf_ptr, 
                                                         uint32_t  sizeWords)
 {
         /* FUNCTION DECLARATIONS */
@@ -122,17 +122,17 @@ void CC_CommonInPlaceConvertBytesWordsAndArrayEndianness(
         }
 #endif
 
-                /* Reverse order of words and order of bytes in each word.    *
-                *  Note: Condition (sizeWords >= 2) inserted inside for() to  *
-                *        prevent wrong false positive warnings.               *
+                /* Reverse order of words and order of bytes in each word.    * 
+                *  Note: Condition (sizeWords >= 2) inserted inside for() to  * 
+                *        prevent wrong false positive warnings.               * 
                 *                                                             */
                 for (i = 0; ((i < sizeWords/2) && (sizeWords >= 2)); i++) {
 #ifndef BIG__ENDIAN
                         tmp = CC_COMMON_REVERSE32(buf_ptr[i]);
-                        buf_ptr[i] = CC_COMMON_REVERSE32(buf_ptr[sizeWords-i-1]);
-#else
+                        buf_ptr[i] = CC_COMMON_REVERSE32(buf_ptr[sizeWords-i-1]); 
+#else	 
                         tmp = buf_ptr[i];
-                        buf_ptr[i] = buf_ptr[sizeWords-i-1];
+                        buf_ptr[i] = buf_ptr[sizeWords-i-1]; 
 #endif
                         buf_ptr[sizeWords-i-1] = tmp;
                 }
@@ -145,34 +145,34 @@ void CC_CommonInPlaceConvertBytesWordsAndArrayEndianness(
 /***********************************************************************/
 /**
 * @brief This function converts big endianness bytes array to aligned words
-*        array with words order according to little endian.
+*        array with words order according to little endian. 
 *
 *            1. Assumed, that input bytes order is set according
-*         to big endianness: MS Byte is most left, i.e. order is from
-*         Msb to Lsb.
+*     	  to big endianness: MS Byte is most left, i.e. order is from
+*     	  Msb to Lsb.
 *            2. Output words array should set according to
-*         little endianness words order: LSWord is most left, i.e. order
-*         is from Lsw to Msw. Order bytes in each word - according to
-*         processor endianness.
+*     	  little endianness words order: LSWord is most left, i.e. order
+*     	  is from Lsw to Msw. Order bytes in each word - according to
+*     	  processor endianness.
 *            3. Owerlapping of buffers is not allowed, besides in
-*         place operation and size aligned to full words.
+*     	  place operation and size aligned to full words.
 *            4. Implementation is given for both big and little
-*         endianness of processor.
-*
-* @param[out] out32_ptr - The 32-bits pointer to output buffer.
-* @param[in] sizeOutBuffBytes - The size in bytes of output buffer, must be
+*     	  endianness of processor.
+*        
+* @param[out] out32_ptr - The 32-bits pointer to output buffer. 
+* @param[in] sizeOutBuffBytes - The size in bytes of output buffer, must be 
 *            aligned to 4 bytes and not less than inpSizeInBytes.
-* @param[in] in8_ptr - The pointer to input buffer.
-* @param[in] inpSizeInBytes - The size in bytes of input data, where
+* @param[in] in8_ptr - The pointer to input buffer. 
+* @param[in] inpSizeInBytes - The size in bytes of input data, where  
 *                  0 < inpSizeInBytes < UINT32_MAX - CC_32BIT_WORD_SIZE.
-*
+* 
 * @return CCError_t - On success CC_OK is returned, on failure a
 *                        value MODULE_* as defined in .
 */
 CCError_t CC_CommonConvertMsbLsbBytesToLswMswWords(
                                                   uint32_t *out32_ptr,
-                                                  uint32_t  sizeOutBuffBytes,
-                                                  const uint8_t  *in8_ptr,
+                                                  uint32_t  sizeOutBuffBytes, 
+                                                  const uint8_t  *in8_ptr, 
                                                   uint32_t  inpSizeInBytes)
 {
         /* FUNCTION DECLARATIONS */
@@ -186,7 +186,7 @@ CCError_t CC_CommonConvertMsbLsbBytesToLswMswWords(
         if ((in8_ptr == NULL) || (out32_ptr == NULL))
                 return CC_COMMON_DATA_IN_POINTER_INVALID_ERROR;
 
-        /*  Check the size and in place operation:       *
+        /*  Check the size and in place operation:       * 
         *   the size must be > 0 and aligned to words    */
         if ((inpSizeInBytes == 0) || (inpSizeInBytes >= UINT32_MAX - CC_32BIT_WORD_SIZE) ||
             (sizeOutBuffBytes & 3) || (inpSizeInBytes > sizeOutBuffBytes)) {
@@ -209,7 +209,7 @@ CCError_t CC_CommonConvertMsbLsbBytesToLswMswWords(
         }
 
         /* set tailing zeros in output buffer */
-        CC_PalMemSetZero((uint8_t*)out32_ptr + roundedInpSizeInBytes,
+        CC_PalMemSetZero((uint8_t*)out32_ptr + roundedInpSizeInBytes, 
                          sizeOutBuffBytes - roundedInpSizeInBytes); /*tailing zeros*/
 
         /* Reverse words order and set endianness of each word */
@@ -221,34 +221,34 @@ CCError_t CC_CommonConvertMsbLsbBytesToLswMswWords(
 
 /***********************************************************************/
 /**
-* @brief This function converts LE 32bit-words array to BE bytes array.
+* @brief This function converts LE 32bit-words array to BE bytes array. 
 *
 *            1. Assumed, that output bytes order is according
-*         to big endianness: MS Byte is most left, i.e. order is from
-*         Msb to Lsb.
+*     	  to big endianness: MS Byte is most left, i.e. order is from
+*     	  Msb to Lsb.
 *            2. Input words array should be set according to
-*         little endianness words order: LSWord is most left, i.e. order
-*         is from Lsw to Msw. Bytes order in each word - according to
-*         processor endianness.
+*     	  little endianness words order: LSWord is most left, i.e. order
+*     	  is from Lsw to Msw. Bytes order in each word - according to
+*     	  processor endianness.
 *            3. Owerlapping of buffers is not allowed, besides in
-*         place operation and size aligned to full words.
+*     	  place operation and size aligned to full words.
 *            4. Implementation is given for both big and little
-*         endianness of processor.
-*
-* @param[in] out32_ptr - The 32-bits pointer to output buffer.
-* @param[in] sizeOutBuffBytes - The size in bytes of output buffer, must be
+*     	  endianness of processor.
+*        
+* @param[in] out32_ptr - The 32-bits pointer to output buffer. 
+* @param[in] sizeOutBuffBytes - The size in bytes of output buffer, must be 
 *       not less than inpSizeInBytes.
-* @param[out] in8_ptr - The pointer to input buffer.
-* @param[in] sizeInBytes - The size in bytes. The size must be not 0 and
+* @param[out] in8_ptr - The pointer to input buffer. 
+* @param[in] sizeInBytes - The size in bytes. The size must be not 0 and 
 *       aligned to 4 bytes word.
-*
+* 
 * @return CCError_t - On success CC_OK is returned, on failure a
 *                        value MODULE_* as defined in .
 */
 CCError_t CC_CommonConvertLswMswWordsToMsbLsbBytes(
                                                   uint8_t  *out8_ptr,
-                                                  size_t   sizeOutBuffBytes,
-                                                  uint32_t *in32_ptr,
+                                                  size_t   sizeOutBuffBytes, 
+                                                  uint32_t *in32_ptr, 
                                                   uint32_t  sizeInBytes)
 {
         /* FUNCTION DECLARATIONS */
@@ -293,22 +293,22 @@ CCError_t CC_CommonConvertLswMswWordsToMsbLsbBytes(
 
 /***********************************************************************/
 /**
- * @brief This function converts bytes array with little endian (LE) order of
+ * @brief This function converts bytes array with little endian (LE) order of   
  *        bytes to 32-bit words array with little endian order of words and bytes.
  *
  *   Assuming:  No owerlapping of buffers; in/out pointers and sizes are not equall to NULL.
  *              If is in-place conversion, then the size must be multiple of 4 bytes.
- * @param[out] out32Le - The 32-bits pointer to output buffer. The buffer size must be
+ * @param[out] out32Le - The 32-bits pointer to output buffer. The buffer size must be 
  *                       not less, than input data size.
- * @param[in] in8Le - The pointer to input buffer.
+ * @param[in] in8Le - The pointer to input buffer. 
  * @param[in] sizeInBytes - The size in bytes of input data(sizeBytes > 0).
- *
+ * 
  * @return CCError_t - On success CC_OK is returned, on failure a
  *                        value MODULE_* as defined in .
  */
 void CC_CommonConvertLsbMsbBytesToLswMswWords(
                                              uint32_t *out32Le,
-                                             const uint8_t  *in8Le,
+                                             const uint8_t  *in8Le, 
                                              size_t  sizeInBytes)
 {
 
@@ -342,17 +342,17 @@ void CC_CommonConvertLsbMsbBytesToLswMswWords(
 *
 *    Assuming: no buffers overlapping, in/out pointers and sizes not equall to NULL,
                the buffer size must be not less, than input data size.
-*
-* @param[out] out8Le - The bytes pointer to output buffer.
-* @param[in] in32Le - The pointer to input 32-bit words buffer.
+*        
+* @param[out] out8Le - The bytes pointer to output buffer. 
+* @param[in] in32Le - The pointer to input 32-bit words buffer. 
 * @param[in] sizeInWords - The size in words of input data (sizeWords >= 0).
-*
+* 
 * @return CCError_t - On success CC_OK is returned, on failure a
 *                        value MODULE_* as defined in .
 */
 void CC_CommonConvertLswMswWordsToLsbMsbBytes(
                                              uint8_t *out8Le,
-                                             const uint32_t  *in32Le,
+                                             const uint32_t  *in32Le, 
                                              size_t  sizeInWords)
 {
         /* FUNCTION LOGIC */

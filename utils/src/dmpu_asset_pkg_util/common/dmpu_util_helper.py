@@ -11,6 +11,7 @@ from datetime import datetime
 import sys
 import struct
 from ctypes import *
+from pathlib import Path
 
 
 SBU_CRYPTO_LIB_DIR = "lib"
@@ -34,11 +35,12 @@ def GetDLLPath(FileName):
 
     path_new = path + path_div + ".." + path_div
 
-    path_new = path_new + FileName
-    return path_new
+    absPath = str(Path(path_new).resolve())
+    absPath = absPath + path_div+ FileName
+    return absPath
 # End of GetDLLPath
 
-# 
+#
 # The function loads the crypto DLL and returns its handle
 def LoadDLLGetHandle(FileName):
     # Load the crypto libraries

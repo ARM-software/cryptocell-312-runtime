@@ -15,21 +15,21 @@
 #include "ec_wrst_error.h"
 #include "ec_wrst.h"
 #include "pka_ec_wrst_glob_regs.h"
-#include "pka_ec_wrst_dsa_sign_regs.h"
+#include "pka_ec_wrst_dsa_sign_regs.h" 
 
 extern const int8_t regTemps[PKA_MAX_COUNT_OF_PHYS_MEM_REGS];
 /***********    DoubleMdf2Mdf   function      **********************/
 /**
- * @brief EC point doubling: p = 2*p1  modified-modified.
- *
- * All parameters are ID-s of PKA registers, containing the data.
- *
+ * @brief EC point doubling: p = 2*p1  modified-modified. 
+ *  
+ * All parameters are ID-s of PKA registers, containing the data. 
+ *  
  * Part of PKA registers are implicitly defined in pka_ec_wrst_glob_regs.h file
-*
- * \param x,y,z,t - output point coordinates
+*  
+ * \param x,y,z,t - output point coordinates 
 *  \param x,y,z,t - input point coordinates
-*
- * @return  - On success CC_OK is returned, on failure an error code.
+*  
+ * @return  - On success CC_OK is returned, on failure an error code. 
  */
 /* static */void DoubleMdf2Mdf(
            const uint32_t x,  const uint32_t y,  const uint32_t z,  const uint32_t t,  /*!< [in] Pointer to the public key structure. */
@@ -63,10 +63,10 @@ extern const int8_t regTemps[PKA_MAX_COUNT_OF_PHYS_MEM_REGS];
 /***********    PkaAddJcbJcb2Mdf   function      **********************/
 /**
  * @brief pka ecc points adding: jacobian+jacobian=modified
- *
- * All parameters are ID-s of PKA registers, containing the data.
- *
- * @return  - no return code.
+ *  
+ * All parameters are ID-s of PKA registers, containing the data. 
+ *  
+ * @return  - no return code. 
  */
 /* static */void PkaAddJcbJcb2Mdf(
             const uint32_t x,  const uint32_t y,  const uint32_t z, const uint32_t t,  /*!< [out] EC point modified coordinates. */
@@ -106,8 +106,8 @@ extern const int8_t regTemps[PKA_MAX_COUNT_OF_PHYS_MEM_REGS];
 /***********    PkaAddJcbJcb2Jcb   function      **********************/
 /**
  * @brief pka ecc points adding: jacob+jacob=jacob
- *
- * @return  - no return code.
+ *  
+ * @return  - no return code. 
  */
 /* static */void PkaAddJcbJcb2Jcb(
             const uint32_t x,  const uint32_t y,  const uint32_t z,  /*!< [out] EC point jacobian coordinates. */
@@ -144,18 +144,18 @@ extern const int8_t regTemps[PKA_MAX_COUNT_OF_PHYS_MEM_REGS];
 /***********    PkaScalarMultSca   function      **********************/
 /**
  * @brief EC scalar multiplication p = k*p, SCA-resistant
- *
+ *  
  *  Implemented algorithm, enhanced by A.Klimov
- *
- * @return  - no return code.
+ *  
+ * @return  - no return code. 
  */
 /* static */void PkaScalarMultSca(void)
-{
+{ 
         uint32_t isK;
         uint32_t sz1, sz2, sz, b2;
         uint32_t W;
-        int32_t i, carry = 0; // always 0 or -1
-        uint32_t isNew;
+        int32_t i, carry = 0; // always 0 or -1 
+        uint32_t isNew; 
 
         /* calc. globals */
         PKA_ADD(LEN_ID_N_PKA_REG_BITS, ECC_REG_N4 , ECC_REG_N,   ECC_REG_N  );
@@ -166,17 +166,17 @@ extern const int8_t regTemps[PKA_MAX_COUNT_OF_PHYS_MEM_REGS];
         // To mask the size of k we calculate either k*p or -(-k)*p
         PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_TP, EC_SIGN_REG_RK);
         PKA_SUB(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_ZP, EC_SIGN_REG_ORD, EC_SIGN_REG_TP); // EC_SIGN_REG_ZP is -k
-        sz1 = PkaGetRegEffectiveSizeInBits(EC_SIGN_REG_RK);
+        sz1 = PkaGetRegEffectiveSizeInBits(EC_SIGN_REG_RK); 
         sz2 = PkaGetRegEffectiveSizeInBits(EC_SIGN_REG_ZP);
         /* chose k or -k to mask size of scalar */
         if (sz1 > sz2) {
-                sz = sz1;
-                isK = 1;
-                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_RK, EC_SIGN_REG_TP); // Used k
+                sz = sz1; 
+                isK = 1; 
+                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_RK, EC_SIGN_REG_TP); // Used k 
         } else {
-                sz = sz2;
-                isK = 0;
-                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_RK, EC_SIGN_REG_ZP); // Used -k
+                sz = sz2; 
+                isK = 0; 
+                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_RK, EC_SIGN_REG_ZP); // Used -k 
         }
 
         PKA_SET_VAL(EC_SIGN_REG_ZP, 1); // or random and adjust EC_SIGN_REG_XP, EC_SIGN_REG_YP, EC_SIGN_REG_TP
@@ -190,28 +190,28 @@ extern const int8_t regTemps[PKA_MAX_COUNT_OF_PHYS_MEM_REGS];
         b2 = PkaGet2MsBits(EC_SIGN_REG_RK, i, &W, &isNew);
 
         switch (b2) {
-        case 1:
-                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_XS, EC_SIGN_REG_X2);
-                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_YS, EC_SIGN_REG_Y2);
-                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_ZS, EC_SIGN_REG_Z2);
-                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_TS, EC_SIGN_REG_T2);
-                carry = -1; /*pnt=2;*/
+        case 1: 
+                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_XS, EC_SIGN_REG_X2); 
+                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_YS, EC_SIGN_REG_Y2); 
+                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_ZS, EC_SIGN_REG_Z2); 
+                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_TS, EC_SIGN_REG_T2); 
+                carry = -1; /*pnt=2;*/ 
                 break;
-        case 2:
-                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_XS, EC_SIGN_REG_X2);
-                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_YS, EC_SIGN_REG_Y2);
-                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_ZS, EC_SIGN_REG_Z2);
-                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_TS, EC_SIGN_REG_T2);
-                carry =  0; /*pnt=2;*/
+        case 2: 
+                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_XS, EC_SIGN_REG_X2); 
+                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_YS, EC_SIGN_REG_Y2); 
+                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_ZS, EC_SIGN_REG_Z2); 
+                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_TS, EC_SIGN_REG_T2); 
+                carry =  0; /*pnt=2;*/ 
                 break;
-        case 3:
-                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_XS, EC_SIGN_REG_X4);
-                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_YS, EC_SIGN_REG_Y4);
-                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_ZS, EC_SIGN_REG_Z4);
-                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_TS, EC_SIGN_REG_T4);
-                carry = -1; /*pnt=4;*/
+        case 3: 
+                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_XS, EC_SIGN_REG_X4); 
+                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_YS, EC_SIGN_REG_Y4); 
+                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_ZS, EC_SIGN_REG_Z4); 
+                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_TS, EC_SIGN_REG_T4); 
+                carry = -1; /*pnt=4;*/ 
                 break;
-        default: ASSERT(0);
+        default: ASSERT(0); 
         }
 
         // t of p,2,4 are no longer needed, let us use them for -ry
@@ -221,8 +221,8 @@ extern const int8_t regTemps[PKA_MAX_COUNT_OF_PHYS_MEM_REGS];
 
         for (i -= 2; i >= 0; i -= 2) {
                 int32_t swt;
-        // EC_SIGN_REG_ZR as a temporary
-                DoubleMdf2Mdf(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_ZR, EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_TS);
+		// EC_SIGN_REG_ZR as a temporary
+                DoubleMdf2Mdf(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_ZR, EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_TS); 
                 PkaDoubleMdf2Jcb(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS, EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_ZR); // s *= 4
 
                 /* get next two bits of key */
@@ -230,66 +230,66 @@ extern const int8_t regTemps[PKA_MAX_COUNT_OF_PHYS_MEM_REGS];
                 swt = carry*4+b2;
                 /* choose which point to add or subtract and update the carry*/
                 switch (swt) {
-                case (uint32_t)-4:
-            PkaAddJcbJcb2Mdf(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_TS, EC_SIGN_REG_XS,
-                EC_SIGN_REG_YS,EC_SIGN_REG_ZS, EC_SIGN_REG_X4,EC_SIGN_REG_T4,EC_SIGN_REG_Z4);
-            carry =  0;
-            break;
-                case (uint32_t)-3:
-            kaAddJcbJcb2Mdf(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_TS, EC_SIGN_REG_XS,
-                EC_SIGN_REG_YS,EC_SIGN_REG_ZS, EC_SIGN_REG_X2,EC_SIGN_REG_T2,EC_SIGN_REG_Z2);
-            carry = -1;
-            break;
-                case (uint32_t)-2:
-            PkaAddJcbJcb2Mdf(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_TS, EC_SIGN_REG_XS,
-                EC_SIGN_REG_YS,EC_SIGN_REG_ZS, EC_SIGN_REG_X2,EC_SIGN_REG_T2,EC_SIGN_REG_Z2);
-            carry =  0;
-            break;
-                case (uint32_t)-1:
-            PkaAddJcbJcb2Mdf(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_TS, EC_SIGN_REG_XS,
-                EC_SIGN_REG_YS,EC_SIGN_REG_ZS, EC_SIGN_REG_XP,EC_SIGN_REG_TP,EC_SIGN_REG_ZP);
-            carry =  0;
-            break;
-                case  0:
-            PkaAddJcbJcb2Mdf(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_TS, EC_SIGN_REG_XS,
-                EC_SIGN_REG_YS,EC_SIGN_REG_ZS, EC_SIGN_REG_XP,EC_SIGN_REG_YP,EC_SIGN_REG_ZP);
-            carry = -1;
-            break;
-                case +1:
-            PkaAddJcbJcb2Mdf(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_TS, EC_SIGN_REG_XS,
-                EC_SIGN_REG_YS,EC_SIGN_REG_ZS, EC_SIGN_REG_XP,EC_SIGN_REG_YP,EC_SIGN_REG_ZP);
-            carry =  0;
-            break;
-                case +2:
-            PkaAddJcbJcb2Mdf(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_TS, EC_SIGN_REG_XS,
-                EC_SIGN_REG_YS,EC_SIGN_REG_ZS, EC_SIGN_REG_X2,EC_SIGN_REG_Y2,EC_SIGN_REG_Z2);
-            carry =  0;
-            break;
-                case +3:
-            PkaAddJcbJcb2Mdf(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_TS, EC_SIGN_REG_XS,
-                EC_SIGN_REG_YS,EC_SIGN_REG_ZS, EC_SIGN_REG_X4,EC_SIGN_REG_Y4,EC_SIGN_REG_Z4);
-            carry = -1;
-            break;
-                default:
-            ASSERT(0);
+                case (uint32_t)-4: 
+			PkaAddJcbJcb2Mdf(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_TS, EC_SIGN_REG_XS,
+				EC_SIGN_REG_YS,EC_SIGN_REG_ZS, EC_SIGN_REG_X4,EC_SIGN_REG_T4,EC_SIGN_REG_Z4); 
+			carry =  0; 
+			break;
+                case (uint32_t)-3: 
+			kaAddJcbJcb2Mdf(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_TS, EC_SIGN_REG_XS,
+				EC_SIGN_REG_YS,EC_SIGN_REG_ZS, EC_SIGN_REG_X2,EC_SIGN_REG_T2,EC_SIGN_REG_Z2); 
+			carry = -1; 
+			break;
+                case (uint32_t)-2: 
+			PkaAddJcbJcb2Mdf(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_TS, EC_SIGN_REG_XS,
+				EC_SIGN_REG_YS,EC_SIGN_REG_ZS, EC_SIGN_REG_X2,EC_SIGN_REG_T2,EC_SIGN_REG_Z2); 
+			carry =  0; 
+			break;
+                case (uint32_t)-1: 
+			PkaAddJcbJcb2Mdf(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_TS, EC_SIGN_REG_XS,
+				EC_SIGN_REG_YS,EC_SIGN_REG_ZS, EC_SIGN_REG_XP,EC_SIGN_REG_TP,EC_SIGN_REG_ZP); 
+			carry =  0; 
+			break;
+                case  0:           
+			PkaAddJcbJcb2Mdf(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_TS, EC_SIGN_REG_XS,
+				EC_SIGN_REG_YS,EC_SIGN_REG_ZS, EC_SIGN_REG_XP,EC_SIGN_REG_YP,EC_SIGN_REG_ZP); 
+			carry = -1; 
+			break;
+                case +1:           
+			PkaAddJcbJcb2Mdf(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_TS, EC_SIGN_REG_XS,
+				EC_SIGN_REG_YS,EC_SIGN_REG_ZS, EC_SIGN_REG_XP,EC_SIGN_REG_YP,EC_SIGN_REG_ZP); 
+			carry =  0; 
+			break;
+                case +2:           
+			PkaAddJcbJcb2Mdf(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_TS, EC_SIGN_REG_XS,
+				EC_SIGN_REG_YS,EC_SIGN_REG_ZS, EC_SIGN_REG_X2,EC_SIGN_REG_Y2,EC_SIGN_REG_Z2); 
+			carry =  0; 
+			break;
+                case +3:           
+			PkaAddJcbJcb2Mdf(EC_SIGN_REG_XS,EC_SIGN_REG_YS,EC_SIGN_REG_ZS,EC_SIGN_REG_TS, EC_SIGN_REG_XS,
+				EC_SIGN_REG_YS,EC_SIGN_REG_ZS, EC_SIGN_REG_X4,EC_SIGN_REG_Y4,EC_SIGN_REG_Z4); 
+			carry = -1; 
+			break;
+                default: 
+			ASSERT(0);
                 }
         }
 
         PkaAddJcbJcb2Jcb(EC_SIGN_REG_X2,EC_SIGN_REG_Y2,EC_SIGN_REG_Z2, EC_SIGN_REG_XS,EC_SIGN_REG_YS,
-        EC_SIGN_REG_ZS, EC_SIGN_REG_XP,EC_SIGN_REG_TP,EC_SIGN_REG_ZP); // used only then carry is -1
+		EC_SIGN_REG_ZS, EC_SIGN_REG_XP,EC_SIGN_REG_TP,EC_SIGN_REG_ZP); // used only then carry is -1
 
         if (carry == -1) {
-                PKA_SUB(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_T2, ECC_REG_N4, EC_SIGN_REG_Y2);
-                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_XP, EC_SIGN_REG_X2);
-                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_YP, isK == 1 ? EC_SIGN_REG_Y2 : EC_SIGN_REG_T2);
+                PKA_SUB(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_T2, ECC_REG_N4, EC_SIGN_REG_Y2); 
+                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_XP, EC_SIGN_REG_X2); 
+                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_YP, isK == 1 ? EC_SIGN_REG_Y2 : EC_SIGN_REG_T2); 
                 PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_ZP, EC_SIGN_REG_Z2);
         } else {
-                PKA_SUB(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_TS, ECC_REG_N4, EC_SIGN_REG_YS);
-                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_XP, EC_SIGN_REG_XS);
-                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_YP, isK == 1 ? EC_SIGN_REG_YS : EC_SIGN_REG_TS);
+                PKA_SUB(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_TS, ECC_REG_N4, EC_SIGN_REG_YS); 
+                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_XP, EC_SIGN_REG_XS); 
+                PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_YP, isK == 1 ? EC_SIGN_REG_YS : EC_SIGN_REG_TS); 
                 PKA_COPY(LEN_ID_N_PKA_REG_BITS, EC_SIGN_REG_ZP, EC_SIGN_REG_ZS);
         }
-        // convert to affine
+        // convert to affine 
         PkaJcb2Afn(SCAP_Active, EC_SIGN_REG_XP, EC_SIGN_REG_YP, EC_SIGN_REG_ZP);
 
         return;
@@ -311,9 +311,9 @@ extern const int8_t regTemps[PKA_MAX_COUNT_OF_PHYS_MEM_REGS];
  *
  */
 static CCError_t ScalarMultSca(const CCEcpkiDomain_t *domain,   /*!< [in] Pointer to EC domain. */
-                 uint32_t *bxr, uint32_t *byr,        /*!< [out] Pointer to coordinates of result EC point. */
-                 const uint32_t *k, uint32_t kSizeBit,/*!< [in] Pointer to the scalar and its size. */
-                 const uint32_t *bxp, const uint32_t *byp)        /*!< [in] Pointer to the of input EC point. */
+			     uint32_t *bxr, uint32_t *byr,        /*!< [out] Pointer to coordinates of result EC point. */
+			     const uint32_t *k, uint32_t kSizeBit,/*!< [in] Pointer to the scalar and its size. */
+			     const uint32_t *bxp, const uint32_t *byp)        /*!< [in] Pointer to the of input EC point. */
 {
         uint8_t ord = regTemps[26];
         uint8_t rk  = regTemps[27];

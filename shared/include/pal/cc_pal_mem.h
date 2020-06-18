@@ -13,11 +13,11 @@
  @file
  @brief This file contains functions for memory operations.
 
- The functions are generally implemented as wrappers to different
+ The functions are generally implemented as wrappers to different 
  operating-system calls.
 
- \note None of the described functions validate the input parameters, so that
- the behavior of the APIs in case of an illegal parameter is dependent on the
+ \note None of the described functions validate the input parameters, so that 
+ the behavior of the APIs in case of an illegal parameter is dependent on the 
  behavior of the operating system.
  */
 
@@ -45,7 +45,7 @@ extern "C"
     /**** ----- Memory Operations APIs ----- ****/
 
 /*!
-  @brief This function compares between two given buffers, according to the
+  @brief This function compares between two given buffers, according to the 
   given size.
 
   @return The return values are according to operating-system return values.
@@ -53,7 +53,7 @@ extern "C"
 #define CC_PalMemCmp(aTarget, aSource, aSize) CC_PalMemCmpPlat(aTarget, aSource, aSize)
 
 /*!
-  @brief This function copies \p aSize bytes from the source buffer to the
+  @brief This function copies \p aSize bytes from the source buffer to the 
   destination buffer.
 
   @return void.
@@ -61,9 +61,9 @@ extern "C"
 #define CC_PalMemCopy(aDestination, aSource, aSize) CC_PalMemCopyPlat(aDestination, aSource, aSize)
 
 /*!
-  @brief This function moves \p aSize bytes from the source buffer to the
+  @brief This function moves \p aSize bytes from the source buffer to the 
   destination buffer.
-
+  
   This function supports overlapped buffers.
 
   @return void.

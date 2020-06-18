@@ -25,8 +25,8 @@ extern "C" {
  * \brief          SHA-1 context structure
  */
 typedef struct mbedtls_sha1_context {
-        /*! Internal buffer */
-        uint32_t buff[CC_HASH_USER_CTX_SIZE_IN_WORDS]; // defined in cc_hash_defs_proj.h
+		/*! Internal buffer */
+		uint32_t buff[CC_HASH_USER_CTX_SIZE_IN_WORDS]; // defined in cc_hash_defs_proj.h
 } mbedtls_sha1_context;
 
 #ifdef __cplusplus

@@ -1,11 +1,21 @@
 # Utils top level Makefile
 
 UTILS_ROOT = $(shell pwd)/..
+OPENSSL_ROOT_DIR = $(UTILS_ROOT)/src/openssl
 
 all:
 
+openssl:
+	@echo "building openssl as shared object"
+	@unset CROSS_COMPILE && cd $(OPENSSL_ROOT_DIR) && make -f Makefile.org clean && ./Configure shared linux-x86_64 && $(MAKE) depend && $(MAKE) build_libs && make
+
+
+clean_openssl:
+	@echo "cleaning openssl"
+	@cd $(OPENSSL_ROOT_DIR) && $(MAKE) -f Makefile.org clean
+
 clean_%:
-	@echo "cleaning" $*	
+	@echo "cleaning" $*
 	@make -C $* clean
 
 distclean: clean clrconfig
@@ -14,7 +24,7 @@ distclean: clean clrconfig
 	rm -rf $(UTILS_ROOT)/include
 	rm -rf $(UTILS_ROOT)/doc
 
-# Generate dependency on existence only (i.e., don't care if newer). 
+# Generate dependency on existence only (i.e., don't care if newer).
 # To be used primarily for directories creation
 DEPENDENCY_ON_EXISTENCE_OF = $(filter-out $(wildcard $(1)), $(1))
 
@@ -49,7 +59,7 @@ clrconfig:
 
 .PHONY: all setconfig_% clrconfig
 
-else 
+else
 ### proj.cfg exists. Include it to get project cofiguration defintions ###
 # The includes order is important here:
 # External configurations in proj.ext.cfg may be overrided by those in host proj.cfg
@@ -58,7 +68,7 @@ include $(PROJ_CFG_PATH)
 
 
 ifeq ($(CONFIG_SB_SUPPORT_IOT), 1)
-       TARGETS = cc3x_boot_cert icv_asset_prov cc3x_asset_prov_rt cmpu_asset_pkg_util dmpu_asset_pkg_util 
+       TARGETS = cc3x_boot_cert icv_asset_prov cc3x_asset_prov_rt cmpu_asset_pkg_util dmpu_asset_pkg_util
 else
 	TARGETS = oem_asset_utils checksum_onec tests
 	ifeq ($(CC_CONFIG_SB_X509_CERT_SUPPORTED), 1)
@@ -70,7 +80,7 @@ endif
 
 
 $(info PROJ_NAME=$(PROJ_NAME))
-# Export all definition from proj.cfg to dispatched makefiles 
+# Export all definition from proj.cfg to dispatched makefiles
 export
 
 all: $(PROJ_TARGETS)
@@ -101,4 +111,4 @@ lsconfig:
 	@$(info Available project configurations:)
 	@$(foreach cfg_file,$(configs_list),$(info $(cfg_file)))
 
-.PHONY: all setconfig_% clrconfig lsconfig clean distclean all clean_% $(TARGETS)
+.PHONY: all setconfig_% clrconfig lsconfig clean distclean all clean_% $(TARGETS) openssl clean_openssl

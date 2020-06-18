@@ -26,7 +26,7 @@ extern "C"
 #endif
 
 /***********************************************************************
- *               CC_EcdhSvdpDh function                    *
+ *		         CC_EcdhSvdpDh function                    *
  ***********************************************************************/
 /*!
 @brief Creates the shared secret value according to IEEE 1363-2000: IEEE Standard for Standard Specifications for Public-Key Cryptography standard
@@ -47,11 +47,11 @@ Partner's public key shall be validated before using in this primitive.
 CIMPORT_C CCError_t CC_EcdhSvdpDh(
                         CCEcpkiUserPublKey_t *PartnerPublKey_ptr,           /*!< [in]  Pointer to a partner public key. */
                         CCEcpkiUserPrivKey_t *UserPrivKey_ptr,              /*!< [in]  Pointer to a user private key. */
-                        uint8_t              *SharedSecretValue_ptr,    /*!< [out] Pointer to an output buffer that contains the shared
-                                               secret value. */
+                        uint8_t		         *SharedSecretValue_ptr,    /*!< [out] Pointer to an output buffer that contains the shared
+										       secret value. */
                         size_t                   *SharedSecrValSize_ptr,    /*!< [in/out] Pointer to the size of user-passed buffer (in) and
                                                                                           actual size of output of calculated shared secret value
-                                              (out). */
+											  (out). */
                         CCEcdhTempData_t     *TempBuff_ptr              /*!< [in]  Pointer to a temporary buffer. */);
 
 #ifdef __cplusplus

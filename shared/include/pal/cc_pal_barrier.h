@@ -11,12 +11,12 @@
 
 /*!
  @file
- @brief This file contains the definitions and APIs for memory-barrier
+ @brief This file contains the definitions and APIs for memory-barrier 
  implementation.
 
- This is a placeholder for platform-specific memory barrier implementation.
- The secure core driver should include a memory barrier, before and after
- the last word of the descriptor, to allow correct order between the words
+ This is a placeholder for platform-specific memory barrier implementation. 
+ The secure core driver should include a memory barrier, before and after 
+ the last word of the descriptor, to allow correct order between the words 
  and different descriptors.
  */
 

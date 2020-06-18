@@ -135,7 +135,7 @@ extern uint8_t gRunItPrintEnable;
 
 /** print an debug message */
 #if defined(TEST_DEBUG)
-#define RUNIT_PRINT_DBG(format, ...)    \
+#define RUNIT_PRINT_DBG(format, ...) 	\
                 do {\
                     RUNIT_PRINT_FUNC_AND_LEVEL("debug"); \
                     RUNIT_PRINT(format, ##__VA_ARGS__); \

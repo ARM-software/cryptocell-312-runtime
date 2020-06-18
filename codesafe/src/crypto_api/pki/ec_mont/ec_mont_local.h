@@ -70,7 +70,7 @@ typedef struct {
 
 /*!<
  @brief    the function returns the domain pointer if the domain is supported for the product,
-       otherwise return NULL
+	   otherwise return NULL
  @return   return domain pointer or NULL
 
 */

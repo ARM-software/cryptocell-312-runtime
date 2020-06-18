@@ -1,23 +1,14 @@
 /*
- * Copyright (c) 2001-2019, Arm Limited and Contributors. All rights reserved.
+ * Copyright (c) 2001-2020, Arm Limited and Contributors. All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause OR Arm’s non-OSI source license
  */
-
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
-
-#include <openssl/objects.h>
-#include <openssl/pem.h>
-#include <openssl/evp.h>
-#include <openssl/rand.h>
-#include <openssl/bn.h>
-#include <openssl/aes.h>
-#include <openssl/err.h>
 #include "common_util_log.h"
 #include "common_crypto_asym.h"
 #include "common_crypto_sym.h"
@@ -42,10 +33,19 @@ static uint8_t  isLibOpened = 0;
 /*********************************************************/
 static void InitOpenSsl(void)
 {
+    int rc = 0;
     if (0 == isLibOpened) {
-          OpenSSL_add_all_algorithms();
+       rc = OPENSSL_init_crypto(   OPENSSL_INIT_LOAD_CRYPTO_STRINGS    |
+                            OPENSSL_INIT_ADD_ALL_CIPHERS        |
+                            OPENSSL_INIT_ADD_ALL_DIGESTS,NULL);
+        /* OPENSSL_init_crypto returns 1 on success or 0 on error.*/
+        if (rc == 0) {
+            UTIL_LOG_ERR("OPENSSL_init_crypto failed \n");
+        }
+        else {
+            isLibOpened++;
+        }
     }
-    isLibOpened++;
 }
 
 
@@ -61,8 +61,7 @@ static void CloseOpenSsl(void)
 {
     isLibOpened--;
     if (0 == isLibOpened) {
-          EVP_cleanup();
-          //CYPTO_cleanup_all_ex_data();  /* cleanup application specific data to avoid memory leaks.*/
+        OPENSSL_cleanup();
     }
 }
 

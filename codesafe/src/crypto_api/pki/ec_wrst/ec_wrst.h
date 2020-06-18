@@ -25,12 +25,12 @@ extern "C"
 /* Temporary buffers used for the functions called from ECDSA */
 typedef struct{
 //! Debug : set to 10, may be less?
-    CCEcdsaSignIntBuff_t tempBuff;
+	CCEcdsaSignIntBuff_t tempBuff;
 }EcWrstDsaSignDb_t;
 
 /* Temporary buffers used for the  functions called from ECDSA */
 typedef struct{
-    CCEcdsaVerifyIntBuff_t tempBuff;
+	CCEcdsaVerifyIntBuff_t tempBuff;
 }EcWrstDsaVerifyDb_t;
 
 
@@ -69,17 +69,17 @@ typedef struct{
 } EcwrstCurve_t;
 
 void EcWrstDsaTruncateMsg(uint32_t *pMsgOut,
-            uint8_t *pMsgIn,
-            uint32_t outSizeBits);
+			uint8_t *pMsgIn,
+			uint32_t outSizeBits);
 
 
 
 CCError_t  EcWrstInitPubKey(CCEcpkiPublKey_t *pPublKey,
-                  uint8_t pointCtl);
+			      uint8_t pointCtl);
 
 
 CCError_t  EcWrstFullCheckPublKey(CCEcpkiPublKey_t    *pPublKey,
-                    uint32_t            *pTempBuff);
+				    uint32_t            *pTempBuff);
 
 /* EC WRST DSA */
 CCError_t EcWrstDsaSign(CCRndContext_t   *pRndContext,
@@ -92,10 +92,10 @@ CCError_t EcWrstDsaSign(CCRndContext_t   *pRndContext,
                         uint32_t             *pTempBuff);
 
 CCError_t EcWrstDsaVerify(CCEcpkiPublKey_t *signPublKey,
-                    uint32_t  *messageRepresent,
-                    uint32_t   messRepresSizeWords,
-                    uint32_t  *signC,
-                    uint32_t  *signD);
+		            uint32_t  *messageRepresent,
+		            uint32_t   messRepresSizeWords,
+		            uint32_t  *signC,
+		            uint32_t  *signD);
 
 
 
@@ -116,8 +116,8 @@ CEXPORT_C CCError_t EcWrstGenKeyPair(const CCEcpkiDomain_t  *pDomain,
 
 /* EC WRST Key Generate with configurable base point */
 CEXPORT_C CCError_t EcWrstGenKeyPairBase(const CCEcpkiDomain_t  *pDomain,
-                        const uint32_t         ecX [CC_ECPKI_MODUL_MAX_LENGTH_IN_WORDS],
-                        const uint32_t         ecY [CC_ECPKI_MODUL_MAX_LENGTH_IN_WORDS],
+                        const uint32_t	       ecX [CC_ECPKI_MODUL_MAX_LENGTH_IN_WORDS],
+                        const uint32_t	       ecY [CC_ECPKI_MODUL_MAX_LENGTH_IN_WORDS],
                         CCEcpkiUserPrivKey_t   *pUserPrivKey,
                         CCEcpkiUserPublKey_t   *pUserPublKey,
                         CCEcpkiKgTempData_t    *pTempBuff);

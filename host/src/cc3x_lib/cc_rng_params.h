@@ -10,7 +10,7 @@
 
 /* Default RNG parameters are used when these parameters are set to 0 */
 #define CC_RNG_NUM_OF_ROSCS_ALLOWED_FLAG        0x0
-#define CC_RNG_SAMPL_RATIO_ON_SWEE_MODE       0
+#define CC_RNG_SAMPL_RATIO_ON_SWEE_MODE 	  0
 
 
 /* Default, increment and mininimal values, for Sampling Ratio */

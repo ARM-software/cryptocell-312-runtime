@@ -19,115 +19,115 @@
 /******************************************************************************/
 void Test_PalPrintfError(const char *function, const char *format, ...)
 {
-    va_list args;
+	va_list args;
 
-    va_start(args, format);
+	va_start(args, format);
 
-    printf("%s(): ", function);
-    vprintf(format, args);
-    printf("\n");
+	printf("%s(): ", function);
+	vprintf(format, args);
+	printf("\n");
 
-    va_end(args);
+	va_end(args);
 }
 
 /******************************************************************************/
 void Test_PalFprintfError(void *fd, const char *function, const char *format, ...)
 {
-    (void)fd;
-    (void)function;
-    (void)format;
+	(void)fd;
+	(void)function;
+	(void)format;
 }
 
 /******************************************************************************/
 void Test_PalPrintfMessage(const char *format, ...)
 {
-    va_list args;
+	va_list args;
 
-    va_start(args, format);
+	va_start(args, format);
 
-    vprintf(format, args);
+	vprintf(format, args);
 
-    va_end(args);
+	va_end(args);
 }
 
 /******************************************************************************/
 void Test_PalPrintf(const char *function, const char *format, ...)
 {
-    va_list args;
+	va_list args;
 
-    va_start(args, format);
+	va_start(args, format);
 
-    if (function)
-        printf("%s(): ", function);
-    vprintf(format, args);
+	if (function)
+		printf("%s(): ", function);
+	vprintf(format, args);
 
-    va_end(args);
+	va_end(args);
 }
 
 /******************************************************************************/
 void Test_PalFprintf(void *fd, const char *function, const char *format, ...)
 {
-    (void)fd;
-    (void)function;
-    (void)format;
+	(void)fd;
+	(void)function;
+	(void)format;
 }
 
 /******************************************************************************/
 void Test_PalPrintByteBuff(const char *function, const char *buffName,
-                        uint8_t *buff, uint32_t size)
+						uint8_t *buff, uint32_t size)
 {
-    unsigned int i = 0;
+	unsigned int i = 0;
 
-    Test_PalPrintf(function, "printing %s, byte size %d\n", buffName,
-            (unsigned int)size);
+	Test_PalPrintf(function, "printing %s, byte size %d\n", buffName,
+			(unsigned int)size);
 
-    for (i = 0; i < size; i++) {
-        if (!(i%16))
-            Test_PalPrintf(NULL, "\n\t");
-        Test_PalPrintf(NULL, "0x%02X ",
-                (unsigned char)(*((unsigned char *)buff+i)));
-    }
-    Test_PalPrintf(NULL, "\n");
+	for (i = 0; i < size; i++) {
+		if (!(i%16))
+			Test_PalPrintf(NULL, "\n\t");
+		Test_PalPrintf(NULL, "0x%02X ",
+				(unsigned char)(*((unsigned char *)buff+i)));
+	}
+	Test_PalPrintf(NULL, "\n");
 }
 
 /******************************************************************************/
 void Test_PalFprintByteBuff(void *fd, const char *function,
-            const char *buffName, uint8_t *buff, uint32_t size)
+			const char *buffName, uint8_t *buff, uint32_t size)
 {
-    (void)fd;
-    (void)function;
-    (void)buffName;
-    (void)buff;
-    (void)size;
+	(void)fd;
+	(void)function;
+	(void)buffName;
+	(void)buff;
+	(void)size;
 }
 
 /******************************************************************************/
 void Test_PalFprintfByteBuffMax(void *fd, const char *function,
-    const char *buffName, uint8_t *buff, uint32_t size, uint32_t maxSize)
+	const char *buffName, uint8_t *buff, uint32_t size, uint32_t maxSize)
 {
-    (void)fd;
-    (void)function;
-    (void)buffName;
-    (void)buff;
-    (void)size;
-    (void)maxSize;
+	(void)fd;
+	(void)function;
+	(void)buffName;
+	(void)buff;
+	(void)size;
+	(void)maxSize;
 }
 
 /******************************************************************************/
 void Test_PalPrintWordBuff(const char *function, const char *buffName,
-                        uint32_t *buff, uint32_t size)
+						uint32_t *buff, uint32_t size)
 {
-    uint8_t i = 0;
+	uint8_t i = 0;
 
-    Test_PalPrintf(function, "printing %s, word size %d\n", buffName,
-                            (uint32_t)size);
-    for (i = 0; i < size; i++) {
-        if (!(i%4))
-            Test_PalPrintf(NULL, "\n\t");
-        Test_PalPrintf(NULL, "0x%08X  ",
-                (unsigned int)(*((unsigned int *)buff+i)));
-    }
-    Test_PalPrintf(NULL, "\n");
+	Test_PalPrintf(function, "printing %s, word size %d\n", buffName,
+							(uint32_t)size);
+	for (i = 0; i < size; i++) {
+		if (!(i%4))
+			Test_PalPrintf(NULL, "\n\t");
+		Test_PalPrintf(NULL, "0x%08X  ",
+				(unsigned int)(*((unsigned int *)buff+i)));
+	}
+	Test_PalPrintf(NULL, "\n");
 }
 
 /* inline void TEST_PRINT_BYTE_BUFFP(buffName, buff, size);

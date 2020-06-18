@@ -1,6 +1,6 @@
 ####################################################################
 #
-# Copyright (c) 2001-2019, Arm Limited and Contributors. All rights reserved.
+# Copyright (c) 2001-2020, Arm Limited and Contributors. All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause OR Arm’s non-OSI source license
 #
@@ -35,8 +35,8 @@ CC_MNG_RMA_LCS = 0x7
 #so name
 SBU_CRYPTO_LIB_DIR = "lib"
 SBU_CRYPTO_LIB_Name = SBU_CRYPTO_LIB_DIR + "/" + "libsbu_crypto.so"
-SBU_OSSL_CRYPTO_LIB_Name = "libcrypto.so.1.0.0"
-SBU_OSSL_LIB_Name = "libssl.so.1.0.0"
+SBU_OSSL_CRYPTO_LIB_Name = "libcrypto.so.1.1"
+SBU_OSSL_LIB_Name = "libssl.so.1.1"
 
 
 CURRENT_PATH = sys.path[0]
@@ -66,7 +66,7 @@ HASH_ALGORITHM_SHA256_SIZE_IN_WORDS = (SHA_256_HASH_SIZE_IN_BYTES//BYTES_WITHIN_
 # H size
 RSA_H_SIZE_IN_BYTES = RSA_SIGNATURE_SIZE_IN_BYTES
 RSA_H_SIZE_IN_WORDS = (RSA_SIGNATURE_SIZE_IN_BYTES//BYTES_WITHIN_WORD)
- 
+
 # Size of SW versions
 SW_VERSION_OBJ_SIZE_IN_WORDS = 1
 
@@ -86,7 +86,7 @@ RMA_CERT_FLAG_BIT_OFFSET = 8
 
 # HASH output representation
 HASH_BINARY_REPRESENTATION = 1
-HASH_HEX_REPRESENTATION    = 2 
+HASH_HEX_REPRESENTATION    = 2
 
 
 # certificate output file prefix
@@ -94,7 +94,7 @@ Cert_FileName = "Cert"
 # certificate output file suffix
 Cert_FileExtBin = ".bin"
 Cert_FileExtTxt = ".txt"
-        
+
 # definitions for code encryption
 AES_IV_SIZE_IN_BYTES = 16
 AES_DECRYPT_KEY_SIZE_IN_BYTES = 16
@@ -103,7 +103,7 @@ SW_COMP_FILE_NAME_POSTFIX = "_enc.bin"
 NONCE_SIZE_IN_WORDS = 2
 MAX_NUM_OF_IMAGES = 16
 
-# Definitions for sw version legal values - 
+# Definitions for sw version legal values -
 #########################################
 SW_REVOCATION_MAX_NUM_OF_BITS_HBK0 = 64
 SW_REVOCATION_MAX_NUM_OF_BITS_HBK1 = 96

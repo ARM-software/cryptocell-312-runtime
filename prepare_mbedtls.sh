@@ -140,7 +140,10 @@ function mbedtls_git
     if [ ! -d $MBEDTLS_ROOT_DIR ];
     then
         echo "cloning mbedtls into $MBEDTLS_ROOT_DIR"
-        git clone -b "mbedtls-2.16.2"  https://github.com/ARMmbed/mbedtls.git $MBEDTLS_ROOT_DIR
+        git clone https://github.com/ARMmbed/mbedtls.git $MBEDTLS_ROOT_DIR
+        cd $MBEDTLS_ROOT_DIR
+        git checkout tags/mbedtls-2.16.2 -b mbedtls-2.16.2
+        cd -
     else
         echo "rebase mbedtls $MBEDTLS_ROOT_DIR"
         cd $MBEDTLS_ROOT_DIR

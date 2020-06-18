@@ -24,13 +24,13 @@ extern "C"
 
 
 typedef struct {
-    /* the Barrett mod tag  NP for N-modulus - used in the modular multiplication and
-       exponentiation, calculated in CC_RsaPrivKeyBuild function */
-    uint32_t NP[CC_PKA_BARRETT_MOD_TAG_BUFF_SIZE_IN_WORDS];
+	/* the Barrett mod tag  NP for N-modulus - used in the modular multiplication and
+	   exponentiation, calculated in CC_RsaPrivKeyBuild function */
+	uint32_t NP[CC_PKA_BARRETT_MOD_TAG_BUFF_SIZE_IN_WORDS];
 }RsaPubKeyDb_t;
 
 CCError_t RsaExecPubKeyExp(CCRsaPubKey_t     *pPubKey,
-                CCRsaPrimeData_t *pPubData );
+				CCRsaPrimeData_t *pPubData );
 
 CCError_t RsaInitPubKeyDb(CCRsaPubKey_t *pPubKey);
 

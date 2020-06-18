@@ -19,8 +19,8 @@ extern "C"
 
 
 /************************ Defines ******************************/
-#define SB_REG_ADDR(base, reg_name)     (base + CC_REG_OFFSET(CRY_KERNEL, reg_name))
-#define SB_REG_ADDR_UNIT(base, reg_name, unit)  (base + CC_REG_OFFSET(unit, reg_name))
+#define SB_REG_ADDR(base, reg_name) 	(base + CC_REG_OFFSET(CRY_KERNEL, reg_name))
+#define SB_REG_ADDR_UNIT(base, reg_name, unit) 	(base + CC_REG_OFFSET(unit, reg_name))
 
 
 

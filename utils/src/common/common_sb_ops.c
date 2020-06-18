@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2001-2019, Arm Limited and Contributors. All rights reserved.
+ * Copyright (c) 2001-2020, Arm Limited and Contributors. All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause OR Arm’s non-OSI source license
  */
@@ -116,17 +116,24 @@ int Sign_v21(RSA *pRsaPrivKey, char *DataIn_ptr,
 {
     unsigned char pDigest[HASH_SHA256_DIGEST_SIZE_IN_BYTES];
     unsigned int uDigestLen = HASH_SHA256_DIGEST_SIZE_IN_BYTES;
-    EVP_MD_CTX md_ctx;
     unsigned char EM[SB_CERT_RSA_KEY_SIZE_IN_BYTES];
     unsigned char pDecrypted[SB_CERT_RSA_KEY_SIZE_IN_BYTES];
     int status = -1;
+    EVP_MD_CTX *md_ctx = EVP_MD_CTX_new();
+
+    if ( md_ctx == NULL)
+    {
+        SIGN21_RELEASE("Failed with EVP_MD_CTX_new");
+        return -1;
+    }
 
    /* hash the message */
-    EVP_MD_CTX_init(&md_ctx);
-    EVP_DigestInit(&md_ctx, EVP_sha256());
-    EVP_DigestUpdate(&md_ctx, (const void*) DataIn_ptr, DataInSize);
-    EVP_DigestFinal(&md_ctx, pDigest, &uDigestLen);
-    EVP_MD_CTX_cleanup(&md_ctx);
+    EVP_MD_CTX_init(md_ctx);
+    EVP_DigestInit(md_ctx, EVP_sha256());
+    EVP_DigestUpdate(md_ctx, (const void*) DataIn_ptr, DataInSize);
+    EVP_DigestFinal(md_ctx, pDigest, &uDigestLen);
+    EVP_MD_CTX_reset(md_ctx);
+    EVP_MD_CTX_free(md_ctx);
 
     /* compute the PSS padded data */
     if (!RSA_padding_add_PKCS1_PSS(pRsaPrivKey, EM, pDigest, EVP_sha256(), RSA_SALT_LEN))
@@ -192,11 +199,17 @@ SBUEXPORT_C int SBU_GetNFromKeyPairAndCalcH(char* PemEncryptedFileName_ptr, char
     else
         pwdPtr = Nullptr;
 
-    OpenSSL_add_all_algorithms ();
-
-    /* get N  buffer */
+    rc = OPENSSL_init_crypto(   OPENSSL_INIT_LOAD_CRYPTO_STRINGS    |
+                                OPENSSL_INIT_ADD_ALL_CIPHERS        |
+                                OPENSSL_INIT_ADD_ALL_DIGESTS,NULL);
+    /* OPENSSL_init_crypto returns 1 on success or 0 on error.*/
+    if (rc == 0) {
+        printf("OPENSSL_init_crypto failed \n");
+        return 1;
+    }
+        /* get N  buffer */
     rc = CC_CommonGetNbuffFromKeyPair(PemEncryptedFileName_ptr, pwdPtr, N_ptr, &nSize);
-    EVP_cleanup();
+
     CRYPTO_cleanup_all_ex_data();  /* cleanup application specific data to avoid memory leaks.*/
     if (rc != 0) {
         printf( "failed to CC_CommonGetNbuffFromKeyPair %d \n", rc);
@@ -307,15 +320,21 @@ SBUEXPORT_C int SBU_GetNAndNpFromKeyPair(char* PemEncryptedFileName_ptr, char *p
     else
         pwdPtr = Nullptr;
 
-    OpenSSL_add_all_algorithms ();
-
+    rc = OPENSSL_init_crypto(   OPENSSL_INIT_LOAD_CRYPTO_STRINGS    |
+                                OPENSSL_INIT_ADD_ALL_CIPHERS        |
+                                OPENSSL_INIT_ADD_ALL_DIGESTS,NULL);
+    /* OPENSSL_init_crypto returns 1 on success or 0 on error.*/
+    if (rc == 0) {
+        printf("OPENSSL_init_crypto failed \n");
+        return 1;
+    }
     /* get N and Np buffer */
     rc = CC_CommonGetNAndNpFromKeyPair(PemEncryptedFileName_ptr, pwdPtr, PemDecryted, &nAndNpSize);
     if (rc != 0) {
         printf( "failed to CC_CommonGetNAndNpFromKeyPair %d or ilegal size %d\n", rc, nAndNpSize);
     }
 
-    EVP_cleanup();
+
     CRYPTO_cleanup_all_ex_data();  /* cleanup application specific data to avoid memory leaks.*/
 
     return rc;
@@ -334,7 +353,14 @@ SBUEXPORT_C int SBU_GetNAndNpFromPubKey(char* PemEncryptedFileName_ptr, char *Pe
     int rc = 0;
     int nAndNpSize = SB_CERT_RSA_KEY_SIZE_IN_BYTES+NP_SIZE_IN_BYTES;
 
-    OpenSSL_add_all_algorithms ();
+    rc = OPENSSL_init_crypto(   OPENSSL_INIT_LOAD_CRYPTO_STRINGS    |
+                                OPENSSL_INIT_ADD_ALL_CIPHERS        |
+                                OPENSSL_INIT_ADD_ALL_DIGESTS,NULL);
+    /* OPENSSL_init_crypto returns 1 on success or 0 on error.*/
+    if (rc == 0) {
+        printf("OPENSSL_init_crypto failed \n");
+        return 1;
+    }
 
     /* get N and Np buffer */
     rc = CC_CommonGetNAndNpFromPubKey(PemEncryptedFileName_ptr, PemDecryted, &nAndNpSize);
@@ -342,7 +368,7 @@ SBUEXPORT_C int SBU_GetNAndNpFromPubKey(char* PemEncryptedFileName_ptr, char *Pe
         printf( "failed to CC_CommonGetNAndNpFromPubKey %d or ilegal size %d\n", rc, nAndNpSize);
     }
 
-    EVP_cleanup();
+
     CRYPTO_cleanup_all_ex_data();  /* cleanup application specific data to avoid memory leaks.*/
 
     return rc;
@@ -360,14 +386,21 @@ SBUEXPORT_C int SBU_GetHashOfNAndNpFromPubKey(char* pPemFileName_ptr, char *pHas
 {
     int rc = 0;
 
-    OpenSSL_add_all_algorithms ();
+    rc = OPENSSL_init_crypto(   OPENSSL_INIT_LOAD_CRYPTO_STRINGS    |
+                                OPENSSL_INIT_ADD_ALL_CIPHERS        |
+                                OPENSSL_INIT_ADD_ALL_DIGESTS,NULL);
+    /* OPENSSL_init_crypto returns 1 on success or 0 on error.*/
+    if (rc == 0) {
+        printf("OPENSSL_init_crypto failed \n");
+        return 1;
+    }
 
     rc = CC_CommonCalcHBKFromFile(pPemFileName_ptr, pHash, hashSize);
     if (rc != 0) {
         printf( "failed to CC_CommonCalcHBKFromFile %d or ilegal size %d\n", rc, hashSize);
     }
 
-    EVP_cleanup();
+
     CRYPTO_cleanup_all_ex_data();  /* cleanup application specific data to avoid memory leaks.*/
 
     return rc;

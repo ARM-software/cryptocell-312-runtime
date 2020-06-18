@@ -5,7 +5,7 @@
  */
 
 /* \file applet_list.h
- * Definition of building list of applets for applet to applet tests
+ * Definition of building list of applets for applet to applet tests 
  */
 
 #ifndef __APPLET_LIST_H__
@@ -26,14 +26,14 @@ enum {
 };
 
 #define GET_NEXT_SLOT(currentSlot, nextSlot, loadedAppsList) {\
-    do {\
-        if (IS_SRAM_SLOT(currentSlot)) {\
-               nextSlot = rand() % (1 + MAX_PRIVILEGED_APPLET_ID);\
-        } else {\
-               nextSlot = rand() % MAX_APPLET_SLOT_NUM;\
-        }\
-        if (APP_IS_LOADED == loadedAppsList[nextSlot]) break;\
-    } while (1);\
+	do {\
+		if (IS_SRAM_SLOT(currentSlot)) {\
+		       nextSlot = rand() % (1 + MAX_PRIVILEGED_APPLET_ID);\
+		} else {\
+		       nextSlot = rand() % MAX_APPLET_SLOT_NUM;\
+		}\
+		if (APP_IS_LOADED == loadedAppsList[nextSlot]) break;\
+	} while (1);\
 }
 
 
@@ -49,9 +49,9 @@ enum {
 
 extern void appList_buildList(OUT_PARAM int8_t *appList,
             IN_PARAM  uint8_t *loadedAppsList,
-            IN_PARAM  uint8_t appletListNum,
-            IN_PARAM  uint8_t currentSlot,
-            IN_PARAM  bool  isLastPriv);
+			IN_PARAM  uint8_t appletListNum,
+			IN_PARAM  uint8_t currentSlot,
+			IN_PARAM  bool  isLastPriv);
 
 extern  uint8_t getLoadedApplets(IN_PARAM int fd , OUT_PARAM uint8_t *pBuff);
 extern  uint8_t clearAllApplets(IN_PARAM int fd);

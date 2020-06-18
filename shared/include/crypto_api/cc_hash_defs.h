@@ -30,7 +30,7 @@ extern "C"
 
 /************************ Defines ******************************/
 
-/*! The size of the hash result in words. The maximal size for SHA-512 is
+/*! The size of the hash result in words. The maximal size for SHA-512 is 
 512 bits. */
 #define CC_HASH_RESULT_SIZE_IN_WORDS    16
 
@@ -91,17 +91,17 @@ extern "C"
 /*! The hash operation mode. */
 typedef enum {
     /*! SHA-1. */
-    CC_HASH_SHA1_mode          = 0,
+	CC_HASH_SHA1_mode          = 0,
     /*! SHA-224. */
-    CC_HASH_SHA224_mode        = 1,
+	CC_HASH_SHA224_mode        = 1,
     /*! SHA-256. */
-    CC_HASH_SHA256_mode        = 2,
+	CC_HASH_SHA256_mode        = 2,
     /*! SHA-384. */
-    CC_HASH_SHA384_mode        = 3,
+	CC_HASH_SHA384_mode        = 3,
     /*! SHA-512. */
-    CC_HASH_SHA512_mode        = 4,
+	CC_HASH_SHA512_mode        = 4,
     /*! MD5. */
-    CC_HASH_MD5_mode           = 5,
+	CC_HASH_MD5_mode           = 5,
     /*! The number of hash modes. */
     CC_HASH_NumOfModes,
     /*! Reserved. */
@@ -123,7 +123,7 @@ typedef uint32_t CCHashResultBuf_t[CC_HASH_RESULT_SIZE_IN_WORDS];
 */
 typedef struct CCHashUserContext_t {
     /*! The internal buffer. */
-    uint32_t buff[CC_HASH_USER_CTX_SIZE_IN_WORDS];
+	uint32_t buff[CC_HASH_USER_CTX_SIZE_IN_WORDS];
 }CCHashUserContext_t;
 
 

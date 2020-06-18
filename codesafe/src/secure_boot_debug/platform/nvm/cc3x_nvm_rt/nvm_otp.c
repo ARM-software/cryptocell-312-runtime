@@ -71,46 +71,46 @@ CCError_t NVM_GetLCS(unsigned long hwBaseAddress, uint32_t *lcs_ptr)
  */
 CCError_t NVM_ReadHASHPubKey(unsigned long hwBaseAddress, CCSbPubKeyIndexType_t keyIndex, CCHashResult_t PubKeyHASH, uint32_t hashSizeInWords)
 {
-    CCError_t error = CC_OK;
-    uint32_t i;
-    uint32_t lcs;
+	CCError_t error = CC_OK;
+	uint32_t i;
+	uint32_t lcs;
 
-    /* Check input variables */
-    if (PubKeyHASH == NULL)
-        return CC_BOOT_IMG_VERIFIER_INV_INPUT_PARAM;
+	/* Check input variables */
+	if (PubKeyHASH == NULL)
+		return CC_BOOT_IMG_VERIFIER_INV_INPUT_PARAM;
 
-    /* Get LCS from register */
-    error = CC_BsvLcsGet(hwBaseAddress, &lcs);
-    if (error != CC_OK) {
-        return error;
-    }
+	/* Get LCS from register */
+	error = CC_BsvLcsGet(hwBaseAddress, &lcs);
+	if (error != CC_OK) {
+		return error;
+	}
 
-    if ( (lcs == CC_BSV_CHIP_MANUFACTURE_LCS) ||
-         (lcs == CC_BSV_RMA_LCS) ){
-        return CC_BOOT_IMG_VERIFIER_SKIP_PUBLIC_KEY_VERIFY;
-    }
+	if ( (lcs == CC_BSV_CHIP_MANUFACTURE_LCS) ||
+		 (lcs == CC_BSV_RMA_LCS) ){
+		return CC_BOOT_IMG_VERIFIER_SKIP_PUBLIC_KEY_VERIFY;
+	}
 
-    error = CC_BsvPubKeyHashGet(hwBaseAddress, keyIndex, PubKeyHASH, hashSizeInWords);
-    /* Secure Boot should skip verification of the Certificate key against OTP memory when public key hash is not programmed yet (in CM or DM). */
-    if (error == CC_MNG_HASH_NOT_PROGRAMMED_ERR){
-        return CC_BOOT_IMG_VERIFIER_SKIP_PUBLIC_KEY_VERIFY;
-    }
+	error = CC_BsvPubKeyHashGet(hwBaseAddress, keyIndex, PubKeyHASH, hashSizeInWords);
+	/* Secure Boot should skip verification of the Certificate key against OTP memory when public key hash is not programmed yet (in CM or DM). */
+	if (error == CC_MNG_HASH_NOT_PROGRAMMED_ERR){
+		return CC_BOOT_IMG_VERIFIER_SKIP_PUBLIC_KEY_VERIFY;
+	}
 
-    if (error == CC_OK){
-        /* All key and digest fields are stored in OTP in little-endian format */
-        for (i=0; i < hashSizeInWords; i++) {
-            PubKeyHASH[i] = UTIL_REVERT_UINT32_BYTES( PubKeyHASH[i] );
-        }
-    }
+	if (error == CC_OK){
+		/* All key and digest fields are stored in OTP in little-endian format */
+		for (i=0; i < hashSizeInWords; i++) {
+			PubKeyHASH[i] = UTIL_REVERT_UINT32_BYTES( PubKeyHASH[i] );
+		}
+	}
 
-    return error;
+	return error;
 }
 
 
 /**
  * @brief The NVM_GetSwVersion function is a NVM interface function -
  *        The function retrieves the SW version from the SRAM/NVM.
- *        In case of OTP, we support up to 16 anti-rollback counters (taken from the certificate)
+ *  	  In case of OTP, we support up to 16 anti-rollback counters (taken from the certificate)
  *
  * @param[in] hwBaseAddress -  cryptocell base address
  *
@@ -122,28 +122,28 @@ CCError_t NVM_ReadHASHPubKey(unsigned long hwBaseAddress, CCSbPubKeyIndexType_t 
  */
 CCError_t NVM_GetSwVersion(unsigned long hwBaseAddress, CCSbPubKeyIndexType_t keyIndex, uint32_t* swVersion)
 {
-    uint32_t swVersionNum = 0;
-    CCError_t error = CC_OK;
+	uint32_t swVersionNum = 0;
+	CCError_t error = CC_OK;
 
-    /* Check input variables */
-    if (swVersion == NULL)
-        return CC_BOOT_IMG_VERIFIER_INV_INPUT_PARAM;
+	/* Check input variables */
+	if (swVersion == NULL)
+		return CC_BOOT_IMG_VERIFIER_INV_INPUT_PARAM;
 
-    /* get FW minimum version according to counter ID */
-    error = CC_BsvSwVersionGet(hwBaseAddress, keyIndex, &swVersionNum);
-    if (error != CC_OK) {
-        return error;
-    }
+	/* get FW minimum version according to counter ID */
+	error = CC_BsvSwVersionGet(hwBaseAddress, keyIndex, &swVersionNum);
+	if (error != CC_OK) {
+		return error;
+	}
 
-    *swVersion = swVersionNum;
-    return CC_OK;
+	*swVersion = swVersionNum;
+	return CC_OK;
 }
 
 CCError_t NVM_SetSwVersion(unsigned long hwBaseAddress, CCSbPubKeyIndexType_t keyIndex, uint32_t swVersion)
 {
-    CC_UNUSED_PARAM(hwBaseAddress);
-    CC_UNUSED_PARAM(keyIndex);
-    CC_UNUSED_PARAM(swVersion);
+	CC_UNUSED_PARAM(hwBaseAddress);
+	CC_UNUSED_PARAM(keyIndex);
+	CC_UNUSED_PARAM(swVersion);
 
-    return CC_OK;
+	return CC_OK;
 }

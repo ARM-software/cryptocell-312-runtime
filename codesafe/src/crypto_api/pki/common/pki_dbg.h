@@ -60,14 +60,14 @@ void PkiDbgPrintUint8Buff(const char     *label,
                      uint32_t  sizeBytes);
 
 CCError_t PkiDbgExecOperation(uint32_t       Opcode,
-            uint32_t       lenId,
-            uint32_t       isAImmed,
-            uint32_t       OpA,
-            uint32_t       isBImmed,
-            uint32_t       OpB,
-            uint32_t       ResDiscard,
-            uint32_t       Res,
-            uint32_t       Tag);
+			uint32_t       lenId,
+			uint32_t       isAImmed,
+			uint32_t       OpA,
+			uint32_t       isBImmed,
+			uint32_t       OpB,
+			uint32_t       ResDiscard,
+			uint32_t       Res,
+			uint32_t       Tag);
 
 /* Special debug prints */
 #define PKA_START_FUNC printf("\n[ %s\n",  __func__)
