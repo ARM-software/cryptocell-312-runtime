@@ -19,18 +19,18 @@ extern "C"
 #endif
 
 /*! The hashblock size in words. */
-#define HASH_BLOCK_SIZE_IN_WORDS                16
+#define HASH_BLOCK_SIZE_IN_WORDS             	16
 
 /*! SHA256 result size in words. */
-#define HASH_RESULT_SIZE_IN_WORDS               8
+#define HASH_RESULT_SIZE_IN_WORDS            	8
 /*! SHA256 result size in Bytes. */
-#define HASH_RESULT_SIZE_IN_BYTES               32
+#define HASH_RESULT_SIZE_IN_BYTES            	32
 
 /*! Defines the hash result array. */
 typedef uint32_t CCHashResult_t[HASH_RESULT_SIZE_IN_WORDS];
 
 /*! Definition for converting pointer to address. */
-#define CONVERT_TO_ADDR(ptr)    (unsigned long)ptr
+#define CONVERT_TO_ADDR(ptr) 	(unsigned long)ptr
 
 
 #ifdef __cplusplus

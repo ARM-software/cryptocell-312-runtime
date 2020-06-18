@@ -10,21 +10,21 @@
 
 /*!
 @file
-@brief The file contains EC Domain 25519 parameters and get-function.
+@brief The file contains EC Domain 25519 parameters and get-function. 
 */
 
 
 /*  EC Edwards curve domain: curve over prime fild GFp:
     x^2 + y^2 = 1 + d*x^2*y^2 */
 
-/*!> EC Edwards domain 25519 domain parameters and auxiliary values.
+/*!> EC Edwards domain 25519 domain parameters and auxiliary values.                
      The data is in little endian order of words: LS-Word is most left one */
 static const CCEcEdwDomain_t  EcEdwDomain25519 = {
 
         /* Prime modulus P = {2^255 - 19) = 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFED */
         {0xffffffed,0xffffffff,0xffffffff,0xffffffff,0xffffffff,0xffffffff,0xffffffff,0x7fffffff},
         /* modulus size in bits and words */
-        255, 8,
+        255, 8,                                                                     
         /* EC generator G coordinate X = 0x216936D3CD6E53FEC0A4E231FDD6DC5C692CC7609525A7B2C9562D608F25D51A  */
         {0x8F25D51A,0xC9562D60,0x9525A7B2,0x692CC760,0xFDD6DC5C,0xC0A4E231,0xCD6E53FE,0x216936D3},
         /* EC generator G coordinate Y = 0x6666666666666666666666666666666666666666666666666666666666666658 = 4/5 */
@@ -32,9 +32,9 @@ static const CCEcEdwDomain_t  EcEdwDomain25519 = {
         /* EC_MONT generator order n =  0x1000000000000000000000000000000014DEF9DEA2F79CD65812631A5CF5D3ED */
         {0x5cf5d3ed,0x5812631a,0xa2f79cd6,0x14def9de,0x00000000,0x00000000,0x00000000,0x10000000},
         253, 8, /* EC_MONT generator order size in bits and IN words */
-        8, /* EC order cofactor */
+        8, /* EC order cofactor */ 
         /* EC parameter d = 0x52036CEE2B6FFE738CC740797779E89800700A4D4141D8AB75EB4DCA135978A3 = 121665 / 121666 */
-        {0x135978A3,0x75EB4DCA,0x4141D8AB,0x00700A4D,0x7779E898,0x8CC74079,0x2B6FFE73,0x52036CEE},
+        {0x135978A3,0x75EB4DCA,0x4141D8AB,0x00700A4D,0x7779E898,0x8CC74079,0x2B6FFE73,0x52036CEE}, 
 
         /* EC generator G proective coordinates: X=  Z = 1 (there is c) */
         /* tg = [255] 67875F0FD78B766566EA4E8E64ABE37D20F09F80775152F56DDE8AB3A5B7DDA3 */
@@ -103,16 +103,16 @@ static const CCEcEdwDomain_t  EcEdwDomain25519 = {
         {0x59E2C69F,0x23C1747F,0x76B8A6B5,0x714E56C1,0x6D47A595,0xD3A38454,0x12746C6D,0x6DF81179},
 
         /* auxiliary value d2 = 0x2406D9DC56DFFCE7198E80F2EEF3D13000E0149A8283B156EBD69B9426B2F159 = 2*d */
-        {0x26B2F159,0xEBD69B94,0x8283B156,0x00E0149A,0xEEF3D130,0x198E80F2,0x56DFFCE7,0x2406D9DC},
+        {0x26B2F159,0xEBD69B94,0x8283B156,0x00E0149A,0xEEF3D130,0x198E80F2,0x56DFFCE7,0x2406D9DC}, 
         /* auxiliary value q58 = 0x0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD = (P - 5)/8 */
-        {0xFFFFFFFD,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0x0FFFFFFF},
+        {0xFFFFFFFD,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0x0FFFFFFF}, 
         /* auxiliary value = ecAuxValSqrt_1 = 0x2B8324804FC1DF0B2B4D00993DFBD7A72F431806AD2FE478C4EE1B274A0EA0B0 = sqrt(-1) */
-        {0x4A0EA0B0,0xC4EE1B27,0xAD2FE478,0x2F431806,0x3DFBD7A7,0x2B4D0099,0x4FC1DF0B,0x2B832480},
-
+        {0x4A0EA0B0,0xC4EE1B27,0xAD2FE478,0x2F431806,0x3DFBD7A7,0x2B4D0099,0x4FC1DF0B,0x2B832480}, 
+        
         /*Barrett tags for EC modulus and order */
 #ifdef CC_SUPPORT_PKA_64_16
         {0x00000000,0x00000000,0x00000080}, /*0x800000000000000000 - for modulus*/
-        {0xFFFFFFFF,0xFFFFFFFF,0x000000FF}, /*0x3FFFFFFFFFFFFFFFFF - for EC order*/
+        {0xFFFFFFFF,0xFFFFFFFF,0x000000FF}, /*0x3FFFFFFFFFFFFFFFFF - for EC order*/ 
 #else   /* CC_SUPPORT_PKA_128_32 */
         {0x00000000,0x00000000,0x00000000,0x00000000,0x00000080}, /*0x8000000000000000000000000000000000  - for modulus*/
         {0x000003FF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFAC8}, /*0x3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFAC8 - for EC order*/
@@ -124,13 +124,13 @@ static const CCEcEdwDomain_t  EcEdwDomain25519 = {
 };
 
 /*!<
- @brief    the function returns the domain pointer if the domain is supported for the product,
-       otherwise return NULL
+ @brief    the function returns the domain pointer if the domain is supported for the product, 
+	   otherwise return NULL
  @return   return domain pointer or NULL
-
+			 
 */
 const CCEcEdwDomain_t *EcEdwGetDomain25519(void)
 {
-    return &EcEdwDomain25519;
+	return &EcEdwDomain25519;
 }
 

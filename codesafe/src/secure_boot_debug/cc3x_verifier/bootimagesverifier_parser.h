@@ -32,17 +32,17 @@ extern "C"
 
 /* RSA data (united to one structure) for RSA_PSS_3072 */
 typedef struct {
-    /* Pointer to N */
-    uint32_t  *N_ptr;
+	/* Pointer to N */
+	uint32_t  *N_ptr;
 
-    /* Pointer to Np OR H according to algorithm used */
-    uint32_t  *NDer_ptr;
+	/* Pointer to Np OR H according to algorithm used */
+	uint32_t  *NDer_ptr;
 
-    /* Pointer to RSA signature */
-    uint32_t *signature;
+	/* Pointer to RSA signature */
+	uint32_t *signature;
 
-    /* Size of cert for HASH computation (offset to signature) */
-    uint32_t   certSizeInWordsForHash;
+	/* Size of cert for HASH computation (offset to signature) */
+	uint32_t   certSizeInWordsForHash;
 
 }CCSbCertParserRSAData_t;
 
@@ -56,23 +56,23 @@ typedef struct {
    including the signed data and the signature.
    It does not include the unsigned data in case of content certificate.
 
-@return CC_OK   On success.
+@return CC_OK	On success.
 @return A non-zero value from bsv_error.h on failure.
  */
-uint32_t CCCertLoadCertificate(CCSbFlashReadFunc flashRead_func,    /*!< [in] Pointer to the flash read function. */
-                               void *userContext,           /*!< [in] An additional pointer for flashRead usage. May be NULL. */
-                               CCAddr_t certAddress,            /*!< [in] The address where the certificate is located. This address is provided to flashReadFunc. */
-                               uint32_t *pCert,             /*!< [in] Buffer for the function's internal use. */
-                               uint32_t *pCertBufferWordSize);      /*!< [in/out] Set the maximum certificate size, and get back the actual certificate size. */
+uint32_t CCCertLoadCertificate(CCSbFlashReadFunc flashRead_func, 	/*!< [in] Pointer to the flash read function. */
+                               void *userContext,			/*!< [in] An additional pointer for flashRead usage. May be NULL. */
+                               CCAddr_t certAddress,			/*!< [in] The address where the certificate is located. This address is provided to flashReadFunc. */
+                               uint32_t *pCert,				/*!< [in] Buffer for the function's internal use. */
+                               uint32_t *pCertBufferWordSize); 		/*!< [in/out] Set the maximum certificate size, and get back the actual certificate size. */
 
 /*!
    @brief This function calculates the certificate size that includes the signed data and the signature.
 
-@return CC_OK   On success.
+@return CC_OK	On success.
 @return A non-zero value from bsv_error.h on failure.
  */
-uint32_t CCCertGetUnsignedDataOffset(uint32_t *pCert,           /*!< [in] Buffer for the function's internal use. */
-                     uint32_t *pUnsignedDataOffset);    /*!< [out] Get the actual certificate size of the signed data and the signature (in words). */
+uint32_t CCCertGetUnsignedDataOffset(uint32_t *pCert,			/*!< [in] Buffer for the function's internal use. */
+				     uint32_t *pUnsignedDataOffset);	/*!< [out] Get the actual certificate size of the signed data and the signature (in words). */
 
 #ifdef __cplusplus
 }

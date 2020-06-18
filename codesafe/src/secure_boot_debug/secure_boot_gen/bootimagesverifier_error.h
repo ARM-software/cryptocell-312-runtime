@@ -37,33 +37,33 @@ extern "C"
 /*! Defines error code for SW image hash verification failure. */
 #define CC_BOOT_IMG_VERIFIER_SW_COMP_FAILED_VERIFICATION                (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x00000009)
 /*! Defines error code for illegal SW version or ID of SW version. */
-#define CC_BOOT_IMG_VERIFIER_CERT_SW_VER_ILLEGAL                (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x0000000D)
+#define CC_BOOT_IMG_VERIFIER_CERT_SW_VER_ILLEGAL		        (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x0000000D)
 /*! Defines error code for illegal number of SW components (zero). */
 #define CC_BOOT_IMG_VERIFIER_SW_COMP_SIZE_IS_NULL                       (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x00000011)
 /*! Defines error code for hash of public key is not burned yet. */
 #define CC_BOOT_IMG_VERIFIER_PUBLIC_KEY_HASH_EMPTY                      (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x00000014)
 /*! Defines error code for illegal lifecycle state (LCS) for operation.*/
-#define CC_BOOT_IMG_VERIFIER_ILLEGAL_LCS_FOR_OPERATION_ERR          (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x00000015)
+#define CC_BOOT_IMG_VERIFIER_ILLEGAL_LCS_FOR_OPERATION_ERR   		(CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x00000015)
 /*! Defines error code for hash of public key is already programmed.*/
-#define CC_BOOT_IMG_VERIFIER_PUB_KEY_ALREADY_PROGRAMMED_ERR     (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x00000016)
+#define CC_BOOT_IMG_VERIFIER_PUB_KEY_ALREADY_PROGRAMMED_ERR		(CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x00000016)
 /*! Defines error code for OTP write failure.*/
-#define CC_BOOT_IMG_VERIFIER_OTP_WRITE_FAIL_ERR             (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x00000017)
+#define CC_BOOT_IMG_VERIFIER_OTP_WRITE_FAIL_ERR			  	(CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x00000017)
 /*! Defines error code for incorrect certificate type.*/
-#define CC_BOOT_IMG_VERIFIER_INCORRECT_CERT_TYPE            (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x00000018)
+#define CC_BOOT_IMG_VERIFIER_INCORRECT_CERT_TYPE			(CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x00000018)
 /*! Defines error code for illegal Hash boot key index.*/
-#define CC_BOOT_IMG_VERIFIER_ILLEGAL_HBK_IDX                (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x00000019)
+#define CC_BOOT_IMG_VERIFIER_ILLEGAL_HBK_IDX				(CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x00000019)
 /*! Defines error code for hash boot key of ICV is not programmed.*/
-#define CC_BOOT_IMG_VERIFIER_PUB_KEY1_NOT_PROGRAMMED_ERR        (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x0000001A)
+#define CC_BOOT_IMG_VERIFIER_PUB_KEY1_NOT_PROGRAMMED_ERR		(CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x0000001A)
 /*! Defines error code for illegal certificate version value.*/
-#define CC_BOOT_IMG_VERIFIER_CERT_VER_VAL_ILLEGAL               (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x0000001C)
+#define CC_BOOT_IMG_VERIFIER_CERT_VER_VAL_ILLEGAL		        (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x0000001C)
 /*! Defines error code for illegal certificate decoding value.*/
-#define CC_BOOT_IMG_VERIFIER_CERT_DECODING_ILLEGAL              (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x0000001D)
+#define CC_BOOT_IMG_VERIFIER_CERT_DECODING_ILLEGAL		        (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x0000001D)
 /*! Defines error code for illegal Kce in RMA LCS.*/
-#define CC_BOOT_IMG_VERIFIER_ILLEGAL_KCE_IN_RMA_STATE               (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x0000001E)
+#define CC_BOOT_IMG_VERIFIER_ILLEGAL_KCE_IN_RMA_STATE		        (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x0000001E)
 /*! Defines error code for illegal SOC ID value.*/
-#define CC_BOOT_IMG_VERIFIER_ILLEGAL_SOC_ID_VALUE               (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x0000001F)
+#define CC_BOOT_IMG_VERIFIER_ILLEGAL_SOC_ID_VALUE		        (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x0000001F)
 /*! Defines error code for illegal number of SW images per content certificate. */
-#define CC_BOOT_IMG_VERIFIER_ILLEGAL_NUM_OF_IMAGES              (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x00000020)
+#define CC_BOOT_IMG_VERIFIER_ILLEGAL_NUM_OF_IMAGES		        (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x00000020)
 /*! Defines error code for no need to verify hashed public key. */
 #define CC_BOOT_IMG_VERIFIER_SKIP_PUBLIC_KEY_VERIFY                      (CC_BOOT_IMG_VERIFIER_BASE_ERROR + 0x00000014)
 

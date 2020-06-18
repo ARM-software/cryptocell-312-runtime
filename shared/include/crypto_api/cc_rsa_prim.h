@@ -51,11 +51,11 @@ CIMPORT_C CCError_t CC_RsaPrimEncrypt(
                                 CCRsaPrimeData_t  *PrimeData_ptr,        /*!< [in]  Pointer to a temporary structure containing internal buffers. */
                                 uint8_t              *Data_ptr,          /*!< [in]  Pointer to the data to encrypt. */
                                 size_t                DataSize,          /*!< [in]  The size (in bytes) of the data to encrypt. Data size must be &le; Modulus size.
-                                            It can be smaller than the modulus size but it is not recommended.
+										    It can be smaller than the modulus size but it is not recommended.
                                                                                     If smaller, the data is zero-padded up to the modulus size.
                                                                                     Since the result of decryption is always the size of the modulus,
                                                                                     this causes the size of the decrypted data to be larger than the
-                                            originally encrypted data. */
+										    originally encrypted data. */
                                 uint8_t              *Output_ptr         /*!< [out] Pointer to the encrypted data. The buffer size must be &ge; the modulus size. */
 );
 
@@ -73,10 +73,10 @@ CIMPORT_C CCError_t CC_RsaPrimDecrypt(
                             CCRsaUserPrivKey_t *UserPrivKey_ptr,     /*!< [in]  Pointer to the private-key data structure.
                                                                                     The representation (pair or quintuple) and hence the algorithm (CRT or not-CRT)
                                                                                     is determined by the Private Key data structure - using
-                                            ::CC_RsaPrivKeyBuild or ::CC_RsaPrivKeyCrtBuild
+										    ::CC_RsaPrivKeyBuild or ::CC_RsaPrivKeyCrtBuild
                                                                                     to determine which algorithm is used.*/
                             CCRsaPrimeData_t   *PrimeData_ptr,       /*!< [in]  Pointer to a temporary structure containing internal buffers required for
-                                        the RSA operation. */
+										the RSA operation. */
                             uint8_t     *Data_ptr,                   /*!< [in]  Pointer to the data to be decrypted. */
                             size_t       DataSize,                   /*!< [in]  The size (in bytes) of the data to decrypt. Must be equal to the modulus size. */
                             uint8_t     *Output_ptr                  /*!< [out] Pointer to the decrypted data. The buffer size must be &le; the modulus size. */

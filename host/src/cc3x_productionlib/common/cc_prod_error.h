@@ -11,7 +11,7 @@
 
 /*!
 @file
-@brief This file contains the error definitions of the CryptoCell
+@brief This file contains the error definitions of the CryptoCell 
 production-library APIs.
 */
 

@@ -40,13 +40,13 @@ extern "C"
  *
  * @return  CC_OK On success, otherwise indicates failure
  */
-CCError_t PolyMacCalc(mbedtls_poly_key  key,        /*!< [in] Poniter to 256 bits of KEY. */
-            const uint8_t       *pAddData,  /*!< [in] Optional - pointer to additional data if any */
-            size_t          addDataSize,    /*!< [in] The size of the additional data */
-            const uint8_t       *pDataIn,   /*!< [in] Pointer to data buffer to calculate MAC on */
-            size_t          dataInSize, /*!< [in] The size of the additional data */
-            mbedtls_poly_mac        macRes,     /*!< [out] The calculated MAC */
-            bool     isPolyAeadMode);  /*!< [in] Boolean indicating if the Poly MAC operation is part of AEAD or just poly */
+CCError_t PolyMacCalc(mbedtls_poly_key  key,		/*!< [in] Poniter to 256 bits of KEY. */
+			const uint8_t		*pAddData,	/*!< [in] Optional - pointer to additional data if any */
+			size_t			addDataSize,	/*!< [in] The size of the additional data */
+			const uint8_t		*pDataIn,	/*!< [in] Pointer to data buffer to calculate MAC on */
+			size_t			dataInSize,	/*!< [in] The size of the additional data */
+			mbedtls_poly_mac		macRes,		/*!< [out] The calculated MAC */
+			bool     isPolyAeadMode);  /*!< [in] Boolean indicating if the Poly MAC operation is part of AEAD or just poly */
 
 #ifdef __cplusplus
 }

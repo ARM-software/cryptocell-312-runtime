@@ -27,7 +27,7 @@
 #include "cc_general_defs.h"
 
 #ifdef CC_RSA_SIGN_USE_TEMP_SALT
-#include "CRYS_RSA_PSS21_defines.h"
+#include "CRYS_RSA_PSS21_defines.h"	
 extern uint8_t SaltDB_T[NUM_OF_SETS_TEST_VECTORS][NUM_OF_TEST_VECTOR_IN_SET][CC_RSA_PSS_SALT_LENGTH];
 extern uint16_t Global_Set_Index_T;
 extern uint16_t Global_vector_Index_T;
@@ -40,19 +40,19 @@ extern uint16_t Global_vector_Index_T;
 /**
         Function Name: RsaPssVerify21
         Date:   06-12-2004
-        Author: Ohad Shperling
-
-    \brief RsaPssVerify21 implements EMSA-PSS-Verify algorithm
+        Author:	Ohad Shperling
+ 
+    \brief RsaPssVerify21 implements EMSA-PSS-Verify algorithm 
    as defined in PKCS#1 v2.1 Sec 9.1.2
-
+ 
    @param[in] Context_ptr - Pointer to a valid context as
                             given from the VerifyFinish function.
-
+                            
    The field HASH_Result inside the Context_ptr is initialized with the Hashed digested message.
    The field HASH_Result_Size inside the Context_ptr is initialized with the Hash digested message size
 
    @return CCError_t - CC_OK, or error
-
+                         
 */
 CCError_t RsaPssVerify21(RSAPubContext_t *Context_ptr)
 {
@@ -114,7 +114,7 @@ CCError_t RsaPssVerify21(RSAPubContext_t *Context_ptr)
 
         /*
          *  9.1.2 <6> Check that the leftmost bits in the leftmost octet of EM have the value 0.
-         *     Note: In CC implementation only the left most bit must be checked, because the
+         *     Note: In CC implementation only the left most bit must be checked, because the 
          *           modulus size is always a multiple of 8 bits.
          */
         if (maskedDB_ptr[0] & 0x80)
@@ -200,7 +200,7 @@ CCError_t RsaPssVerify21(RSAPubContext_t *Context_ptr)
         /*
          *  9.1.2 <11> Let salt be the last sLen octets in DB
          *  9.1.2 <12> Let M' ==>
-         *   (0x) 00 00 00 00 00 00 00 00 || mHash || salt
+         *	 (0x) 00 00 00 00 00 00 00 00 || mHash || salt
          *   Note: ED is used now as M' temp buffer
          */
         CC_PalMemSetZero(ED_ptr, CC_RSA_PSS_PAD1_LEN);/*CC_RSA_PSS_PAD1_LEN = 8*/
@@ -251,17 +251,17 @@ CCError_t RsaPssVerify21(RSAPubContext_t *Context_ptr)
 #if !defined(_INTERNAL_CC_NO_RSA_SCHEME_21_SUPPORT) && !defined(_INTERNAL_CC_NO_RSA_SIGN_SUPPORT)
 #ifndef _INTERNAL_CC_NO_RSA_SIGN_SUPPORT
 /* -------------------------------------------------------------
- *  Function Name: RsaPssSign21
- *  Date:   06-12-2004
- *  Author: Ohad Shperling
+ *	Function Name: RsaPssSign21
+ *	Date:   06-12-2004
+ *	Author:	Ohad Shperling
  *
- *  Inputs:
- *  Outputs:
+ *	Inputs:
+ *	Outputs:
  *
- *  Algorithm: According to PKCS1 v.2.1
+ *	Algorithm: According to PKCS1 v.2.1
  *
- *  Update History:
- *  Date:       Description:
+ *	Update History:
+ *	Date:		Description:
  *
  * ----------------------------------------------------------- */
 
@@ -333,7 +333,7 @@ CCError_t RsaPssSign21(
          *  or in  Context_ptr->KeyObj.PrvPAIRObj.nSizeInBits
          */
 
-        /* Reset the working buffer - RL - check */
+        /* Reset the working buffer - RL - check */ 
         CC_PalMemSet(EMPadOutputBuffer, 0x00, CC_RSA_MAXIMUM_MOD_BUFFER_SIZE_IN_WORDS*sizeof(uint32_t));
 
         /*Round up the new bytes number*/
@@ -347,12 +347,12 @@ CCError_t RsaPssSign21(
         /*
          *  9.1.1 <3> Check restriction of PrvNNewSizeBytes - already checked in Sign Init
          *  9.1.1 <5> Generating M' ==> using the output buffer as a container
-         *  EMPadOutputBuffer = (0x) 00 00 00 00 00 00 00 00 || mHash || salt
+         *	EMPadOutputBuffer = (0x) 00 00 00 00 00 00 00 00 || mHash || salt
          */
 
         CC_PalMemSet(EMPadOutputBuffer, 0x00, CC_RSA_PSS_PAD1_LEN);/*CC_RSA_PSS_PAD1_LEN = 8*/
 
-        /*copy the Hash output */
+        /*copy the Hash output */       
         CC_PalMemCopy(&EMPadOutputBuffer[CC_RSA_PSS_PAD1_LEN], (uint8_t*)Context_ptr->HASH_Result, hashResultSize);
 
         /*
@@ -393,7 +393,7 @@ CCError_t RsaPssSign21(
 #endif
         /*
          *  9.1.1 <7+8> Generate an octet string of zeros of size emLen-sLen-hLen-2 ==> use the output buffer as a container
-         *              DB = PS || 0x01 || salt
+         *				DB = PS || 0x01 || salt
          */
 
         Index4PSLength = PrvNNewSizeBytes - Context_ptr->SaltLen - hashResultSize - 2;
@@ -445,29 +445,29 @@ CCError_t RsaPssSign21(
 
         /*
          *   9.1.1 <11> Set the leftmost 8*emLen-emBits bits of the leftmost octet in maskedDB to zero
-         *      Because the RSA modulus in CC always is a multiple of 8, only one (left most) bit
+         *		Because the RSA modulus in CC always is a multiple of 8, only one (left most) bit
          *              need to be zeroed.
          */
          EMPadOutputBuffer[0] &= 0x7F;
 
         /*
-         *  ? 9.1.1 <12> Let EM = maskedDB || H || 0xbc
-         *      Note: maskedDB is already generated from the Xor operation.
-         */
+         *  ? 9.1.1 <12> Let EM = maskedDB || H || 0xbc 
+         *		Note: maskedDB is already generated from the Xor operation.
+         */     
         CC_PalMemCopy(&(EMPadOutputBuffer[PrvNNewSizeBytes - hashResultSize - 1]),
                          (uint8_t *)Context_ptr->HASH_Result, hashResultSize);
 
         EMPadOutputBuffer[PrvNNewSizeBytes - 1] = 0xbc;
 
         /*
-         *  FINISH 9.1.1
+         *	FINISH 9.1.1
          *
          *  8.1.1 <2.b>
-         *  Apply the RSASP1 signature primitive to the RSA private key K and the message
+         *  Apply the RSASP1 signature primitive to the RSA private key K and the message 
          *  representative m to produce an integer signature representative s
-         *
+         *	
          */
-
+              
         /* ...  execute RSA encrypt using RSA_PRIM_Decrypt for exponentiation ... */
         /* ---------------------------------------------------------------------- */
 
@@ -477,7 +477,7 @@ CCError_t RsaPssSign21(
                                       (uint16_t)PrvNNewSizeBytes,
                                       Output_ptr);
 
-        return Error;
+        return Error;   
 
 }
 

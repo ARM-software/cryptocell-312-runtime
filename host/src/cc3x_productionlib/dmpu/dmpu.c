@@ -110,7 +110,7 @@ end_kce:
 CCError_t CCProd_Dmpu( unsigned long             ccHwRegBaseAddr,
     CCDmpuData_t *pDmpuData,
                      unsigned long             workspaceBaseAddr,
-                     uint32_t                 workspaceSize)
+                     uint32_t			      workspaceSize)
 {
         uint32_t error = 0;
         uint32_t lcs = 0;
@@ -198,7 +198,7 @@ CCError_t CCProd_Dmpu( unsigned long             ccHwRegBaseAddr,
                 CC_PAL_LOG_ERR("Invalid HBK type\n");
                 error = CC_PROD_ASSET_PKG_PARAM_ERR;
                 goto dmpuEnd;
-        }
+        } 
 
         /* Set HBK/1 buffer */
         CC_PalMemCopy(hbkBuffForOtp, pDmpuData->hbkBuff.hbk, hbkSizeInWords * CC_32BIT_WORD_SIZE);

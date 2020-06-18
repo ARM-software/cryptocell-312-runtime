@@ -62,35 +62,35 @@ void RSA_CalcExponent( unsigned long hwBaseAddress,
    /* .................... initialize local variables ...................... */
    /* ---------------------------------------------------------------------- */
 
-    /* initialize the PKA engine on default mode */
-    RSA_PKA_InitPka(SB_CERT_RSA_KEY_SIZE_IN_BITS, regsCount, hwBaseAddress);
+	/* initialize the PKA engine on default mode */
+	RSA_PKA_InitPka(SB_CERT_RSA_KEY_SIZE_IN_BITS, regsCount, hwBaseAddress);
 
-    /* copy modulus N into r0 register */
-    RSA_HW_PKI_PKA_CopyDataIntoPkaReg( 0/*dstReg*/, 1/*LenID*/,
-                   N_ptr/*src_ptr*/, SB_CERT_RSA_KEY_SIZE_IN_WORDS, hwBaseAddress );
+	/* copy modulus N into r0 register */
+	RSA_HW_PKI_PKA_CopyDataIntoPkaReg( 0/*dstReg*/, 1/*LenID*/,
+				   N_ptr/*src_ptr*/, SB_CERT_RSA_KEY_SIZE_IN_WORDS, hwBaseAddress );
 
-    /* copy the NP into r1 register NP */
-    RSA_HW_PKI_PKA_CopyDataIntoPkaReg( 1/*dstReg*/, 1/*LenID*/, Np_ptr/*src_ptr*/,
-                      RSA_HW_PKI_PKA_BARRETT_MOD_TAG_SIZE_IN_WORDS, hwBaseAddress );
+	/* copy the NP into r1 register NP */
+	RSA_HW_PKI_PKA_CopyDataIntoPkaReg( 1/*dstReg*/, 1/*LenID*/, Np_ptr/*src_ptr*/,
+				      RSA_HW_PKI_PKA_BARRETT_MOD_TAG_SIZE_IN_WORDS, hwBaseAddress );
 
-    /* copy input data into PKI register: DataIn=>r2 */
-    RSA_HW_PKI_PKA_CopyDataIntoPkaReg( 2/*dstReg*/, 1/*LenID*/,
-             Base_ptr, SB_CERT_RSA_KEY_SIZE_IN_WORDS, hwBaseAddress );
+	/* copy input data into PKI register: DataIn=>r2 */
+	RSA_HW_PKI_PKA_CopyDataIntoPkaReg( 2/*dstReg*/, 1/*LenID*/,
+		     Base_ptr, SB_CERT_RSA_KEY_SIZE_IN_WORDS, hwBaseAddress );
 
-    /* copy exponent data PKI register: e=>r3 */
-    RSA_HW_PKI_PKA_CopyDataIntoPkaReg( 3/*dstReg*/, 1/*LenID*/,
-             &Exp, RSA_EXP_SIZE_WORDS, hwBaseAddress );
+	/* copy exponent data PKI register: e=>r3 */
+	RSA_HW_PKI_PKA_CopyDataIntoPkaReg( 3/*dstReg*/, 1/*LenID*/,
+		     &Exp, RSA_EXP_SIZE_WORDS, hwBaseAddress );
 
 
-    /* .. calculate the exponent Res = OpA**OpB mod N;                  ... */
-    /* -------------------------------------------------------------------- */
-    RSA_HW_PKI_PKA_ModExp( 0/*LenID*/, 2/*OpA*/, 3/*OpB*/, 4/*Res*/, 0/*Tag*/, hwBaseAddress );
+	/* .. calculate the exponent Res = OpA**OpB mod N;                  ... */
+	/* -------------------------------------------------------------------- */
+	RSA_HW_PKI_PKA_ModExp( 0/*LenID*/, 2/*OpA*/, 3/*OpB*/, 4/*Res*/, 0/*Tag*/, hwBaseAddress );
 
-    /* copy result into output: r4 =>DataOut */
-    RSA_HW_PKI_PKA_CopyDataFromPkaReg( Res_ptr, SB_CERT_RSA_KEY_SIZE_IN_WORDS,
-                   4/*srcReg*/, hwBaseAddress );
+	/* copy result into output: r4 =>DataOut */
+	RSA_HW_PKI_PKA_CopyDataFromPkaReg( Res_ptr, SB_CERT_RSA_KEY_SIZE_IN_WORDS,
+				   4/*srcReg*/, hwBaseAddress );
 
-    /* Finish PKA operations (waiting PKI done and close PKA clocks) */
-    RSA_HW_PKI_PKA_FinishPKA( hwBaseAddress );
+	/* Finish PKA operations (waiting PKI done and close PKA clocks) */
+	RSA_HW_PKI_PKA_FinishPKA( hwBaseAddress );
 
 }/* END OF RSA_CalcExponent */

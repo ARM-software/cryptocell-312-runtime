@@ -57,9 +57,9 @@ typedef uint32_t CCUtilError_t;
 /*! The key data. */
 typedef struct mbedtls_util_keydata {
     /*! A pointer to the key. */
-    uint8_t*  pKey;
+	uint8_t*  pKey;
     /*! The size of the key in bytes. */
-    size_t    keySize;
+	size_t    keySize;
 }mbedtls_util_keydata;
 
 #ifdef __cplusplus

@@ -8,7 +8,7 @@
  @addtogroup cc_srp_errors
  @{
  */
-
+ 
 /*!
  @file
  @brief This file contains the error definitions of the CryptoCell SRP APIs.

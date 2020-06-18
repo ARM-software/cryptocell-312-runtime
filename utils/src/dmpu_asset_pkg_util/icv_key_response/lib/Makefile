@@ -11,6 +11,10 @@ UTILS_LIB_PATH = $(UTILS_ROOT)/lib
 UTILS_INC_PATH = $(SHARED_DIR)/include $(SHARED_DIR)/include/proj/$(PROJ_PRD) $(UTILS_ROOT)/include
 UTILS_INC_PATH += $(UTILS_ROOT)/src/common $(UTILS_ROOT)/src/dmpu_asset_pkg_util/common $(HOSTSRC_DIR)/cc3x_productionlib/common $(SHARED_DIR)/include/pal $(SHARED_DIR)/include/pal/$(TEE_OS)
 
+include $(UTILS_ROOT)/src/Makefile.openssl
+
+UTILS_INC_PATH += $(OPENSSL_INC_DIR)
+
 CFLAGS += -fPIC $(foreach incdir,$(UTILS_INC_PATH),-I$(incdir)) -c
 
 all: $(SH_LIB_NAME)
@@ -18,7 +22,7 @@ all: $(SH_LIB_NAME)
 # Compile and link the sbu_crypto library with hard-coded library run path to utils/lib
 # (to assure the private version of openssl libraries are used)
 $(SH_LIB_NAME): $(LIB_SRC_O)
-	gcc -shared -o $(SH_LIB_NAME) $(LIB_SRC_O) -Wl,-rpath,$(UTILS_LIB_PATH) -lcrypto -lssl 
+	gcc -shared -o $(SH_LIB_NAME) $(LIB_SRC_O) -Wl,-rpath=$(OPENSSL_LIB_DIR) -L $(OPENSSL_LIB_DIR) -lcrypto -lssl
 
 vpath %.c $(UTILS_ROOT)/src/common $(UTILS_ROOT)/src/dmpu_asset_pkg_util/common
 

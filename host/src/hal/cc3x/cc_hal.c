@@ -18,18 +18,18 @@
 #include "dx_rng.h"
 
 /******************************************************************************
-*               DEFINITIONS
+*				DEFINITIONS
 ******************************************************************************/
 #define DX_CC_REG_AREA_LEN 0x100000
 
 /******************************************************************************
-*               GLOBALS
+*				GLOBALS
 ******************************************************************************/
 
 unsigned long gCcRegBase = 0;
 
 /******************************************************************************
-*               FUNCTIONS
+*				FUNCTIONS
 ******************************************************************************/
 
 /*!
@@ -38,11 +38,11 @@ unsigned long gCcRegBase = 0;
  */
 int CC_HalInit(void)
 {
-    unsigned long *pVirtBuffAddr = NULL;
+	unsigned long *pVirtBuffAddr = NULL;
 
-    CC_PalMemMap(DX_BASE_CC, DX_CC_REG_AREA_LEN, (uint32_t**)&pVirtBuffAddr);
-    gCcRegBase = (unsigned long)pVirtBuffAddr;
-    return 0;
+	CC_PalMemMap(DX_BASE_CC, DX_CC_REG_AREA_LEN, (uint32_t**)&pVirtBuffAddr);
+	gCcRegBase = (unsigned long)pVirtBuffAddr;
+	return 0;
 }
 
 
@@ -52,25 +52,25 @@ int CC_HalInit(void)
  */
 int CC_HalTerminate(void)
 {
-    CC_PalMemUnMap((uint32_t *)gCcRegBase,DX_CC_REG_AREA_LEN);
-    gCcRegBase = 0;
-    return CC_HAL_OK;
+	CC_PalMemUnMap((uint32_t *)gCcRegBase,DX_CC_REG_AREA_LEN);
+	gCcRegBase = 0;
+	return CC_HAL_OK;
 }
 
 
 void CC_HalClearInterruptBit(uint32_t data)
 {
 
-    CC_HAL_WRITE_REGISTER( CC_REG_OFFSET(HOST_RGF, HOST_ICR), data);
+	CC_HAL_WRITE_REGISTER( CC_REG_OFFSET(HOST_RGF, HOST_ICR), data);
 
-    return;
+	return;
 }
 
 void CC_HalMaskInterrupt(uint32_t data)
 {
-    CC_HAL_WRITE_REGISTER( CC_REG_OFFSET(HOST_RGF, HOST_IMR), data);
+	CC_HAL_WRITE_REGISTER( CC_REG_OFFSET(HOST_RGF, HOST_IMR), data);
 
-    return;
+	return;
 }
 
 /*!
@@ -78,18 +78,18 @@ void CC_HalMaskInterrupt(uint32_t data)
  * This function notifies for any ARM CryptoCell interrupt, it is the caller responsibility
  * to verify and prompt the expected case interrupt source.
  *
- * @param[in] data  - input data for future use
- * \return CCError_t    - CC_OK upon success
+ * @param[in] data 	- input data for future use
+ * \return CCError_t 	- CC_OK upon success
  */
 CCError_t CC_HalWaitInterrupt(uint32_t data)
 {
-    CCError_t error = CC_OK;
-    if (0 == data) {
-        return CC_FATAL_ERROR;
-    }
-    error = CC_PalWaitInterrupt( data );
+	CCError_t error = CC_OK;
+	if (0 == data) {
+		return CC_FATAL_ERROR;
+	}
+	error = CC_PalWaitInterrupt( data );
 
-    return error;
+	return error;
 }
 
 

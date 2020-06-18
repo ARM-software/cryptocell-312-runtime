@@ -30,14 +30,14 @@
   return CCError_t
 */
 CEXPORT_C CCError_t CC_EcMontScalarmult(
-                                uint8_t       *pResPoint,       /*!< [out] Pointer to the public (secret) key. */
-                                size_t        *pResPointSize,   /*!< [in/out] Pointer to the size of the public key in bytes.
-                                                                       In  - the size of the buffer. must be at least EC modulus
-                                                                             size (for curve25519 - 32 bytes).
-                                                                       Out - the actual size. */
-                                const uint8_t *pScalar,         /*!< [in] Pointer to the secret (private) key. */
-                                size_t         scalarSize,      /*!< [in] Pointer to the size of the secret key in bytes;
-                                                                     must be equal to EC order size (for curve25519 - 32 bytes). */
+                                uint8_t       *pResPoint,       /*!< [out] Pointer to the public (secret) key. */                                
+                                size_t        *pResPointSize,   /*!< [in/out] Pointer to the size of the public key in bytes.              
+                                                                       In  - the size of the buffer. must be at least EC modulus 
+                                                                             size (for curve25519 - 32 bytes).            
+                                                                       Out - the actual size. */                                                
+                                const uint8_t *pScalar,         /*!< [in] Pointer to the secret (private) key. */                                                                   
+                                size_t         scalarSize,      /*!< [in] Pointer to the size of the secret key in bytes;                                                         
+                                                                     must be equal to EC order size (for curve25519 - 32 bytes). */                                                                       
                                 const uint8_t *pInPoint,        /*!< [in] Pointer to the input point (compressed). */
                                 size_t         inPointSize,     /*!< [in] Size of the point - must be equal to CC_EC_MONT_MOD_SIZE_IN_BYTES. */
                                 CCEcMontTempBuff_t *pEcMontTempBuff)  /*!< [in] pointer temp buffer. */
@@ -52,8 +52,8 @@ CEXPORT_C CCError_t CC_EcMontScalarmult(
         uint32_t ls, ms;
 
 
-        if (pResPoint == NULL || pResPointSize == NULL ||
-            pScalar == NULL || pInPoint == NULL ||
+        if (pResPoint == NULL || pResPointSize == NULL || 
+            pScalar == NULL || pInPoint == NULL || 
             pEcMontTempBuff == NULL) {
                 return CC_EC_MONT_INVALID_INPUT_POINTER_ERROR;
         }
@@ -86,7 +86,7 @@ CEXPORT_C CCError_t CC_EcMontScalarmult(
         /* revert changed bytes in the scalar */
         ls = pScalar32[0]; ms = pScalar32[scalarSizeWords-1];
 
-        /* set scalar bits according to EC Montgomery curve25519 algorithm:
+        /* set scalar bits according to EC Montgomery curve25519 algorithm: 
            byte[31] = (byte[31] & 127) | 64; byte[0] &= 248; */
         pScalar32[scalarSizeWords-1] = (pScalar32[scalarSizeWords-1] & 0x7FFFFFFF) | 0x40000000;
         pScalar32[0] &= 0xFFFFFFF8;
@@ -94,9 +94,9 @@ CEXPORT_C CCError_t CC_EcMontScalarmult(
         /* call llf pScalar multiplication function */
         err = EcMontScalarmult(
                               pResPoint32,
-                              pScalar32,
+                              pScalar32,   
                               pInPoint32,
-                              pEcDomain);
+                              pEcDomain); 
         if (err) {
                 err = CC_ECMONT_INTERNAL_ERROR;
                 goto EndWithError;
@@ -126,27 +126,27 @@ CEXPORT_C CCError_t CC_EcMontScalarmult(
 
 }
 
-/*********************************************************************/
+/*********************************************************************/ 
 /*!
-@brief The function performs EC Montgomery (Curve25519) scalar multiplication of base point:
+@brief The function performs EC Montgomery (Curve25519) scalar multiplication of base point:  
        res = scalar * base_point.
-
+ 
        Note: all byte arrays have LE order of bytes, i.e. LS byte is on left most place.
-
+ 
 
 @return CC_OK on success,
 @return A non-zero value on failure as defined mbedtls_cc_ec_mont_edw_error.h.
 */
 
 CEXPORT_C CCError_t CC_EcMontScalarmultBase(
-                                uint8_t       *pResPoint,      /*!< [out] Pointer to the public (secret) key. */
-                                size_t        *pResPointSize,  /*!< [in/out] Pointer to the size of the public key in bytes.
+                                uint8_t       *pResPoint,      /*!< [out] Pointer to the public (secret) key. */                                
+                                size_t        *pResPointSize,  /*!< [in/out] Pointer to the size of the public key in bytes.              
                                                                       In  - the size of buffer must be at least EC modulus size
-                                                                          (for curve25519 - 32 bytes);
-                                                                      Out - the actual size. */
-                                const uint8_t *pScalar,        /*!< [in] Pointer to the secret (private) key. */
-                                size_t         scalarSize,     /*!< [in] Pointer to the size of the scalar in bytes -
-                                                                    must be equal to EC order size (for curve25519 - 32 bytes). */
+                                                                          (for curve25519 - 32 bytes);            
+                                                                      Out - the actual size. */                                                
+                                const uint8_t *pScalar,        /*!< [in] Pointer to the secret (private) key. */                                                                   
+                                size_t         scalarSize,     /*!< [in] Pointer to the size of the scalar in bytes -                                                        
+                                                                    must be equal to EC order size (for curve25519 - 32 bytes). */                                                                       
                                 CCEcMontTempBuff_t *pEcMontTempBuff) /*!< [in] pointer to the temp buffer. */
 {
         CCError_t err = CC_OK;
@@ -158,7 +158,7 @@ CEXPORT_C CCError_t CC_EcMontScalarmultBase(
         uint32_t ls, ms;
 
         /* check parameters */
-        if (pResPoint  == NULL || pResPointSize == NULL ||
+        if (pResPoint  == NULL || pResPointSize == NULL || 
             pScalar == NULL || pEcMontTempBuff == NULL) {
                 return CC_EC_MONT_INVALID_INPUT_POINTER_ERROR;
         }
@@ -187,7 +187,7 @@ CEXPORT_C CCError_t CC_EcMontScalarmultBase(
         /* revert changed bytes in the scalar */
         ls = pScalar32[0]; ms = pScalar32[scalarSizeWords-1];
 
-        /* set scalar bits according to EC Montgomery curve25519 algorithm:
+        /* set scalar bits according to EC Montgomery curve25519 algorithm: 
            byte[31] = (byte[31] & 127) | 64; byte[0] &= 248; */
         pScalar32[scalarSizeWords-1] = (pScalar32[scalarSizeWords-1] & 0x7FFFFFFF) | 0x40000000;
         pScalar32[0] &= 0xFFFFFFF8;
@@ -195,9 +195,9 @@ CEXPORT_C CCError_t CC_EcMontScalarmultBase(
         /* call llf pScalar multiplication function */
         err = EcMontScalarmult(
                               pResPoint32,
-                              pScalar32,
+                              pScalar32,   
                               (uint32_t*)pEcDomain->ecGenX,
-                              pEcDomain);
+                              pEcDomain); 
         if (err) {
                 err = CC_ECMONT_INTERNAL_ERROR;
                 goto EndWithError;
@@ -207,7 +207,7 @@ CEXPORT_C CCError_t CC_EcMontScalarmultBase(
         pScalar32[0] = ls; pScalar32[scalarSizeWords-1] = ms;
 
         /* output pResPoint to LE bytes array */
-        CC_CommonConvertLswMswWordsToLsbMsbBytes(pResPoint, pResPoint32,
+        CC_CommonConvertLswMswWordsToLsbMsbBytes(pResPoint, pResPoint32, 
                                                     pEcDomain->ecModSizeInWords);
         *pResPointSize = ecModSizeBytes;
 
@@ -251,7 +251,7 @@ static CCError_t ecMontKeyPairBase (
         /* FUNCTION LOGIC */
 
         /* check input parameters */
-        if (pSecrKey  == NULL || pSecrKeySize == NULL ||
+        if (pSecrKey  == NULL || pSecrKeySize == NULL || 
             pPublKey  == NULL || pPublKeySize == NULL ||
             pRndContext == NULL || pEcMontTempBuff == NULL) {
                 return CC_EC_MONT_INVALID_INPUT_POINTER_ERROR;
@@ -357,7 +357,7 @@ CEXPORT_C CCError_t CC_EcMontKeyPairBase(
     {
         return CC_EC_MONT_INVALID_INPUT_SIZE_ERROR;
     }
-
+    
     return ecMontKeyPairBase(pPublKey, pPublKeySize, pSecrKey, pSecrKeySize, pInPoint, pRndContext, pEcMontTempBuff);
 }
 
@@ -402,18 +402,18 @@ CEXPORT_C CCError_t CC_EcMontKeyPair(
 @return a non-zero value on failure as defined mbedtls_cc_ec_mont_edw_error.h.
 */
 CEXPORT_C CCError_t CC_EcMontSeedKeyPair (
-                      uint8_t       *pPublKey,       /*!< [out] Pointer to the public (secret) key. */
-                      size_t        *pPublKeySize,   /*!< [in/out] Pointer to the size of the public key in bytes.
-                                                             In  - the size of buffer must be at least EC order size
-                                                                (for curve25519 - 32 bytes);
-                                                             Out - the actual size. */
-                      uint8_t       *pSecrKey,       /*!< [out] Pointer to the secret (private) key. */
-                      size_t        *pSecrKeySize,   /*!< [in/out] Pointer to the size of the secret key in bytes
-                                                              In  - the size of buffer must be at least EC order size
-                                                                (for curve25519 - 32 bytes);
-                                                              Out - the actual size. */
-                      const uint8_t *pSeed,          /*!< [in] Pointer to the given seed - 32 bytes. */
-                      size_t         seedSize,       /*!< [in/] Size of the seed in bytes (must be equal to CC_EC_MONT_SEEDBYTES). */
+                      uint8_t       *pPublKey,       /*!< [out] Pointer to the public (secret) key. */                               
+                      size_t        *pPublKeySize,   /*!< [in/out] Pointer to the size of the public key in bytes.             
+                                                             In  - the size of buffer must be at least EC order size 
+                                                                (for curve25519 - 32 bytes);         
+                                                             Out - the actual size. */                                               
+                      uint8_t       *pSecrKey,       /*!< [out] Pointer to the secret (private) key. */                              
+                      size_t        *pSecrKeySize,   /*!< [in/out] Pointer to the size of the secret key in bytes                    
+                                                              In  - the size of buffer must be at least EC order size 
+                                                                (for curve25519 - 32 bytes);    
+                                                              Out - the actual size. */                                              
+                      const uint8_t *pSeed,          /*!< [in] Pointer to the given seed - 32 bytes. */                              
+                      size_t         seedSize,       /*!< [in/] Size of the seed in bytes (must be equal to CC_EC_MONT_SEEDBYTES). */   
                       CCEcMontTempBuff_t *pEcMontTempBuff)  /*!< [in] pointer temp buffer. */
 {
         /* DEFINITIONS */
@@ -430,8 +430,8 @@ CEXPORT_C CCError_t CC_EcMontSeedKeyPair (
 
 
         /* check input parameters */
-        if (pSecrKey  == NULL || pSecrKeySize == NULL ||
-            pPublKey == NULL || pPublKeySize == NULL ||
+        if (pSecrKey  == NULL || pSecrKeySize == NULL || 
+            pPublKey == NULL || pPublKeySize == NULL || 
             pSeed == NULL || pEcMontTempBuff == NULL) {
                 return CC_EC_MONT_INVALID_INPUT_POINTER_ERROR;
         }
@@ -447,14 +447,14 @@ CEXPORT_C CCError_t CC_EcMontSeedKeyPair (
                 return CC_EC_MONT_INVALID_INPUT_SIZE_ERROR;
         }
 
-        pHashResult = (CCHashResultBuf_t*)pEcMontTempBuff;
+        pHashResult = (CCHashResultBuf_t*)pEcMontTempBuff; 
         pScalar = (uint8_t*)&pEcMontTempBuff->ecMontScalar;
         pRes = (uint8_t*)&pEcMontTempBuff->ecMontResPoint;
 
         /* copy seed into buffer with phys. memory (HW HASH requirement) */
         CC_PalMemCopy(pScalar, pSeed, seedSize);
 
-        /* calculate secret key; note pScalar points  *
+        /* calculate secret key; note pScalar points  * 
         *  to the same mem. as pHashResult            */
         md_info = mbedtls_md_info_from_string( HashAlgMode2mbedtlsString[CC_HASH_SHA512_mode] );
         if (NULL == md_info) {
@@ -472,12 +472,12 @@ CEXPORT_C CCError_t CC_EcMontSeedKeyPair (
 
         /* calculate the public key */
         err = CC_EcMontScalarmultBase(
-                                (uint8_t*)&pEcMontTempBuff->ecMontResPoint[0],
-                                pPublKeySize,
+                                (uint8_t*)&pEcMontTempBuff->ecMontResPoint[0],      
+                                pPublKeySize,  
                                 pScalar,  // check endianness !
-                                ecOrdSizeBytes,
-                                pEcMontTempBuff);
-
+                                ecOrdSizeBytes, 
+                                pEcMontTempBuff);  
+           
         if (err) {
                 goto End;
         }

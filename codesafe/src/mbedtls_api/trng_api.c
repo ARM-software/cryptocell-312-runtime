@@ -116,10 +116,10 @@ int mbedtls_hardware_poll( void *data,
     }
 
     if (*olen <= len ){
-        CC_PalMemCopy ( output, entrSource_ptr + CC_RND_TRNG_SRC_INNER_OFFSET_WORDS , *olen );
+	    CC_PalMemCopy ( output, entrSource_ptr + CC_RND_TRNG_SRC_INNER_OFFSET_WORDS , *olen );
     } else{
-        CC_PAL_LOG_ERR( "buffer length is smaller than LLF_RND_GetTrngSource output length\n" );
-        GOTO_CLEANUP( -1 );
+	    CC_PAL_LOG_ERR( "buffer length is smaller than LLF_RND_GetTrngSource output length\n" );
+	    GOTO_CLEANUP( -1 );
     }
 
 Cleanup:

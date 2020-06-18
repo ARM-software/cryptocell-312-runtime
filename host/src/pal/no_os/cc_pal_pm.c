@@ -9,17 +9,17 @@
 
 void CC_PalPowerSaveModeInit(void)
 {
-    return;
+	return;
 }
 
 void CC_PalPowerSaveModeStatus(void)
 {
-    return;
+	return;
 }
 
 CCError_t CC_PalPowerSaveModeSelect(CCBool isPowerSaveMode)
 {
-    CC_UNUSED_PARAM(isPowerSaveMode);
+	CC_UNUSED_PARAM(isPowerSaveMode);
 
-    return 0;
+	return 0;
 }

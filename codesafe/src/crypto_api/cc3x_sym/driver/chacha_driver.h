@@ -10,7 +10,7 @@
 #include "driver_defs.h"
 
 /******************************************************************************
-*               TYPE DEFINITIONS
+*				TYPE DEFINITIONS
 ******************************************************************************/
 
 /* The context data-base used by the CHACHA functions on the low level */
@@ -34,7 +34,7 @@ typedef struct ChachaContext {
 
 
 /******************************************************************************
-*               FUNCTION PROTOTYPES
+*				FUNCTION PROTOTYPES
 ******************************************************************************/
 /*!
  * This function is used to process block(s) of data using the CHACHA machine.

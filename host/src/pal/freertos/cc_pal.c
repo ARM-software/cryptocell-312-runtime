@@ -23,8 +23,8 @@ extern CC_PalMutex CCRndCryptoMutex;
 extern CC_PalMutex *pCCRndCryptoMutex;
 extern CC_PalMutex CCApbFilteringRegMutex;
 
-#define PAL_WORKSPACE_MEM_BASE_ADDR     0
-#define PAL_WORKSPACE_MEM_SIZE          0
+#define PAL_WORKSPACE_MEM_BASE_ADDR	    0
+#define PAL_WORKSPACE_MEM_SIZE		    0
 
 
 /**

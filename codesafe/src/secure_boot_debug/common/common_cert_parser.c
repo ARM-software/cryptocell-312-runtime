@@ -16,15 +16,15 @@
 #include "secdebug_defs.h"
 
 /*
-#define KEY_CERT_SIZE               (sizeof(KeyCert_t))
-#define CERT_SIGNATURE_SIZE         (sizeof(CCSbSignature_t))
-#define ENABLER_CERT_SIZE           (sizeof(EnablerCertMain_t))
-#define ENABLER_CERT_HEADER_SIZE        (sizeof(EnablerCertHeader_t))
-#define ENABLER_CERT_HEADER_SIZE_WORDS      (ENABLER_CERT_HEADER_SIZE/CC_32BIT_WORD_SIZE)
-#define DEVELOPER_CERT_SIZE         (sizeof(DeveloperCertMain_t))
-#define DEVELOPER_CERT_HEADER_SIZE      (sizeof(DeveloperCertHeader_t))
-#define DEVELOPER_CERT_HEADER_SIZE_WORDS    (DEVELOPER_CERT_HEADER_SIZE/CC_32BIT_WORD_SIZE)
-#define MASK_WORD_ALIGN             (CC_32BIT_WORD_SIZE-1)
+#define KEY_CERT_SIZE	 			(sizeof(KeyCert_t))
+#define CERT_SIGNATURE_SIZE	 		(sizeof(CCSbSignature_t))
+#define ENABLER_CERT_SIZE	 		(sizeof(EnablerCertMain_t))
+#define ENABLER_CERT_HEADER_SIZE	 	(sizeof(EnablerCertHeader_t))
+#define ENABLER_CERT_HEADER_SIZE_WORDS 		(ENABLER_CERT_HEADER_SIZE/CC_32BIT_WORD_SIZE)
+#define DEVELOPER_CERT_SIZE	 		(sizeof(DeveloperCertMain_t))
+#define DEVELOPER_CERT_HEADER_SIZE	 	(sizeof(DeveloperCertHeader_t))
+#define DEVELOPER_CERT_HEADER_SIZE_WORDS 	(DEVELOPER_CERT_HEADER_SIZE/CC_32BIT_WORD_SIZE)
+#define MASK_WORD_ALIGN 			(CC_32BIT_WORD_SIZE-1)
 */
 
 /**
@@ -36,8 +36,8 @@
 CCError_t CCCertFieldsParse(BufferInfo32_t  *pCertInfo,
                             BufferInfo32_t  *pWorkspaceInfo,
                             CertFieldsInfo_t  *pCertFields,
-                            uint32_t    **ppCertStartSign,
-                            uint32_t    *pCertSignedSize,
+                            uint32_t	**ppCertStartSign,
+                            uint32_t	*pCertSignedSize,
                             BufferInfo32_t  *pX509HeaderInfo)
 {
         uint8_t *pPubKey = NULL;
@@ -82,13 +82,13 @@ CCError_t CCCertFieldsParse(BufferInfo32_t  *pCertInfo,
 }
 
 uint32_t CCCertGetUnsignedDataOffset(uint32_t *pCert,
-                     uint32_t *pUnsignedDataOffset)
+				     uint32_t *pUnsignedDataOffset)
 {
         CCSbCertHeader_t *pCertHeader = (CCSbCertHeader_t *)pCert;
 
-    if ((pCert == NULL)||(pUnsignedDataOffset == NULL)){
-        return CC_BOOT_IMG_VERIFIER_INV_INPUT_PARAM;
-    }
+	if ((pCert == NULL)||(pUnsignedDataOffset == NULL)){
+		return CC_BOOT_IMG_VERIFIER_INV_INPUT_PARAM;
+	}
 
         *pUnsignedDataOffset = (pCertHeader->certSize + SB_CERT_RSA_KEY_SIZE_IN_WORDS);
 

@@ -24,7 +24,7 @@ extern CC_PalMutex CCSymCryptoMutex;
 #define CHACHA_CONTROL_REG_USE_IV_96  (1 << DX_CHACHA_CONTROL_REG_USE_IV_96BIT_BIT_SHIFT)
 
 /******************************************************************************
-*               PRIVATE FUNCTIONS
+*				PRIVATE FUNCTIONS
 ******************************************************************************/
 
 static drvError_t LoadChachaExtDmaState(uint32_t *pNonceBuf, chachaNonceSize_t nonceSizeFlag, uint32_t blockCounterLsb)
@@ -59,18 +59,18 @@ static drvError_t LoadChachaKeyExtDma(uint32_t *pKey)
 
         /* verify user context pointer */
         if (pKey == NULL) {
-            return CHACHA_DRV_INVALID_USER_CONTEXT_POINTER_ERROR;
+        	return CHACHA_DRV_INVALID_USER_CONTEXT_POINTER_ERROR;
         }
 
         for (enrtyNum = 0; enrtyNum < CHACHA_256_BIT_KEY_SIZE_WORDS; ++enrtyNum) {
-            CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, CHACHA_KEY0) + (sizeof(uint32_t) * enrtyNum), pKey[enrtyNum]);
+        	CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, CHACHA_KEY0) + (sizeof(uint32_t) * enrtyNum), pKey[enrtyNum]);
         }
 
         return CHACHA_DRV_OK;
 }
 
 /******************************************************************************
-*               PUBLIC FUNCTIONS
+*				PUBLIC FUNCTIONS
 ******************************************************************************/
 drvError_t InitChachaExtDma(uint32_t *pNonceBuf, chachaNonceSize_t nonceSizeFlag, uint32_t *keyBuf, uint32_t initialCounter, uint32_t dataLen)
 {
@@ -141,30 +141,30 @@ drvError_t InitChachaExtDma(uint32_t *pNonceBuf, chachaNonceSize_t nonceSizeFlag
 
 InitExit:
 
-    rc = terminateChachaExtDma();
-    if (rc != 0) {
-        CC_PalAbort("Failed to terminateAesExtDma \n");
-    }
+	rc = terminateChachaExtDma();
+	if (rc != 0) {
+		CC_PalAbort("Failed to terminateAesExtDma \n");
+	}
     return drvRc;
 }
 
 drvError_t terminateChachaExtDma(void)
 {
-    drvError_t rc = AES_DRV_OK;
+	drvError_t rc = AES_DRV_OK;
 
-    CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, CHACHA_CLK_ENABLE) ,SET_CLOCK_DISABLE);
-    CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, DMA_CLK_ENABLE) ,SET_CLOCK_DISABLE);
+	CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, CHACHA_CLK_ENABLE) ,SET_CLOCK_DISABLE);
+	CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, DMA_CLK_ENABLE) ,SET_CLOCK_DISABLE);
 
-    /* decrease CC counter at the end of each operation */
-    rc = CC_IS_IDLE;
-    if (rc != 0) {
-        CC_PalAbort("Fail to decrease PM counter\n");
-    }
+	/* decrease CC counter at the end of each operation */
+	rc = CC_IS_IDLE;
+	if (rc != 0) {
+		CC_PalAbort("Fail to decrease PM counter\n");
+	}
 
-    /* unlock mutex for more aes hw operation */
-    rc = CC_PalMutexUnlock(&CCSymCryptoMutex);
-    if (rc != 0) {
-        CC_PalAbort("Fail to unlock mutex\n");
-    }
-    return rc;
+	/* unlock mutex for more aes hw operation */
+	rc = CC_PalMutexUnlock(&CCSymCryptoMutex);
+	if (rc != 0) {
+		CC_PalAbort("Fail to unlock mutex\n");
+	}
+	return rc;
 }

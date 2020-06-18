@@ -27,7 +27,7 @@ uint32_t Test_ProjMap(void)
     /* Initialize value */
     memset(&processMap, 0, sizeof(struct ProcessMappingArea_t));
 
-    /* Init platform specific memories: DMAble & unmanaged */
+	/* Init platform specific memories: DMAble & unmanaged */
     error = Test_HalBoardInit();
     if (error != 0) {
         TEST_PRINTF_ERROR("Failed to Test_HalBoardInit 0x%x", error);
@@ -48,7 +48,7 @@ uint32_t Test_ProjMap(void)
     /* Verify all Maps succeeded */
     if ((!VALID_MAPPED_ADDR(processMap.processTeeHwRegBaseAddr)) ||
         (!VALID_MAPPED_ADDR(processMap.processTeeHwEnvBaseAddr)) ||
-    (!VALID_MAPPED_ADDR(processMap.processTeeUnmanagedBaseAddr))) {
+	(!VALID_MAPPED_ADDR(processMap.processTeeUnmanagedBaseAddr))) {
         TEST_PRINTF_ERROR("Failed to map, processTeeHwRegBaseAddr 0x%lx, processTeeHwEnvBaseAddr 0x%lx, \
                  processTeeUnmanagedBaseAddr 0x%lx\n",
                     processMap.processTeeHwRegBaseAddr,

@@ -28,14 +28,14 @@ extern "C"
 
 
 /*!
-  @brief This function performs all initializations that may be required by
+  @brief This function performs all initializations that may be required by 
   your PAL implementation, specifically by the DMA-able buffer scheme.
 
   It is called by ::CC_LibInit.
-
-  The existing implementation allocates a contiguous memory pool that is later
-  used by the CryptoCell implementation.
-  If no initializations are needed in your environment, the function can be
+  
+  The existing implementation allocates a contiguous memory pool that is later 
+  used by the CryptoCell implementation. 
+  If no initializations are needed in your environment, the function can be 
   minimized to return OK.
 
   @return A non-zero value on failure.
@@ -45,7 +45,7 @@ int CC_PalInit(void);
 
 
 /*!
-  @brief This function terminates the PAL implementation and frees the resources
+  @brief This function terminates the PAL implementation and frees the resources 
   that were allocated by ::CC_PalInit.
 
   @return Void.

@@ -8,7 +8,7 @@
  @addtogroup cc_sb_defs
  @{
  */
-
+ 
 /*!
  @file
  @brief This file contains type definitions for the Secure Boot.
@@ -33,19 +33,19 @@ extern "C"
 /*! Input or output structure for the Secure Boot verification API. */
 typedef struct{
     /*! The NV counter saved in OTP. */
-    uint32_t otpVersion;
-    /*! The key hash to retrieve: The 128-bit Hbk0, the 128-bit Hbk1, or the
-    256-bit Hbk. */
-    CCSbPubKeyIndexType_t keyIndex;
+	uint32_t otpVersion;
+    /*! The key hash to retrieve: The 128-bit Hbk0, the 128-bit Hbk1, or the 
+	256-bit Hbk. */
+	CCSbPubKeyIndexType_t keyIndex;
     /*! The value of the SW version for the certificate-chain. */
-    uint32_t activeMinSwVersionVal;
-    /*! In: The hash of the public key (N||Np), to compare to the public key
-    stored in the certificate. Out: The hash of the public key (N||Np) stored
-    in the certificate, to be used for verification of the public key of the
-    next certificate in the chain. */
-    CCHashResult_t pubKeyHash;
+	uint32_t activeMinSwVersionVal;
+    /*! In: The hash of the public key (N||Np), to compare to the public key 
+	stored in the certificate. Out: The hash of the public key (N||Np) stored 
+	in the certificate, to be used for verification of the public key of the 
+	next certificate in the chain. */
+	CCHashResult_t pubKeyHash;
     /*! Internal flag for the initialization indication. */
-    uint32_t initDataFlag;
+	uint32_t initDataFlag;
 }CCSbCertInfo_t;
 
 

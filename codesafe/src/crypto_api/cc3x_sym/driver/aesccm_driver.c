@@ -23,7 +23,7 @@ extern CC_PalMutex CCSymCryptoMutex;
 
 
 /******************************************************************************
-*               PRIVATE FUNCTIONS
+*				PRIVATE FUNCTIONS
 ******************************************************************************/
 
 static drvError_t InitAesCcm(AesCcmContext_t   *pAesCcmCtx)
@@ -37,7 +37,7 @@ static drvError_t InitAesCcm(AesCcmContext_t   *pAesCcmCtx)
         }
 
         /* verify valid dir */
-        if ( (pAesCcmCtx->dir != CRYPTO_DIRECTION_ENCRYPT) &&
+        if ( (pAesCcmCtx->dir != CRYPTO_DIRECTION_ENCRYPT) && 
              (pAesCcmCtx->dir != CRYPTO_DIRECTION_DECRYPT) ) {
                 return AES_DRV_ILLEGAL_OPERATION_DIRECTION_ERROR;
         }
@@ -93,9 +93,9 @@ static drvError_t InitAesCcm(AesCcmContext_t   *pAesCcmCtx)
 
         /* mask dma interrupts which are not required */
         irrVal = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, HOST_IMR));
-        CC_REG_FLD_SET(HOST_RGF, HOST_IMR, SRAM_TO_DIN_MASK, irrVal, 1);
-        CC_REG_FLD_SET(HOST_RGF, HOST_IMR, DOUT_TO_SRAM_MASK, irrVal, 1);
-        CC_REG_FLD_SET(HOST_RGF, HOST_IMR, MEM_TO_DIN_MASK, irrVal, 1);
+        CC_REG_FLD_SET(HOST_RGF, HOST_IMR, SRAM_TO_DIN_MASK, irrVal, 1);             
+        CC_REG_FLD_SET(HOST_RGF, HOST_IMR, DOUT_TO_SRAM_MASK, irrVal, 1);              
+        CC_REG_FLD_SET(HOST_RGF, HOST_IMR, MEM_TO_DIN_MASK, irrVal, 1);              
         CC_REG_FLD_SET(HOST_RGF, HOST_IMR, DOUT_TO_MEM_MASK, irrVal, 1);
         CC_REG_FLD_SET(HOST_RGF, HOST_IMR, SYM_DMA_COMPLETED_MASK, irrVal, 0);
         CC_HalMaskInterrupt(irrVal);
@@ -103,11 +103,11 @@ static drvError_t InitAesCcm(AesCcmContext_t   *pAesCcmCtx)
         /* configure DIN-AES-DOUT */
         CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, CRYPTO_CTL) ,CONFIG_DIN_AES_DOUT_VAL);
 
-    /* Zero AES_REMAINING_BYTES */
-    CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_REMAINING_BYTES) ,0);
+	/* Zero AES_REMAINING_BYTES */
+	CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_REMAINING_BYTES) ,0);
 
-    /* configure AES control */
-    CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_CONTROL) ,aesControl);
+	/* configure AES control */
+	CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_CONTROL) ,aesControl);
 
         return AES_DRV_OK;
 }
@@ -207,7 +207,7 @@ static void StoreAesCcmCtrState(AesCcmContext_t   *pAesCcmCtx)
 
 
 /******************************************************************************
-*               PUBLIC FUNCTIONS
+*				PUBLIC FUNCTIONS
 ******************************************************************************/
 
 drvError_t ProcessAesCcmDrv(AesCcmContext_t   *pAesCcmCtx, CCBuffInfo_t *pInputBuffInfo, CCBuffInfo_t *pOutputBuffInfo, uint32_t blockSize)
@@ -228,9 +228,9 @@ drvError_t ProcessAesCcmDrv(AesCcmContext_t   *pAesCcmCtx, CCBuffInfo_t *pInputB
         }
 
         /* verify valid block size */
-    if (blockSize >= DLLI_MAX_BUFF_SIZE) {
+	if (blockSize >= DLLI_MAX_BUFF_SIZE) {
                 return AES_DRV_ILLEGAL_MEM_SIZE_ERROR;
-    }
+	}
 
         /* lock mutex for more aes hw operation */
         drvRc = CC_PalMutexLock(&CCSymCryptoMutex, CC_INFINITE);
@@ -266,7 +266,7 @@ drvError_t ProcessAesCcmDrv(AesCcmContext_t   *pAesCcmCtx, CCBuffInfo_t *pInputB
 
         /* load CTR in case of CTR / CCMPE / CCMPD */
         if (pAesCcmCtx->mode != CIPHER_CBC_MAC) {
-        /* write the initial counter value according to mode */
+		/* write the initial counter value according to mode */
                 LoadAesCcmCtrState(pAesCcmCtx);
 
                 /* configure destination address and size in case of ctr */
@@ -276,15 +276,15 @@ drvError_t ProcessAesCcmDrv(AesCcmContext_t   *pAesCcmCtx, CCBuffInfo_t *pInputB
 
         /* load IV in case of CBC_MAC / CCMPE / CCMPD */
         if (pAesCcmCtx->mode != CIPHER_CTR) {
-        /* write the initial counter value according to mode */
+		/* write the initial counter value according to mode */
                 LoadAesCcmIvState(pAesCcmCtx);
 
-        /* initiate CMAC sub-keys calculation */
-        CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_CMAC_INIT) ,0x1);
-        /* set the remaining bytes */
-        CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_REMAINING_BYTES) ,blockSize);
+		/* initiate CMAC sub-keys calculation */
+		CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_CMAC_INIT) ,0x1);
+		/* set the remaining bytes */
+		CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_REMAINING_BYTES) ,blockSize);
 
-        }
+        } 
 
         /* configure source address and size */
         CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, SRC_LLI_WORD0) ,inputDataAddr);
@@ -294,7 +294,7 @@ drvError_t ProcessAesCcmDrv(AesCcmContext_t   *pAesCcmCtx, CCBuffInfo_t *pInputB
         CC_REG_FLD_SET(HOST_RGF, HOST_IRR, SYM_DMA_COMPLETED, irrVal, 1);
         drvRc = CC_HalWaitInterrupt(irrVal);
         if (drvRc != AES_DRV_OK) {
-            goto ProcessExit;
+        	goto ProcessExit;
         }
 
         /* get CTR state in case of CTR / CCMPE / CCMPD */

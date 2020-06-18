@@ -38,25 +38,25 @@ extern "C"
 /*! Derivation type of the input key. */
 typedef enum  {
     /*! The user key.*/
-    CC_UTIL_USER_KEY = 0,
+	CC_UTIL_USER_KEY = 0,
     /*! The device root key (the HUK).*/
-    CC_UTIL_ROOT_KEY = 1,
+	CC_UTIL_ROOT_KEY = 1,
     /*! Total number of keys.*/
-    CC_UTIL_TOTAL_KEYS = 2,
+	CC_UTIL_TOTAL_KEYS = 2,
     /*! Reserved.*/
-    CC_UTIL_END_OF_KEY_TYPE = 0x7FFFFFFF
+	CC_UTIL_END_OF_KEY_TYPE = 0x7FFFFFFF
 }mbedtls_util_keytype_t;
 
 /*! Pseudo-random function type for key derivation. */
 typedef enum {
     /*! The CMAC function.*/
-    CC_UTIL_PRF_CMAC = 0,
+	CC_UTIL_PRF_CMAC = 0,
     /*! The HMAC function.*/
-    CC_UTIL_PRF_HMAC = 1,
+	CC_UTIL_PRF_HMAC = 1,
     /*! The total number of pseudo-random functions.*/
-    CC_UTIL_TOTAL_PRFS = 2,
+	CC_UTIL_TOTAL_PRFS = 2,
     /*! Reserved.*/
-    CC_UTIL_END_OF_PRF_TYPE = 0x7FFFFFFF
+	CC_UTIL_END_OF_PRF_TYPE = 0x7FFFFFFF
 }mbedtls_util_prftype_t;
 
 
@@ -64,15 +64,15 @@ typedef enum {
   @brief  This function performs key derivation.
 
   It is defined as specified in the <em>KDF in Counter Mode</em> section in
-  <em>NIST Special Publication 800-108: Recommendation for Key Derivation
+  <em>NIST Special Publication 800-108: Recommendation for Key Derivation 
   Using Pseudorandom Functions</em>.
 
-  The derivation is based on length l, label L, context C, and derivation key
-  Ki.
-
+  The derivation is based on length l, label L, context C, and derivation key 
+  Ki. 
+  
   AES-CMAC or HMAC are used as the pseudo-random function (PRF).
 
-  @note   You must define the label and context for each use-case well
+  @note   You must define the label and context for each use-case well 
   when using this API.
 
   @return \c CC_UTIL_OK on success.
@@ -86,34 +86,34 @@ typedef enum {
 
         concisely, result(i) = K(i) || k(i-1) || .... || k(0)*/
 CCUtilError_t mbedtls_util_key_derivation(
-    /*! [in] The key type that is used as an input to a key-derivation
-    function: \p CC_UTIL_USER_KEY or \p CC_UTIL_ROOT_KEY. */
-    mbedtls_util_keytype_t        keyType,
-    /*! [in] A pointer to the key buffer of the user, in case of \p
-    CC_UTIL_USER_KEY. */
-    mbedtls_util_keydata        *pUserKey,
-    /*! [in] The PRF type that is used as an input to a key-derivation
-    function: \p CC_UTIL_PRF_CMAC or \p CC_UTIL_PRF_HMAC. */
-    mbedtls_util_prftype_t        prfType,
-    /*! [in] One of the supported hash modes that are defined in \p
-    CCHashOperationMode_t. */
-    CCHashOperationMode_t       hashMode,
-    /*! [in] A string that identifies the purpose for the derived keying
-    material.*/
-    const uint8_t               *pLabel,
+    /*! [in] The key type that is used as an input to a key-derivation 
+	function: \p CC_UTIL_USER_KEY or \p CC_UTIL_ROOT_KEY. */
+	mbedtls_util_keytype_t        keyType,
+    /*! [in] A pointer to the key buffer of the user, in case of \p 
+	CC_UTIL_USER_KEY. */
+	mbedtls_util_keydata        *pUserKey,
+    /*! [in] The PRF type that is used as an input to a key-derivation 
+	function: \p CC_UTIL_PRF_CMAC or \p CC_UTIL_PRF_HMAC. */
+	mbedtls_util_prftype_t        prfType,
+    /*! [in] One of the supported hash modes that are defined in \p 
+	CCHashOperationMode_t. */
+	CCHashOperationMode_t       hashMode,
+    /*! [in] A string that identifies the purpose for the derived keying 
+	material.*/
+	const uint8_t               *pLabel,
     /*! [in] The label size must be in range of 1 to 64 bytes in length. */
-    size_t                      labelSize,
-    /*! [in] A binary string containing the information related to the derived
-    keying material. */
-    const uint8_t               *pContextData,
+	size_t                      labelSize,
+    /*! [in] A binary string containing the information related to the derived 
+	keying material. */
+	const uint8_t               *pContextData,
     /*! [in] The context size must be in range of 1 to 64 bytes in length. */
-    size_t                      contextSize,
-    /*! [out] Keying material output. Must be at least the size of \p
-    derivedKeySize. */
-    uint8_t                     *pDerivedKey,
-    /*! [in] The size of the derived keying material in bytes, up to 4080
-    bytes. */
-    size_t                      derivedKeySize
+	size_t                      contextSize,
+    /*! [out] Keying material output. Must be at least the size of \p 
+	derivedKeySize. */
+	uint8_t                     *pDerivedKey,
+    /*! [in] The size of the derived keying material in bytes, up to 4080 
+	bytes. */
+	size_t                      derivedKeySize
     );
 
 
@@ -124,9 +124,9 @@ CCUtilError_t mbedtls_util_key_derivation(
   <em>NIST Special Publication 800-108: Recommendation for Key Derivation
   Using Pseudorandom Functions</em>.
 
-  The derivation is based on length l, label L, context C, and derivation key
+  The derivation is based on length l, label L, context C, and derivation key 
   Ki.
-
+  
   @return \c CC_UTIL_OK on success.
   @return A non-zero value from cc_util_error.h on failure.
  */
@@ -141,9 +141,9 @@ CCUtilError_t mbedtls_util_key_derivation(
   <em>NIST Special Publication 800-108: Recommendation for Key Derivation
   Using Pseudorandom Functions</em>.
 
-  The derivation is based on length l, label L, context C, and derivation key
+  The derivation is based on length l, label L, context C, and derivation key 
   Ki.
-
+  
   HMAC is used as the pseudo-random function (PRF).
 
  @return \c CC_UTIL_OK on success.

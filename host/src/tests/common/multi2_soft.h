@@ -28,6 +28,6 @@ int multi2_soft_cbc_decrypt(const unsigned char *ct, unsigned char *pt, unsigned
 
 void multi2_soft_done(symmetric_key *skey);
 
-#endif  // __MULTI2_SOFT_H__
+#endif	// __MULTI2_SOFT_H__
 
 

@@ -13,7 +13,7 @@
 
 /* HW KEYS */
 #define TEST_HUK_KEY            0
-#define TEST_RTL_KEY        1
+#define TEST_RTL_KEY		1
 #define TEST_KCP_KEY            2
 #define TEST_KCE_KEY            3
 #define TEST_KPICV_KEY          4

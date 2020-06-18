@@ -11,7 +11,7 @@
 
 /*!
  @file
- @brief This file contains project definitions that are used for CryptoCell
+ @brief This file contains project definitions that are used for CryptoCell 
  AES APIs.
  */
 
@@ -28,7 +28,7 @@ extern "C"
 
 /************************ Defines ******************************/
 
-/*! The size of the context prototype of the user in words.
+/*! The size of the context prototype of the user in words. 
 See ::CCAesUserContext_t.*/
 #define CC_AES_USER_CTX_SIZE_IN_WORDS (4+8+8+4)
 

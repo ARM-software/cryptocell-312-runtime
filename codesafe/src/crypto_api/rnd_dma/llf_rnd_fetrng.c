@@ -9,7 +9,7 @@
 #include "cc_pal_mem.h"
 #include "cc_rng_plat.h"
 #include "dx_crys_kernel.h"
-#include "cc_hal.h"
+#include "cc_hal.h" 
 #include "cc_regs.h"
 #include "dx_host.h"
 #include "cc_rnd_local.h"
@@ -72,28 +72,28 @@ uint32_t  gEntrSize[4];
 
 /************************************************************************************/
 /**
- * The function checks that parameters, loaded in the TRNG HW
+ * The function checks that parameters, loaded in the TRNG HW 
  * are match to parameters, required by trngParams_ptr structures.
- *
+ * 
  * @author reuvenl (6/25/2012)
- *
- * @param trngParams_ptr
- *
- * @return CCError_t
+ * 
+ * @param trngParams_ptr 
+ * 
+ * @return CCError_t 
  */
 static CCError_t LLF_RND_TRNG_CheckHwParams(CCRndParams_t *trngParams_ptr)
 {
-    uint32_t temp;
-    CCBool_t isTrue = CC_TRUE;
+	uint32_t temp;
+	CCBool_t isTrue = CC_TRUE;
 
-    /* check Debug control - masked TRNG tests according to mode */
-    temp = CC_HAL_READ_REGISTER(CC_REG_OFFSET(RNG, TRNG_DEBUG_CONTROL));
-    isTrue &= (temp == LLF_RND_HW_DEBUG_CONTROL_VALUE_ON_FE_MODE);
-    /* check samplesCount */
-    temp = CC_HAL_READ_REGISTER(CC_REG_OFFSET(RNG,SAMPLE_CNT1));
-    isTrue &= (temp == trngParams_ptr->SubSamplingRatio);
+	/* check Debug control - masked TRNG tests according to mode */
+	temp = CC_HAL_READ_REGISTER(CC_REG_OFFSET(RNG, TRNG_DEBUG_CONTROL));
+	isTrue &= (temp == LLF_RND_HW_DEBUG_CONTROL_VALUE_ON_FE_MODE);
+	/* check samplesCount */
+	temp = CC_HAL_READ_REGISTER(CC_REG_OFFSET(RNG,SAMPLE_CNT1));
+	isTrue &= (temp == trngParams_ptr->SubSamplingRatio);
 
-    /* if any parameters are not match return an Error */
+	/* if any parameters are not match return an Error */
         if (isTrue == CC_FALSE) {
                 return LLF_RND_TRNG_PREVIOUS_PARAMS_NOT_MATCH_ERROR;
         }
@@ -104,9 +104,9 @@ static CCError_t LLF_RND_TRNG_CheckHwParams(CCRndParams_t *trngParams_ptr)
 
 static uint32_t LLF_RND_TRNG_RoscMaskToNum(uint32_t mask)
 {
-        return (mask == LLF_RND_HW_TRNG_ROSC3_BIT) ? LLF_RND_HW_TRNG_ROSC3_NUM :
-                (mask == LLF_RND_HW_TRNG_ROSC2_BIT) ? LLF_RND_HW_TRNG_ROSC2_NUM :
-                (mask == LLF_RND_HW_TRNG_ROSC1_BIT) ? LLF_RND_HW_TRNG_ROSC1_NUM :
+        return (mask == LLF_RND_HW_TRNG_ROSC3_BIT) ? LLF_RND_HW_TRNG_ROSC3_NUM : 
+                (mask == LLF_RND_HW_TRNG_ROSC2_BIT) ? LLF_RND_HW_TRNG_ROSC2_NUM : 
+                (mask == LLF_RND_HW_TRNG_ROSC1_BIT) ? LLF_RND_HW_TRNG_ROSC1_NUM : 
                 LLF_RND_HW_TRNG_ROSC0_NUM;
 }
 
@@ -137,7 +137,7 @@ static CCError_t LLF_RND_TRNG_ReadEhrData(uint32_t *pSourceOut, bool isFipsSuppo
         /* wait RNG interrupt: isr signals error bits */
         error = LLF_RND_WaitRngInterrupt(&isr);
         if (error != CC_OK){
-                return error;
+        		return error;
         }
 
         error = LLF_RND_TRNG_REQUIRED_ROSCS_NOT_ALLOWED_ERROR;
@@ -211,7 +211,7 @@ CCError_t LLF_RND_StartTrngHW(
         /* Get fastest allowed ROSC */
         error = LLF_RND_GetFastestRosc(
                 trngParams_ptr,
-                roscsToStart_ptr     /*in/out*/);
+                roscsToStart_ptr	 /*in/out*/);
         if (error)
                 return error;
 
@@ -222,7 +222,7 @@ CCError_t LLF_RND_StartTrngHW(
         roscNum = LLF_RND_TRNG_RoscMaskToNum(*roscsToStart_ptr);
 
         /*--------------------------------------------------------------*/
-        /* 2. Restart the TRNG and set parameters                   */
+        /* 2. Restart the TRNG and set parameters      		        */
         /*--------------------------------------------------------------*/
         /* RNG Block HW Specification (10 Programming Reference)        */
 
@@ -280,9 +280,9 @@ CCError_t LLF_RND_StartTrngHW(
 CCError_t LLF_RND_GetTrngSource(
         CCRndState_t  *rndState_ptr,        /*in/out*/
         CCRndParams_t  *trngParams_ptr,     /*in/out*/
-        CCBool_t            isContinued,    /*in*/
+        CCBool_t            isContinued,	/*in*/
         uint32_t         *entropySize_ptr,      /*in/out*/
-        uint32_t        **sourceOut_ptr_ptr,    /*out*/
+        uint32_t        **sourceOut_ptr_ptr,	/*out*/
         uint32_t         *sourceOutSize_ptr,    /*in/out*/
         uint32_t         *rndWorkBuff_ptr,      /*in*/
         bool              isFipsSupported)      /*in*/
@@ -339,10 +339,10 @@ CCError_t LLF_RND_GetTrngSource(
                 /* Go to Estimator */
                 if (rndState_ptr->StateFlag & CC_RND_KAT_TRNG_Mode) {
                         /* Assumed, that KAT data is set in the rnd Work      *
-                           buffer as follows:                     *
-                           - full source size set in buffer[0],           *
-                           - count blocks set in buffer[1],               *
-                           *  - KAT source begins from buffer[2].         */
+                           buffer as follows:   			      *
+                           - full source size set in buffer[0],  	      *
+                           - count blocks set in buffer[1],      	      *
+                           *  - KAT source begins from buffer[2].  	      */
                         tmp = (*sourceOut_ptr_ptr)[1]; /*count blocks for estimation*/
                         if (tmp == 0) {
                                 error = CC_RND_KAT_DATA_PARAMS_ERROR;
@@ -357,12 +357,12 @@ CCError_t LLF_RND_GetTrngSource(
                 }
         }
 #endif
-        /* If not continued mode, set TRNG parameters and restart TRNG  */
+        /* If not continued mode, set TRNG parameters and restart TRNG 	*/
         /*--------------------------------------------------------------*/
         if (isContinued == CC_FALSE) {
 #ifndef USE_MBEDTLS_CRYPTOCELL
                 /* Set instantiation, TRNG errors and time   *
-                * exceeding bits of State to 0           */
+                * exceeding bits of State to 0  	     */
                 rndState_ptr->StateFlag &= ~(CC_RND_INSTANTIATED |
                         CC_RND_INSTANTRESEED_AUTOCORR_ERRORS |
                         CC_RND_INSTANTRESEED_TIME_EXCEED |
@@ -399,7 +399,7 @@ CCError_t LLF_RND_GetTrngSource(
 
         /*====================================================*/
         /* FE mode processing: start Roscs sequentially -   *
-        * from fast to slow Rosc                  */
+        * from fast to slow Rosc 			      */
         /*====================================================*/
 
         for (i = 0; i < LLF_RND_NUM_OF_ROSCS; ++i) {
@@ -492,12 +492,12 @@ CCError_t LLF_RND_RunTrngStartupTest(
         CCRndParams_t       *trngParams_ptr,
         uint32_t                *rndWorkBuff_ptr)
 {
-    CCError_t error = CC_OK;
-    CC_UNUSED_PARAM(rndState_ptr);
+	CCError_t error = CC_OK;
+	CC_UNUSED_PARAM(rndState_ptr);
         CC_UNUSED_PARAM(trngParams_ptr);
         CC_UNUSED_PARAM(rndWorkBuff_ptr);
 
-    return error;
+	return error;
 }
 
 

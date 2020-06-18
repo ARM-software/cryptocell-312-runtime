@@ -29,9 +29,9 @@ CCUtilError_t UtilCmacBuildDataForDerivation( const uint8_t               *pLabe
                                              size_t                      labelSize,
                                              const uint8_t               *pContextData,
                                              size_t                      contextSize,
-                                             uint8_t            *pDataIn,
-                                             size_t                 *pDataInSize,
-                                             size_t                      derivedKeySize)
+                                             uint8_t			*pDataIn,
+                                             size_t                	*pDataInSize,
+                                             size_t                      derivedKeySize) 
 {
         uint32_t      length = 0;
         uint32_t      lengthReverse = 0;
@@ -67,14 +67,14 @@ CCUtilError_t UtilCmacBuildDataForDerivation( const uint8_t               *pLabe
 
         i = 1;
         if (labelSize!=0) {
-                CC_PalMemCopy((pDataIn+i), pLabel, labelSize);
+                CC_PalMemCopy((pDataIn+i), pLabel, labelSize); 
                 i+=labelSize;
         }
 
         pDataIn[i++] = 0x00;
 
         if (contextSize!=0) {
-                CC_PalMemCopy((pDataIn+i), pContextData, contextSize);
+                CC_PalMemCopy((pDataIn+i), pContextData, contextSize); 
                 i+=contextSize;
         }
 
@@ -85,18 +85,18 @@ CCUtilError_t UtilCmacBuildDataForDerivation( const uint8_t               *pLabe
                 CC_PalMemCopy((pDataIn+i), (uint8_t*)&lengthReverse, 2);
                 i += 2;
         } else {
-                CC_PalMemCopy((pDataIn+i), (uint8_t*)&length, 1);
+                CC_PalMemCopy((pDataIn+i), (uint8_t*)&length, 1);  
                 i += 1;
         }
         *pDataInSize = i;
 
         return CC_OK;
 }
-CCUtilError_t UtilCmacDeriveKey(UtilKeyType_t       keyType,
-                CCAesUserKeyData_t      *pUserKey,
-                uint8_t         *pDataIn,
-                size_t                  dataInSize,
-                CCUtilAesCmacResult_t   pCmacResult)
+CCUtilError_t UtilCmacDeriveKey(UtilKeyType_t    	keyType,
+				CCAesUserKeyData_t     	*pUserKey, 
+				uint8_t			*pDataIn,
+				size_t                	dataInSize,
+				CCUtilAesCmacResult_t   pCmacResult)
 {
         uint32_t      rc;
         AesContext_t    aesCtxBuf;
@@ -117,10 +117,10 @@ CCUtilError_t UtilCmacDeriveKey(UtilKeyType_t       keyType,
 
         switch(keyType){
         case UTIL_ROOT_KEY:
-                /* Set AES key to ROOT KEY */
-                aesCtxBuf.cryptoKey = RKEK_KEY;
+	            /* Set AES key to ROOT KEY */
+	            aesCtxBuf.cryptoKey = RKEK_KEY;
                 aesCtxBuf.keySizeId = KEY_SIZE_256_BIT;
-                break;
+	            break;
         case UTIL_KCP_KEY:
                 /* Set AES key to ROOT KEY */
                 aesCtxBuf.cryptoKey = KCP_KEY;
@@ -132,34 +132,34 @@ CCUtilError_t UtilCmacDeriveKey(UtilKeyType_t       keyType,
                 aesCtxBuf.keySizeId = KEY_SIZE_128_BIT;
                 break;
         case UTIL_USER_KEY:
-                if ((pUserKey->keySize != CC_UTIL_AES_128BIT_SIZE) &&
-                    (pUserKey->keySize != CC_UTIL_AES_192BIT_SIZE) &&
+	            if ((pUserKey->keySize != CC_UTIL_AES_128BIT_SIZE) && 
+                    (pUserKey->keySize != CC_UTIL_AES_192BIT_SIZE) && 
                     (pUserKey->keySize != CC_UTIL_AES_256BIT_SIZE)) {
                         return CC_UTIL_INVALID_USER_KEY_SIZE;
-                }
-                /* Set AES key to USER KEY, and copy the key to the context */
-                aesCtxBuf.cryptoKey = USER_KEY;
-                switch (pUserKey->keySize) {
+                }               
+	            /* Set AES key to USER KEY, and copy the key to the context */
+	            aesCtxBuf.cryptoKey = USER_KEY;
+	            switch (pUserKey->keySize) {
                 case CC_UTIL_AES_128BIT_SIZE:
-                        aesCtxBuf.keySizeId = KEY_SIZE_128_BIT;
+                        aesCtxBuf.keySizeId = KEY_SIZE_128_BIT;             
                         break;
                 case CC_UTIL_AES_192BIT_SIZE:
-                        aesCtxBuf.keySizeId = KEY_SIZE_192_BIT;
+                        aesCtxBuf.keySizeId = KEY_SIZE_192_BIT;             
                         break;
                 case CC_UTIL_AES_256BIT_SIZE:
-                        aesCtxBuf.keySizeId = KEY_SIZE_256_BIT;
+                        aesCtxBuf.keySizeId = KEY_SIZE_256_BIT;             
                         break;
                 default:
                         break;
                 }
                 CC_PalMemCopy(aesCtxBuf.keyBuf, pUserKey->pKey, pUserKey->keySize);
-                break;
+	            break;
         default:
                 return CC_UTIL_INVALID_KEY_TYPE;
         }
 
 
-        /* call CC_AES_Init with CMAC */
+	    /* call CC_AES_Init with CMAC */
         aesCtxBuf.mode               = CIPHER_CMAC;
         aesCtxBuf.dir                = CRYPTO_DIRECTION_ENCRYPT;
         aesCtxBuf.dataBlockType      = FIRST_BLOCK;
@@ -177,12 +177,12 @@ CCUtilError_t UtilCmacDeriveKey(UtilKeyType_t       keyType,
 
         rc = FinishAesDrv(&aesCtxBuf, &inBuffInfo, &outBuffInfo, dataInSize);
         if (rc != 0) {
-                return CC_UTIL_FATAL_ERROR;
+                return CC_UTIL_FATAL_ERROR; 
         }
 
         CC_PalMemCopy(pCmacResult, aesCtxBuf.ivBuf, CC_AES_BLOCK_SIZE_IN_BYTES);
 
-        return CC_UTIL_OK;
+        return CC_UTIL_OK; 
 }
 
 

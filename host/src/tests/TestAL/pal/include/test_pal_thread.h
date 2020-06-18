@@ -99,10 +99,10 @@ uint32_t Test_PalGetDefaultPriority(void);
  * @return - threadHandle address for success, NULL for failure.
  */
 ThreadHandle Test_PalThreadCreate(size_t stackSize,
-                  void *(*threadFunc)(void *),
-                  int priority, void *args,
-                  const char *threadName,
-                  uint8_t nameLen, uint8_t dmaAble);
+				  void *(*threadFunc)(void *),
+				  int priority, void *args,
+				  const char *threadName,
+				  uint8_t nameLen, uint8_t dmaAble);
 
 /******************************************************************************/
 /*

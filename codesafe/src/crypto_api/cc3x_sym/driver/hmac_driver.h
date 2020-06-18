@@ -10,18 +10,18 @@
 #include "driver_defs.h"
 
 /******************************************************************************
-*               TYPE DEFINITIONS
+*				TYPE DEFINITIONS
 ******************************************************************************/
 
 /* The context data-base used by the Hmac functions on the low level */
 typedef struct HmacContext {
-    uint32_t valid_tag;
-    /* Key XOR opad result */
-    uint8_t KeyXorOpadBuff[CC_HMAC_SHA2_1024BIT_KEY_SIZE_IN_BYTES];
-    /* The operation mode */
-    CCHashOperationMode_t mode;
-    /* The user HASH context - required for operating the HASH described below */
-    CCHashUserContext_t HashUserContext;
+	uint32_t valid_tag;
+	/* Key XOR opad result */
+	uint8_t KeyXorOpadBuff[CC_HMAC_SHA2_1024BIT_KEY_SIZE_IN_BYTES];
+	/* The operation mode */
+	CCHashOperationMode_t mode;
+	/* The user HASH context - required for operating the HASH described below */
+	CCHashUserContext_t HashUserContext;
 } HmacContext_t;
 
 

@@ -95,8 +95,8 @@ extern "C"
   * @return - no return value.
   */
 void CC_CommonInPlaceConvertBytesWordsAndArrayEndianness(
-                    uint32_t *buf_ptr,
-                    uint32_t  sizeWords);
+					uint32_t *buf_ptr,
+					uint32_t  sizeWords);
 
 
 /***********************************************************************/
@@ -105,16 +105,16 @@ void CC_CommonInPlaceConvertBytesWordsAndArrayEndianness(
   *        array with words order according to little endian.
   *
   *            1. Assumed, that input bytes order is set according
-  *           to big endianness: MS Byte is most left, i.e. order is from
-  *           Msb to Lsb.
+  *     	  to big endianness: MS Byte is most left, i.e. order is from
+  *     	  Msb to Lsb.
   *            2. Output words array should set according to
-  *           little endianness words order: LSWord is most left, i.e. order
-  *           is from Lsw to Msw. Order bytes in each word - according to
-  *           processor endianness.
+  *     	  little endianness words order: LSWord is most left, i.e. order
+  *     	  is from Lsw to Msw. Order bytes in each word - according to
+  *     	  processor endianness.
   *            3. Owerlapping of buffers is not allowed, besides in
-  *           place operation and size aligned to full words.
+  *     	  place operation and size aligned to full words.
   *            4. Implementation is given for both big and little
-  *           endianness of processor.
+  *     	  endianness of processor.
   *
   * @param[out] out32_ptr - The 32-bits pointer to output buffer.
   * @param[in] sizeOutBuffBytes - The size in bytes of output buffer, must be
@@ -127,10 +127,10 @@ void CC_CommonInPlaceConvertBytesWordsAndArrayEndianness(
   *                        value MODULE_* as defined in .
   */
 CCError_t CC_CommonConvertMsbLsbBytesToLswMswWords(
-                    uint32_t *out32_ptr,
-                    uint32_t  sizeOutBuffBytes,
-                    const uint8_t  *in8_ptr,
-                    uint32_t  inpSizeInBytes);
+					uint32_t *out32_ptr,
+					uint32_t  sizeOutBuffBytes,
+					const uint8_t  *in8_ptr,
+					uint32_t  inpSizeInBytes);
 
 
 /***********************************************************************/
@@ -138,16 +138,16 @@ CCError_t CC_CommonConvertMsbLsbBytesToLswMswWords(
   * @brief This function converts LE 32bit-words array to BE bytes array.
   *
   *            1. Assumed, that output bytes order is according
-  *           to big endianness: MS Byte is most left, i.e. order is from
-  *           Msb to Lsb.
+  *     	  to big endianness: MS Byte is most left, i.e. order is from
+  *     	  Msb to Lsb.
   *            2. Input words array should be set according to
-  *           little endianness words order: LSWord is most left, i.e. order
-  *           is from Lsw to Msw. Bytes order in each word - according to
-  *           processor endianness.
+  *     	  little endianness words order: LSWord is most left, i.e. order
+  *     	  is from Lsw to Msw. Bytes order in each word - according to
+  *     	  processor endianness.
   *            3. Owerlapping of buffers is not allowed, besides in
-  *           place operation and size aligned to full words.
+  *     	  place operation and size aligned to full words.
   *            4. Implementation is given for both big and little
-  *           endianness of processor.
+  *     	  endianness of processor.
   *
   * @param[in] out32_ptr - The 32-bits pointer to output buffer.
   * @param[in] sizeOutBuffBytes - The size in bytes of output buffer, must be
@@ -160,22 +160,22 @@ CCError_t CC_CommonConvertMsbLsbBytesToLswMswWords(
   *                        value MODULE_* as defined in .
   */
 CCError_t CC_CommonConvertLswMswWordsToMsbLsbBytes(
-                    uint8_t  *out8_ptr,
-                    size_t    sizeOutBuffBytes,
-                    uint32_t *in32_ptr,
-                    uint32_t  sizeInBytes);
+					uint8_t  *out8_ptr,
+					size_t    sizeOutBuffBytes,
+					uint32_t *in32_ptr,
+					uint32_t  sizeInBytes);
 
 
 /***********************************************************************/
 /**
  * @brief VOS_GetGlobalData get the global random key hidden inside the function
- *  the global data implemented for now are random key buffer and AES secret key buffer
+ *	the global data implemented for now are random key buffer and AES secret key buffer
  *
  * When no_rtos is declared then we allow a global data. The random key/AES secret key are hidden as static inside the function
  *
  *
- * @param[in] Globalid     select the buffer
- * @param[in] GlobalDataSizeWords      - the global data buffer size needed in words - this value must be a predetermined value
+ * @param[in] Globalid	   select the buffer
+ * @param[in] GlobalDataSizeWords	   - the global data buffer size needed in words - this value must be a predetermined value
  * @param[out] GlobalData_ptr - Pointer to the global buffer returned. The buffer must be at least GlobalDataSizeWords size
  *
  * @return CCError_t - On success CC_OK is returned, on failure an Error as defined in VOS_error
@@ -186,11 +186,11 @@ CCError_t CC_CommonGetGlobalData(uint16_t Globalid, uint32_t *GlobalData_ptr, ui
 /***********************************************************************/
 /**
 * @brief CC_CommonStoreGlobalData store the global random key into the global buffer hidden inside the function
-*   the global data implemented for now are random key buffer and AES secret key buffer
+*	the global data implemented for now are random key buffer and AES secret key buffer
 *
 *
-* @param[in] Globalid      - random key / AES secret key
-* @param[in] GlobalDataSizeWords       - the global data buffer size needed in words - this value must be a predetermined value
+* @param[in] Globalid	   - random key / AES secret key
+* @param[in] GlobalDataSizeWords	   - the global data buffer size needed in words - this value must be a predetermined value
 * @param[in] GlobalData_ptr - Pointer to the global buffer to be saved. The buffer must be at least GlobalDataSizeWords size
 *
 *   Return Value:
@@ -283,9 +283,9 @@ CCError_t CC_CommonStoreGlobalData(uint16_t Globalid, uint32_t *GlobalData_ptr, 
   *                        value MODULE_* as defined in .
   */
 void CC_CommonConvertLswMswWordsToLsbMsbBytes(
-                    uint8_t  *out8Le,
-                    const uint32_t *in32Le,
-                    size_t  sizeInWords);
+					uint8_t  *out8Le,
+					const uint32_t *in32Le,
+					size_t  sizeInWords);
 
 
 /***********************************************************************/
@@ -304,9 +304,9 @@ void CC_CommonConvertLswMswWordsToLsbMsbBytes(
  *                        value MODULE_* as defined in .
  */
 void CC_CommonConvertLsbMsbBytesToLswMswWords(
-                    uint32_t *out32Le,
-                    const uint8_t  *in8Le,
-                    size_t  sizeInBytes);
+					uint32_t *out32Le,
+					const uint8_t  *in8Le,
+					size_t  sizeInBytes);
 
 
 #ifdef __cplusplus

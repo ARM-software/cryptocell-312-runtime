@@ -20,45 +20,45 @@
 /******************************************************************************/
 size_t Test_PalGetMinimalStackSize(void)
 {
-    return 0;
+	return 0;
 }
 
 /******************************************************************************/
 uint32_t Test_PalGetHighestPriority(void)
 {
-    return 0;
+	return 0;
 }
 
 /******************************************************************************/
 uint32_t Test_PalGetLowestPriority(void)
 {
-    return 0;
+	return 0;
 }
 
 /******************************************************************************/
 uint32_t Test_PalGetDefaultPriority(void)
 {
-    return 0;
+	return 0;
 }
 
 /******************************************************************************/
 ThreadHandle Test_PalThreadCreate(size_t stackSize,
-                  void *(*threadFunc)(void *),
-                  int priority, void *args,
-                  const char *threadName,
-                  uint8_t nameLen, uint8_t dmaAble)
+				  void *(*threadFunc)(void *),
+				  int priority, void *args,
+				  const char *threadName,
+				  uint8_t nameLen, uint8_t dmaAble)
 {
-    return NULL;
+	return NULL;
 }
 
 /******************************************************************************/
 uint32_t Test_PalThreadJoin(ThreadHandle threadHandle, void **threadRet)
 {
-    return 0;
+	return 0;
 }
 
 /******************************************************************************/
 uint32_t Test_PalThreadDestroy(ThreadHandle threadHandle)
 {
-    return 0;
+	return 0;
 }

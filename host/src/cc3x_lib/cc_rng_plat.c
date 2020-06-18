@@ -25,18 +25,18 @@
 
 /****************************************************************************************/
 /**
- *
+ * 
  * @brief The function retrievess the TRNG parameters, provided by the User trough NVM,
- *        and sets them into structures given by pointers pRndContext and pTrngParams.
- *
+ *        and sets them into structures given by pointers pRndContext and pTrngParams. 
+ * 
  * @author reuvenl (6/26/2012)
- *
+ * 
  * @param[out] pRndState - The pointer to structure, containing PRNG data and
  *                            parameters.
  * @param[out] pTrngParams - The pointer to structure, containing parameters
  *                            of HW TRNG.
  *
- * @return CCError_t -  no return value
+ * @return CCError_t -  no return value  
  */
 CCError_t RNG_PLAT_SetUserRngParameters(
         CCRndParams_t  *pTrngParams)

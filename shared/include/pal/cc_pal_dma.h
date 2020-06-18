@@ -53,8 +53,8 @@ typedef struct {
  * @return A non-zero value in case of failure.
  */
 uint32_t CC_PalDmaBufferMap(
-                uint8_t                      *pDataBuffer,     /*!< [in] The address of the buffer to map. */
-                uint32_t                      buffSize,         /*!< [in] The buffer size in Bytes. */
+				uint8_t                  	 *pDataBuffer,     /*!< [in] The address of the buffer to map. */
+                uint32_t                      buffSize,     	/*!< [in] The buffer size in Bytes. */
                 CCPalDmaBufferDirection_t     copyDirection,    /*!< [in] The copy direction of the buffer, according to ::CCPalDmaBufferDirection_t:
                                               <ul><li>TO_DEVICE - the original buffer is the input to the operation,
                                               and this function should copy it to the temporary buffer,
@@ -74,8 +74,8 @@ uint32_t CC_PalDmaBufferMap(
  *      It unmaps a given buffer and frees its associated resources, if needed. It may unlock the buffer and flush it for CPU use.
  *      Once it is called, CryptoCell HW does not require any further access to this buffer.
  *      \note If the data buffer was already unmapped by the secure OS prior to calling the CryptoCell runtime library,
- *      this API does not have to perform any unmapping operation, and the actual unmapping can be done by the secure OS
- *      outside the context of the CryptoCell runtime library.
+ * 		this API does not have to perform any unmapping operation, and the actual unmapping can be done by the secure OS
+ * 		outside the context of the CryptoCell runtime library.
  * @return A non-zero value in case of failure.
  */
 uint32_t CC_PalDmaBufferUnmap(uint8_t                       *pDataBuffer,   /*!< [in] The address of the buffer to unmap. */

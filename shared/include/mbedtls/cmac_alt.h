@@ -18,7 +18,7 @@
 
 
 /* hide internal implementation of the struct. Allocate enough space for it.*/
-#define MBEDTLS_CMAC_CONTEXT_SIZE_IN_WORDS          33
+#define MBEDTLS_CMAC_CONTEXT_SIZE_IN_WORDS			33
 
 
 #ifdef __cplusplus

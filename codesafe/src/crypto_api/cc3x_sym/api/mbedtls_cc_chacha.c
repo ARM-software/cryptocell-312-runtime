@@ -90,11 +90,11 @@ static CCError_t ChachaBlock(mbedtls_chacha_user_context    *pContextID,
 }
 
 CIMPORT_C CCError_t  mbedtls_chacha_init(mbedtls_chacha_user_context    *pContextID,
-        mbedtls_chacha_nonce     pNonce,
-                                               mbedtls_chacha_nonce_size_t        nonceSize,
-                                               mbedtls_chacha_key           pKey,
+		mbedtls_chacha_nonce     pNonce,
+											   mbedtls_chacha_nonce_size_t        nonceSize,
+											   mbedtls_chacha_key           pKey,
                                                uint32_t                    initialCounter,
-                                               mbedtls_chacha_encrypt_mode_t   EncryptDecryptFlag)
+											   mbedtls_chacha_encrypt_mode_t   EncryptDecryptFlag)
 {
         ChachaContext_t *chachaCtx = NULL;
 
@@ -127,10 +127,10 @@ CIMPORT_C CCError_t  mbedtls_chacha_init(mbedtls_chacha_user_context    *pContex
 
         /* check the nonce size */
         if (nonceSize == CC_CHACHA_Nonce64BitSize) {
-        nonceSizeBytes = 8;
-    } else if (nonceSize == CC_CHACHA_Nonce96BitSize) {
-        nonceSizeBytes = CC_CHACHA_NONCE_MAX_SIZE_IN_BYTES;
-    } else {
+		nonceSizeBytes = 8;
+	} else if (nonceSize == CC_CHACHA_Nonce96BitSize) {
+		nonceSizeBytes = CC_CHACHA_NONCE_MAX_SIZE_IN_BYTES;
+	} else {
                 return  CC_CHACHA_INVALID_NONCE_ERROR;
         }
 
@@ -164,8 +164,8 @@ CIMPORT_C CCError_t  mbedtls_chacha_init(mbedtls_chacha_user_context    *pContex
 }
 
 CIMPORT_C CCError_t  mbedtls_chacha_block(mbedtls_chacha_user_context    *pContextID,
-                                         uint8_t                     *pDataIn,
-                                         size_t                      dataInSize,
+                                         uint8_t                     *pDataIn,     
+                                         size_t                      dataInSize,     
                                          uint8_t                     *pDataOut )
 {
         if ((dataInSize % CHACHA_BLOCK_SIZE_BYTES) != 0) {
@@ -208,12 +208,12 @@ CIMPORT_C CCError_t  mbedtls_chacha(mbedtls_chacha_nonce       pNonce,
                                    mbedtls_chacha_nonce_size_t          nonceSize,
                                    mbedtls_chacha_key             pKey,
                                    uint32_t                      initialCounter,
-                                   mbedtls_chacha_encrypt_mode_t     encryptDecryptFlag,
-                                   uint8_t                       *pDataIn,
-                                   size_t                        dataInSize,
+								   mbedtls_chacha_encrypt_mode_t     encryptDecryptFlag,
+                                   uint8_t                       *pDataIn,        
+                                   size_t                        dataInSize,         
                                    uint8_t                       *pDataOut )
 {
-    mbedtls_chacha_user_context UserContext;
+	mbedtls_chacha_user_context UserContext;
     CCError_t Error = CC_OK;
 
 
@@ -224,12 +224,12 @@ CIMPORT_C CCError_t  mbedtls_chacha(mbedtls_chacha_nonce       pNonce,
 
     /* limit the input size. in IoT no reason for such a big size */
     if ( dataInSize > CC_MAX_UINT32_VAL ) {
-        return CC_CHACHA_DATA_IN_SIZE_ILLEGAL;
+	    return CC_CHACHA_DATA_IN_SIZE_ILLEGAL;
     }
 
     /* Size zero is valid - do nothing and return with CC_OK */
     if (dataInSize == 0) {
-        return CC_OK;
+	    return CC_OK;
     }
 
     Error = mbedtls_chacha_init(&UserContext, pNonce, nonceSize, pKey, initialCounter, encryptDecryptFlag);

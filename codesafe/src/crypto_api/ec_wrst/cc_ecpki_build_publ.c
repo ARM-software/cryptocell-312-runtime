@@ -30,8 +30,8 @@
 /************************ Public Functions ******************************/
 
 CEXPORT_C CCError_t CC_EcpkiPublKeyBuildAndCheck(
-                                            const CCEcpkiDomain_t   *pDomain,           /*in*/
-                                            uint8_t                     *pPubKeyIn,         /*in*/
+                                            const CCEcpkiDomain_t   *pDomain,           /*in*/                                
+                                            uint8_t                     *pPubKeyIn,         /*in*/                                                                        
                                             size_t                      publKeySizeInBytes, /*in*/
                                             ECPublKeyCheckMode_t        checkMode,          /*in*/
                                             CCEcpkiUserPublKey_t    *pUserPublKey,       /*out*/
@@ -43,12 +43,12 @@ CEXPORT_C CCError_t CC_EcpkiPublKeyBuildAndCheck(
         /* the private key structure pointer */
         CCEcpkiPublKey_t *pPublKey;
         /* EC modulus size in bytes*/
-        uint32_t  modSizeInBytes, modSizeInWords;
+        uint32_t  modSizeInBytes, modSizeInWords; 
         /* Point control pc pc and pc1 = pc&6*/
         uint32_t  pc, pc1;
         /* the err return code identifier */
-        CCError_t err = CC_OK;
-        CCCommonCmpCounter_t cmp;
+        CCError_t err = CC_OK; 
+        CCCommonCmpCounter_t cmp; 
 
         /* FUNCTION LOGIC */
         CHECK_AND_RETURN_ERR_UPON_FIPS_ERROR();
@@ -112,29 +112,29 @@ CEXPORT_C CCError_t CC_EcpkiPublKeyBuildAndCheck(
                 goto End;
         }
 
-    /* check public key X value */
-    cmp = CC_CommonCmpLsWordsUnsignedCounters(pPublKey->x, modSizeInWords,
-                             pDomain->ecP, modSizeInWords);
-    if(cmp != CC_COMMON_CmpCounter2GreaterThenCounter1) {
-        return CC_ECPKI_BUILD_KEY_INVALID_PUBL_KEY_DATA_ERROR;
-    }
+	/* check public key X value */	
+	cmp = CC_CommonCmpLsWordsUnsignedCounters(pPublKey->x, modSizeInWords, 
+						     pDomain->ecP, modSizeInWords);
+	if(cmp != CC_COMMON_CmpCounter2GreaterThenCounter1) {
+		return CC_ECPKI_BUILD_KEY_INVALID_PUBL_KEY_DATA_ERROR;
+	}
 
         if (pc1 == CC_EC_PointUncompressed || pc1 == CC_EC_PointHybrid) {
                 /*  PC1 = 4 or PC1 = 6 */
                 err = CC_CommonConvertMsbLsbBytesToLswMswWords(
-                                                                 pPublKey->y, sizeof(pPublKey->y),
+                                                                 pPublKey->y, sizeof(pPublKey->y), 
                                                                  pPubKeyIn + 1 + modSizeInBytes, modSizeInBytes);
                 if (err != CC_OK) {
                         err = CC_ECPKI_BUILD_KEY_INVALID_PUBL_KEY_DATA_ERROR;
                         goto End;
                 }
 
-        /* check public key Y value */
-        cmp = CC_CommonCmpLsWordsUnsignedCounters(pPublKey->y, modSizeInWords,
-                              pDomain->ecP, modSizeInWords);
-        if(cmp != CC_COMMON_CmpCounter2GreaterThenCounter1) {
-            return CC_ECPKI_BUILD_KEY_INVALID_PUBL_KEY_DATA_ERROR;
-        }
+		/* check public key Y value */
+		cmp = CC_CommonCmpLsWordsUnsignedCounters(pPublKey->y, modSizeInWords, 
+							  pDomain->ecP, modSizeInWords);
+		if(cmp != CC_COMMON_CmpCounter2GreaterThenCounter1) {
+			return CC_ECPKI_BUILD_KEY_INVALID_PUBL_KEY_DATA_ERROR;
+		}
 
         }
 
@@ -164,14 +164,14 @@ CEXPORT_C CCError_t CC_EcpkiPublKeyBuildAndCheck(
         /* ................ set the private key validation tag ................... */
         pUserPublKey->valid_tag = CC_ECPKI_PUBL_KEY_VALIDATION_TAG;
 
-        End:
+        End:    
         /* if the created structure is not valid - clear it */
         if (err != CC_OK) {
-                CC_PalMemSetZero(pUserPublKey, sizeof(CCEcpkiUserPublKey_t));
+                CC_PalMemSetZero(pUserPublKey, sizeof(CCEcpkiUserPublKey_t)); 
         }
-    if (tempBuff != NULL) {
-        CC_PalMemSetZero(tempBuff, sizeof(CCEcpkiBuildTempData_t));
-    }
+	if (tempBuff != NULL) {
+		CC_PalMemSetZero(tempBuff, sizeof(CCEcpkiBuildTempData_t)); 
+	}
 
         return err;
 
@@ -195,29 +195,29 @@ CEXPORT_C CCError_t CC_EcpkiPublKeyBuildAndCheck(
 
                  NOTE: - At this stage supported only uncompressed point form,
                        - Size of output X and Y coordinates is equal to ModSizeInBytes.
-
-  @param[in]  pUserPublKey -   A pointer to the public key structure initialized by CC.
+    
+  @param[in]  pUserPublKey -   A pointer to the public key structure initialized by CC. 
   @param[in]  compression  -   An enumerator parameter, defines point compression.
-  @param[out] pExportPublKey - A pointer to the buffer for export the public key bytes
-                       array in big endian order of bytes. Size of buffer must be
-                       not less than 2*ModSiseInBytes+1 bytes.
-  @param[in/out] pPublKeySizeBytes - A pointer to size of the user passed
+  @param[out] pExportPublKey - A pointer to the buffer for export the public key bytes  
+                       array in big endian order of bytes. Size of buffer must be 
+                       not less than 2*ModSiseInBytes+1 bytes.   
+  @param[in/out] pPublKeySizeBytes - A pointer to size of the user passed 
                        public key buffer (in) and the actual size of exported
                        public key (out).
 
   @return CCError_t - CC_OK,
-                        CC_ECPKI_EXPORT_PUBL_KEY_INVALID_USER_PUBL_KEY_PTR_ERROR
-                        CC_ECPKI_EXPORT_PUBL_KEY_ILLEGAL_COMPRESSION_MODE_ERROR
-                        CC_ECPKI_EXPORT_PUBL_KEY_INVALID_EXTERN_PUBL_KEY_PTR_ERROR
-                        CC_ECPKI_EXPORT_PUBL_KEY_INVALID_PUBL_KEY_SIZE_PTR_ERROR
-                        CC_ECPKI_EXPORT_PUBL_KEY_INVALID_PUBL_KEY_SIZE_ERROR
-                        CC_ECPKI_EXPORT_PUBL_KEY_ILLEGAL_DOMAIN_ID_ERROR
+                        CC_ECPKI_EXPORT_PUBL_KEY_INVALID_USER_PUBL_KEY_PTR_ERROR      
+                        CC_ECPKI_EXPORT_PUBL_KEY_ILLEGAL_COMPRESSION_MODE_ERROR       
+                        CC_ECPKI_EXPORT_PUBL_KEY_INVALID_EXTERN_PUBL_KEY_PTR_ERROR    
+                        CC_ECPKI_EXPORT_PUBL_KEY_INVALID_PUBL_KEY_SIZE_PTR_ERROR      
+                        CC_ECPKI_EXPORT_PUBL_KEY_INVALID_PUBL_KEY_SIZE_ERROR          
+                        CC_ECPKI_EXPORT_PUBL_KEY_ILLEGAL_DOMAIN_ID_ERROR  
 */
 CEXPORT_C CCError_t CC_EcpkiPubKeyExport(
                                               CCEcpkiUserPublKey_t      *pUserPublKey,       /*in*/
                                               CCEcpkiPointCompression_t  compression,        /*in*/
                                               uint8_t                       *pExportPublKey,     /*in*/
-                                              size_t                        *pPublKeySizeBytes   /*in/out*/)
+                                              size_t                        *pPublKeySizeBytes   /*in/out*/) 
 {
         /*-------------------- FUNCTION DECLARATIONS ------------------------*/
 
@@ -225,11 +225,11 @@ CEXPORT_C CCError_t CC_EcpkiPubKeyExport(
         CCEcpkiPublKey_t *publKey;
 
         /* EC modulus size in words and in bytes*/
-        uint32_t   modSizeInBytes, modSizeInWords;
+        uint32_t   modSizeInBytes, modSizeInWords; 
         uint8_t    yBit;
 
         /* the err return code identifier */
-        CCError_t err = CC_OK;
+        CCError_t err = CC_OK; 
 
         /*............. Checking input parameters   ..............................*/
         CHECK_AND_RETURN_ERR_UPON_FIPS_ERROR();
@@ -252,7 +252,7 @@ CEXPORT_C CCError_t CC_EcpkiPubKeyExport(
 
         /*   FUNCTION LOGIC  */
 
-        publKey = (CCEcpkiPublKey_t *)((void*)pUserPublKey->PublKeyDbBuff);
+        publKey = (CCEcpkiPublKey_t *)((void*)pUserPublKey->PublKeyDbBuff); 
 
         /* EC modulus size */
         modSizeInBytes = CALC_FULL_BYTES(publKey->domain.modSizeInBits);
@@ -303,7 +303,7 @@ CEXPORT_C CCError_t CC_EcpkiPubKeyExport(
                 }
                 err = CC_CommonConvertLswMswWordsToMsbLsbBytes(
                                                                  pExportPublKey + 1 + modSizeInBytes, 4*((modSizeInBytes+3)/4),
-                                                                 publKey->y, modSizeInBytes );
+                                                                 publKey->y, modSizeInBytes ); 
                 if (err != CC_OK) {
                         err = CC_ECPKI_EXPORT_PUBL_KEY_INVALID_PUBL_KEY_DATA_ERROR;
                         goto End;
@@ -315,10 +315,10 @@ CEXPORT_C CCError_t CC_EcpkiPubKeyExport(
 
         default:
                 return CC_ECPKI_EXPORT_PUBL_KEY_ILLEGAL_COMPRESSION_MODE_ERROR;
-        }
+        }   
         End:
         if (err != CC_OK) {
-                CC_PalMemSetZero(pExportPublKey, *pPublKeySizeBytes);
+                CC_PalMemSetZero(pExportPublKey, *pPublKeySizeBytes); 
                 *pPublKeySizeBytes = 0;
         }
         return err;

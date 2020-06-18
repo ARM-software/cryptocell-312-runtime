@@ -30,26 +30,26 @@ bool PkiIsModSquareRootExists(void);
 void PkiClearAllPka(void);
 
 void PkiConditionalSecureSwapUint32(uint32_t *x,
-                    uint32_t *y,
-                    uint32_t swp);
+				    uint32_t *y,
+				    uint32_t swp);
 
 CCError_t  PkiCalcNp(uint32_t *pNp,
-            uint32_t *pN,
-            uint32_t  sizeNbits);
+			uint32_t *pN,
+			uint32_t  sizeNbits);
 
 
 CCError_t  PkiLongNumDiv(uint32_t *pNumA,
-               uint32_t numASizeInWords,
-               uint32_t *pNumB,
-               uint32_t numBSizeInWords,
-               uint32_t *pModRes,
-               uint32_t *pDivRes);
+			   uint32_t numASizeInWords,
+			   uint32_t *pNumB,
+			   uint32_t numBSizeInWords,
+			   uint32_t *pModRes,
+			   uint32_t *pDivRes);
 
 
 CCError_t PkiLongNumMul(uint32_t *pNumA ,
-              uint32_t  ASizeInBits,
-              uint32_t *pNumB ,
-              uint32_t *pRes);
+			  uint32_t  ASizeInBits,
+			  uint32_t *pNumB ,
+			  uint32_t *pRes);
 
 /*!< get next two bits of scalar*/
 uint32_t PkiGetNextTwoMsBits(uint32_t *pScalar, uint32_t *pWord, int32_t i);
@@ -74,10 +74,10 @@ bool PkiAreBuffersEqual(const void *buff1, const void *buff2, size_t sizeInBytes
  * @return  no return value
  */
 void PkaCopyBe8DataIntoPkaReg(uint32_t  dstReg,       /* [out] virtual pointer to destination PKA register. */
-                 uint32_t lenId,          /* [in] PKA register length ID.*/
-                 const uint8_t *pSrc,     /* [in] pointer to source buffer. */
-                 uint32_t dataSizeBytes,  /* [in] size of the data in bytes */
-                 uint32_t *pTemp);        /* [in] pointer to the temp buffer of size >= register size. */
+			     uint32_t lenId,          /* [in] PKA register length ID.*/
+			     const uint8_t *pSrc,     /* [in] pointer to source buffer. */
+			     uint32_t dataSizeBytes,  /* [in] size of the data in bytes */
+			     uint32_t *pTemp);        /* [in] pointer to the temp buffer of size >= register size. */
 
 /************************************************************************/
 /**
@@ -91,10 +91,10 @@ void PkaCopyBe8DataIntoPkaReg(uint32_t  dstReg,       /* [out] virtual pointer t
  * @return  no return value
  */
 void PkaCopyDataFromPkaRegToBe8Buff(
-            uint8_t  *pDst,      /* [out] pointer to the destination buffer of size >= sizeBytes. */
-            uint32_t  srcReg,    /* [in] virtual pointer to source PKA register. */
-            uint32_t  sizeBytes, /* [in] size of the data in PKA register in bytes */
-            uint32_t  *pTemp);   /* [in] pointer to the temp buffer of size (in bytes) >= sizeBytes. */
+			uint8_t  *pDst,      /* [out] pointer to the destination buffer of size >= sizeBytes. */
+			uint32_t  srcReg,    /* [in] virtual pointer to source PKA register. */
+			uint32_t  sizeBytes, /* [in] size of the data in PKA register in bytes */
+			uint32_t  *pTemp);   /* [in] pointer to the temp buffer of size (in bytes) >= sizeBytes. */
 
 
 /***********     PkiExecExpBe  function      **********************/

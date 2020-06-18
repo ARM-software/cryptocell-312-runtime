@@ -25,13 +25,13 @@ extern "C"
 #include "cc_pal_pm.h"
 
 /*! Get ARM Cerberus status. Return number of active registered CC operations */
-#define CC_STATUS_GET   CC_PalPowerSaveModeStatus()
+#define CC_STATUS_GET 	CC_PalPowerSaveModeStatus()
 
 /*! Notify ARM Cerberus is active. */
-#define CC_IS_WAKE  CC_PalPowerSaveModeSelect(CC_FALSE)
+#define CC_IS_WAKE 	CC_PalPowerSaveModeSelect(CC_FALSE)
 
 /*! Notify ARM Cerberus is idle. */
-#define CC_IS_IDLE  CC_PalPowerSaveModeSelect(CC_TRUE)
+#define CC_IS_IDLE 	CC_PalPowerSaveModeSelect(CC_TRUE)
 
 
 #ifdef __cplusplus

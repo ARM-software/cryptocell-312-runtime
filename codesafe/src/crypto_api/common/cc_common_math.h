@@ -20,7 +20,7 @@ extern "C"
 
 /************************ Macros *******************************/
 #ifndef IS_ALIGNED
-#define IS_ALIGNED(val, align)      \
+#define IS_ALIGNED(val, align)		\
 (((CCVirtAddr_t)(val) & ((align) - 1)) == 0)
 #endif
 /* converts size given in bits to size in 32-bit words, rounded up */
@@ -45,7 +45,7 @@ extern "C"
 uint32_t ii2; \
 for( ii2 = 0; ii2 < (SizeWords); ii2++ ) \
 { \
-    (Array)[ii2] = CC_COMMON_REVERSE32( (Array)[ii2] ); \
+	(Array)[ii2] = CC_COMMON_REVERSE32( (Array)[ii2] ); \
 } \
 }
 
@@ -61,7 +61,7 @@ for( ii2 = 0; ii2 < (SizeWords); ii2++ ) \
 { \
 uint32_t i; \
 for (i = 0; i < size_words; i++) { \
-    (out32_ptr)[i] = CC_COMMON_REVERSE32((in32_ptr)[i]); \
+	(out32_ptr)[i] = CC_COMMON_REVERSE32((in32_ptr)[i]); \
 } \
 }
 #else
@@ -69,9 +69,9 @@ for (i = 0; i < size_words; i++) { \
 { \
 uint32_t i; \
 if((in32_ptr) != (out32_ptr)) { \
-    for (i = 0; i < size_words; i++) { \
-        (out32_ptr)[i] = (in32_ptr)[i]; \
-    } \
+	for (i = 0; i < size_words; i++) { \
+		(out32_ptr)[i] = (in32_ptr)[i]; \
+	} \
 } \
 }
 #endif
@@ -92,15 +92,15 @@ Note: output is given by aligned down pointer and alignment of output data in bi
 if( outAlign != 0 ) \
 {  \
   (out32_ptr)[0]  = ((out32_ptr)[0] & (0xFFFFFFFF << (32-(outAlign))))      | \
-              CC_COMMON_REVERSE32((in32_ptr)[0]) >> (outAlign);   \
+		      CC_COMMON_REVERSE32((in32_ptr)[0]) >> (outAlign);   \
   (out32_ptr)[1]  = CC_COMMON_REVERSE32((in32_ptr)[0]) << (32-(outAlign)) | \
-              CC_COMMON_REVERSE32((in32_ptr)[1]) >> (outAlign);   \
+		      CC_COMMON_REVERSE32((in32_ptr)[1]) >> (outAlign);   \
   (out32_ptr)[2]  = CC_COMMON_REVERSE32((in32_ptr)[1]) << (32-(outAlign)) | \
-              CC_COMMON_REVERSE32((in32_ptr)[2]) >> (outAlign);   \
+		      CC_COMMON_REVERSE32((in32_ptr)[2]) >> (outAlign);   \
   (out32_ptr)[3]  = CC_COMMON_REVERSE32((in32_ptr)[2]) << (32-(outAlign)) | \
-              CC_COMMON_REVERSE32((in32_ptr)[3]) >> (outAlign);   \
+		      CC_COMMON_REVERSE32((in32_ptr)[3]) >> (outAlign);   \
   (out32_ptr)[4]  = ((out32_ptr)[4] & (0xFFFFFFFF >> (outAlign)))           | \
-              CC_COMMON_REVERSE32((in32_ptr)[3]) << (32-(outAlign)); \
+		      CC_COMMON_REVERSE32((in32_ptr)[3]) << (32-(outAlign)); \
 } \
 else  \
 { \
@@ -140,16 +140,16 @@ Note: input is given by aligned down pointer and alignment of input data in bits
 if( inAlign != 0 ) \
 {  \
   (out32_ptr)[0]  = CC_COMMON_REVERSE32( (in32_ptr)[0] << (inAlign) | (in32_ptr)[1] >> (32-(inAlign)) );  \
-      (out32_ptr)[1]  = CC_COMMON_REVERSE32( (in32_ptr)[1] << (inAlign) | (in32_ptr)[2] >> (32-(inAlign)) );  \
-      (out32_ptr)[2]  = CC_COMMON_REVERSE32( (in32_ptr)[2] << (inAlign) | (in32_ptr)[3] >> (32-(inAlign)) );  \
-      (out32_ptr)[3]  = CC_COMMON_REVERSE32( (in32_ptr)[3] << (inAlign) | (in32_ptr)[4] >> (32-(inAlign)) );  \
+	  (out32_ptr)[1]  = CC_COMMON_REVERSE32( (in32_ptr)[1] << (inAlign) | (in32_ptr)[2] >> (32-(inAlign)) );  \
+	  (out32_ptr)[2]  = CC_COMMON_REVERSE32( (in32_ptr)[2] << (inAlign) | (in32_ptr)[3] >> (32-(inAlign)) );  \
+	  (out32_ptr)[3]  = CC_COMMON_REVERSE32( (in32_ptr)[3] << (inAlign) | (in32_ptr)[4] >> (32-(inAlign)) );  \
 } \
 else  \
 {  \
-      (out32_ptr)[0]  = CC_COMMON_REVERSE32((in32_ptr)[0]); \
-      (out32_ptr)[1]  = CC_COMMON_REVERSE32((in32_ptr)[1]); \
-      (out32_ptr)[2]  = CC_COMMON_REVERSE32((in32_ptr)[2]); \
-      (out32_ptr)[3]  = CC_COMMON_REVERSE32((in32_ptr)[3]); \
+	  (out32_ptr)[0]  = CC_COMMON_REVERSE32((in32_ptr)[0]); \
+	  (out32_ptr)[1]  = CC_COMMON_REVERSE32((in32_ptr)[1]); \
+	  (out32_ptr)[2]  = CC_COMMON_REVERSE32((in32_ptr)[2]); \
+	  (out32_ptr)[3]  = CC_COMMON_REVERSE32((in32_ptr)[3]); \
 }
 
 #else  /* LITTLE_ENDIAN */
@@ -157,17 +157,17 @@ else  \
 #define  CC_COMMON_COPY_16BYTES_TO_WORDS( in32_ptr, inAlign, out32_ptr )  \
 if( inAlign != 0 ) \
 {  \
-      (out32_ptr)[0]  = (in32_ptr)[0] >> (inAlign) | (in32_ptr)[1] << (32-(inAlign));  \
-      (out32_ptr)[1]  = (in32_ptr)[1] >> (inAlign) | (in32_ptr)[2] << (32-(inAlign));  \
-      (out32_ptr)[2]  = (in32_ptr)[2] >> (inAlign) | (in32_ptr)[3] << (32-(inAlign));  \
-      (out32_ptr)[3]  = (in32_ptr)[3] >> (inAlign) | (in32_ptr)[4] << (32-(inAlign));  \
+	  (out32_ptr)[0]  = (in32_ptr)[0] >> (inAlign) | (in32_ptr)[1] << (32-(inAlign));  \
+	  (out32_ptr)[1]  = (in32_ptr)[1] >> (inAlign) | (in32_ptr)[2] << (32-(inAlign));  \
+	  (out32_ptr)[2]  = (in32_ptr)[2] >> (inAlign) | (in32_ptr)[3] << (32-(inAlign));  \
+	  (out32_ptr)[3]  = (in32_ptr)[3] >> (inAlign) | (in32_ptr)[4] << (32-(inAlign));  \
 }  \
 else  \
 {  \
-      (out32_ptr)[0]  = (in32_ptr)[0];  \
-      (out32_ptr)[1]  = (in32_ptr)[1];  \
-      (out32_ptr)[2]  = (in32_ptr)[2];  \
-      (out32_ptr)[3]  = (in32_ptr)[3];  \
+	  (out32_ptr)[0]  = (in32_ptr)[0];  \
+	  (out32_ptr)[1]  = (in32_ptr)[1];  \
+	  (out32_ptr)[2]  = (in32_ptr)[2];  \
+	  (out32_ptr)[3]  = (in32_ptr)[3];  \
 }
 #endif
 
@@ -176,11 +176,11 @@ else  \
 
 /* the counter comperation result enum */
 typedef enum {
-    CC_COMMON_CmpCounter1AndCounter2AreIdentical = 0,
-    CC_COMMON_CmpCounter1GreaterThenCounter2      = 1,
-    CC_COMMON_CmpCounter2GreaterThenCounter1      = 2,
+	CC_COMMON_CmpCounter1AndCounter2AreIdentical = 0,
+	CC_COMMON_CmpCounter1GreaterThenCounter2      = 1,
+	CC_COMMON_CmpCounter2GreaterThenCounter1      = 2,
 
-    CC_COMMON_CmpCounterLast                    = 0x7FFFFFFF,
+	CC_COMMON_CmpCounterLast                    = 0x7FFFFFFF,
 
 } CCCommonCmpCounter_t;
 
@@ -212,8 +212,8 @@ typedef enum {
 */
 
 void CC_CommonIncMsbUnsignedCounter( uint32_t *CounterBuff_ptr ,
-                 uint32_t  Val,
-                 uint32_t  CounterSize);
+				 uint32_t  Val,
+				 uint32_t  CounterSize);
 
 
 /********************************************************************************
@@ -235,9 +235,9 @@ void CC_CommonIncMsbUnsignedCounter( uint32_t *CounterBuff_ptr ,
 */
 
 uint32_t CC_CommonIncLsbUnsignedCounter(
-                 uint32_t     *CounterBuff_ptr ,
-                 uint32_t      Val,
-                 uint32_t      CounterSize);
+				 uint32_t     *CounterBuff_ptr ,
+				 uint32_t      Val,
+				 uint32_t      CounterSize);
 
 
 /********************************************************************************
@@ -259,8 +259,8 @@ uint32_t CC_CommonIncLsbUnsignedCounter(
 */
 
 void CC_CommonDecrLsbUnsignedCounter( uint32_t     *CounterBuff_ptr,
-                   uint32_t      Val,
-                   uint32_t      CounterSizeInWords);
+				   uint32_t      Val,
+				   uint32_t      CounterSizeInWords);
 
 
 /**************************************************************
@@ -288,9 +288,9 @@ void CC_CommonDecrLsbUnsignedCounter( uint32_t     *CounterBuff_ptr,
 */
 
 CCCommonCmpCounter_t CC_CommonCmpMsbUnsignedCounters( const uint8_t  *CounterBuff1_ptr,
-                              uint32_t  Counter1Size,
-                              const uint8_t  *CounterBuff2_ptr,
-                              uint32_t Counter2Size );
+						      uint32_t  Counter1Size,
+						      const uint8_t  *CounterBuff2_ptr,
+						      uint32_t Counter2Size );
 
 
 
@@ -316,14 +316,14 @@ CCCommonCmpCounter_t CC_CommonCmpMsbUnsignedCounters( const uint8_t  *CounterBuf
 */
 
 CCCommonCmpCounter_t CC_CommonCmpLsbUnsignedCounters( const uint8_t  *CounterBuff1_ptr,
-                                 size_t  Counter1Size,
-                                 const uint8_t  *CounterBuff2_ptr,
-                                 size_t Counter2Size );
+							     size_t  Counter1Size,
+							     const uint8_t  *CounterBuff2_ptr,
+							     size_t Counter2Size );
 
 
 
 /**************************************************************************
-*           CC_CommonCmpLsWordsUnsignedCounters function          *
+*           CC_CommonCmpLsWordsUnsignedCounters function    	  *
 **************************************************************************/
 /**
 * @brief This function compares a value of 2 large counter presented in a word buffer.
@@ -341,9 +341,9 @@ CCCommonCmpCounter_t CC_CommonCmpLsbUnsignedCounters( const uint8_t  *CounterBuf
 *                                2 - counter 2 is larger.
 */
 CCCommonCmpCounter_t CC_CommonCmpLsWordsUnsignedCounters(const uint32_t  *CounterBuff1_ptr,
-                                uint32_t   Counter1SizeWords,
-                                const uint32_t  *CounterBuff2_ptr,
-                                uint32_t   Counter2SizeWords);
+								uint32_t   Counter1SizeWords,
+								const uint32_t  *CounterBuff2_ptr,
+								uint32_t   Counter2SizeWords);
 
 /********************************************************************************
 *
@@ -364,7 +364,7 @@ CCCommonCmpCounter_t CC_CommonCmpLsWordsUnsignedCounters(const uint32_t  *Counte
 */
 
 uint32_t CC_CommonGetBytesCounterEffectiveSizeInBits( const uint8_t  *CounterBuff_ptr,
-                             uint32_t  CounterSize );
+							 uint32_t  CounterSize );
 
 /*******************************************************************************
 *             CC_CommonGetWordsCounterEffectiveSizeInBits                  *
@@ -394,7 +394,7 @@ uint32_t CC_CommonGetBytesCounterEffectiveSizeInBits( const uint8_t  *CounterBuf
 *
 */
 uint32_t CC_CommonGetWordsCounterEffectiveSizeInBits( const uint32_t  *CounterBuff_ptr,
-                             uint32_t   CounterSizeWords);
+							 uint32_t   CounterSizeWords);
 
 /********************************************************************************
 * @brief This function divides a vector by 2 - in a secured way
@@ -481,10 +481,10 @@ void CC_CommonShiftLeftVector(uint8_t *VecBuff_ptr,uint32_t SizeInBytes, int8_t 
 */
 
 uint32_t  CC_CommonAdd2vectors (
-                           uint32_t *A_ptr,
-               uint32_t *B_ptr,
-               uint32_t SizeInWords,
-               uint32_t *Res_ptr );
+						   uint32_t *A_ptr,
+		       uint32_t *B_ptr,
+		       uint32_t SizeInWords,
+		       uint32_t *Res_ptr );
 
 
 /*******************************************************************************
@@ -504,9 +504,9 @@ uint32_t  CC_CommonAdd2vectors (
 */
 
 uint32_t CC_CommonSubtractUintArrays(const uint32_t *A_ptr,
-                  uint32_t *B_ptr,
-                  uint32_t  SizeInWords,
-                  uint32_t *Res_ptr );
+				  uint32_t *B_ptr,
+				  uint32_t  SizeInWords,
+				  uint32_t *Res_ptr );
 
 /*******************************************************************************
 *                      CC_CommonAddTwoLsbUint8Vectors                      *
@@ -524,10 +524,10 @@ uint32_t CC_CommonSubtractUintArrays(const uint32_t *A_ptr,
 */
 
 uint32_t CC_CommonAddTwoLsbUint8Vectors(
-                  uint8_t  *A_ptr,
-                  uint8_t  *B_ptr,
-                  uint32_t  VectSizeInBytes,
-                  uint8_t  *Res_ptr );
+				  uint8_t  *A_ptr,
+				  uint8_t  *B_ptr,
+				  uint32_t  VectSizeInBytes,
+				  uint8_t  *Res_ptr );
 
 
 /*******************************************************************************
@@ -548,11 +548,11 @@ uint32_t CC_CommonAddTwoLsbUint8Vectors(
 * @return  Borrow from high byte of vector A.
 */
 uint8_t CC_CommonSubtractMSBUint8Arrays(
-                  uint8_t  *A_ptr,
-                  uint32_t  sizeA,
-                  uint8_t  *B_ptr,
-                  uint32_t  sizeB,
-                  uint8_t  *Res_ptr );
+				  uint8_t  *A_ptr,
+				  uint32_t  sizeA,
+				  uint8_t  *B_ptr,
+				  uint32_t  sizeB,
+				  uint8_t  *Res_ptr );
 
 
 

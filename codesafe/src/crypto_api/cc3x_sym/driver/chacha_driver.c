@@ -26,7 +26,7 @@ extern CC_PalMutex CCSymCryptoMutex;
 #define CHACHA_CONTROL_REG_USE_IV_96  (1 << DX_CHACHA_CONTROL_REG_USE_IV_96BIT_BIT_SHIFT)
 
 /******************************************************************************
-*               PRIVATE FUNCTIONS
+*				PRIVATE FUNCTIONS
 ******************************************************************************/
 
 static drvError_t InitChacha(ChachaContext_t *chachaCtx)
@@ -39,13 +39,13 @@ static drvError_t InitChacha(ChachaContext_t *chachaCtx)
     }
 
     /* verify chacha valid input addr type */
-    if ( (chachaCtx->inputDataAddrType != SRAM_ADDR) &&
+    if ( (chachaCtx->inputDataAddrType != SRAM_ADDR) && 
          (chachaCtx->inputDataAddrType != DLLI_ADDR) ) {
         return CHACHA_DRV_ILLEGAL_INPUT_ADDR_MEM_ERROR;
     }
 
     /* verify chacha valid output addr type */
-    if ( (chachaCtx->outputDataAddrType != SRAM_ADDR) &&
+    if ( (chachaCtx->outputDataAddrType != SRAM_ADDR) && 
          (chachaCtx->outputDataAddrType != DLLI_ADDR) ) {
         return CHACHA_DRV_ILLEGAL_OUTPUT_ADDR_MEM_ERROR;
     }
@@ -58,9 +58,9 @@ static drvError_t InitChacha(ChachaContext_t *chachaCtx)
 
     /* mask dma interrupts which are not required */
     irrVal = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, HOST_IMR));
-    CC_REG_FLD_SET(HOST_RGF, HOST_IMR, SRAM_TO_DIN_MASK, irrVal, 1);
-    CC_REG_FLD_SET(HOST_RGF, HOST_IMR, DOUT_TO_SRAM_MASK, irrVal, 1);
-    CC_REG_FLD_SET(HOST_RGF, HOST_IMR, MEM_TO_DIN_MASK, irrVal, 1);
+    CC_REG_FLD_SET(HOST_RGF, HOST_IMR, SRAM_TO_DIN_MASK, irrVal, 1);             
+    CC_REG_FLD_SET(HOST_RGF, HOST_IMR, DOUT_TO_SRAM_MASK, irrVal, 1);              
+    CC_REG_FLD_SET(HOST_RGF, HOST_IMR, MEM_TO_DIN_MASK, irrVal, 1);              
     CC_REG_FLD_SET(HOST_RGF, HOST_IMR, DOUT_TO_MEM_MASK, irrVal, 1);
     CC_REG_FLD_SET(HOST_RGF, HOST_IMR, SYM_DMA_COMPLETED_MASK, irrVal, 0);
     CC_HalMaskInterrupt(irrVal);
@@ -141,7 +141,7 @@ static drvError_t LoadChachaKey(ChachaContext_t *chachaCtx)
 }
 
 /******************************************************************************
-*               PUBLIC FUNCTIONS
+*				PUBLIC FUNCTIONS
 ******************************************************************************/
 drvError_t ProcessChacha(ChachaContext_t *chachaCtx, CCBuffInfo_t *pInputBuffInfo, CCBuffInfo_t *pOutputBuffInfo, uint32_t inDataSize)
 {
@@ -202,7 +202,7 @@ drvError_t ProcessChacha(ChachaContext_t *chachaCtx, CCBuffInfo_t *pInputBuffInf
     if (chachaCtx->nonceSize == NONCE_SIZE_96) {
         chachaCtrl |= CHACHA_CONTROL_REG_USE_IV_96;
     }
-
+	
     CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, CHACHA_CONTROL_REG), chachaCtrl);
 
     inputDataAddr = pInputBuffInfo->dataBuffAddr;
@@ -236,7 +236,7 @@ drvError_t ProcessChacha(ChachaContext_t *chachaCtx, CCBuffInfo_t *pInputBuffInf
     CC_REG_FLD_SET(HOST_RGF, HOST_IRR, SYM_DMA_COMPLETED, irrVal, 1);
     drvRc = CC_HalWaitInterrupt(irrVal);
     if (drvRc != CHACHA_DRV_OK) {
-        goto ProcessExit;
+	    goto ProcessExit;
     }
     /* get machine state */
     drvRc = StoreChachaState(chachaCtx);

@@ -32,15 +32,15 @@ extern CC_PalMutex CCApbFilteringRegMutex;
 
 #ifdef DX_PLAT_ZYNQ7000
 /* Zynq EVBs have 1GB and we reserve the memory at offset 768M */
-#define PAL_WORKSPACE_MEM_BASE_ADDR     0x34000000
+#define PAL_WORKSPACE_MEM_BASE_ADDR		0x34000000
 #elif defined PLAT_VIRTEX5
 /* Virtex5 platforms (PPC) have 512MB and we reserve the memory at offset 256M */
-#define PAL_WORKSPACE_MEM_BASE_ADDR     0x10000000
+#define PAL_WORKSPACE_MEM_BASE_ADDR		0x10000000
 #elif defined DX_PLAT_JUNO
 /* Juno platforms (AARCH64)  */
-#define PAL_WORKSPACE_MEM_BASE_ADDR     0x8A0000000
+#define PAL_WORKSPACE_MEM_BASE_ADDR		0x8A0000000
 #endif
-#define PAL_WORKSPACE_MEM_SIZE      0x1000000
+#define PAL_WORKSPACE_MEM_SIZE		0x1000000
 
 /**
  * @brief   PAL layer entry point.

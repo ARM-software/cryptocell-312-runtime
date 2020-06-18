@@ -15,7 +15,7 @@ CIMPORT_C CCError_t  mbedtls_poly(
         mbedtls_poly_key         pKey,
         uint8_t                *pDataIn,
         size_t                  dataInSize,
-        mbedtls_poly_mac        macRes)
+        mbedtls_poly_mac	    macRes)
 
 {
     CCError_t rc;

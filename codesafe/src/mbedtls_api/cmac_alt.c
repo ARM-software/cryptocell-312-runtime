@@ -57,15 +57,15 @@
  * \brief        CMAC control context structure
  */
 typedef struct {
-    /** Internal state of the CMAC algorithm  */
-    unsigned char   state[MBEDTLS_AES_BLOCK_SIZE];
+	/** Internal state of the CMAC algorithm  */
+	unsigned char	state[MBEDTLS_AES_BLOCK_SIZE];
 
-    /** Unprocessed data - either data that was not block aligned and is still
-     *  pending to be processed, or the final block */
-    uint8_t         unprocessed_block[MBEDTLS_AES_BLOCK_SIZE];
+	/** Unprocessed data - either data that was not block aligned and is still
+	 *  pending to be processed, or the final block */
+	uint8_t			unprocessed_block[MBEDTLS_AES_BLOCK_SIZE];
 
-    /** Length of data pending to be processed */
-    uint32_t        unprocessed_len;
+	/** Length of data pending to be processed */
+	uint32_t		unprocessed_len;
 }
 mbedtls_cmac_control_context_t;
 
@@ -74,8 +74,8 @@ mbedtls_cmac_control_context_t;
  * \brief        CMAC private context structure
  */
 typedef struct {
-    AesContext_t                    aes_ctx;
-    mbedtls_cmac_control_context_t  cmac_ctrl_ctx;
+	AesContext_t 					aes_ctx;
+	mbedtls_cmac_control_context_t	cmac_ctrl_ctx;
 }
 mbedtls_cmac_private_context_t;
 
@@ -84,67 +84,67 @@ mbedtls_cmac_private_context_t;
  */
 static int cmac_init( AesContext_t *ctx )
 {
-    if( ctx == NULL )
-    {
-        CC_PAL_LOG_ERR("NULL pointer exception\n");
-        return( MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA );
-    }
+	if( ctx == NULL )
+	{
+		CC_PAL_LOG_ERR("NULL pointer exception\n");
+		return( MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA );
+	}
 
-    mbedtls_zeroize_internal(ctx, sizeof(AesContext_t));
+	mbedtls_zeroize_internal(ctx, sizeof(AesContext_t));
 
-    ctx->mode               = CIPHER_CMAC;
-    ctx->padType            = CRYPTO_PADDING_NONE;
-    ctx->dir                = CRYPTO_DIRECTION_ENCRYPT;
-    ctx->inputDataAddrType  = DLLI_ADDR;
-    ctx->outputDataAddrType = DLLI_ADDR;
-    ctx->dataBlockType      = FIRST_BLOCK;
+	ctx->mode               = CIPHER_CMAC;
+	ctx->padType            = CRYPTO_PADDING_NONE;
+	ctx->dir                = CRYPTO_DIRECTION_ENCRYPT;
+	ctx->inputDataAddrType  = DLLI_ADDR;
+	ctx->outputDataAddrType = DLLI_ADDR;
+	ctx->dataBlockType      = FIRST_BLOCK;
 
-    return(0);
+	return(0);
 }
 
 static int cmac_setkey(AesContext_t *ctx,
-               const unsigned char *key,
-               unsigned int keybits)
+		       const unsigned char *key,
+		       unsigned int keybits)
 {
-    if (ctx == NULL || key == NULL) {
-        CC_PAL_LOG_ERR("Null pointer, ctx or key are NULL\n");
-        return MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA;
-    }
+	if (ctx == NULL || key == NULL)	{
+		CC_PAL_LOG_ERR("Null pointer, ctx or key are NULL\n");
+		return MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA;
+	}
 
-    switch (keybits) {
-        case 128:
-            ctx->keySizeId = KEY_SIZE_128_BIT;
-            break;
-        case 192:
-            ctx->keySizeId = KEY_SIZE_192_BIT;
-            break;
-        case 256:
-            ctx->keySizeId = KEY_SIZE_256_BIT;
-            break;
-        default:
-            return MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA;
-    }
+	switch (keybits) {
+		case 128:
+			ctx->keySizeId = KEY_SIZE_128_BIT;
+		    break;
+		case 192:
+			ctx->keySizeId = KEY_SIZE_192_BIT;
+		    break;
+		case 256:
+			ctx->keySizeId = KEY_SIZE_256_BIT;
+		    break;
+		default:
+		    return MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA;
+	}
 
-    /* update key information in the context */
-    ctx->cryptoKey = USER_KEY;
+	/* update key information in the context */
+	ctx->cryptoKey = USER_KEY;
 
-    /* Copy user key to context */
-    CC_PalMemCopy(ctx->keyBuf, key, (keybits/8));
+	/* Copy user key to context */
+	CC_PalMemCopy(ctx->keyBuf, key, (keybits/8));
 
-    return(0);
+	return(0);
 }
 
 //***************************************************************************************************//
 int mbedtls_cipher_cmac_starts( mbedtls_cipher_context_t *ctx, const unsigned char *key, size_t keybits )
 {
-    int retval;
-    mbedtls_cmac_context_t *cmac_ctx = NULL;
+	int retval;
+	mbedtls_cmac_context_t *cmac_ctx = NULL;
 
-    if( ctx == NULL )
-    {
-        CC_PAL_LOG_ERR("NULL pointer exception\n");
-        return( MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA );
-    }
+	if( ctx == NULL )
+	{
+		CC_PAL_LOG_ERR("NULL pointer exception\n");
+		return( MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA );
+	}
 
     /* Allocated and initialize in the cipher context memory for the CMAC context */
     cmac_ctx = mbedtls_calloc( 1, sizeof( mbedtls_cmac_private_context_t ) );
@@ -152,25 +152,25 @@ int mbedtls_cipher_cmac_starts( mbedtls_cipher_context_t *ctx, const unsigned ch
         return( MBEDTLS_ERR_CIPHER_ALLOC_FAILED );
     }
 
-    ctx->cmac_ctx = cmac_ctx;
-    mbedtls_zeroize_internal( ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.state,
-                            sizeof( ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.state ) );
+	ctx->cmac_ctx = cmac_ctx;
+	mbedtls_zeroize_internal( ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.state,
+							sizeof( ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.state ) );
 
-    /* Init */
+	/* Init */
     if( ( retval = cmac_init( &((mbedtls_cmac_private_context_t*)cmac_ctx)->aes_ctx ) ) != 0 )
     {
-       CC_PAL_LOG_ERR(" 'cmac_init' failed with return code %d\n", retval);
-       return( retval );
+	   CC_PAL_LOG_ERR(" 'cmac_init' failed with return code %d\n", retval);
+	   return( retval );
     }
 
     /* Set key */
-    if( ( retval = cmac_setkey( &((mbedtls_cmac_private_context_t*)cmac_ctx)->aes_ctx, key, keybits) ) != 0 )
-    {
-       CC_PAL_LOG_ERR(" 'cmac_setkey' failed with return code %d\n", retval);
-       return( retval );
-    }
+	if( ( retval = cmac_setkey( &((mbedtls_cmac_private_context_t*)cmac_ctx)->aes_ctx, key, keybits) ) != 0 )
+	{
+	   CC_PAL_LOG_ERR(" 'cmac_setkey' failed with return code %d\n", retval);
+	   return( retval );
+	}
 
-    return (0);
+	return (0);
 }
 
 int mbedtls_cipher_cmac_update( mbedtls_cipher_context_t *ctx, const unsigned char *input, size_t ilen )
@@ -190,25 +190,25 @@ int mbedtls_cipher_cmac_update( mbedtls_cipher_context_t *ctx, const unsigned ch
     }
 
     if( ctx == NULL || ctx->cipher_info == NULL || input == NULL ||
-        ctx->cmac_ctx == NULL )
+		ctx->cmac_ctx == NULL )
     {
-        return( MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA );
+		return( MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA );
     }
 
     cmac_ctx = ctx->cmac_ctx;
-    block_size = ctx->cipher_info->block_size;
+	block_size = ctx->cipher_info->block_size;
 
     /* Is there data still to process from the last call, that's greater in
-     * size than a block? */
-    if( (((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len > 0) &&
-        (ilen > (block_size - ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len)) )
-    {
-        CC_PalMemCopy( &((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_block[((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len],
-                input,
-                block_size - ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len );
+	 * size than a block? */
+	if( (((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len > 0) &&
+		(ilen > (block_size - ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len)) )
+	{
+	    CC_PalMemCopy( &((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_block[((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len],
+				input,
+				block_size - ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len );
 
-        ret = SetDataBuffersInfo((const uint8_t*)&((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_block,
-                                 block_size,
+		ret = SetDataBuffersInfo((const uint8_t*)&((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_block,
+		                         block_size,
                                  &inBuffInfo,
                                  NULL,
                                  0,
@@ -219,30 +219,30 @@ int mbedtls_cipher_cmac_update( mbedtls_cipher_context_t *ctx, const unsigned ch
              return MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA;
         }
 
-        ret = ProcessAesDrv(&((mbedtls_cmac_private_context_t*)cmac_ctx)->aes_ctx,
-                         &inBuffInfo,
-                         &outBuffInfo,
-                         block_size);
+		ret = ProcessAesDrv(&((mbedtls_cmac_private_context_t*)cmac_ctx)->aes_ctx,
+		                 &inBuffInfo,
+		                 &outBuffInfo,
+		                 block_size);
 
-        if (AES_DRV_OK != ret)
-        {
-            CC_PAL_LOG_ERR("ProcessAesDrv failed with return code %d\n", ret);
-            return MBEDTLS_ERR_CIPHER_AUTH_FAILED;
-        }
+		if (AES_DRV_OK != ret)
+		{
+			CC_PAL_LOG_ERR("ProcessAesDrv failed with return code %d\n", ret);
+			return MBEDTLS_ERR_CIPHER_AUTH_FAILED;
+		}
 
-        input += (block_size - ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len);
-        ilen  -= (block_size - ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len);
-        ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len = 0;
-    }
+		input += (block_size - ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len);
+		ilen  -= (block_size - ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len);
+		((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len = 0;
+	}
 
-    /* blocks_num is the number of blocks including any final partial block */
-    blocks_num = ( ilen + block_size - 1 ) / block_size;
-    if ( 1 < blocks_num )
-    {
-        main_chunk_in_bytes = (blocks_num - 1) * block_size;
+	/* blocks_num is the number of blocks including any final partial block */
+	blocks_num = ( ilen + block_size - 1 ) / block_size;
+	if ( 1 < blocks_num )
+	{
+		main_chunk_in_bytes = (blocks_num - 1) * block_size;
 
-        ret = SetDataBuffersInfo(input,
-                                 main_chunk_in_bytes,
+		ret = SetDataBuffersInfo(input,
+		                         main_chunk_in_bytes,
                                  &inBuffInfo,
                                  NULL,
                                  0,
@@ -253,7 +253,7 @@ int mbedtls_cipher_cmac_update( mbedtls_cipher_context_t *ctx, const unsigned ch
              return MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA;
         }
 
-        /* Process the input data, excluding any final partial or complete block */
+		/* Process the input data, excluding any final partial or complete block */
         ret = ProcessAesDrv(&((mbedtls_cmac_private_context_t*)cmac_ctx)->aes_ctx,
                          &inBuffInfo,
                          &outBuffInfo,
@@ -266,23 +266,23 @@ int mbedtls_cipher_cmac_update( mbedtls_cipher_context_t *ctx, const unsigned ch
 
         ilen  -= main_chunk_in_bytes;
         input += main_chunk_in_bytes;
-    }
+	}
 
-    /* If there is data left over that wasn't aligned to a block */
-    if( ilen > 0 )
-    {
-        CC_PalMemCopy( &((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_block[((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len],
-                input,
-                ilen );
-        ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len += ilen;
-    }
+	/* If there is data left over that wasn't aligned to a block */
+	if( ilen > 0 )
+	{
+	    CC_PalMemCopy( &((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_block[((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len],
+				input,
+				ilen );
+		((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len += ilen;
+	}
 
     return (0);
 }
 
 int mbedtls_cipher_cmac_finish( mbedtls_cipher_context_t *ctx, unsigned char *output )
 {
-    mbedtls_cmac_context_t *cmac_ctx = NULL;
+	mbedtls_cmac_context_t *cmac_ctx = NULL;
     drvError_t ret = 0;
     CCBuffInfo_t inBuffInfo;
     CCBuffInfo_t outBuffInfo;
@@ -307,10 +307,10 @@ int mbedtls_cipher_cmac_finish( mbedtls_cipher_context_t *ctx, unsigned char *ou
          return MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA;
     }
 
-    ret = FinishAesDrv(&((mbedtls_cmac_private_context_t*)cmac_ctx)->aes_ctx,
-                      &inBuffInfo,
-                      &outBuffInfo,
-                      (uint32_t)((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len);
+	ret = FinishAesDrv(&((mbedtls_cmac_private_context_t*)cmac_ctx)->aes_ctx,
+	                  &inBuffInfo,
+	                  &outBuffInfo,
+	                  (uint32_t)((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len);
 
     if (AES_DRV_OK != ret)
     {
@@ -319,7 +319,7 @@ int mbedtls_cipher_cmac_finish( mbedtls_cipher_context_t *ctx, unsigned char *ou
     }
 
     CC_PalMemCopy(output, ((mbedtls_cmac_private_context_t*)cmac_ctx)->aes_ctx.ivBuf, AES_IV_SIZE);
-
+    
     mbedtls_zeroize_internal( ctx->cmac_ctx, sizeof( mbedtls_cmac_private_context_t ) );
 
     return (0);
@@ -327,25 +327,25 @@ int mbedtls_cipher_cmac_finish( mbedtls_cipher_context_t *ctx, unsigned char *ou
 
 int mbedtls_cipher_cmac_reset( mbedtls_cipher_context_t *ctx )
 {
-    mbedtls_cmac_context_t* cmac_ctx = NULL;
+	mbedtls_cmac_context_t* cmac_ctx = NULL;
 
-    if( ctx == NULL || ctx->cipher_info == NULL || ctx->cmac_ctx == NULL )
-    {
-        return( MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA );
-    }
+	if( ctx == NULL || ctx->cipher_info == NULL || ctx->cmac_ctx == NULL )
+	{
+		return( MBEDTLS_ERR_CIPHER_BAD_INPUT_DATA );
+	}
 
-    cmac_ctx = ctx->cmac_ctx;
+	cmac_ctx = ctx->cmac_ctx;
 
-    /* Reset the internal state */
-    ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len = 0;
-    mbedtls_zeroize_internal( ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_block,
-                             sizeof( ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_block ) );
-    mbedtls_zeroize_internal( ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.state,
-                             sizeof( ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.state ) );
+	/* Reset the internal state */
+	((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_len = 0;
+	mbedtls_zeroize_internal( ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_block,
+					 	 	 sizeof( ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.unprocessed_block ) );
+	mbedtls_zeroize_internal( ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.state,
+					 	 	 sizeof( ((mbedtls_cmac_private_context_t*)cmac_ctx)->cmac_ctrl_ctx.state ) );
 
-    /* Zeroize the IV in the context */
-    mbedtls_zeroize_internal( ((mbedtls_cmac_private_context_t*)cmac_ctx)->aes_ctx.ivBuf,
-                                 sizeof( ((mbedtls_cmac_private_context_t*)cmac_ctx)->aes_ctx.ivBuf ) );
+	/* Zeroize the IV in the context */
+	mbedtls_zeroize_internal( ((mbedtls_cmac_private_context_t*)cmac_ctx)->aes_ctx.ivBuf,
+	                             sizeof( ((mbedtls_cmac_private_context_t*)cmac_ctx)->aes_ctx.ivBuf ) );
 
     return( 0 );
 }
@@ -382,8 +382,8 @@ int mbedtls_cipher_cmac( const mbedtls_cipher_info_t *cipher_info,
     ret = mbedtls_cipher_cmac_update( &ctx, input, ilen );
     if( ret != 0 )
     {
-        goto exit;
-    }
+		goto exit;
+	}
 
     ret = mbedtls_cipher_cmac_finish( &ctx, output );
 
@@ -430,7 +430,7 @@ int mbedtls_aes_cmac_prf_128( const unsigned char *key, size_t key_length,
                                output );
 
 exit:
-    mbedtls_zeroize_internal( int_key, sizeof( int_key ) );
+	mbedtls_zeroize_internal( int_key, sizeof( int_key ) );
 
     return( ret );
 }

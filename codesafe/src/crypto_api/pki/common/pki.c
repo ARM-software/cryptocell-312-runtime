@@ -32,34 +32,34 @@ uint32_t tempRes1[PKA_MAX_REGISTER_SIZE_IN_32BIT_WORDS];
 
 /***********    PkiCalcNp  function      **********************/
 /**
- * The function uses physical data pointers to calculate and output
- * the Barrett tag Np.
- *
+ * The function uses physical data pointers to calculate and output 
+ * the Barrett tag Np. 
+ *  
  *  For RSA it uses truncated sizes:
  *      Np = truncated(2^(3*A+3*X-1) / ceiling(n/(2^(N-2*A-2*X)));
  *  For ECC - full sizes of not truncated input arguments:
- *      Np = truncated(2^(N+A+X-1) / n);
- *
+ *  	Np = truncated(2^(N+A+X-1) / n);
+ *  
  * @author reuvenl (5/1/2014)
- *
+ *   
  * @return  CC_OK On success, otherwise indicates failure
- */
-CCError_t  PkiCalcNp(uint32_t *pNp, /*!< [out] The pointer to the Barrett tag Np buffer. If pNp = Null,
-                            the function not outputs calculated Np. */
-                        uint32_t *pN,       /*!< [out] The pointer to the modulus n. */
-                        uint32_t  sizeNbits)    /*!< [in] The exact size of the modulus. */
+ */           
+CCError_t  PkiCalcNp(uint32_t *pNp,	/*!< [out] The pointer to the Barrett tag Np buffer. If pNp = Null,  
+							the function not outputs calculated Np. */
+                        uint32_t *pN,		/*!< [out] The pointer to the modulus n. */
+                        uint32_t  sizeNbits)	/*!< [in] The exact size of the modulus. */
 {
         CCError_t err = 0;
         uint32_t  A = CC_PKA_WORD_SIZE_IN_BITS;
         uint32_t  X = PKA_EXTRA_BITS;
         uint32_t pkaReqRegs = 6;
-        int32_t wN, wNp;
+        int32_t wN, wNp; 
 
         /* usage of PKA registers */
         int8_t  rN = PKA_REG_N;
         int8_t  rNp = PKA_REG_NP;
         int8_t  rT2 = regTemps[2];
-        int8_t  rT4 = regTemps[4];
+        int8_t  rT4 = regTemps[4]; 
 
         /* Calc. sizes of modulus in words and reminder in bits */
         wN = CALC_FULL_32BIT_WORDS(sizeNbits);
@@ -87,16 +87,16 @@ End:
 
 /***********    PkiLongNumDiv   function      **********************/
 /**
- * @brief  This function performs division of big numbers, passed by physical pointers,
+ * @brief  This function performs division of big numbers, passed by physical pointers, 
  *              using the PKA.
  *              .
- *     Computes modRes = A mod B. divRes_ptr = floor(A/B)
+ *     Computes modRes = A mod B. divRes_ptr = floor(A/B) 
  *     Lengths: A[ALen], B[BLen], modRes[BLen], divRes[ALen].
  *     Assumes:  c > 0.
  *
  *     PKA registers using: A=>r2, B=>r3, divRes=>r4, modRes=>r2 (r2 is rewritten by remainder).
- *
- * Author: R.Levin
+ * 
+ * Author: R.Levin 
  *
  * Last Revision: 1.00.00
  *
@@ -104,7 +104,7 @@ End:
  *
  * Update History:
  * Rev 1.00.00, Date 4 Feb. 2008,
- *
+ * 
  */
 CCError_t  PkiLongNumDiv(uint32_t *pNumA,        /*!< [in] The pointer to numerator A vector. */
                            uint32_t numASizeInWords,  /*!< [in] Length of numerator A in words.*/
@@ -117,14 +117,14 @@ CCError_t  PkiLongNumDiv(uint32_t *pNumA,        /*!< [in] The pointer to numera
         uint32_t  opSizeWords;
         uint32_t status;
         uint32_t pkaReqRegs = 6;
-    int8_t  rT2 = regTemps[2];
-        int8_t  rT3 = regTemps[3];
-        int8_t  rT4 = regTemps[4];
+	int8_t  rT2 = regTemps[2];
+        int8_t  rT3 = regTemps[3]; 
+        int8_t  rT4 = regTemps[4]; 
 
 
         opSizeWords = CC_MAX(numASizeInWords, numBSizeInWords);
 
-        error = PkaInitAndMutexLock(CC_BITS_IN_32BIT_WORD*opSizeWords, &pkaReqRegs);
+        error = PkaInitAndMutexLock(CC_BITS_IN_32BIT_WORD*opSizeWords, &pkaReqRegs);  
         if (error != CC_OK) {
                 return error;
         }
@@ -138,11 +138,11 @@ CCError_t  PkiLongNumDiv(uint32_t *pNumA,        /*!< [in] The pointer to numera
         PkaCopyDataIntoPkaReg( rT3/*dstReg*/, LEN_ID_MAX_BITS/*LenID*/, pNumB/*src_ptr*/, numBSizeInWords);
 
         /* check, that divisor is not null, else return error */
-        PKA_ADD_IM( LEN_ID_N_PKA_REG_BITS/*LenID*/, rT4/*Res*/, rT3/*OpA*/, 0/*Imm OpB*/);
+        PKA_ADD_IM( LEN_ID_N_PKA_REG_BITS/*LenID*/, rT4/*Res*/, rT3/*OpA*/, 0/*Imm OpB*/); 
         PKA_GET_STATUS_ALU_OUT_ZERO(status);
         if (status == 1) {
                 error = PKA_DIVIDER_IS_NULL_ERROR;
-                goto End;
+                goto End;         
         }
 
         /* division in PKA: quotient: r4 = r2 / r3; remainder: r2 = r2 % r3        */
@@ -158,7 +158,7 @@ CCError_t  PkiLongNumDiv(uint32_t *pNumA,        /*!< [in] The pointer to numera
                 PkaCopyDataFromPkaReg(pModRes,  numBSizeInWords, rT2/*srcReg*/);
         }
 
-End:
+End:  
         PkaFinishAndMutexUnlock(pkaReqRegs);
 
         return error;
@@ -168,10 +168,10 @@ End:
 
 /***********     PkiLongNumMul  function     **********************/
 /**
- * @brief This function performs multiplication of big numbers, passed by physical
- *              pointers, using the PKA.
+ * @brief This function performs multiplication of big numbers, passed by physical  
+ *              pointers, using the PKA. 
  *
- *        The RMul operation is : (A * B)
+ *        The RMul operation is : (A * B) 
  *
  *        The function performs the following algorithm:
  *
@@ -186,14 +186,14 @@ CCError_t PkiLongNumMul(uint32_t *pNumA ,      /*!< [in] The pointer of A words 
         uint32_t  OpSizeInWords;
         uint32_t pkaReqRegs = 6;
         int8_t  rT2 = regTemps[2];
-        int8_t  rT3 = regTemps[3];
-        int8_t  rT4 = regTemps[4];
+        int8_t  rT3 = regTemps[3]; 
+        int8_t  rT4 = regTemps[4]; 
 
 #ifdef LLF_PKI_PKA_DEBUG
         /* check the operands size, used for RSA only */
         if (2*numASizeInBits > (CC_RSA_MAX_VALID_KEY_SIZE_VALUE_IN_BITS+CC_PKA_WORD_SIZE_IN_BITS)) {
                return PKA_ILLEGAL_OPERAND_LEN_ERROR;
-    }
+	}
 #endif
 
         /* set operation size in words */
@@ -201,10 +201,10 @@ CCError_t PkiLongNumMul(uint32_t *pNumA ,      /*!< [in] The pointer of A words 
                 OpSizeInWords = CALC_FULL_32BIT_WORDS(PKA_MIN_OPERATION_SIZE_BITS);
 
         else
-                OpSizeInWords = CALC_FULL_32BIT_WORDS(2*numASizeInBits);
+                OpSizeInWords = CALC_FULL_32BIT_WORDS(2*numASizeInBits);     
 
 
-        error = PkaInitAndMutexLock(CC_BITS_IN_32BIT_WORD*OpSizeInWords, &pkaReqRegs);
+        error = PkaInitAndMutexLock(CC_BITS_IN_32BIT_WORD*OpSizeInWords, &pkaReqRegs);  
         if (error != CC_OK) {
                 return error;
         }
@@ -212,15 +212,15 @@ CCError_t PkiLongNumMul(uint32_t *pNumA ,      /*!< [in] The pointer of A words 
         /* copying all needed data into PKA memory before starting PKA operations */
         /* A=>r2, B=>r3,                                                          */
         /* copy A into PKA register: A=>r2 */
-        PkaCopyDataIntoPkaReg(rT2/*dstReg*/, LEN_ID_MAX_BITS/*LenID*/, pNumA/*src_ptr*/,
+        PkaCopyDataIntoPkaReg(rT2/*dstReg*/, LEN_ID_MAX_BITS/*LenID*/, pNumA/*src_ptr*/, 
                                CALC_FULL_32BIT_WORDS(numASizeInBits));
 
         /* copy B into PKA register: B=>r2 */
-        PkaCopyDataIntoPkaReg(rT3/*dstReg*/, LEN_ID_MAX_BITS/*LenID*/, pNumB/*src_ptr*/,
+        PkaCopyDataIntoPkaReg(rT3/*dstReg*/, LEN_ID_MAX_BITS/*LenID*/, pNumB/*src_ptr*/, 
                                CALC_FULL_32BIT_WORDS(numASizeInBits));
 
 
-        /* multiply in PKA:  r4 = r2 * r3; */
+        /* multiply in PKA:  r4 = r2 * r3; */ 
         PKA_MUL_LOW(LEN_ID_N_PKA_REG_BITS/*lenId*/, rT4/*Res*/, rT2/*OpA*/, rT3/*OpB*/);
 
         /* output the results */
@@ -235,16 +235,16 @@ CCError_t PkiLongNumMul(uint32_t *pNumA ,      /*!< [in] The pointer of A words 
 
 /***********     PkiConditionalSecureSwapUint32  function     **********************/
 /**
- * @brief The function performs conditional swapping of two values in secure
- *  mode
+ * @brief The function performs conditional swapping of two values in secure 
+ * 	mode 
  *
- *  if(swp == 1) {tmp = *x; *x = *y; *y = tmp;}
+ * 	if(swp == 1) {tmp = *x; *x = *y; *y = tmp;} 
  *
- * @return None
+ * @return None 
  */
 void PkiConditionalSecureSwapUint32(uint32_t *x,    /*!< [in/out] the pointer to x-variable. */
-                    uint32_t *y,    /*!< [in/out] the pointer to y-variable. */
-                    uint32_t swp)   /*!< [in] swapping condition [0,1]. */
+				    uint32_t *y,    /*!< [in/out] the pointer to y-variable. */
+				    uint32_t swp)   /*!< [in] swapping condition [0,1]. */
 {
         int32_t tmpX = *x;
         int32_t tmpY = *y;
@@ -259,7 +259,7 @@ void PkiConditionalSecureSwapUint32(uint32_t *x,    /*!< [in/out] the pointer to
 
 /***********     PkiClearAllPka  function     **********************/
 /**
- * @brief This function clears the PKA memory.
+ * @brief This function clears the PKA memory. 
  *
  * @return  None
  */
@@ -269,7 +269,7 @@ void PkiClearAllPka(void)
         uint32_t regSizeInBits = ((CC_PKA_SRAM_SIZE_IN_KBYTES*CC_1K_SIZE_IN_BYTES*CC_BITS_IN_BYTE)/PKA_MAX_COUNT_OF_PHYS_MEM_REGS)-CC_PKA_WORD_SIZE_IN_BITS;
 
         if (PkaInitAndMutexLock(regSizeInBits, &pkaRegCount) != CC_SUCCESS) {
-                return;
+                return;         
         }
 
         PkaFinishAndMutexUnlock(pkaRegCount);
@@ -277,12 +277,12 @@ void PkiClearAllPka(void)
 
 }
 
-/*!< get next two bits of scalar*/
-uint32_t PkiGetNextTwoMsBits(uint32_t *pScalar, uint32_t *pWord, int32_t i)
+/*!< get next two bits of scalar*/ 
+uint32_t PkiGetNextTwoMsBits(uint32_t *pScalar, uint32_t *pWord, int32_t i) 
 {
         uint32_t twoBits = 0;
-        //        twoBits = (*pWord >> (i & (CC_BITS_IN_32BIT_WORD - 1))) & 3;
-        twoBits = (*pWord >> (CC_BITS_IN_32BIT_WORD - 2));
+        //        twoBits = (*pWord >> (i & (CC_BITS_IN_32BIT_WORD - 1))) & 3; 
+        twoBits = (*pWord >> (CC_BITS_IN_32BIT_WORD - 2)); 
         /* get next bit of scalar */
         if ((i % CC_BITS_IN_32BIT_WORD) != 0) {
                 *pWord <<= 2;
@@ -295,7 +295,7 @@ uint32_t PkiGetNextTwoMsBits(uint32_t *pScalar, uint32_t *pWord, int32_t i)
 }
 
 
-/*!< the function checks is array equal to 0: *
+/*!< the function checks is array equal to 0: * 
 *    if arr == 0, then return 0, else 1.      */
 bool PkiIsUint8ArrayEqualTo0(const uint8_t *arr, size_t size)
 {
@@ -304,11 +304,11 @@ bool PkiIsUint8ArrayEqualTo0(const uint8_t *arr, size_t size)
         for (i = 0; i < size; i++)
                 s |= arr[i];
         /* if(arr == 0) return 1, else 0. */
-        return !(bool)((0UL - s) >> 31);
+        return !(bool)((0UL - s) >> 31); 
 
 }
 
-/*!< the function compares equality of two buffers of same size:
+/*!< the function compares equality of two buffers of same size: 
      if they are equal - return 0, else 1. */
 bool PkiAreBuffersEqual(const void *buff1, const void *buff2, size_t sizeInBytes)
 {
@@ -317,7 +317,7 @@ bool PkiAreBuffersEqual(const void *buff1, const void *buff2, size_t sizeInBytes
         for (i = 0; i < sizeInBytes; i++)
                 s |= (((uint8_t*)buff1)[i] ^ ((uint8_t*)buff2)[i]);
         /* if equalled return 0, else 1. */
-        return !(bool)((0UL - s) >> 31);
+        return !(bool)((0UL - s) >> 31); 
 
 }
 
@@ -333,36 +333,36 @@ bool PkiAreBuffersEqual(const void *buff1, const void *buff2, size_t sizeInBytes
  * @return  no return value
  */
 void PkaCopyBe8DataIntoPkaReg(uint32_t  dstReg,       /* [out] virtual pointer to destination PKA register. */
-                 uint32_t lenId,          /* [in] PKA register length ID.*/
-                 const uint8_t *pSrc,     /* [in] pointer to source buffer. */
-                 uint32_t dataSizeBytes,  /* [in] size of the data in bytes */
-                 uint32_t *pTemp)         /* [in] pointer to the temp buffer of
-                                             size >= PKA SRAM register size. */
+			     uint32_t lenId,          /* [in] PKA register length ID.*/
+			     const uint8_t *pSrc,     /* [in] pointer to source buffer. */
+			     uint32_t dataSizeBytes,  /* [in] size of the data in bytes */
+			     uint32_t *pTemp)         /* [in] pointer to the temp buffer of
+			                                 size >= PKA SRAM register size. */
 {
-    uint32_t  regSizeBits, regSizeWords;
-//  uint32_t currAddr, word, dataSizeWords;
-//  int32_t i, j = 0;
+	uint32_t  regSizeBits, regSizeWords;
+//	uint32_t currAddr, word, dataSizeWords;
+//	int32_t i, j = 0;
 
-    PKA_GET_REG_SIZE(regSizeBits, lenId);
-    regSizeWords = CALC_FULL_32BIT_WORDS(regSizeBits); /*size in words*/
+	PKA_GET_REG_SIZE(regSizeBits, lenId);
+	regSizeWords = CALC_FULL_32BIT_WORDS(regSizeBits); /*size in words*/
 
-//  CC_CommonConvertMsbLsbBytesToLswMswWords(pTemp, regSizeWords*CC_32BIT_WORD_SIZE, pSrc, dataSizeBytes);
-    CC_PalMemSetZero((uint8_t*)pTemp + dataSizeBytes, regSizeWords*CC_32BIT_WORD_SIZE - dataSizeBytes);
-    CC_CommonReverseMemcpy((uint8_t*)pTemp, (uint8_t*)pSrc, dataSizeBytes);
-//  dataSizeWords = CALC_32BIT_WORDS_FROM_BYTES(dataSizeBytes);
-    PkaCopyDataIntoPkaReg(dstReg, lenId, pTemp, regSizeWords);
+//	CC_CommonConvertMsbLsbBytesToLswMswWords(pTemp, regSizeWords*CC_32BIT_WORD_SIZE, pSrc, dataSizeBytes);
+	CC_PalMemSetZero((uint8_t*)pTemp + dataSizeBytes, regSizeWords*CC_32BIT_WORD_SIZE - dataSizeBytes);
+	CC_CommonReverseMemcpy((uint8_t*)pTemp, (uint8_t*)pSrc, dataSizeBytes);
+//	dataSizeWords = CALC_32BIT_WORDS_FROM_BYTES(dataSizeBytes);
+	PkaCopyDataIntoPkaReg(dstReg, lenId, pTemp, regSizeWords);
 
-//  dataSizeWords = CALC_32BIT_WORDS_FROM_BYTES(dataSizeBytes);
-//  PKA_GET_REG_ADDRESS(dstReg, currAddr);
+//	dataSizeWords = CALC_32BIT_WORDS_FROM_BYTES(dataSizeBytes);
+//	PKA_GET_REG_ADDRESS(dstReg, currAddr);
 //
-//  if(i > 3) {
-//      for(i = dataSizeBytes-1; i > 0; i -= 4, j++) {
-//          word = (pSrc[i] << 24) | (pSrc[i-1] << 16) |
-//                 (pSrc[i-2] << 8) | pSrc[i-3];
-//          PKA_HW_LOAD_VALUE_TO_PKA_MEM(currAddr, word);
-//          currAddr += CC_32BIT_WORD_SIZE;
-//      }
-    return;
+//	if(i > 3) {
+//		for(i = dataSizeBytes-1; i > 0; i -= 4, j++) {
+//			word = (pSrc[i] << 24) | (pSrc[i-1] << 16) |
+//			       (pSrc[i-2] << 8) | pSrc[i-3];
+//			PKA_HW_LOAD_VALUE_TO_PKA_MEM(currAddr, word);
+//			currAddr += CC_32BIT_WORD_SIZE;
+//		}
+	return;
 }
 
 
@@ -378,15 +378,15 @@ void PkaCopyBe8DataIntoPkaReg(uint32_t  dstReg,       /* [out] virtual pointer t
  * @return  no return value
  */
 void PkaCopyDataFromPkaRegToBe8Buff(
-            uint8_t  *pDst,      /* [out] pointer to the destination buffer of size >= sizeBytes. */
-            uint32_t  srcReg,    /* [in] virtual pointer to source PKA register. */
-            uint32_t  sizeBytes, /* [in] size of the data in PKA register in bytes */
-            uint32_t  *pTemp)    /* [in] pointer to the temp buffer of size (in bytes) >= sizeBytes. */
+			uint8_t  *pDst,      /* [out] pointer to the destination buffer of size >= sizeBytes. */
+			uint32_t  srcReg,    /* [in] virtual pointer to source PKA register. */
+			uint32_t  sizeBytes, /* [in] size of the data in PKA register in bytes */
+			uint32_t  *pTemp)    /* [in] pointer to the temp buffer of size (in bytes) >= sizeBytes. */
 {
-    PkaCopyDataFromPkaReg(pTemp, CALC_32BIT_WORDS_FROM_BYTES(sizeBytes), srcReg);
-    CC_CommonReverseMemcpy(pDst, (uint8_t*)pTemp, sizeBytes);
+	PkaCopyDataFromPkaReg(pTemp, CALC_32BIT_WORDS_FROM_BYTES(sizeBytes), srcReg);
+	CC_CommonReverseMemcpy(pDst, (uint8_t*)pTemp, sizeBytes);
 
-    return;
+	return;
 }
 
 
@@ -416,58 +416,58 @@ CCError_t  PkiExecModExpBe(
                 uint32_t expSizeBytes,/* [in]  exponent size in bytes; should be <= modulus size (in bytes). */
                 uint32_t *pTemp)      /* [in]  pointer to the temp buffer of size >= modulus size. */
 {
-    CCError_t err = CC_OK;
-    uint32_t modSizeBytes;
-    uint32_t pkaRegsCount = 7;
+	CCError_t err = CC_OK;
+	uint32_t modSizeBytes;
+	uint32_t pkaRegsCount = 7;
         /* define virtual registers pointers  */
-    #define IN_REG  2
-    #define EXP_REG 3
-    #define OUT_REG 4
+	#define IN_REG  2
+	#define EXP_REG 3
+	#define OUT_REG 4
 
 
-    err = PkaInitAndMutexLock(modSizeBits, &pkaRegsCount);
-    if (err != CC_OK) {
-        return err;
-    }
+	err = PkaInitAndMutexLock(modSizeBits, &pkaRegsCount);
+	if (err != CC_OK) {
+		return err;
+	}
 
-    modSizeBytes = CALC_FULL_BYTES(modSizeBits);
+	modSizeBytes = CALC_FULL_BYTES(modSizeBits);
 
-    /*  copy modulus into PKA */
-    PkaCopyBe8DataIntoPkaReg(PKA_REG_N/*dstReg*/, LEN_ID_MAX_BITS/*LenID*/, pMod/*srcPtr*/,
-                         modSizeBytes, pTemp);
+	/*  copy modulus into PKA */
+	PkaCopyBe8DataIntoPkaReg(PKA_REG_N/*dstReg*/, LEN_ID_MAX_BITS/*LenID*/, pMod/*srcPtr*/,
+		                 modSizeBytes, pTemp);
 
-    /* Calculate NP */
-    err =  PkaCalcNpIntoPkaReg(LEN_ID_N_BITS,
-            modSizeBits,  /* [in] The exact size of the modulus. */
-            PKA_REG_N,    /* [in] PKA reg, holding the modulus n. */
-            PKA_REG_NP,   /* [out PKA reg. - Np result. */
-                    IN_REG, OUT_REG);  /* PKA regs, used as temporaries. */
+	/* Calculate NP */
+	err =  PkaCalcNpIntoPkaReg(LEN_ID_N_BITS,
+			modSizeBits,  /* [in] The exact size of the modulus. */
+			PKA_REG_N,    /* [in] PKA reg, holding the modulus n. */
+			PKA_REG_NP,   /* [out PKA reg. - Np result. */
+	                IN_REG, OUT_REG);  /* PKA regs, used as temporaries. */
 
-    if (err != CC_OK) {
-        goto End;
-    }
+	if (err != CC_OK) {
+		goto End;
+	}
 
 
         /*  copy the Data and Exponent into PKA registers                  */
-    PkaCopyBe8DataIntoPkaReg(IN_REG/*dstReg*/, LEN_ID_MAX_BITS/*LenID*/, pIn, inSizeBytes, pTemp);
-    PkaCopyBe8DataIntoPkaReg(EXP_REG/*dstReg*/, LEN_ID_MAX_BITS/*LenID*/, pExp, expSizeBytes, pTemp);
+	PkaCopyBe8DataIntoPkaReg(IN_REG/*dstReg*/, LEN_ID_MAX_BITS/*LenID*/, pIn, inSizeBytes, pTemp);
+	PkaCopyBe8DataIntoPkaReg(EXP_REG/*dstReg*/, LEN_ID_MAX_BITS/*LenID*/, pExp, expSizeBytes, pTemp);
 
         /*  calculate the exponent result: OUT_REG */
-    PKA_MOD_EXP(LEN_ID_N_BITS/*LenID*/, OUT_REG, IN_REG/*OpA*/, EXP_REG/*OpB*/);
+	PKA_MOD_EXP(LEN_ID_N_BITS/*LenID*/, OUT_REG, IN_REG/*OpA*/, EXP_REG/*OpB*/);
 
-    /* output result as big endiannness bytes array */
-    PkaCopyDataFromPkaRegToBe8Buff(pOut, OUT_REG, modSizeBytes, pTemp);
+	/* output result as big endiannness bytes array */
+	PkaCopyDataFromPkaRegToBe8Buff(pOut, OUT_REG, modSizeBytes, pTemp);
 
 End:
-    /*  Finish PKA and copy result */
-    PkaFinishAndMutexUnlock(pkaRegsCount);
+	/*  Finish PKA and copy result */
+	PkaFinishAndMutexUnlock(pkaRegsCount);
 
         /* undef virtual registers pointers  */
-    #undef IN_REG
-    #undef EXP_REG
-    #undef OUT_REG
+	#undef IN_REG
+	#undef EXP_REG
+	#undef OUT_REG
 
-    return err;
+	return err;
 
 }
 
@@ -493,56 +493,56 @@ CCError_t  PkiExecModExpLeW(
                 uint32_t *pExp,        /* [in]  pointer to the exponent buffer. */
                 uint32_t expSizeWords) /* [in]  exponent size: should be <= modulus size (in words). */
 {
-    CCError_t err = CC_OK;
-    uint32_t modSizeWords;
-    uint32_t pkaRegsCount = 7;
+	CCError_t err = CC_OK;
+	uint32_t modSizeWords;
+	uint32_t pkaRegsCount = 7;
         /* define virtual registers pointers  */
-    #define IN_REG  2
-    #define EXP_REG 3
-    #define OUT_REG 4
+	#define IN_REG  2
+	#define EXP_REG 3
+	#define OUT_REG 4
 
 
-    err = PkaInitAndMutexLock(modSizeBits, &pkaRegsCount);
-    if (err != CC_OK) {
-        return err;
-    }
+	err = PkaInitAndMutexLock(modSizeBits, &pkaRegsCount);
+	if (err != CC_OK) {
+		return err;
+	}
 
-    modSizeWords = CALC_FULL_32BIT_WORDS(modSizeBits);
+	modSizeWords = CALC_FULL_32BIT_WORDS(modSizeBits);
 
-    /*  copy modulus into PKA */
-    PkaCopyDataIntoPkaReg(PKA_REG_N/*dstReg*/, LEN_ID_MAX_BITS/*LenID*/,
-                  pMod/*srcPtr*/, modSizeWords);
+	/*  copy modulus into PKA */
+	PkaCopyDataIntoPkaReg(PKA_REG_N/*dstReg*/, LEN_ID_MAX_BITS/*LenID*/,
+			      pMod/*srcPtr*/, modSizeWords);
 
-    /* Calculate NP */
-    err =  PkaCalcNpIntoPkaReg(LEN_ID_N_BITS,
-            modSizeBits,  /* [in] The exact size of the modulus. */
-            PKA_REG_N,    /* [in] PKA reg, holding the modulus n. */
-            PKA_REG_NP,   /* [out PKA reg. - Np result. */
-            IN_REG, OUT_REG);  /* PKA regs, used as temporaries. */
-    if(err) {
-          goto End;
-    }
+	/* Calculate NP */
+	err =  PkaCalcNpIntoPkaReg(LEN_ID_N_BITS,
+			modSizeBits,  /* [in] The exact size of the modulus. */
+			PKA_REG_N,    /* [in] PKA reg, holding the modulus n. */
+			PKA_REG_NP,   /* [out PKA reg. - Np result. */
+	        IN_REG, OUT_REG);  /* PKA regs, used as temporaries. */
+	if(err) {
+	      goto End;
+	}
 
     /*  copy the Data and Exponent into PKA registers  */
-    PkaCopyDataIntoPkaReg(IN_REG/*dstReg*/, LEN_ID_MAX_BITS/*LenID*/, pIn, inSizeWords);
-    PkaCopyDataIntoPkaReg(EXP_REG/*dstReg*/, LEN_ID_MAX_BITS/*LenID*/, pExp, expSizeWords);
+	PkaCopyDataIntoPkaReg(IN_REG/*dstReg*/, LEN_ID_MAX_BITS/*LenID*/, pIn, inSizeWords);
+	PkaCopyDataIntoPkaReg(EXP_REG/*dstReg*/, LEN_ID_MAX_BITS/*LenID*/, pExp, expSizeWords);
 
         /*  calculate the exponent result: OUT_REG */
-    PKA_MOD_EXP(LEN_ID_N_BITS/*LenID*/, OUT_REG, IN_REG/*OpA*/, EXP_REG/*OpB*/);
+	PKA_MOD_EXP(LEN_ID_N_BITS/*LenID*/, OUT_REG, IN_REG/*OpA*/, EXP_REG/*OpB*/);
 
-    /* output result as big endiannness bytes array */
-    PkaCopyDataFromPkaReg(pOut, modSizeWords, OUT_REG);
+	/* output result as big endiannness bytes array */
+	PkaCopyDataFromPkaReg(pOut, modSizeWords, OUT_REG);
 
 End:
-    /*  Finish PKA and copy result */
-    PkaFinishAndMutexUnlock(pkaRegsCount);
+	/*  Finish PKA and copy result */
+	PkaFinishAndMutexUnlock(pkaRegsCount);
 
         /* undef virtual registers pointers  */
-    #undef IN_REG
-    #undef EXP_REG
-    #undef OUT_REG
+	#undef IN_REG
+	#undef EXP_REG
+	#undef OUT_REG
 
-    return err;
+	return err;
 
 }
 

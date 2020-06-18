@@ -12,12 +12,12 @@
 
 void mbedtls_zeroize_internal( void *v, size_t n )
 {
-    volatile unsigned char *p = NULL;
-    if( NULL == v )
-    {
-        CC_PAL_LOG_ERR( "input is NULL\n" );
-        return;
-    }
-    p = (unsigned char*)v; while( n-- ) *p++ = 0;
+	volatile unsigned char *p = NULL;
+	if( NULL == v )
+	{
+		CC_PAL_LOG_ERR( "input is NULL\n" );
+		return;
+	}
+	p = (unsigned char*)v; while( n-- ) *p++ = 0;
 }
 

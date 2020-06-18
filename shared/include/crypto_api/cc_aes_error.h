@@ -66,7 +66,7 @@ extern "C"
 /*! Additional block operation is not permitted. */
 #define CC_AES_ADDITIONAL_BLOCK_NOT_PERMITTED_ERROR   (CC_AES_MODULE_ERROR_BASE + 0x15UL)
 /*! Illegal context size. */
-#define CC_AES_CTX_SIZES_ERROR                      (CC_AES_MODULE_ERROR_BASE + 0x16UL)
+#define CC_AES_CTX_SIZES_ERROR   	                (CC_AES_MODULE_ERROR_BASE + 0x16UL)
 /*! Illegal parameters. */
 #define CC_AES_ILLEGAL_PARAMS_ERROR               (CC_AES_MODULE_ERROR_BASE + 0x60UL)
 /*! Illegal CTR block offset. */

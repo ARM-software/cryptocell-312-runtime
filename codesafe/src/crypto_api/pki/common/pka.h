@@ -41,14 +41,14 @@ extern "C"
  Make sure the library is compiled with flag DEBUG=1, so pki_dbg.c exists in library */
 #define PKA_EXEC_OP_DEBUG 0
 #if (PKA_EXEC_OP_DEBUG  && defined PKA_DEBUG && defined DEBUG)
-    #define PKA_EXEC_OPERATION PkiDbgExecOperation
+	#define PKA_EXEC_OPERATION PkiDbgExecOperation
 #else   // not debug mode
-    #define PKA_EXEC_OPERATION(Opcode,lenId,isAImmed,OpA,isBImmed,OpB,ResDiscard,Res,Tag) { \
-        uint32_t fullOpCode; \
-        fullOpCode = PKA_SET_FULL_OPCODE((Opcode),(lenId),(isAImmed),(OpA),(isBImmed),(OpB),(ResDiscard),(Res),(Tag)); \
-        PKA_WAIT_ON_PKA_PIPE_READY(); \
-        CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(CRY_KERNEL, OPCODE), fullOpCode); \
-    }
+	#define PKA_EXEC_OPERATION(Opcode,lenId,isAImmed,OpA,isBImmed,OpB,ResDiscard,Res,Tag) { \
+		uint32_t fullOpCode; \
+		fullOpCode = PKA_SET_FULL_OPCODE((Opcode),(lenId),(isAImmed),(OpA),(isBImmed),(OpB),(ResDiscard),(Res),(Tag)); \
+		PKA_WAIT_ON_PKA_PIPE_READY(); \
+		CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(CRY_KERNEL, OPCODE), fullOpCode); \
+	}
 #endif
 
 /*************************************************************************/
@@ -186,15 +186,15 @@ extern "C"
 #define   PKA_MOD_MUL(lenId, Res, OpA, OpB)   \
              PKA_EXEC_OPERATION( PKA_OPCODE_ID_MODMUL, (lenId), 0, (OpA), 0, (OpB), 0, (Res), 0 )
 /*  ModMulN:  Res =  OpA * OpB  mod N - modular multiplication (final reduction is omitted)*
-*   up to PKA_EXTRA_BITS extra bits                               */
+*   up to PKA_EXTRA_BITS extra bits    						      */
 #define   PKA_MOD_MUL_NFR(lenId, Res, OpA, OpB)   \
              PKA_EXEC_OPERATION( PKA_OPCODE_ID_MODMULN, (lenId), 0, (OpA), 0, (OpB), 0, (Res), 0 )
 /*  ModMulAcc:  Res =  OpA * OpB + OpC mod N - modular multiplication and     *
-*   adding, result reduced                                */
+*   adding, result reduced      					      */
 #define   PKA_MOD_MUL_ACC(lenId, Res, OpA, OpB, OpC)   \
              PKA_EXEC_OPERATION( PKA_OPCODE_ID_MODMLAC, (lenId), 0, (OpA), 0, (OpB), 0, (Res), (OpC) )
 /*  ModMulAccN:  Res =  OpA * OpB + OpC mod N - modular multiplication and    *
-*   acdding (final reduction is omitted) -  up to PKA_EXTRA_BITS extra bits                       */
+*   acdding (final reduction is omitted) -  up to PKA_EXTRA_BITS extra bits      			      */
 #define   PKA_MOD_MUL_ACC_NFR(lenId, Res, OpA, OpB, OpC)   \
              PKA_EXEC_OPERATION( PKA_OPCODE_ID_MODMLACNR, (lenId), 0, (OpA), 0, (OpB), 0, (Res), (OpC) )
 /*  ModExp:  Res =  OpA ** OpB  mod N - modular exponentiation */
@@ -219,48 +219,48 @@ extern "C"
  /* mod inversion using exponentiation, used when 'a' can be even number, but *
  *  runs at constant time                                                     */
 #define PKA_MOD_INV_W_EXP(res,a,nm2)    {\
-    PKA_SUB_IM(LEN_ID_N_PKA_REG_BITS,(nm2), 0/*n*/, 2); \
-    PKA_MOD_EXP(LEN_ID_N_BITS,(res),(a),(nm2)); \
+	PKA_SUB_IM(LEN_ID_N_PKA_REG_BITS,(nm2), 0/*n*/, 2); \
+	PKA_MOD_EXP(LEN_ID_N_BITS,(res),(a),(nm2)); \
 }
 
 #define PKA_SET_VAL(a,v) {\
-    PKA_AND_IM(LEN_ID_N_PKA_REG_BITS,a,a,0); \
-    PKA_OR_IM( LEN_ID_N_PKA_REG_BITS,a,a,v); \
+	PKA_AND_IM(LEN_ID_N_PKA_REG_BITS,a,a,0); \
+	PKA_OR_IM( LEN_ID_N_PKA_REG_BITS,a,a,v); \
 }
 
 #define PKA_COMPARE_STATUS(lenId, a, b, stat) {\
-    PKA_COMPARE(lenId,a,b); \
-    PKA_GET_STATUS_ALU_OUT_ZERO(stat);\
+	PKA_COMPARE(lenId,a,b); \
+	PKA_GET_STATUS_ALU_OUT_ZERO(stat);\
 }
 
 #define PKA_COMPARE_IM_STATUS(lenId, a, b,stat)  {\
-    PKA_COMPARE_IM(lenId,a,b); \
-    PKA_GET_STATUS_ALU_OUT_ZERO(stat);\
+	PKA_COMPARE_IM(lenId,a,b); \
+	PKA_GET_STATUS_ALU_OUT_ZERO(stat);\
 }
 
 #define PKA_READ_BIT0(lenId,reg,bitVal) {\
-    PKA_TEST_BIT0(lenId,reg); \
-    PKA_GET_STATUS_ALU_OUT_ZERO(bitVal); \
-    (bitVal) = !(bitVal); \
+	PKA_TEST_BIT0(lenId,reg); \
+	PKA_GET_STATUS_ALU_OUT_ZERO(bitVal); \
+	(bitVal) = !(bitVal); \
 }
 
 /*uint32 b - bit i value, i-num. of LS bit, i <= 31*/
 #define PKA_READ_BIT(bitVal,reg,i) {\
-    PKA_TEST_BIT(1/*lenId*/,reg,(i),0); \
-    PKA_GET_STATUS_ALU_OUT_ZERO((bitVal)); \
-    (bitVal) = !(bitVal); \
+	PKA_TEST_BIT(1/*lenId*/,reg,(i),0); \
+	PKA_GET_STATUS_ALU_OUT_ZERO((bitVal)); \
+	(bitVal) = !(bitVal); \
 }
 
 #define PKA_READ_WORD_FROM_REG(val,i,virtReg) {\
-    uint32_t addr; \
-    PKA_GET_REG_ADDRESS(virtReg, addr);\
-    PKA_HW_READ_VALUE_FROM_PKA_MEM(addr+(i), val); \
+	uint32_t addr; \
+	PKA_GET_REG_ADDRESS(virtReg, addr);\
+	PKA_HW_READ_VALUE_FROM_PKA_MEM(addr+(i), val); \
 }
 
 #define PKA_WRITE_WORD_TO_REG(Val,i,VirtReg) {\
-    uint32_t addr;\
-    PKA_GET_REG_ADDRESS((VirtReg),addr);\
-    PKA_HW_LOAD_VALUE_TO_PKA_MEM(addr+(i),(Val));\
+	uint32_t addr;\
+	PKA_GET_REG_ADDRESS((VirtReg),addr);\
+	PKA_HW_LOAD_VALUE_TO_PKA_MEM(addr+(i),(Val));\
 }
 
 CCError_t PkaExecFullModInv(int8_t         OpB,
@@ -271,76 +271,76 @@ CCError_t PkaExecFullModInv(int8_t         OpB,
                               int8_t         rT3 );
 
 uint8_t  PkaGetBitFromPkaReg(uint32_t   rX,
-                 uint32_t   lenId,
-                 int32_t    i,
-                 uint32_t   rT);
+			     uint32_t   lenId,
+			     int32_t    i,
+			     uint32_t   rT);
 
 
 void  PkaModDivideBy2(uint32_t    lenId,
-              uint32_t    rX,
-              uint32_t    rN,
-              uint32_t    rRes);
+		      uint32_t    rX,
+		      uint32_t    rN,
+		      uint32_t    rRes);
 
 
 CCError_t PkaInitAndMutexLock(uint32_t  sizeInBits,
-                uint32_t *pkaRegCount);
+				uint32_t *pkaRegCount);
 
 void PkaFinishAndMutexUnlock(uint32_t pkaRegCount);
 
 void PkaSetLenIds(uint32_t  sizeInBits,
-        uint32_t lenId);
+		uint32_t lenId);
 
 void PkaSetRegsSizesTab(uint32_t    opSizeInBits,
-             int32_t     regSizeInPkaWords);
+			 int32_t     regSizeInPkaWords);
 
 
 CCError_t PkaInitPka(uint32_t   opSizeInBits,
-            uint32_t   regSizeInPkaWords,
-            uint32_t   *pRegsCount);
+			uint32_t   regSizeInPkaWords,
+			uint32_t   *pRegsCount);
 
 #define PKA_INIT_PKA_DEFAULT(opSizeInBits) \
-        PkaInitPka((opSizeInBits), 0 /*sizeInWords*/, NULL/*(pRegsCount)*/)
+		PkaInitPka((opSizeInBits), 0 /*sizeInWords*/, NULL/*(pRegsCount)*/)
 
 
 void PkaFinishPka(void);
 
 
 CCError_t  PkaCalcNpIntoPkaReg(uint32_t lenId,
-                uint32_t  sizeNbits,
-                int8_t regN,
-                int8_t regNp,
-                int8_t regTemp1,
-                int8_t regTempN);
+				uint32_t  sizeNbits,
+				int8_t regN,
+				int8_t regNp,
+				int8_t regTemp1,
+				int8_t regTempN);
 
 void PkaClearBlockOfRegs(uint32_t  firstReg,
                          int32_t   countOfRegs,
                          uint32_t  lenId);
 
 void PkaClearPkaRegWords(uint32_t    dstReg,
-              uint32_t    sizeWords);
+			  uint32_t    sizeWords);
 
 void PkaCopyByteBuffIntoPkaReg(uint32_t    dstReg,
-                 uint32_t    lenId,
-                 const uint8_t  *src_ptr,
-                 uint32_t    size);
+			     uint32_t    lenId,
+			     const uint8_t  *src_ptr,
+			     uint32_t    size);
 
 void PkaCopyBeByteBuffIntoPkaReg(uint32_t    dstReg,
-                 uint32_t    lenId,
-                 const uint8_t  *src_ptr,
-                 uint32_t    sizeWords);
+			     uint32_t    lenId,
+			     const uint8_t  *src_ptr,
+			     uint32_t    sizeWords);
 
 void PkaCopyDataIntoPkaReg(uint32_t    dstReg,
-                 uint32_t    lenId,
-                 const uint32_t  *src_ptr,
-                 uint32_t    sizeWords);
+			     uint32_t    lenId,
+			     const uint32_t  *src_ptr,
+			     uint32_t    sizeWords);
 
 void PkaCopyPkaRegIntoBeByteBuff(uint8_t *dst_ptr,
-                  uint32_t  sizeWords,
-                  uint32_t  srcReg);
+			      uint32_t  sizeWords,
+			      uint32_t  srcReg);
 
 void PkaCopyDataFromPkaReg( uint32_t *dst_ptr,
-                  uint32_t  sizeWords,
-                  uint32_t  srcReg);
+			      uint32_t  sizeWords,
+			      uint32_t  srcReg);
 
 uint32_t PkaGetRegEffectiveSizeInBits(uint32_t  reg);
 

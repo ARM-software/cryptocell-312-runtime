@@ -39,11 +39,11 @@ extern "C" {
 /**
  * \brief          AES context structure
  *
- * \note           Max len of key - 256.
+ * \note		   Max len of key - 256.
  */
 typedef struct
 {
-    uint32_t buf[MBEDTLS_AES_CONTEXT_SIZE_IN_WORDS];
+	uint32_t buf[MBEDTLS_AES_CONTEXT_SIZE_IN_WORDS];
 } mbedtls_aes_context;
 
 

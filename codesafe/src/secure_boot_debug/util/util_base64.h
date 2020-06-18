@@ -27,7 +27,7 @@ extern "C"
  *         on failure - a value from bootimagesverifierx509_error.h
  */
 CCError_t UTIL_ConvertPemStrToCharStr(uint8_t *pInStr, uint32_t inSize,
-                      uint8_t *pOutStr, uint32_t *outSize);
+				      uint8_t *pOutStr, uint32_t *outSize);
 
 
 #ifdef __cplusplus

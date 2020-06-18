@@ -36,13 +36,13 @@
  @addtogroup cc_rnd
  @{
  */
-
+ 
 /*!
  @file
  @brief This file contains the CryptoCell random-number generation (RNG) APIs.
 
- The random-number generation module implements <em>NIST Special Publication
- 800-90A: Recommendation for Random Number Generation Using Deterministic
+ The random-number generation module implements <em>NIST Special Publication 
+ 800-90A: Recommendation for Random Number Generation Using Deterministic 
  Random Bit Generators.</em>
  */
 
@@ -87,7 +87,7 @@ Generate function according NIST 800-90 it is (2^12 - 1) = 0x3FFFF */
 /*! The size of the temporary buffer in words. */
 #define CC_RND_WORK_BUFFER_SIZE_WORDS 136
 
-/*! The definition of the RAM buffer, for internal use in instantiation or
+/*! The definition of the RAM buffer, for internal use in instantiation or 
 reseeding operations. */
 typedef struct
 {
@@ -109,9 +109,9 @@ typedef struct
 typedef  enum
 {
     /*! HW entropy estimation: 800-90B or full. */
-    CC_RND_FE  = 1,
+	CC_RND_FE  = 1,
     /*! Reserved. */
-    CC_RND_ModeLast = 0x7FFFFFFF,
+	CC_RND_ModeLast = 0x7FFFFFFF,
 } CCRndMode_t;
 
 
@@ -131,25 +131,25 @@ typedef  struct
 #ifndef USE_MBEDTLS_CRYPTOCELL
     /* Seed buffer, consists from concatenated Key||V: max size 12 words */
     /*! The random-seed buffer. */
-    uint32_t  Seed[CC_RND_SEED_MAX_SIZE_WORDS];
+	uint32_t  Seed[CC_RND_SEED_MAX_SIZE_WORDS];
     /* Previous value for continuous test */
     /*! The previous random data, used for continuous test. */
-    uint32_t  PreviousRandValue[CC_AES_CRYPTO_BLOCK_SIZE_IN_WORDS];
+	uint32_t  PreviousRandValue[CC_AES_CRYPTO_BLOCK_SIZE_IN_WORDS];
     /* AdditionalInput buffer max size = seed max size words + 4w for padding*/
     /*! The previous additional-input buffer. */
-    uint32_t  PreviousAdditionalInput[CC_RND_ADDITINAL_INPUT_MAX_SIZE_WORDS+3];
+	uint32_t  PreviousAdditionalInput[CC_RND_ADDITINAL_INPUT_MAX_SIZE_WORDS+3];
     /*! The additional-input buffer. */
-    uint32_t  AdditionalInput[CC_RND_ADDITINAL_INPUT_MAX_SIZE_WORDS+4];
+	uint32_t  AdditionalInput[CC_RND_ADDITINAL_INPUT_MAX_SIZE_WORDS+4]; 
     /*! The size of the additional input in words. */
-    uint32_t  AddInputSizeWords;
+	uint32_t  AddInputSizeWords;
     /*! The size of the entropy source in words. */
-    uint32_t  EntropySourceSizeWords;
-    /*! The Reseed counter (32-bit active). Indicates the number of requests
-    for entropy since instantiation or reseeding. */
-    uint32_t  ReseedCounter;
-    /*! The key size in words, according to security strength: 128 bits:
-    4 words. 256 bits: 8 words. */
-    uint32_t KeySizeWords;
+	uint32_t  EntropySourceSizeWords;
+    /*! The Reseed counter (32-bit active). Indicates the number of requests 
+	for entropy since instantiation or reseeding. */
+	uint32_t  ReseedCounter;
+    /*! The key size in words, according to security strength: 128 bits: 
+	4 words. 256 bits: 8 words. */
+	uint32_t KeySizeWords; 
     /* State flag (see definition of StateFlag above), containing bit-fields, defining:
     - b'0: instantiation steps:   0 - not done, 1 - done;
     - 2b'9,8: working or testing mode: 0 - working, 1 - KAT DRBG test, 2 -
@@ -157,15 +157,15 @@ typedef  struct
     b'16: flag defining is Previous random valid or not:
             0 - not valid, 1 - valid */
     /*! The state flag used internally in the code. */
-    uint32_t StateFlag;
+	uint32_t StateFlag;
     /* validation tag */
     /*! The validation tag used internally in the code. */
-    uint32_t ValidTag;
+	uint32_t ValidTag;
     /*! The size of the RND source entropy in bits. */
-    uint32_t  EntropySizeBits;
+	uint32_t  EntropySizeBits;
 
 #endif
-    /*! The TRNG process state used internally in the code. */
+	/*! The TRNG process state used internally in the code. */
     uint32_t TrngProcesState;
 
 } CCRndState_t;
@@ -174,30 +174,30 @@ typedef  struct
 /*! The RND vector-generation function pointer. */
 typedef int (*CCRndGenerateVectWorkFunc_t)(        \
         /*! A pointer to the RND-state context. */
-        void              *rndState_ptr, \
+		void              *rndState_ptr, \
         /*! A pointer to the output buffer. */
-        unsigned char     *out_ptr, \
-        /*! The size of the output in bytes. */
-        size_t            outSizeBytes
-        );
+		unsigned char     *out_ptr, \
+		/*! The size of the output in bytes. */
+		size_t            outSizeBytes
+		);
 
 
-/*! The definition of the RND context that includes the CryptoCell
-    RND state structure, and a function pointer for the RND-generation
-    function. */
+/*! The definition of the RND context that includes the CryptoCell 
+    RND state structure, and a function pointer for the RND-generation 
+	function. */
 typedef  struct
 {
-        /*! A pointer to the internal state of the RND.
-        Note: This pointer should be allocated in a physical and contiguous
-        memory, that is accessible to the CryptoCell DMA. This pointer should
-        be allocated and assigned before calling CC_LibInit(). */
-       void *   rndState;
-       /*! A pointer to the entropy context. Note: This pointer should be
-       allocated and assigned before calling CC_LibInit(). */
-       void *   entropyCtx;
-       /*! A pointer to the user-given function for generation a random
-       vector. */
-       CCRndGenerateVectWorkFunc_t rndGenerateVectFunc;
+		/*! A pointer to the internal state of the RND.
+        Note: This pointer should be allocated in a physical and contiguous 
+		memory, that is accessible to the CryptoCell DMA. This pointer should 
+		be allocated and assigned before calling CC_LibInit(). */
+       void *   rndState; 
+       /*! A pointer to the entropy context. Note: This pointer should be 
+	   allocated and assigned before calling CC_LibInit(). */
+	   void *   entropyCtx;
+       /*! A pointer to the user-given function for generation a random 
+	   vector. */
+	   CCRndGenerateVectWorkFunc_t rndGenerateVectFunc;
 } CCRndContext_t;
 
 
@@ -211,26 +211,26 @@ typedef  struct
 
 /****************************************************************************************/
 /*!
- @brief This function sets the RND vector-generation function into the RND
+ @brief This function sets the RND vector-generation function into the RND 
  context.
 
- It is called as part of Arm CryptoCell library initialization, to
+ It is called as part of Arm CryptoCell library initialization, to 
  set the RND vector generation function into the primary RND context.
 
- @note It must be called before any other API that requires the RND context as
+ @note It must be called before any other API that requires the RND context as 
  a parameter.
 
  @return \c CC_OK on success.
  @return A non-zero value from cc_rnd_error.h on failure.
  */
 CCError_t CC_RndSetGenerateVectorFunc(
-            /*! [in/out] A pointer to the RND context buffer that is allocated
-            by the user, which is used to maintain the RND state, as well as
-            pointers to the functions used for random vector generation. */
-            CCRndContext_t *rndContext_ptr,
-            /*! [in] A pointer to the \c CC_RndGenerateVector random
-            vector-generation function. */
-            CCRndGenerateVectWorkFunc_t rndGenerateVectFunc
+            /*! [in/out] A pointer to the RND context buffer that is allocated 
+			by the user, which is used to maintain the RND state, as well as 
+			pointers to the functions used for random vector generation. */
+			CCRndContext_t *rndContext_ptr,
+            /*! [in] A pointer to the \c CC_RndGenerateVector random 
+			vector-generation function. */
+			CCRndGenerateVectWorkFunc_t rndGenerateVectFunc 
 );
 
 

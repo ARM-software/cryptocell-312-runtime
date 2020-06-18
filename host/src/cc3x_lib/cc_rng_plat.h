@@ -27,7 +27,7 @@
 /* Maximal value of SamplingRatio */
 #define CC_RNG_MAX_SAMPL_RATIO_ON_SWEE_MODE     CC_RNG_OTP_SUB_SAMPL_RATIO_MAX_VAL
 #define CC_RNG_MAX_SAMPL_RATIO_ON_FE_MODE     (CC_RNG_MIN_SAMPL_RATIO_ON_FE_MODE + \
-                        CC_RNG_SAMPL_RATIO_INCREM_ON_FE_MODE * CC_RNG_OTP_SUB_SAMPL_RATIO_MAX_VAL)
+						CC_RNG_SAMPL_RATIO_INCREM_ON_FE_MODE * CC_RNG_OTP_SUB_SAMPL_RATIO_MAX_VAL)
 
 /****************************************************************************************/
 /**

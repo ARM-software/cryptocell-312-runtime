@@ -16,12 +16,12 @@
 /******************************************************************************/
 uint32_t Test_PalCLIRegisterCommand(struct Test_PalCliCommand *commandToRegister)
 {
-    return 0;
+	return 0;
 }
 
 /******************************************************************************/
 const char *Test_PalCLIGetParameter(const char *commandString,
-            uint32_t wantedParamIndx, uint32_t *paramStringLength)
+			uint32_t wantedParamIndx, uint32_t *paramStringLength)
 {
-    return NULL;
+	return NULL;
 }

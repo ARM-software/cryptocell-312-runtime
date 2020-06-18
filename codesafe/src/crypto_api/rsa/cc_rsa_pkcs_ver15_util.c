@@ -29,7 +29,7 @@
 /************************ Public Functions *******************/
 
 
-#if !defined(_INTERNAL_CC_NO_RSA_SCHEME_15_SUPPORT)
+#if !defined(_INTERNAL_CC_NO_RSA_SCHEME_15_SUPPORT) 
 
 /************************ Global Data ******************************/
 /* DER(BER) encoded data for allowed HASH algorithms */
@@ -37,7 +37,7 @@
         uint32_t algIdSizeBytes;
         CCHashOperationMode_t hashMode;
         uint8_t algId[HASH_DER_CODE_MAX_SIZE_BYTES];
-}*/
+}*/ 
 /*   Note: order of algorithms in array must be according to HASH mode ID */
 static const HashDerCode_t gHashDerCodes[] = {
         {15, CC_HASH_SHA1_mode,  {0x30,0x21,0x30,0x09,0x06,0x05,0x2b,0x0e,0x03,0x02,0x1a,0x05,0x00,0x04,0x14}},                     /*SHA1*/
@@ -48,21 +48,21 @@ static const HashDerCode_t gHashDerCodes[] = {
         {18, CC_HASH_MD5_mode,   {0x30,0x20,0x30,0x0C,0x06,0x08,0x2A,0x86,0x48,0x86,0xf7,0x0d,0x02,0x05,0x05,0x00,0x04,0x10}},      /*MD5*/
 };
 
-/*************************** Private functions **********************/
+/*************************** Private functions **********************/ 
 
 /**
  * The function gets DER code of choosen Hash algoritm.
- *
+ * 
  * @author reuvenl (9/11/2014)
- *
+ * 
  * @param hashMode - Hash mode enumeration.
- * @param pAlgId - The pointer to Hash algoritm DER code;
+ * @param pAlgId - The pointer to Hash algoritm DER code; 
  * @param pAlgIdSize - The size of the Hash algoritm DER code;
- *
- * @return CCError_t
+ * 
+ * @return CCError_t 
  */
 static CCError_t GetHashAlgDerCode(
-                                    CCHashOperationMode_t hashMode,
+                                    CCHashOperationMode_t hashMode, 
                                     const uint8_t **pAlgId,
                                     uint32_t *pAlgIdSize)
 {
@@ -77,14 +77,14 @@ static CCError_t GetHashAlgDerCode(
 /*****************************************************************************/
 /**
  * The function generates vector of non zero octets.
- *
+ * 
  * @author reuvenl (9/14/2014)
- *
+ * 
  * @param rndContext_ptr  - Pointer to the RND context buffer.
  * @param pVect - The pointer to output buffer.
  * @param size  - The size of vector in bytes.
- *
- * @return CCError_t
+ * 
+ * @return CCError_t 
  */
 CCError_t  RsaGenRndNonZeroVect(CCRndContext_t *rndContext_ptr, uint8_t *pVect, uint32_t size)
 {
@@ -154,19 +154,19 @@ CCError_t  RsaGenRndNonZeroVect(CCRndContext_t *rndContext_ptr, uint8_t *pVect, 
 
 /*********************************************************************************/
 /**
- * @brief The function implements PKCS#1 v1.5 (9.2) EMSA Encoding
- *        algorithm used in Sign/Verify operations.
- *
+ * @brief The function implements PKCS#1 v1.5 (9.2) EMSA Encoding 
+ *        algorithm used in Sign/Verify operations. 
+ * 
  * @author reuvenl (9/14/2014)
- *
+ * 
  * @param K - The size of encoded message in octets.
  * @param hashMode - hash mode ID (enum).
- * @param pM - The Pointer to the Message M. In case of Sign it is a hash (H).
- * @param MSize - Denotes the Message size: for Sig/Ver = hashSize,
- *                for Enc/Dec <= K-hashAlgIdSize-PSS_MIN_LEN-3.
- * @param pOut - The pointer to a buffer which is at least K octets long.
- *
- * @return CCError_t
+ * @param pM - The Pointer to the Message M. In case of Sign it is a hash (H). 
+ * @param MSize - Denotes the Message size: for Sig/Ver = hashSize, 
+ *	              for Enc/Dec <= K-hashAlgIdSize-PSS_MIN_LEN-3.   
+ * @param pOut - The pointer to a buffer which is at least K octets long. 
+ * 
+ * @return CCError_t 
  */
 CCError_t RsaEmsaPkcs1v15Encode(
                                         uint32_t K,
@@ -179,10 +179,10 @@ CCError_t RsaEmsaPkcs1v15Encode(
         CCError_t Error = CC_OK;
 
         /* Padding String Size  */
-        int32_t  PSSize;
+        int32_t  PSSize; 
         /* The pointer to Hash Alg. ID (DER code) and its size */
         const uint8_t *pHashAlgId = NULL;
-        uint32_t hashAlgIdSize = 0;
+        uint32_t hashAlgIdSize = 0; 
 
         /* FUNCTION LOGIC */
 
@@ -191,12 +191,12 @@ CCError_t RsaEmsaPkcs1v15Encode(
         CC_PalMemSet(pOut, 0xCC, K);
 #endif
 
-        /*---------------------------------------------------*/
+        /*---------------------------------------------------*/ 
         /*  Encryption block formating for EMSA-PKCS1-v1_5:  */
-        /*          00 || 01 || PS || 00 || T            */
-        /*         MSB                      LSB          */
+        /*          00 || 01 || PS || 00 || T   	     */
+        /*         MSB                      LSB 	     */
         /* Note:  BT=02, PS=FF...FF, T=DER||Hash(M)          */
-        /*---------------------------------------------------*/
+        /*---------------------------------------------------*/ 
 
         /* Get Hash alg. parametrs including DER code */
         Error = GetHashAlgDerCode(hashMode, &pHashAlgId, &hashAlgIdSize);

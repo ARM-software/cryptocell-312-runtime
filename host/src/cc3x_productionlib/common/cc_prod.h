@@ -8,10 +8,10 @@
  @addtogroup prod_mem
  @{
  */
-
+ 
 /*!
  @file
- @brief This file contains all of the enums and definitions that are used for
+ @brief This file contains all of the enums and definitions that are used for 
  the ICV and OEM production libraries.
  */
 

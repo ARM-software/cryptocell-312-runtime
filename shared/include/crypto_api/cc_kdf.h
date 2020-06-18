@@ -48,55 +48,55 @@ extern "C"
 /*! HASH operation modes */
 typedef enum
 {
-    /*! SHA1 mode.*/
-    CC_KDF_HASH_SHA1_mode    = 0,
-    /*! SHA224 mode.*/
-    CC_KDF_HASH_SHA224_mode  = 1,
-    /*! SHA256 mode.*/
-    CC_KDF_HASH_SHA256_mode  = 2,
-    /*! SHA384 mode.*/
-    CC_KDF_HASH_SHA384_mode  = 3,
-    /*! SHA512 mode.*/
-    CC_KDF_HASH_SHA512_mode  = 4,
-    /*! Maximal number of HASH modes. */
-    CC_KDF_HASH_NumOfModes,
-    /*! Reserved.*/
-    CC_KDF_HASH_OpModeLast = 0x7FFFFFFF,
+	/*! SHA1 mode.*/
+	CC_KDF_HASH_SHA1_mode    = 0,
+	/*! SHA224 mode.*/
+	CC_KDF_HASH_SHA224_mode	 = 1,
+	/*! SHA256 mode.*/
+	CC_KDF_HASH_SHA256_mode	 = 2,
+	/*! SHA384 mode.*/
+	CC_KDF_HASH_SHA384_mode	 = 3,
+	/*! SHA512 mode.*/
+	CC_KDF_HASH_SHA512_mode	 = 4,
+	/*! Maximal number of HASH modes. */
+	CC_KDF_HASH_NumOfModes,
+	/*! Reserved.*/
+	CC_KDF_HASH_OpModeLast = 0x7FFFFFFF,
 
 }CCKdfHashOpMode_t;
 
 /*! Key derivation modes. */
 typedef enum
 {
-    /*! ASN1 key derivation mode.*/
-    CC_KDF_ASN1_DerivMode    = 0,
-    /*! Concatination key derivation mode.*/
-    CC_KDF_ConcatDerivMode   = 1,
-    /*! X963 key derivation mode.*/
-    CC_KDF_X963_DerivMode    = CC_KDF_ConcatDerivMode,
-    /*! ISO 18033 KDF1 key derivation mode.*/
-    CC_KDF_ISO18033_KDF1_DerivMode = 3,
-    /*! ISO 18033 KDF2 key derivation mode.*/
-    CC_KDF_ISO18033_KDF2_DerivMode = 4,
-    /*! Maximal number of key derivation modes. */
-    CC_KDF_DerivFunc_NumOfModes = 5,
-    /*! Reserved.*/
-    CC_KDF_DerivFuncModeLast= 0x7FFFFFFF,
+	/*! ASN1 key derivation mode.*/
+	CC_KDF_ASN1_DerivMode    = 0,
+	/*! Concatination key derivation mode.*/
+	CC_KDF_ConcatDerivMode   = 1,
+	/*! X963 key derivation mode.*/
+	CC_KDF_X963_DerivMode    = CC_KDF_ConcatDerivMode,
+	/*! ISO 18033 KDF1 key derivation mode.*/
+	CC_KDF_ISO18033_KDF1_DerivMode = 3,
+	/*! ISO 18033 KDF2 key derivation mode.*/
+	CC_KDF_ISO18033_KDF2_DerivMode = 4,
+	/*! Maximal number of key derivation modes. */
+	CC_KDF_DerivFunc_NumOfModes = 5,
+	/*! Reserved.*/
+	CC_KDF_DerivFuncModeLast= 0x7FFFFFFF,
 
 }CCKdfDerivFuncMode_t;
 
 /*! Enumerator for the additional information given to the KDF. */
 typedef enum
 {
-    CC_KDF_ALGORITHM_ID     = 0, /*! An identifier (OID), indicating algorithm for which the keying data is used. */
-    CC_KDF_PARTY_U_INFO     = 1, /*! Optional data of party U .*/
-    CC_KDF_PARTY_V_INFO     = 2, /*! Optional data of party V. */
-    CC_KDF_SUPP_PRIV_INFO   = 3, /*! Optional supplied private shared data. */
-    CC_KDF_SUPP_PUB_INFO    = 4, /*! Optional supplied public shared data. */
+	CC_KDF_ALGORITHM_ID     = 0, /*! An identifier (OID), indicating algorithm for which the keying data is used. */
+	CC_KDF_PARTY_U_INFO     = 1, /*! Optional data of party U .*/
+	CC_KDF_PARTY_V_INFO     = 2, /*! Optional data of party V. */
+	CC_KDF_SUPP_PRIV_INFO   = 3, /*! Optional supplied private shared data. */
+	CC_KDF_SUPP_PUB_INFO    = 4, /*! Optional supplied public shared data. */
 
-    CC_KDF_MAX_COUNT_OF_ENTRIES,  /*! Maximal allowed number of entries in Other Info structure. */
-    /*! Reserved.*/
-    CC_KDF_ENTRYS_MAX_VAL  = 0x7FFFFFFF,
+	CC_KDF_MAX_COUNT_OF_ENTRIES,  /*! Maximal allowed number of entries in Other Info structure. */
+	/*! Reserved.*/
+	CC_KDF_ENTRYS_MAX_VAL  = 0x7FFFFFFF,
 
 }CCKdfOtherInfoEntries_t;
 /************************ Typedefs  ****************************/
@@ -130,9 +130,9 @@ typedef struct
 /*********************************************************************************************************/
 /*!
  @brief CC_KdfKeyDerivFunc performs key derivation according to one of the modes defined in standards:
-    ANSI X9.42-2003: Public Key Cryptography for the Financial Services Industry: Agreement of Symmetric Keys Using Discrete Logarithm Cryptography,
-    ANSI X9.63-2011: Public Key Cryptography for the Financial Services Industry - Key Agreement and Key Transport Using Elliptic Curve Cryptography,
-    ISO/IEC 18033-2:2006: Information technology -- Security techniques -- Encryption algorithms -- Part 2: Asymmetric ciphers.
+	ANSI X9.42-2003: Public Key Cryptography for the Financial Services Industry: Agreement of Symmetric Keys Using Discrete Logarithm Cryptography,
+	ANSI X9.63-2011: Public Key Cryptography for the Financial Services Industry - Key Agreement and Key Transport Using Elliptic Curve Cryptography,
+	ISO/IEC 18033-2:2006: Information technology -- Security techniques -- Encryption algorithms -- Part 2: Asymmetric ciphers.
 
 The present implementation of the function allows the following operation modes:
 <ul><li> CC_KDF_ASN1_DerivMode - mode based on  ASN.1 DER encoding; </li>
@@ -154,16 +154,16 @@ CCError_t  CC_KdfKeyDerivFunc(
                     size_t                zzSecretSize,         /*!< [in]  The size of the shared secret value in bytes.
                                                                            The maximal size is defined as: ::CC_KDF_MAX_SIZE_OF_SHARED_SECRET_VALUE. */
                     CCKdfOtherInfo_t     *pOtherInfo,           /*!< [in]  A pointer to the structure, containing pointers to the data, shared by
-                                       two entities of agreement, depending on KDF mode:
+									   two entities of agreement, depending on KDF mode:
                                                                            <ul><li> In KDF ASN1 mode OtherInfo includes ASN1 DER encoding of AlgorithmID (mandatory),
                                                                              and some optional data entries as described in section 7.7.1 of the ANSI X9.42-2003:
-                                         Public Key Cryptography for the Financial Services Industry: Agreement of Symmetric Keys Using
-                                         Discrete Logarithm Cryptography standard.</li>
+									     Public Key Cryptography for the Financial Services Industry: Agreement of Symmetric Keys Using
+									     Discrete Logarithm Cryptography standard.</li>
                                                                            <li> In both ISO/IEC 18033-2:2006: Information technology -- Security techniques -- Encryption algorithms -- Part 2:
-                                        Asymmetric ciphers standard: KDF1 and KDF2 modes this parameter is ignored and may be set to NULL. </li>
+										Asymmetric ciphers standard: KDF1 and KDF2 modes this parameter is ignored and may be set to NULL. </li>
                                                                            <li> In other modes it is optional and may be set to NULL. </li></ul>*/
                     CCKdfHashOpMode_t     kdfHashMode,          /*!< [in]  The KDF identifier of hash function to be used. The hash function output
-                                       must be at least 160 bits. */
+									   must be at least 160 bits. */
                     CCKdfDerivFuncMode_t  derivMode,            /*!< [in]  The enum value, specifies one of above described derivation modes. */
                     uint8_t              *pKeyingData,          /*!< [out] A pointer to the buffer for derived keying data. */
                     size_t                keyingDataSize        /*!< [in]  The size in bytes of the keying data to be derived.
@@ -176,7 +176,7 @@ CCError_t  CC_KdfKeyDerivFunc(
  For a description of the parameters see ::CC_KdfKeyDerivFunc.
 */
 #define CC_KdfAsn1KeyDerivFunc(ZZSecret_ptr,ZZSecretSize,OtherInfo_ptr,kdfHashMode,KeyingData_ptr,KeyLenInBytes)\
-        CC_KdfKeyDerivFunc((ZZSecret_ptr),(ZZSecretSize),(OtherInfo_ptr),(kdfHashMode),CC_KDF_ASN1_DerivMode,(KeyingData_ptr),(KeyLenInBytes))
+		CC_KdfKeyDerivFunc((ZZSecret_ptr),(ZZSecretSize),(OtherInfo_ptr),(kdfHashMode),CC_KDF_ASN1_DerivMode,(KeyingData_ptr),(KeyLenInBytes))
 
 
 /*********************************************************************************************************/
@@ -187,7 +187,7 @@ CCError_t  CC_KdfKeyDerivFunc(
  Cryptography standard. For a description of the parameters see ::CC_KdfKeyDerivFunc.
 */
 #define CC_KdfConcatKeyDerivFunc(ZZSecret_ptr,ZZSecretSize,OtherInfo_ptr,kdfHashMode,KeyingData_ptr,KeyLenInBytes)\
-        CC_KdfKeyDerivFunc((ZZSecret_ptr),(ZZSecretSize),(OtherInfo_ptr),(kdfHashMode),CC_KDF_ConcatDerivMode,(KeyingData_ptr),(KeyLenInBytes))
+		CC_KdfKeyDerivFunc((ZZSecret_ptr),(ZZSecretSize),(OtherInfo_ptr),(kdfHashMode),CC_KDF_ConcatDerivMode,(KeyingData_ptr),(KeyLenInBytes))
 
 
 #ifdef __cplusplus

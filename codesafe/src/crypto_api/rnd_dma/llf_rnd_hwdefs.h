@@ -15,8 +15,8 @@ extern uint32_t g_MemOffsetAddr;
 
 /* The number of words generated in the entropy holding register (EHR)
    6 words (192 bit) according to HW implementation */
-#define LLF_RND_HW_TRNG_EHR_WIDTH_IN_WORDS  6
-#define LLF_RND_HW_TRNG_EHR_WIDTH_IN_BYTES  (LLF_RND_HW_TRNG_EHR_WIDTH_IN_WORDS * sizeof(uint32_t))
+#define LLF_RND_HW_TRNG_EHR_WIDTH_IN_WORDS	6
+#define LLF_RND_HW_TRNG_EHR_WIDTH_IN_BYTES	(LLF_RND_HW_TRNG_EHR_WIDTH_IN_WORDS * sizeof(uint32_t))
 #define LLF_RND_HW_TRNG_EHR_WIDTH_IN_BITS       (8*LLF_RND_HW_TRNG_EHR_WIDTH_IN_BYTES)
 
 /* ring oscillator length maximal level */
@@ -42,17 +42,17 @@ extern uint32_t g_MemOffsetAddr;
 
 /* HW_TRNG registers values on 800-90b mode */
 /*---------------------------------------*/
-#define LLF_RND_HW_DEBUG_CONTROL_VALUE_ON_TRNG90B_MODE  0x0000000A  /* bypass Von-Neumann balancer and autocorrelation test */
+#define LLF_RND_HW_DEBUG_CONTROL_VALUE_ON_TRNG90B_MODE  0x0000000A	/* bypass Von-Neumann balancer and autocorrelation test */
 #define LLF_RND_HW_DMA_EHR_SAMPLES_NUM_ON_TRNG90B_MODE  22UL
 
 /* HW RND DMA SRAM address offset, bytes */
 
-#define LLF_RND_HW_RND_DMA_ENABLE_VAL       1UL
-#define LLF_RND_HW_RND_DMA_DISABLE_VAL          0UL
-#define LLF_RND_HW_RND_SRC_ENABLE_VAL       1UL
-#define LLF_RND_HW_RND_SRC_DISABLE_VAL          0UL
-#define LLF_RND_HW_RND_CLK_ENABLE_VAL       1UL
-#define LLF_RND_HW_RND_CLK_DISABLE_VAL      0UL
+#define LLF_RND_HW_RND_DMA_ENABLE_VAL      	1UL
+#define LLF_RND_HW_RND_DMA_DISABLE_VAL      	0UL
+#define LLF_RND_HW_RND_SRC_ENABLE_VAL      	1UL
+#define LLF_RND_HW_RND_SRC_DISABLE_VAL      	0UL
+#define LLF_RND_HW_RND_CLK_ENABLE_VAL      	1UL
+#define LLF_RND_HW_RND_CLK_DISABLE_VAL     	0UL
 
 /* currently DX_RNG_ISR_RNG_WATCHDOG_BIT (bit 4 in RNG_ISR) is not defined in dx_rng.h */
 #define DX_RNG_ISR_RNG_WATCHDOG_BIT_SHIFT       0x4UL
@@ -68,7 +68,7 @@ extern uint32_t g_MemOffsetAddr;
 */
 #define LLF_RND_TRNG_MAX_TIME_SCALE         6   /* scaling down by 64 */
 #define LLF_RND_TRNG_MAX_TIME_COEFF       128   /* preferable set value as power of 2  */
-#define LLF_RND_TRNG_VON_NEUMAN_COEFF       4   /* increases time because part of bits are rejected */
+#define LLF_RND_TRNG_VON_NEUMAN_COEFF	    4   /* increases time because part of bits are rejected */
 
 
 /* RNG interrupt masks */
@@ -80,11 +80,11 @@ extern uint32_t g_MemOffsetAddr;
 #define LLF_RNG_INT_MASK_ON_FETRNG_MODE  0xFFFFFFEC
 
 /* TRNG errors mask - masking all bits besides TRNG errors: AutoCorr + VN +   *
-*  Watchdog                                       */
-#define LLF_RNG_ERRORS_MASK \
+*  Watchdog     							      */
+#define LLF_RNG_ERRORS_MASK	\
                 ((1UL<<DX_RNG_IMR_AUTOCORR_ERR_INT_MASK_BIT_SHIFT) | \
-         (1UL<<DX_RNG_IMR_VN_ERR_INT_MASK_BIT_SHIFT)       | \
-         (1UL<<DX_RNG_IMR_WATCHDOG_INT_MASK_BIT_SHIFT))
+		 (1UL<<DX_RNG_IMR_VN_ERR_INT_MASK_BIT_SHIFT)       | \
+		 (1UL<<DX_RNG_IMR_WATCHDOG_INT_MASK_BIT_SHIFT))
 
 /* auxilary defines */
 #define DX_SEP_HW_RESET_SEED_OVERRIDE_FLAG     0x2Ul

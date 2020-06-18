@@ -2,7 +2,7 @@
 HOST_PROJ_ROOT ?= $(shell pwd)/../../..
 
 TEST_AL_PATH = ../TestAL
-TEST_AL_GIT = 
+TEST_AL_GIT = ssh://gerrit.oss.arm.com/ssgcc/TestAL
 TEST_AL_GIT_TAG = TAG_TESTAL_VER_3.02
 
 
@@ -24,7 +24,8 @@ CLEAN_INTRMD_TARGETS = $(foreach module,$(INTEGRATION_TESTS),clean_intermediate_
 RELEASE_INTEGRATION_SCRIPTS = $(foreach script,$(TESTER_INTEGRATION_SCRIPTS),release_$(script))
 CLEAN_INTEGRATION_SCRIPTS = $(foreach script,$(TESTER_INTEGRATION_SCRIPTS),clean_$(script))
 
-#|--------------------------TestAL_3.02---------------------------------|
+# for sbrom use run_all_sbrom_integration_tests.sh otherwise use run_all_integration_tests.sh
+#|--------------------------TestAL_3.04---------------------------------|
 #|ConfNum|    OS    |    CPU     |      Toolchain      | Device | Board |
 #|----------------------------------------------------------------------|
 #|   1   |  linux   | cortex-a9  |      arm-xilinx     | target | Zynq  |
@@ -40,15 +41,15 @@ CLEAN_INTEGRATION_SCRIPTS = $(foreach script,$(TESTER_INTEGRATION_SCRIPTS),clean
 #|   11  | freertos | cortex-m33 |    arm-compiler-6   | target | MPS2+ |
 #|   12  | freertos | cortex-m3  |    arm-compiler-6   | target | MPS2+ |
 #|----------------------------------------------------------------------|
-# for sbrom use run_all_sbrom_integration_tests.sh otherwise use run_all_integration_tests.sh
-TEST_AL_CONFIG_NUM =$(if $(findstring cortex-a9,${ARM_CPU} ), 1,)
 
-ifeq ($(CROSS_COMPILE), armcc)
-TEST_AL_CONFIG_NUM = 4
+ifeq (cortex-a9, ${ARM_CPU})
+	TEST_AL_CONFIG_NUM =$(if $(findstring buildroot,${CROSS_COMPILE} ), 8 , 1)
+else ifeq ($(CROSS_COMPILE), armcc)
+	TEST_AL_CONFIG_NUM = 4
 else ifeq ($(CROSS_COMPILE), armclang)
-TEST_AL_CONFIG_NUM =$(if $(findstring cortex-m33,${ARM_CPU} ), 11 , 12)
+	TEST_AL_CONFIG_NUM =$(if $(findstring cortex-m33,${ARM_CPU} ), 11 , 12)
 else ifeq ($(CROSS_COMPILE), arm-none-eabi-)
-TEST_AL_CONFIG_NUM =$(if $(findstring cortex-m33,${ARM_CPU} ), 7 , 9)
+	TEST_AL_CONFIG_NUM =$(if $(findstring cortex-m33,${ARM_CPU} ), 7 , 9)
 endif
 
 default: build_test_al $(RELEASE_INTEGRATION_TESTS) $(RELEASE_INTEGRATION_SCRIPTS)

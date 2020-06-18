@@ -21,7 +21,7 @@ extern "C"
 /**
  * @brief The NVM_GetSwVersion function is a NVM interface function -
  *        The function retrieves the SW version from the SRAM/NVM.
- *    In case of OTP, we support up to 16 anti-rollback counters (taken from the certificate)
+ * 	  In case of OTP, we support up to 16 anti-rollback counters (taken from the certificate)
  *
  * @param[in] hwBaseAddress -  CryptoCell base address
  *

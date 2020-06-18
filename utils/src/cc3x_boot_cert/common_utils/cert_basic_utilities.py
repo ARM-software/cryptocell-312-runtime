@@ -13,6 +13,7 @@ import global_defines
 from global_defines import *
 from ctypes import *
 import binascii
+from pathlib import Path
 
 
 CURRENT_PATH = sys.path[0]
@@ -24,21 +25,22 @@ CURRENT_PATH = sys.path[0]
 
 # The function returns the path of the DLL - fixed path (relative to script path)
 def GetDLLPath(FileName):
-    
-    path = str()    
-    path = CURRENT_PATH    
+
+    path = str()
+    path = CURRENT_PATH
     # split according to dir names
     if sys.platform != "win32" :
-        path_div = "/"    
+        path_div = "/"
     else : #platform = win32
         path_div = "\\"
-    
+
     path_new = path + path_div + ".." + path_div
-        
-    path_new = path_new + FileName        
-    return path_new
+
+    absPath = str(Path(path_new).resolve())
+    absPath = absPath + path_div+ FileName
+    return absPath
 # End of GetDLLPath
-        
+
 # The function loads the crypto DLL and returns its handle
 def LoadDLLGetHandle():
     # Load the crypto libraries

@@ -29,7 +29,7 @@ typedef uint32_t tp_socket;
  * @TP_AF_INET - internet IP protocol
  */
 enum tp_sock_domain {
-    TP_AF_INET  = 1
+	TP_AF_INET	= 1
 };
 
 
@@ -39,8 +39,8 @@ enum tp_sock_domain {
  * @TP_SOCK_STREAM - stream (connection) socket
  */
 enum tp_sock_type {
-    TP_SOCK_DGRAM   = 1,
-    TP_SOCK_STREAM  = 2
+	TP_SOCK_DGRAM	= 1,
+	TP_SOCK_STREAM	= 2
 };
 
 /** test_pal_sock_protocol - protocol types
@@ -49,8 +49,8 @@ enum tp_sock_type {
  * @TP_IPPROTO_UDP - UDP socket
  */
 enum tp_sock_protocol {
-    TP_IPPROTO_TCP  = 1,
-    TP_IPPROTO_UDP  = 2
+	TP_IPPROTO_TCP	= 1,
+	TP_IPPROTO_UDP	= 2
 };
 
 /******************************************************************************/
@@ -70,8 +70,8 @@ enum tp_sock_protocol {
  * @return - 0 for success, 1 for failure.
  */
 uint32_t Test_PalSocket(tp_socket *s, enum tp_sock_domain domain,
-            enum tp_sock_type type, enum tp_sock_protocol protocol,
-            const uint32_t recvTimeout_ms);
+			enum tp_sock_type type, enum tp_sock_protocol protocol,
+			const uint32_t recvTimeout_ms);
 
 /******************************************************************************/
 /*
@@ -144,7 +144,7 @@ uint32_t Test_PalListen(tp_socket s, uint32_t backlog);
  * @return - 0 for success, 1 for failure.
  */
 uint32_t Test_PalAccept(tp_socket s, tp_socket *acptS, uint8_t *addr,
-             uint32_t *port);
+			 uint32_t *port);
 
 /******************************************************************************/
 /*
@@ -173,7 +173,7 @@ uint32_t Test_PalShutdown(tp_socket s);
  * @return - number of bytes sent for success, 0 for failure.
  */
 uint32_t Test_PalSend(tp_socket s, const uint8_t *buf,
-              size_t len);
+		      size_t len);
 
 /******************************************************************************/
 /**
@@ -189,7 +189,7 @@ uint32_t Test_PalSend(tp_socket s, const uint8_t *buf,
  * @return - number of bytes sent for success, 0 for failure.
  */
 uint32_t Test_PalSendTo(tp_socket s, const uint8_t *buf,
-            size_t len, const uint8_t *addr, uint32_t port);
+			size_t len, const uint8_t *addr, uint32_t port);
 
 /******************************************************************************/
 /**
@@ -207,7 +207,7 @@ uint32_t Test_PalSendTo(tp_socket s, const uint8_t *buf,
  * @return - number of bytes recv for success, 0 for failure.
  */
 uint32_t Test_PalRecvFrom(tp_socket s, const uint8_t *buf,
-            size_t len, uint8_t *addr, uint32_t *port);
+			size_t len, uint8_t *addr, uint32_t *port);
 
 /******************************************************************************/
 /**
@@ -223,7 +223,7 @@ uint32_t Test_PalRecvFrom(tp_socket s, const uint8_t *buf,
  * @return - number of bytes recv for success, 0 for failure.
  */
 uint32_t Test_PalRecv(tp_socket s, const uint8_t *buf,
-              size_t len);
+		      size_t len);
 
 /******************************************************************************/
 /**

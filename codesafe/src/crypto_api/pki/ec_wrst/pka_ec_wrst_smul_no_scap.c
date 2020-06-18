@@ -18,7 +18,7 @@
 #include "ec_wrst.h"
 #include "ec_wrst_error.h"
 #include "pka_ec_wrst.h"
-#include "pka_ec_wrst_glob_regs.h"
+#include "pka_ec_wrst_glob_regs.h" 
 
 
 //! RL Temporary for ECDSA Verify testing
@@ -33,7 +33,7 @@
 /*lint --e{801} */
 
 /* canceling the lint warning:
-Info 716: while(1) ... */
+Info 716: while(1) ... */ 
 /*lint --e{716} */
 
 extern const int8_t regTemps[PKA_MAX_COUNT_OF_PHYS_MEM_REGS];
@@ -43,19 +43,19 @@ extern const int8_t regTemps[PKA_MAX_COUNT_OF_PHYS_MEM_REGS];
 /**
  * @brief Divides a vector by 2 - in a secured way
  *
- *        The LSB of the vector is stored in the first cell in the array.
- *
+ *        The LSB of the vector is stored in the first cell in the array. 
+ *        
  *        for example:
  *
- *        a vector of 128 bit : the value is :
+ *        a vector of 128 bit : the value is : 
  *
- *        word[3] << 96 | word[2] << 64 ............ word[1] << 32 | word[0]
+ *        word[3] << 96 | word[2] << 64 ............ word[1] << 32 | word[0]  
  *
  * @return - no return value.
  */
 
 static void EcWrstDivideVectorBy2(uint32_t *pVecBuff, /*!< [in] Vector buffer. */
-    uint32_t SizeInWords)/*!< [in] Size of vecrot in Words. */
+	uint32_t SizeInWords)/*!< [in] Size of vecrot in Words. */
 {
         uint32_t i;
         uint32_t Temp;
@@ -78,18 +78,18 @@ static void EcWrstDivideVectorBy2(uint32_t *pVecBuff, /*!< [in] Vector buffer. *
 /***********    PkaScalarMultAff   function      **********************/
 /**
  * @brief Performs EC scalar multiplication p = k*p, not SCA-resistant
- *
+ *  
  *  Implemented the algorithm, enhanced by A.Klimov
- *
+ *  
  * @author reuvenl (03/19/2015)
- *
- * @return  - No return value.
+ *  
+ * @return  - No return value. 
  */
 /* static */ void PkaScalarMultAff(
               const uint32_t xr, const uint32_t yr, /*!< [in/out] Virtual registers containing coordinates of result EC point. */
               const char *k,  /*!< [in] Virtual registers containing scalar. */
               const uint32_t xp, const uint32_t yp) /*!< [in] Virtual registers containing coordinates of input EC point. */
-{
+{ 
         uint8_t tp = regTemps[14];
         uint8_t zr = regTemps[15];
         uint8_t tr = regTemps[16];
@@ -104,18 +104,18 @@ static void EcWrstDivideVectorBy2(uint32_t *pVecBuff, /*!< [in] Vector buffer. *
         //! RL may be changed to return error
         PKA_ASSERT(*k == '+', "*k == '+'\n");
 
-        PKA_COPY(LEN_ID_N_PKA_REG_BITS, xr, xp);
+        PKA_COPY(LEN_ID_N_PKA_REG_BITS, xr, xp); 
         PKA_COPY(LEN_ID_N_PKA_REG_BITS, yr, yp); // r = p
-        PKA_SET_VAL(zr, 1);
+        PKA_SET_VAL(zr, 1); 
         PKA_COPY(LEN_ID_N_PKA_REG_BITS, tr, ECC_REG_EC_A);
 
         while (*++k) {
                 if (*k == '0') {
-                        PkaDoubleMdf2Mdf(xr,yr,zr,tr, xr,yr,zr,tr);     // *k = '0'
+                        PkaDoubleMdf2Mdf(xr,yr,zr,tr, xr,yr,zr,tr);     // *k = '0' 
                 } else {
-                        PkaDoubleMdf2Jcb(xr,yr,zr, xr,yr,zr,tr);
+                        PkaDoubleMdf2Jcb(xr,yr,zr, xr,yr,zr,tr);         
                         if (*k == '+') {
-                                PkaAddJcbAfn2Mdf(xr,yr,zr,tr, xr,yr,zr, xp,yp); // *k = '+'
+                                PkaAddJcbAfn2Mdf(xr,yr,zr,tr, xr,yr,zr, xp,yp); // *k = '+' 
                         } else {
                                 PkaAddJcbAfn2Mdf(xr,yr,zr,tr, xr,yr,zr, xp,tp); // *k = '-'
                         }
@@ -131,18 +131,18 @@ static void EcWrstDivideVectorBy2(uint32_t *pVecBuff, /*!< [in] Vector buffer. *
 
 /***********    PkaBuildNaf   function      **********************/
 /**
- * @brief Transforms integer buffer K to NAF string.
- *
- * @author reuvenl (6/20/2014)
- *
- * @return  - On success CC_OK is returned, on failure an error code.
+ * @brief Transforms integer buffer K to NAF string. 
+ *  
+ * @author reuvenl (6/20/2014) 
+ * 
+ * @return  - On success CC_OK is returned, on failure an error code. 
  */
-/* static */CCError_t PkaBuildNaf(char **pNaf,     /*!< [out] Pointer to NAF key buffer (msb->lsb). */
-            uint32_t *pNafSz,  /*!< [in/out] size in bytes of the NAF output.
-                        Input - size of user given buffer, output - actual size of NAF key. */
+/* static */CCError_t PkaBuildNaf(char **pNaf, 	   /*!< [out] Pointer to NAF key buffer (msb->lsb). */
+			uint32_t *pNafSz,  /*!< [in/out] size in bytes of the NAF output. 
+						Input - size of user given buffer, output - actual size of NAF key. */
                         uint32_t *pK,      /*!< [in] Pointer to key buffer. */
-            uint32_t keySzBit) /*!< [in] Size of key in bits. */
-{
+			uint32_t keySzBit) /*!< [in] Size of key in bits. */
+{           
         CCError_t err = CC_OK;
         uint32_t wK, i = 0;
         char *p; /* a pointer to the current NAF digit */
@@ -160,7 +160,7 @@ static void EcWrstDivideVectorBy2(uint32_t *pVecBuff, /*!< [in] Vector buffer. *
         /* set initial values */
         *pNafSz = 0; /*NAF size in bytes*/
         p = *pNaf + keySzBit + 1; /* start from the last byte */
-        *p = 0;
+        *p = 0; 
         wK = CALC_FULL_32BIT_WORDS(keySzBit)/*+1*/; /*key size + extra word*/
 
         /* zeroing extra word of key buffer */
@@ -172,7 +172,7 @@ static void EcWrstDivideVectorBy2(uint32_t *pVecBuff, /*!< [in] Vector buffer. *
 
                 i++;
                 (*pNafSz)++;
-                --p;
+                --p; 
                 /* check overflow */
                 if (p < *pNaf) {
                         err = PKA_NAF_KEY_SIZE_ERROR;
@@ -193,7 +193,7 @@ static void EcWrstDivideVectorBy2(uint32_t *pVecBuff, /*!< [in] Vector buffer. *
                 }
 
                 EcWrstDivideVectorBy2(pK, wK+1); // k >>= 1
-                keySzBit--;
+                keySzBit--; 
 
                 /* if MSbit is zeroed set new size value */
                 wK = (CALC_FULL_32BIT_WORDS(keySzBit));
@@ -237,7 +237,7 @@ static CCError_t ScalarMultAff(
         uint32_t *kt = tmpBuff;
         char *naf;
         uint32_t pkaReqRegs = PKA_MAX_COUNT_OF_PHYS_MEM_REGS;
-            /* Define pka registers used*/
+	        /* Define pka registers used*/
         uint8_t  xp = regTemps[18];
         uint8_t  yp = regTemps[19];
         uint8_t  xr = regTemps[20];
@@ -248,10 +248,10 @@ static CCError_t ScalarMultAff(
         modSizeInWords = CALC_FULL_32BIT_WORDS(modSizeInBits);
         ordSizeInWords = CALC_FULL_32BIT_WORDS(domain->ordSizeInBits);
 
-    if ((ordSizeInWords > (CC_ECPKI_MODUL_MAX_LENGTH_IN_WORDS + 1)) ||
-        (modSizeInWords > CC_ECPKI_MODUL_MAX_LENGTH_IN_WORDS)) {
-        return ECWRST_SCALAR_MULT_INVALID_MOD_ORDER_SIZE_ERROR;
-    }
+	if ((ordSizeInWords > (CC_ECPKI_MODUL_MAX_LENGTH_IN_WORDS + 1)) ||
+	    (modSizeInWords > CC_ECPKI_MODUL_MAX_LENGTH_IN_WORDS)) {
+		return ECWRST_SCALAR_MULT_INVALID_MOD_ORDER_SIZE_ERROR;
+	}
 
         /* temp key buf + 1 word */
         kt[ordSizeInWords] = 0; kt[ordSizeInWords-1] = 0;
@@ -259,7 +259,7 @@ static CCError_t ScalarMultAff(
         /* Naf buffer */
         naf = (char*)(kt+ordSizeInWords+1);
         nafSz = (ordSizeInWords+1)*32; /*NAF size in bytes*/
-        CC_PalMemSet(naf, 0, nafSz);
+        CC_PalMemSet(naf, 0, nafSz); 
 
         /* build NAF */
         err = PkaBuildNaf(&naf, &nafSz, kt, kSizeBit);
@@ -267,7 +267,7 @@ static CCError_t ScalarMultAff(
                 goto End;
 
         /*  Init PKA for modular operations */
-        err = PkaInitAndMutexLock(modSizeInBits, &pkaReqRegs);
+        err = PkaInitAndMutexLock(modSizeInBits, &pkaReqRegs);  
         if (err != CC_OK) {
                 return err;
         }
@@ -275,26 +275,26 @@ static CCError_t ScalarMultAff(
         /*   Set data into PKA registers  */
         /* set EC parameters */
         PkaCopyDataIntoPkaReg(ECC_REG_N, 1, domain->ecP/*src_ptr*/, modSizeInWords);
-        PkaCopyDataIntoPkaReg(ECC_REG_NP, 1, ((EcWrstDomain_t*)&domain->llfBuff)->modTag,
+        PkaCopyDataIntoPkaReg(ECC_REG_NP, 1, ((EcWrstDomain_t*)&domain->llfBuff)->modTag, 
                                CC_PKA_BARRETT_MOD_TAG_BUFF_SIZE_IN_WORDS);
-        PkaCopyDataIntoPkaReg(ECC_REG_EC_A, 1, domain->ecA, modSizeInWords);
+        PkaCopyDataIntoPkaReg(ECC_REG_EC_A, 1, domain->ecA, modSizeInWords); 
         /* set point */
-        PkaCopyDataIntoPkaReg(xp, 1, bxp, modSizeInWords);
+        PkaCopyDataIntoPkaReg(xp, 1, bxp, modSizeInWords); 
         PkaCopyDataIntoPkaReg(yp, 1, byp, modSizeInWords);
 
         /* Call scalar mult */
         PkaScalarMultAff(xr, yr, naf,  xp,  yp);
 
         /*  Output data from PKA registers  */
-        PkaCopyDataFromPkaReg(bxr, modSizeInWords, xr);
-        PkaCopyDataFromPkaReg(byr, modSizeInWords, yr);
+        PkaCopyDataFromPkaReg(bxr, modSizeInWords, xr);        
+        PkaCopyDataFromPkaReg(byr, modSizeInWords, yr);        
 
         PkaFinishAndMutexUnlock(pkaReqRegs);
 
  End:
 
-        /* zeroing of kt and naf buffers */
-        // RL NAF size according to NAF representation
+        /* zeroing of kt and naf buffers */  
+        // RL NAF size according to NAF representation 
         CC_PalMemSetZero(tmpBuff, (ordSizeInWords+1)*sizeof(uint32_t) + (ordSizeInWords+1)*32/*NAF buff size in bytes*/);
         return err;
 }

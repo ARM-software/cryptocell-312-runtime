@@ -1,0 +1,24 @@
+all: check_var print_var
+
+check_var: \
+guard-KERNEL_DIR \
+guard-ARM_CPU \
+guard-ARCH \
+guard-COMPILER_TYPE \
+guard-CROSS_COMPILE
+
+guard-%:
+	@ if [ "${${*}}" = "" ]; then \
+	echo -e  "\033[41m $* is undefined \033[0m"; \
+	exit 1; \
+	fi
+
+print_var:
+	@echo -e "\033[42m*********************************************\033[0m" ;\
+	 echo -e "\033[42m KERNEL_DIR[$(KERNEL_DIR)] \033[0m" ;\
+	 echo -e "\033[42m ARM_CPU[$(ARM_CPU)] \033[0m" ;\
+	 echo -e "\033[42m ARCH[$(ARCH)] \033[0m" ;\
+	 echo -e "\033[42m COMPILER_TYPE[$(COMPILER_TYPE)] \033[0m" ;\
+	 echo -e "\033[42m CROSS_COMPILE[$(CROSS_COMPILE)] \033[0m" ;\
+	 echo -e "\033[42m*********************************************\033[0m" ;
+

@@ -28,10 +28,10 @@ width of bits prefix and correlation table size */
 
 /* macro for calculation max. allowed time for */
 #define LLF_RND_CalcMaxTrngTime(ehrSamples, SubSamplingRatio) \
-    (((ehrSamples) * LLF_RND_TRNG_MAX_TIME_COEFF * \
-    LLF_RND_TRNG_VON_NEUMAN_COEFF * \
-    LLF_RND_HW_TRNG_EHR_WIDTH_IN_BITS * \
-    (SubSamplingRatio)) >> LLF_RND_TRNG_MAX_TIME_SCALE)
+	(((ehrSamples) * LLF_RND_TRNG_MAX_TIME_COEFF * \
+	LLF_RND_TRNG_VON_NEUMAN_COEFF * \
+	LLF_RND_HW_TRNG_EHR_WIDTH_IN_BITS * \
+	(SubSamplingRatio)) >> LLF_RND_TRNG_MAX_TIME_SCALE)
 
 /* Macro defining Multiplication  using 16x16 multiplier  */
 #define    Mult16x16(a, b) (((a)&0xffff)*((b)&0xffff))
@@ -99,16 +99,16 @@ CCError_t LLF_RND_GetEntropySourceSize(
  *              - in "swee" mode, sampling counter limit is set to a low value -
  *                typically 1 or 2.
  * @param[in] MaxTrngTimeCoeff - coefficient defining relation between maximal allowed and expected
- *                  time for random generation (in percents).
+ *  				time for random generation (in percents).
  *
  * @return CCError_t - CC_OK
  */
  CCError_t  LLF_RND_GetRngParams(
-            uint32_t  *KeySizeWords,
-            uint32_t  *TrngMode,
-            uint32_t  *RoscsAllowed,
-            uint32_t  *SampleCount,
-            uint32_t  *MaxTrngTimeCoeff);
+			uint32_t  *KeySizeWords,
+			uint32_t  *TrngMode,
+			uint32_t  *RoscsAllowed,
+			uint32_t  *SampleCount,
+			uint32_t  *MaxTrngTimeCoeff);
 
 
 /************************************************************************************/
@@ -129,8 +129,8 @@ CCError_t LLF_RND_GetFastestRosc(
                                          uint32_t *rosc_ptr    /*in/out*/);
 
 CCError_t LLF_RND_GetRoscSampleCnt(
-                     uint32_t rosc,
-                     CCRndParams_t *pTrngParams);
+					 uint32_t rosc,
+					 CCRndParams_t *pTrngParams);
 
 CCError_t LLF_RND_WaitRngInterrupt(uint32_t *isr_ptr);
 
@@ -141,11 +141,11 @@ uint32_t LLF_RND_GetCountRoscs(
 void LLF_RND_TurnOffTrng(void);
 
 CCError_t LLF_RND_EntropyEstimateFull(
-              uint32_t *ramAddr,      /*in*/
-              uint32_t  blockSizeWords, /*in*/
-              uint32_t  countBlocks,      /*in*/
-              uint32_t *entrSize_ptr,     /*out*/
-              uint32_t  *rndWorkBuff_ptr);   /*in*/
+		      uint32_t *ramAddr,	  /*in*/
+		      uint32_t  blockSizeWords, /*in*/
+		      uint32_t  countBlocks,	  /*in*/
+		      uint32_t *entrSize_ptr,	  /*out*/
+		      uint32_t  *rndWorkBuff_ptr);   /*in*/
 
 /**
 * @brief: The function performs CPRNGT (Continued PRNG Test) according
@@ -163,9 +163,9 @@ CCError_t LLF_RND_EntropyEstimateFull(
 *                        value MODULE_* as defined in cc_error.h
 */
 CCError_t LLF_RND_RndCprngt(uint8_t            *prev_ptr,        /*in*/
-                  uint8_t            *buff_ptr,        /*in*/
-                  uint8_t            *last_ptr,        /*in*/
-                  int32_t             countBlocks);   /*in*/
+				  uint8_t            *buff_ptr,        /*in*/
+				  uint8_t            *last_ptr,        /*in*/
+				  int32_t             countBlocks);   /*in*/
 
 
 

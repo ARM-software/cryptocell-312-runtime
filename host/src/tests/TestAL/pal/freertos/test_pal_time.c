@@ -17,11 +17,11 @@
 /******************************************************************************/
 void Test_PalDelay(const uint32_t usec)
 {
-    vTaskDelay(usec / (1000 * portTICK_PERIOD_MS));
+	vTaskDelay(usec / (1000 * portTICK_PERIOD_MS));
 }
 
 /******************************************************************************/
 uint32_t Test_PalGetTimestamp(void)
 {
-    return (xTaskGetTickCount() * portTICK_PERIOD_MS);
+	return (xTaskGetTickCount() * portTICK_PERIOD_MS);
 }

@@ -36,17 +36,17 @@ extern const getDomainFuncP ecDomainsFuncP[CC_ECPKI_DomainID_OffMode];
 /**
  @brief    the function returns the domain pointer
  @return   return domain pointer
-
+			 
 */
 const CCEcpkiDomain_t *CC_EcpkiGetEcDomain(CCEcpkiDomainID_t domainId)
 {
-    if (domainId >= CC_ECPKI_DomainID_OffMode) {
-        return NULL;
-    }
+	if (domainId >= CC_ECPKI_DomainID_OffMode) {
+		return NULL;
+	}
 
-    if (ecDomainsFuncP[domainId] == NULL) {
-        return NULL;
-    }
+	if (ecDomainsFuncP[domainId] == NULL) {
+		return NULL;
+	}
 
-    return ((ecDomainsFuncP[domainId])());
+	return ((ecDomainsFuncP[domainId])());
 }

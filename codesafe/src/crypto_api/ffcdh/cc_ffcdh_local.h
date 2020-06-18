@@ -43,12 +43,12 @@ extern "C"
 
 /* All validation bits for Private/Public Keys joined together */
 #define FFCDH_CTX_VALID_TAG_ALL_KEYS_BITS          \
-    (FFCDH_CTX_VALID_TAG_USER_STAT_KEY_BIT  || \
-    FFCDH_CTX_VALID_TAG_USER_EPHEM_KEY_BIT  || \
-    FFCDH_CTX_VALID_TAG_USER_NONCE_BIT      || \
-    FFCDH_CTX_VALID_TAG_PARTN_STAT_KEY_BIT  || \
-    FFCDH_CTX_VALID_TAG_PARTN_EPHEM_KEY_BIT || \
-    FFCDH_CTX_VALID_TAG_PARTN_NONCE_BIT)
+	(FFCDH_CTX_VALID_TAG_USER_STAT_KEY_BIT  || \
+	FFCDH_CTX_VALID_TAG_USER_EPHEM_KEY_BIT  || \
+	FFCDH_CTX_VALID_TAG_USER_NONCE_BIT      || \
+	FFCDH_CTX_VALID_TAG_PARTN_STAT_KEY_BIT  || \
+	FFCDH_CTX_VALID_TAG_PARTN_EPHEM_KEY_BIT || \
+	FFCDH_CTX_VALID_TAG_PARTN_NONCE_BIT)
 
 /*!< DH Context Validation Tags for appropriate steps of functions flow       *
 * according to description in the CCDhCtx_t structure definition.             */
@@ -68,45 +68,45 @@ extern "C"
  *  is needed according to Scheme, user party (U,V) and confirmation role */
 typedef enum
 {
-    FFCDH_DO_CTX_INIT,             /*!< do DH context init */
-    FFCDH_DO_SCHEME_PARAMS,        /*!< insert Scheme parameters */
-    FFCDH_DO_DOMAIN,               /*!< insert Domain parameters */
-    FFCDH_DO_USER_STAT_KEY,        /*!< user should have static key */
-    FFCDH_DO_USER_EPHEM_KEY,       /*!< user should have ephemeral key */
-    FFCDH_DO_USER_NONCE,           /*!< user should have Nonce key */
-    FFCDH_DO_PARTN_STAT_KEY,       /*!< partner should have static key */
-    FFCDH_DO_PARTN_EPHEM_KEY,      /*!< partner should have static key */
-    FFCDH_DO_PARTN_NONCE,          /*!< partner should have static key */
-    FFCDH_DO_CONFIRM_PROVID,       /*!< user is confirm provider */
-    FFCDH_DO_CONFIRM_RECIP,        /*!< user is confirm recipient */
+	FFCDH_DO_CTX_INIT,             /*!< do DH context init */
+	FFCDH_DO_SCHEME_PARAMS,        /*!< insert Scheme parameters */
+	FFCDH_DO_DOMAIN,               /*!< insert Domain parameters */
+	FFCDH_DO_USER_STAT_KEY,        /*!< user should have static key */
+	FFCDH_DO_USER_EPHEM_KEY,       /*!< user should have ephemeral key */
+	FFCDH_DO_USER_NONCE,           /*!< user should have Nonce key */
+	FFCDH_DO_PARTN_STAT_KEY,       /*!< partner should have static key */
+	FFCDH_DO_PARTN_EPHEM_KEY,      /*!< partner should have static key */
+	FFCDH_DO_PARTN_NONCE,          /*!< partner should have static key */
+	FFCDH_DO_CONFIRM_PROVID,       /*!< user is confirm provider */
+	FFCDH_DO_CONFIRM_RECIP,        /*!< user is confirm recipient */
 
-    FFCDH_DO_OFF_MODE,             /*!< not allowed value */
-    FFCDH_DO_PARAMS_LAST = 0x7FFFFFFF
+	FFCDH_DO_OFF_MODE,             /*!< not allowed value */
+	FFCDH_DO_PARAMS_LAST = 0x7FFFFFFF
 } FfcDhSchemeInfoBits_t;
 
 
 /* Define DH Scheme Info bits for given FFCDH Scheme , user party (U,V) and confirmation role */
 /* Scheme: dhHybrid1 */
 #define FFCDH_HYBRID1_U  ((1UL<<FFCDH_DO_USER_STAT_KEY)||(1<<FFCDH_DO_USER_EPHEM_KEY)|| \
-                      (1<<FFCDH_DO_PARTN_STAT_KEY)||(1<<FFCDH_DO_PARTN_EPHEM_KEY))
+	                  (1<<FFCDH_DO_PARTN_STAT_KEY)||(1<<FFCDH_DO_PARTN_EPHEM_KEY))
 #define FFCDH_HYBRID1_V FFCDH_HYBRID1_U
 /* Scheme: dhEphem: NoConfirm */
 #define FFCDH_EPHEM_U  ((1UL<<FFCDH_DO_USER_STAT_KEY)||(1<<FFCDH_DO_USER_EPHEM_KEY)|| \
-                    (1<<FFCDH_DO_PARTN_STAT_KEY)||(0<<FFCDH_DO_PARTN_EPHEM_KEY))
+	                (1<<FFCDH_DO_PARTN_STAT_KEY)||(0<<FFCDH_DO_PARTN_EPHEM_KEY))
 #define FFCDH_EPHEM_V  FFCDH_EPHEM_U
 /* Scheme: dhHybridOneFlow_U */
 #define FFCDH_HYBRID_ONE_FLOW_U  ((1UL<<FFCDH_DO_USER_STAT_KEY)||(1<<FFCDH_DO_USER_EPHEM_KEY)|| \
-                              (1<<FFCDH_DO_PARTN_STAT_KEY)||(0<<FFCDH_DO_PARTN_EPHEM_KEY))
+	                          (1<<FFCDH_DO_PARTN_STAT_KEY)||(0<<FFCDH_DO_PARTN_EPHEM_KEY))
 #define FFCDH_HYBRID_ONE_FLOW_V  ((1UL<<FFCDH_DO_USER_STAT_KEY)||(0<<FFCDH_DO_USER_EPHEM_KEY)|| \
-                              (1<<FFCDH_DO_PARTN_STAT_KEY)||(1<<FFCDH_DO_PARTN_EPHEM_KEY))
+	                          (1<<FFCDH_DO_PARTN_STAT_KEY)||(1<<FFCDH_DO_PARTN_EPHEM_KEY))
 /* Scheme: dhOneFlow_U */
 #define FFCDH_ONE_FLOW_U  ((0UL<<FFCDH_DO_USER_STAT_KEY)||(1<<FFCDH_DO_USER_EPHEM_KEY)|| \
-                       (1<<FFCDH_DO_PARTN_STAT_KEY)||(0<<FFCDH_DO_PARTN_EPHEM_KEY))
+	                   (1<<FFCDH_DO_PARTN_STAT_KEY)||(0<<FFCDH_DO_PARTN_EPHEM_KEY))
 #define FFCDH_ONE_FLOW_V  ((1UL<<FFCDH_DO_USER_STAT_KEY)||(0<<FFCDH_DO_USER_EPHEM_KEY)|| \
-                       (0<<FFCDH_DO_PARTN_STAT_KEY)||(1<<FFCDH_DO_PARTN_EPHEM_KEY))
+	                   (0<<FFCDH_DO_PARTN_STAT_KEY)||(1<<FFCDH_DO_PARTN_EPHEM_KEY))
 /* Scheme: dhStatic */
 #define FFCDH_STATIC_U  ((1UL<<FFCDH_DO_USER_STAT_KEY)||(0<<FFCDH_DO_USER_EPHEM_KEY)|| \
-                      (1<<FFCDH_DO_PARTN_STAT_KEY)||(0<<FFCDH_DO_PARTN_EPHEM_KEY))
+	                  (1<<FFCDH_DO_PARTN_STAT_KEY)||(0<<FFCDH_DO_PARTN_EPHEM_KEY))
 #define FFCDH_STATIC_V  FFCDH_STATIC_U
 #endif
 
@@ -117,18 +117,18 @@ typedef enum
  * 2-bytes big endianness counter, and then promote the pointer by 2 bytes.
  * Note: Dst buffer should be given by pointer (not by buffer name). */
 #define FFCDH_SET_LENGTH(ptr, len) \
-    (ptr)[0] = ((len)>>1) & 0xFF; (ptr)[1] = (len) & 0xFF; \
-    (ptr) += CC_FFCDH_LENGTH_COUNTER_SIZE_IN_BYTES;
+	(ptr)[0] = ((len)>>1) & 0xFF; (ptr)[1] = (len) & 0xFF; \
+	(ptr) += CC_FFCDH_LENGTH_COUNTER_SIZE_IN_BYTES;
 /* The macro reads length (2 bytes BE number) from bytes-buffer into uint16 value
  * and promotes pointer to next buffer (sub-entry).
  * Note: Dst buffer should be given by pointer (not by buffer name). */
 #define FFCDH_GET_LENGTH(ptr) (((uint16_t)((ptr)[0])<< 8) | (ptr)[1]); \
-    (ptr) += CC_FFCDH_LENGTH_COUNTER_SIZE_IN_BYTES;
+	(ptr) += CC_FFCDH_LENGTH_COUNTER_SIZE_IN_BYTES;
 #define FFCDH_SET_OFFSET(prevOffset, prevDataSize)  ((prevOffset) + (prevDataSize) + CC_FFCDH_LENGTH_COUNTER_SIZE_IN_BYTES)
 /* macro sets offset depending on condition value which shall be 1 or 0. If it is 1,
  * then prevDataSize is added to offset, else - not added. All sizes are uint16_t values. */
 #define FFCDH_COND_SET_OFFSET(prevOffset, prevDataSize, conditionVal)  \
-    ((prevOffset) + CC_FFCDH_LENGTH_COUNTER_SIZE_IN_BYTES + ((prevDataSize) & (uint16_t)((0UL - (conditionVal)) & 0xFFFFUL)))
+	((prevOffset) + CC_FFCDH_LENGTH_COUNTER_SIZE_IN_BYTES + ((prevDataSize) & (uint16_t)((0UL - (conditionVal)) & 0xFFFFUL)))
 
 /* Macros for checking DH Context validation tag according to
  * DH functions flow stage. In other words, check that all required
@@ -140,9 +140,9 @@ typedef enum
 /* enumerator, defining parameters */
 typedef enum
 {
-    FFCDH_NO_PARAM,
-    FFCDH_DO_PARAM,
-    FFCDH_PARAM_DONE
+	FFCDH_NO_PARAM,
+	FFCDH_DO_PARAM,
+	FFCDH_PARAM_DONE
 }FfcDhParamsSetting_t;
 
 
@@ -155,14 +155,14 @@ typedef enum
     needed and if 0 - not. */
 typedef struct
 {
-    uint32_t doUserStatKey;
-    uint32_t doUserEphemKey;
-    uint32_t doUserNonce;
-    uint32_t doPartnerStatKey;
-    uint32_t doPartnerEphemKey;
-    uint32_t doPartnerNonce;
-    uint32_t doConfirmProvid;
-    uint32_t doConfirmRecip;
+	uint32_t doUserStatKey;
+	uint32_t doUserEphemKey;
+	uint32_t doUserNonce;
+	uint32_t doPartnerStatKey;
+	uint32_t doPartnerEphemKey;
+	uint32_t doPartnerNonce;
+	uint32_t doConfirmProvid;
+	uint32_t doConfirmRecip;
 
 }FfcDhSchemeInfo_t;
 
@@ -176,33 +176,33 @@ typedef struct
  *        - size of the structure - 21 word = 84 bytes. */
 typedef struct
 {
-    uint32_t  kdfCounterOffset;        /*!< KDF counter offset */
-    uint32_t  sharedSecrOffset;        /*!< offset of the Algorithm ID data */
+	uint32_t  kdfCounterOffset;        /*!< KDF counter offset */
+	uint32_t  sharedSecrOffset;        /*!< offset of the Algorithm ID data */
 
-    /* Other Info Entries */
-    uint32_t  algIdOffset;             /*!< offset of the Algorithm ID data */
-    uint32_t  userIdOffset;            /*!< offset of the userIdOffset = userInfo */
-    uint32_t  userStatPublKeyOffset;   /*!< offset of the static public key. */
-    uint32_t  userEphemPublKeyOffset;  /*!< offset of the ephemeral key. */
-    uint32_t  userNonceOffset;         /*!< offset of nonce (if present) */
-    uint32_t  userOtherDataOffset;     /*!< offset of user other (additional) data */
+	/* Other Info Entries */
+	uint32_t  algIdOffset;             /*!< offset of the Algorithm ID data */
+	uint32_t  userIdOffset;            /*!< offset of the userIdOffset = userInfo */
+	uint32_t  userStatPublKeyOffset;   /*!< offset of the static public key. */
+	uint32_t  userEphemPublKeyOffset;  /*!< offset of the ephemeral key. */
+	uint32_t  userNonceOffset;         /*!< offset of nonce (if present) */
+	uint32_t  userOtherDataOffset;     /*!< offset of user other (additional) data */
 
-    uint32_t  partnIdOffset;           /*!< offset of the partnIdOffset = partnInfo */
-    uint32_t  partnStatPublKeyOffset;  /*!< offset of the static public key. */
-    uint32_t  partnEphemPublKeyOffset; /*!< offset of the ephemeral key. */
-    uint32_t  partnNonceOffset;        /*!< offset of nonce (if present) */
-    uint32_t  partnOtherDataOffset;    /*!< offset of partner other (additional) data */
+	uint32_t  partnIdOffset;           /*!< offset of the partnIdOffset = partnInfo */
+	uint32_t  partnStatPublKeyOffset;  /*!< offset of the static public key. */
+	uint32_t  partnEphemPublKeyOffset; /*!< offset of the ephemeral key. */
+	uint32_t  partnNonceOffset;        /*!< offset of nonce (if present) */
+	uint32_t  partnOtherDataOffset;    /*!< offset of partner other (additional) data */
 
-    uint32_t  suppPublInfoOffset;      /*!< offset of supplied public Info data */
-    uint32_t  suppPrivInfoOffset;      /*!< offset of supplied private Info data */
+	uint32_t  suppPublInfoOffset;      /*!< offset of supplied public Info data */
+	uint32_t  suppPrivInfoOffset;      /*!< offset of supplied private Info data */
 
-    /* data entries sizes in bytes */
-    uint32_t  sharedSecrSize;          /*!< size of the Algorithm ID data */
-    uint32_t  algIdSize;               /*!< offset of the Algorithm ID data */
-    uint32_t  userInfoSize;            /*!< full size of user data */
-    uint32_t  partnInfoSize;           /*!< full size of partner data */
-    uint32_t  suppPublInfoSize;        /*!< size of supplied public Info data */
-    uint32_t  suppPrivInfoSize;        /*!< size of supplied private Info data */
+	/* data entries sizes in bytes */
+	uint32_t  sharedSecrSize;          /*!< size of the Algorithm ID data */
+	uint32_t  algIdSize;               /*!< offset of the Algorithm ID data */
+	uint32_t  userInfoSize;            /*!< full size of user data */
+	uint32_t  partnInfoSize;           /*!< full size of partner data */
+	uint32_t  suppPublInfoSize;        /*!< size of supplied public Info data */
+	uint32_t  suppPrivInfoSize;        /*!< size of supplied private Info data */
 
 }FfcDhSchemeDataOffsets_t;
 

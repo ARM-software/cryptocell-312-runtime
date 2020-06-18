@@ -28,29 +28,29 @@ extern "C"
 
 /*  NOTE: make sure struct size equals to CC_AESCCM_USER_CTX_SIZE_IN_WORDS */
 typedef struct  AesCcmContext_t {
-    /* IV buffer */
-    uint32_t ivBuf[AES_IV_SIZE_WORDS];
-    /* AES max key size supported is 256 bit */
-    uint32_t keyBuf[AES_256_BIT_KEY_SIZE_WORDS];
-    /* AES counter for CTR mode */
-    uint32_t ctrStateBuf[AES_IV_SIZE_WORDS];
-    /* scratch buffer for internal use */
-    uint8_t tempBuff[CC_AES_BLOCK_SIZE_IN_BYTES];
-    /* mode: CBC_MAC, CTR, CCMAPD, CCMAPE */
-    aesMode_t mode;
-    /* keySize: 128, 192, 256 */
-    keySizeId_t keySizeId;
-    /* Decrypt / Encrypt */
-    cryptoDirection_t dir;
-    /* nonce size */
-    uint8_t sizeOfN;
-    /* T mac size */
-    uint8_t sizeOfT;
+	/* IV buffer */
+	uint32_t ivBuf[AES_IV_SIZE_WORDS];
+	/* AES max key size supported is 256 bit */
+	uint32_t keyBuf[AES_256_BIT_KEY_SIZE_WORDS];
+	/* AES counter for CTR mode */
+	uint32_t ctrStateBuf[AES_IV_SIZE_WORDS];
+	/* scratch buffer for internal use */
+	uint8_t tempBuff[CC_AES_BLOCK_SIZE_IN_BYTES];
+	/* mode: CBC_MAC, CTR, CCMAPD, CCMAPE */
+	aesMode_t mode;
+	/* keySize: 128, 192, 256 */
+	keySizeId_t keySizeId;
+	/* Decrypt / Encrypt */
+	cryptoDirection_t dir;
+	/* nonce size */
+	uint8_t	sizeOfN;
+	/* T mac size */
+	uint8_t	sizeOfT;
 }AesCcmContext_t;
 
 
 /******************************************************************************
-*               FUNCTION PROTOTYPES
+*				FUNCTION PROTOTYPES
 ******************************************************************************/
 
 /*!

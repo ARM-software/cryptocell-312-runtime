@@ -22,10 +22,10 @@
 #include "cc_int_general_defs.h"
 
 #define SET_ZEROS(buff, size) {\
-    uint32_t i = 0;\
-    for (i = 0; i< size; i++) {\
-        buff[i] = 0x0;\
-    }\
+	uint32_t i = 0;\
+	for (i = 0; i< size; i++) {\
+		buff[i] = 0x0;\
+	}\
 }
 
 
@@ -33,7 +33,7 @@ extern CC_PalMutex CCSymCryptoMutex;
 
 
 /******************************************************************************
-*               PRIVATE FUNCTIONS
+*				PRIVATE FUNCTIONS
 ******************************************************************************/
 
 /* Note: InitAes is private function and it is called only by the driver! */
@@ -54,7 +54,7 @@ static drvError_t InitAes(AesContext_t *aesCtx)
         case CIPHER_CBC:
         case CIPHER_CTR:
         case CIPHER_CBC_MAC:
-    case CIPHER_CMAC:
+	case CIPHER_CMAC:
         case CIPHER_OFB:
                 break;
         default:
@@ -62,19 +62,19 @@ static drvError_t InitAes(AesContext_t *aesCtx)
         }
 
         /* verify aes valid dir */
-        if ( (aesCtx->dir != CRYPTO_DIRECTION_ENCRYPT) &&
+        if ( (aesCtx->dir != CRYPTO_DIRECTION_ENCRYPT) && 
              (aesCtx->dir != CRYPTO_DIRECTION_DECRYPT) ) {
                 return AES_DRV_ILLEGAL_OPERATION_DIRECTION_ERROR;
         }
 
         /* verify aes valid input addr type */
-        if ( (aesCtx->inputDataAddrType != SRAM_ADDR) &&
+        if ( (aesCtx->inputDataAddrType != SRAM_ADDR) && 
              (aesCtx->inputDataAddrType != DLLI_ADDR) ) {
                 return AES_DRV_ILLEGAL_INPUT_ADDR_MEM_ERROR;
         }
 
         /* verify aes valid output addr type for ecb, cbc, ctr */
-        if ( (aesCtx->outputDataAddrType != SRAM_ADDR) &&
+        if ( (aesCtx->outputDataAddrType != SRAM_ADDR) && 
              (aesCtx->outputDataAddrType != DLLI_ADDR) ) {
                 return AES_DRV_ILLEGAL_OUTPUT_ADDR_MEM_ERROR;
         }
@@ -87,9 +87,9 @@ static drvError_t InitAes(AesContext_t *aesCtx)
 
         /* mask dma interrupts which are not required */
         irrVal = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, HOST_IMR));
-        CC_REG_FLD_SET(HOST_RGF, HOST_IMR, SRAM_TO_DIN_MASK, irrVal, 1);
-        CC_REG_FLD_SET(HOST_RGF, HOST_IMR, DOUT_TO_SRAM_MASK, irrVal, 1);
-        CC_REG_FLD_SET(HOST_RGF, HOST_IMR, MEM_TO_DIN_MASK, irrVal, 1);
+        CC_REG_FLD_SET(HOST_RGF, HOST_IMR, SRAM_TO_DIN_MASK, irrVal, 1);             
+        CC_REG_FLD_SET(HOST_RGF, HOST_IMR, DOUT_TO_SRAM_MASK, irrVal, 1);              
+        CC_REG_FLD_SET(HOST_RGF, HOST_IMR, MEM_TO_DIN_MASK, irrVal, 1);              
         CC_REG_FLD_SET(HOST_RGF, HOST_IMR, DOUT_TO_MEM_MASK, irrVal, 1);
         CC_REG_FLD_SET(HOST_RGF, HOST_IMR, SYM_DMA_COMPLETED_MASK, irrVal, 0);
         CC_HalMaskInterrupt(irrVal);
@@ -97,29 +97,29 @@ static drvError_t InitAes(AesContext_t *aesCtx)
         /* configure DIN-AES-DOUT */
         CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, CRYPTO_CTL) ,CONFIG_DIN_AES_DOUT_VAL);
 
-    /* Zero AES_REMAINING_BYTES */
-    CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_REMAINING_BYTES) ,0);
+	/* Zero AES_REMAINING_BYTES */
+	CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_REMAINING_BYTES) ,0);
 
-    /* configure AES direction (in case of CMAC - force only encrypt) */
-    if ((aesCtx->mode == CIPHER_CBC_MAC) || (aesCtx->mode == CIPHER_CMAC))
-        dir = CRYPTO_DIRECTION_ENCRYPT;
-    else
-        dir = aesCtx->dir;
-    CC_REG_FLD_SET(HOST_RGF, AES_CONTROL, DEC_KEY0, aesCtrl, dir);
+	/* configure AES direction (in case of CMAC - force only encrypt) */
+	if ((aesCtx->mode == CIPHER_CBC_MAC) || (aesCtx->mode == CIPHER_CMAC))
+		dir = CRYPTO_DIRECTION_ENCRYPT;
+	else
+		dir = aesCtx->dir;
+	CC_REG_FLD_SET(HOST_RGF, AES_CONTROL, DEC_KEY0, aesCtrl, dir);
 
-    /* configure AES mode */
-    CC_REG_FLD_SET(HOST_RGF, AES_CONTROL, MODE_KEY0, aesCtrl, aesCtx->mode);
-    switch (aesCtx->keySizeId) {
+	/* configure AES mode */
+	CC_REG_FLD_SET(HOST_RGF, AES_CONTROL, MODE_KEY0, aesCtrl, aesCtx->mode);
+	switch (aesCtx->keySizeId) {
         case KEY_SIZE_128_BIT:
         case KEY_SIZE_192_BIT:
         case KEY_SIZE_256_BIT:
                 /* NK_KEY0 and NK_KEY1 are configured, only NK_KEY0 is in use (no tunneling in cc3x)*/
-                CC_REG_FLD_SET(HOST_RGF, AES_CONTROL, NK_KEY0, aesCtrl, aesCtx->keySizeId);
+                CC_REG_FLD_SET(HOST_RGF, AES_CONTROL, NK_KEY0, aesCtrl, aesCtx->keySizeId);   
                 break;
         default:
                 return AES_DRV_ILLEGAL_KEY_SIZE_ERROR;
         }
-    CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_CONTROL) ,aesCtrl);
+	CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_CONTROL) ,aesCtrl);
 
         /* initiate CMAC sub-keys calculation */
         if (aesCtx->mode == CIPHER_CMAC) {
@@ -304,15 +304,15 @@ static drvError_t finalizeCmac(AesContext_t *aesCtx, CCBuffInfo_t *pInputBuffInf
         }
 
 
-    if (((aesCtx->inputDataAddrType == SRAM_ADDR) && (blockSize >= CC_SRAM_MAX_SIZE)) ||
-        ((aesCtx->inputDataAddrType == DLLI_ADDR) && (blockSize >= DLLI_MAX_BUFF_SIZE))) {
+	if (((aesCtx->inputDataAddrType == SRAM_ADDR) && (blockSize >= CC_SRAM_MAX_SIZE)) ||
+	    ((aesCtx->inputDataAddrType == DLLI_ADDR) && (blockSize >= DLLI_MAX_BUFF_SIZE))) {
                 return AES_DRV_ILLEGAL_MEM_SIZE_ERROR;
-    }
+	}
 
-    // In ARM CryptoCell 3xx we can't have last block == 0, since as NIST 800-38B says:
-    // "the final block in the partition is replaced with the exclusive-OR of the final block with the first subkey"
-    // In ARM CryptoCell 3xx we enable/disable the AES clock for every block, so HW doesn't keep the first key and nither does the driver.
-    // so we dont have the first key and we cant xor with it.
+	// In ARM CryptoCell 3xx we can't have last block == 0, since as NIST 800-38B says:
+	// "the final block in the partition is replaced with the exclusive-OR of the final block with the first subkey"
+	// In ARM CryptoCell 3xx we enable/disable the AES clock for every block, so HW doesn't keep the first key and nither does the driver.
+	// so we dont have the first key and we cant xor with it.
         if ((blockSize == 0) && (aesCtx->dataBlockType != FIRST_BLOCK)) {
                 return AES_DRV_ILLEGAL_MEM_SIZE_ERROR;
         }
@@ -346,7 +346,7 @@ static drvError_t finalizeCmac(AesContext_t *aesCtx, CCBuffInfo_t *pInputBuffInf
 
         drvRc = LoadIVState(aesCtx);
         if (drvRc != 0){
-            goto FinishExit;
+        	goto FinishExit;
         }
 
         /* initiate CMAC sub-keys calculation */
@@ -378,7 +378,7 @@ static drvError_t finalizeCmac(AesContext_t *aesCtx, CCBuffInfo_t *pInputBuffInf
                 CC_REG_FLD_SET(HOST_RGF, HOST_IRR, SYM_DMA_COMPLETED, irrVal, 1);
                 drvRc = CC_HalWaitInterrupt(irrVal);
                 if (drvRc != 0){
-                    goto FinishExit;
+                	goto FinishExit;
                 }
         }
 
@@ -406,7 +406,7 @@ FinishExit:
 
 
 /******************************************************************************
-*       PUBLIC FUNCTIONS
+*		PUBLIC FUNCTIONS
 ******************************************************************************/
 
 drvError_t ProcessAesDrv(AesContext_t *aesCtx, CCBuffInfo_t *pInputBuffInfo, CCBuffInfo_t *pOutputBuffInfo, uint32_t blockSize)
@@ -458,7 +458,7 @@ drvError_t ProcessAesDrv(AesContext_t *aesCtx, CCBuffInfo_t *pInputBuffInfo, CCB
 
         drvRc = LoadIVState(aesCtx);
         if (drvRc != AES_DRV_OK) {
-            goto ProcessExit;
+        	goto ProcessExit;
         }
 
         inputDataAddr = pInputBuffInfo->dataBuffAddr;
@@ -492,10 +492,10 @@ drvError_t ProcessAesDrv(AesContext_t *aesCtx, CCBuffInfo_t *pInputBuffInfo, CCB
 
         /* set dma completion bit in irr */
         CC_REG_FLD_SET(HOST_RGF, HOST_IRR, SYM_DMA_COMPLETED, irrVal, 1);
-    drvRc = CC_HalWaitInterrupt(irrVal);
-    if (drvRc != 0){
-        goto ProcessExit;
-    }
+	drvRc = CC_HalWaitInterrupt(irrVal);
+	if (drvRc != 0){
+		goto ProcessExit;
+	}
 
         /* get machine state */
         StoreIVState(aesCtx);
@@ -545,7 +545,7 @@ drvError_t FinishAesDrv(AesContext_t *aesCtx, CCBuffInfo_t *pInputBuffInfo, CCBu
                                 blockSize = sizeof(aesCtx->tempBuff);
                                 SET_ZEROS(aesCtx->tempBuff, blockSize);
                                 pInputBuffInfo->dataBuffAddr = (uint32_t)aesCtx->tempBuff;
-                        } else
+                        } else 
                                 return AES_DRV_OK;
                 }
                 drvRc = ProcessAesDrv(aesCtx, pInputBuffInfo, pOutputBuffInfo, blockSize);

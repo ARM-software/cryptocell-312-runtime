@@ -142,7 +142,7 @@
  @}
  */
 
-
+ 
  /*
   ################################DHM APIs#####################################
  */
@@ -466,11 +466,11 @@
  @defgroup cc_sha512_t_h CryptoCell SHA-512 truncated APIs
 
  @ingroup cc_hash
-
+ 
  @brief Contains all CryptoCell SHA-512 truncated APIs.
-
+ 
  */
-
+ 
  /*!
  @defgroup cc_hash_defs CryptoCell hash API definitions
  @brief Contains CryptoCell hash API definitions.

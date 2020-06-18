@@ -23,19 +23,19 @@
 #include "cc_util_asset_prov_int.h"
 
 
-CCError_t mbedtls_util_asset_pkg_unpack(CCAssetProvKeyType_t        keyType,
-            uint32_t        assetId,
-            uint32_t        *pAssetPkgBuff,
-            size_t          assetPackageLen,
-            uint32_t        *pAssetData,
-            size_t          *pAssetDataLen)
+CCError_t mbedtls_util_asset_pkg_unpack(CCAssetProvKeyType_t      	keyType,
+			uint32_t 	  	assetId, 
+			uint32_t     	*pAssetPkgBuff,
+			size_t  		assetPackageLen,
+			uint32_t     	*pAssetData,
+			size_t  		*pAssetDataLen)	
 {
-    uint32_t  rc = CC_OK;
+	uint32_t  rc = CC_OK;
     CCUtilAesCmacResult_t         keyProv = { 0 };
     uint8_t     dataIn[CC_UTIL_MAX_KDF_SIZE_IN_BYTES] = { 0 };
     size_t    dataInSize = CC_UTIL_MAX_KDF_SIZE_IN_BYTES;
     uint8_t     provLabel = 'P';
-    CCAssetProvPkg_t   *pAssetPackage = NULL;
+	CCAssetProvPkg_t   *pAssetPackage = NULL;
     mbedtls_ccm_context ccmCtx;
     uint8_t    ccmAddData[CC_ASSET_PROV_ADATA_SIZE] = { 0 };
     uint8_t    ccmNonceData[CC_ASSET_PROV_NONCE_SIZE] = { 0 };
@@ -43,9 +43,9 @@ CCError_t mbedtls_util_asset_pkg_unpack(CCAssetProvKeyType_t        keyType,
     uint32_t    constPkgSize = CC_ASSET_PROV_ADATA_SIZE+CC_ASSET_PROV_NONCE_SIZE+CC_ASSET_PROV_TAG_SIZE;
     uint32_t    minPkgSize = constPkgSize+CC_ASSET_PROV_BLOCK_SIZE;
 
-    /* Validate Inputs */
-    if ((pAssetPkgBuff == NULL) ||
-        (pAssetData == NULL) ||
+	/* Validate Inputs */
+	if ((pAssetPkgBuff == NULL) ||
+	    (pAssetData == NULL) || 
         (pAssetDataLen == NULL) ||
         (assetPackageLen > CC_ASSET_PROV_MAX_ASSET_PKG_SIZE) ||
         (assetPackageLen < minPkgSize) ||
@@ -55,10 +55,10 @@ CCError_t mbedtls_util_asset_pkg_unpack(CCAssetProvKeyType_t        keyType,
         ((keyType != ASSET_PROV_KEY_TYPE_KPICV) && (keyType != ASSET_PROV_KEY_TYPE_KCP))) {
             CC_PAL_LOG_ERR("Invalid params");
             return CC_UTIL_ILLEGAL_PARAMS_ERROR;
-    }
-    pAssetPackage = (CCAssetProvPkg_t *)pAssetPkgBuff;
+	}
+	pAssetPackage = (CCAssetProvPkg_t *)pAssetPkgBuff;
 
-    /* Validate asset size, must be multiply of 16 bytes */
+	/* Validate asset size, must be multiply of 16 bytes */
     if ((pAssetPackage->assetSize > CC_ASSET_PROV_MAX_ASSET_SIZE) ||
         (pAssetPackage->assetSize == 0) ||
         (pAssetPackage->assetSize % CC_ASSET_PROV_BLOCK_SIZE)) {
@@ -71,13 +71,13 @@ CCError_t mbedtls_util_asset_pkg_unpack(CCAssetProvKeyType_t        keyType,
             CC_PAL_LOG_ERR("Invalid asset size 0x%x", pAssetPackage->assetSize);
             return CC_UTIL_ILLEGAL_PARAMS_ERROR;
     }
-    /* Verify package token and version */
-    if ((pAssetPackage->token != CC_ASSET_PROV_TOKEN) ||
-        (pAssetPackage->version != CC_ASSET_PROV_VERSION)) {
+	/* Verify package token and version */
+	if ((pAssetPackage->token != CC_ASSET_PROV_TOKEN) ||
+	    (pAssetPackage->version != CC_ASSET_PROV_VERSION)) {
             CC_PAL_LOG_ERR("Invalid token or version");
             return CC_UTIL_ILLEGAL_PARAMS_ERROR;
-    }
-
+	}
+        
     /* Generate dataIn buffer for CMAC: iteration || 'P' || 0x00 || asset Id || 0x80
            since deruved key is 128 bits we have only 1 iteration */
     rc = UtilCmacBuildDataForDerivation(&provLabel,sizeof(provLabel),
@@ -98,7 +98,7 @@ CCError_t mbedtls_util_asset_pkg_unpack(CCAssetProvKeyType_t        keyType,
             return rc;
     }
 
-    /* Decrypt and authenticate the BLOB */
+	/* Decrypt and authenticate the BLOB */
     mbedtls_ccm_init(&ccmCtx);
 
     rc = mbedtls_ccm_setkey(&ccmCtx, MBEDTLS_CIPHER_ID_AES, keyProv, CC_UTIL_AES_CMAC_RESULT_SIZE_IN_BYTES * CC_BITS_IN_BYTE);
@@ -120,8 +120,8 @@ CCError_t mbedtls_util_asset_pkg_unpack(CCAssetProvKeyType_t        keyType,
             return rc;
     }
 
-    // Set output data
-    *pAssetDataLen = assetDataSize;
-    return CC_OK;
+	// Set output data
+	*pAssetDataLen = assetDataSize;
+	return CC_OK;
 }
 

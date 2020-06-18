@@ -26,7 +26,7 @@ extern "C"
  * @return Start address of contiguous memory
  */
 extern uint32_t CC_PalDmaInit(uint32_t  buffSize,    /*!< [in] Buffer size in Bytes. */
-                  CCDmaAddr_t  physBuffAddr /*!< [in] Physical start address of the memory to map. */);
+			      CCDmaAddr_t  physBuffAddr /*!< [in] Physical start address of the memory to map. */);
 
 /**
  * @brief   free system resources created in PD_PAL_DmaInit()

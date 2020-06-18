@@ -16,7 +16,7 @@
 /******************************************************************************/
 size_t Test_PalFetchDataFromFile(const char *data_fname, uint8_t **data_pp)
 {
-    (void)data_fname;
-    (void)data_pp;
-    return 0;
+	(void)data_fname;
+	(void)data_pp;
+	return 0;
 }

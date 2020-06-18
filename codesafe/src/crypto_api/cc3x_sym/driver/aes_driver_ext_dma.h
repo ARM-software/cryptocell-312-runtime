@@ -28,8 +28,8 @@ void       AesExtDmaSetDataSize(uint32_t dataSize);
 
 
 drvError_t AesExtDmaInit(cryptoDirection_t encryptDecryptFlag,
-        aesMode_t operationMode,
-        keySizeId_t keySizeId);
+		aesMode_t operationMode,
+		keySizeId_t keySizeId);
 
 
 

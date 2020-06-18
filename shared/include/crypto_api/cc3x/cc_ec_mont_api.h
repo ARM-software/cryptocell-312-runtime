@@ -48,30 +48,30 @@ extern "C" {
 /*! EC Montgomery domains ID-s enumerator. */
 typedef enum
 {
-    CC_EC_MONT_DOMAIN_CURVE_25519,  /*!< EC Curve25519 */
-    /*! EC Montgomery last domain. */
-    CC_EC_MONT_DOMAIN_OFF_MODE,
-    /*! Reserved. */
-    CC_EC_MONT_DOMAIN_LAST = 0x7FFFFFFF
+	CC_EC_MONT_DOMAIN_CURVE_25519,  /*!< EC Curve25519 */
+	/*! EC Montgomery last domain. */
+	CC_EC_MONT_DOMAIN_OFF_MODE,
+	/*! Reserved. */
+	CC_EC_MONT_DOMAIN_LAST = 0x7FFFFFFF
 }CCEcMontDomainId_t;
 
 
 /*! EC_MONT scalar mult temp buffer type definition */
 typedef struct {
-    /*! Internal temporary buffer. */
+	/*! Internal temporary buffer. */
         uint32_t ecMontScalarMultTempBuff[CC_EC_MONT_TEMP_BUFF_SIZE_IN_32BIT_WORDS]; //! ! Change as needed
 } CCEcMontScalrMultTempBuff_t;
 
 /*! EC_MONT temp buffer type definition */
 typedef struct {
         /* Don't change sequence order of the buffers */
-    /*! Internal temporary buffer. */
+	/*! Internal temporary buffer. */
         uint32_t ecMontScalar[CC_EC_MONT_EDW_MODULUS_MAX_SIZE_IN_WORDS];
-    /*! Internal temporary buffer. */
+	/*! Internal temporary buffer. */
         uint32_t ecMontResPoint[CC_EC_MONT_EDW_MODULUS_MAX_SIZE_IN_WORDS];
-    /*! Internal temporary buffer. */
+	/*! Internal temporary buffer. */
         uint32_t ecMontInPoint[CC_EC_MONT_EDW_MODULUS_MAX_SIZE_IN_WORDS];
-    /*! Internal temporary buffer. */
+	/*! Internal temporary buffer. */
         CCEcMontScalrMultTempBuff_t  ecMontScalrMultTempBuff;// if needed ?
 } CCEcMontTempBuff_t;
 
@@ -113,7 +113,7 @@ CIMPORT_C CCError_t CC_EcMontScalarmultBase(
                                 uint8_t       *pResPoint,      /*!< [out] Pointer to the public (secret) key. */
                                 size_t        *pResPointSize,  /*!< [in/out] Pointer to the size of the public key in bytes.
                                                                       In  - the size of buffer must be at least EC modulus size
-                                     (for curve25519 - 32 bytes);
+								     (for curve25519 - 32 bytes);
                                                                       Out - the actual size. */
                                 const uint8_t *pScalar,        /*!< [in] Pointer to the secret (private) key. */
                                 size_t         scalarSize,     /*!< [in] Pointer to the size of the scalar in bytes -
@@ -139,7 +139,7 @@ CIMPORT_C CCError_t CC_EcMontKeyPair (
                       uint8_t *pPublKey,                    /*!< [out] Pointer to the public key. */
                       size_t  *pPublKeySize,                /*!< [in/out] Pointer to the size of the public key in bytes.
                                                                   In  - the size of the buffer must be at least EC order size
-                                                                        (for curve25519 - 32 bytes);
+																        (for curve25519 - 32 bytes);
                                                                   Out - the actual size. */
                       uint8_t *pSecrKey,                    /*!< [out] Pointer to the secret key, including. */
                       size_t  *pSecrKeySize,                /*!< [in/out] Pointer to the size of buffer for the secret key in bytes -
@@ -167,7 +167,7 @@ CIMPORT_C CCError_t CC_EcMontKeyPairBase (
                       uint8_t *pPublKey,                    /*!< [out] Pointer to the public key. */
                       size_t  *pPublKeySize,                /*!< [in/out] Pointer to the size of the public key in bytes.
                                                                   In  - the size of the buffer must be at least EC order size
-                                                                        (for curve25519 - 32 bytes);
+																        (for curve25519 - 32 bytes);
                                                                   Out - the actual size. */
                       uint8_t *pSecrKey,                    /*!< [out] Pointer to the secret key, including. */
                       size_t  *pSecrKeySize,                /*!< [in/out] Pointer to the size of buffer for the secret key in bytes -
@@ -193,12 +193,12 @@ CIMPORT_C CCError_t CC_EcMontSeedKeyPair (
                           uint8_t       *pPublKey,       /*!< [out] Pointer to the public (secret) key. */
                           size_t        *pPublKeySize,   /*!< [in/out] Pointer to the size of the public key in bytes.
                                                                  In  - the size of buffer must be at least EC order size
-                                                                       (for curve25519 - 32 bytes);
+																       (for curve25519 - 32 bytes);
                                                                  Out - the actual size. */
                           uint8_t       *pSecrKey,       /*!< [out] Pointer to the secret (private) key. */
                           size_t        *pSecrKeySize,   /*!< [in/out] Pointer to the size of the secret key in bytes
                                                                   In  - the size of buffer must be at least EC order size
-                                                                        (for curve25519 - 32 bytes);
+																        (for curve25519 - 32 bytes);
                                                                   Out - the actual size. */
                           const uint8_t *pSeed,          /*!< [in] Pointer to the given seed - 32 bytes. */
                           size_t         seedSize,       /*!< [in/] Size of the seed in bytes (must be equal to CC_EC_MONT_SEEDBYTES). */

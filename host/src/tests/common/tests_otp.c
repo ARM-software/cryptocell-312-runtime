@@ -18,7 +18,7 @@
 
 #include "hw_access.h"
 
-uint32_t Test_SetLcsOtpBuff(uint32_t *otpBuf, uint32_t lcsState)
+uint32_t Test_SetLcsOtpBuff(uint32_t *otpBuf, uint32_t lcsState) 
 {
     //if RMA => set ICV_RMA and OEM_RMA bits
     //if CM => man_flag[31:0]=0 && oem_flag[7:0] = 0
@@ -38,7 +38,7 @@ uint32_t Test_SetLcsOtpBuff(uint32_t *otpBuf, uint32_t lcsState)
             otpBuf[CC_OTP_MANUFACTURE_FLAG_OFFSET] = 0;
             /* fall-through */
             // to clean oem_flag[7:0] bits as for DM
-        case TESTS_LCS_DM:
+        case TESTS_LCS_DM: 
             hwWord = otpBuf[CC_OTP_OEM_FLAG_OFFSET];
             CC_REG_FLD_SET2(0, OTP_OEM_FLAG, HBK_ZERO_BITS, hwWord, 0);
             otpBuf[CC_OTP_OEM_FLAG_OFFSET] = hwWord;
@@ -195,7 +195,7 @@ uint32_t Test_GetKeyOtpBuff(uint32_t *otpBuf, uint32_t keyType, uint32_t *keySiz
     uint32_t keyOffsetInOtp = 0;
     uint32_t rc = TEST_OK;
 
-    if ((NULL == otpBuf) || (NULL == keyBuff) || (NULL == keySizeInWords)) {
+    if ((NULL == otpBuf) ||	(NULL == keyBuff) || (NULL == keySizeInWords)) {
         TEST_PRINTF_ERROR(" ilegal params\n");
         return TEST_INVALID_PARAM_ERR;
     }
@@ -307,16 +307,16 @@ uint32_t Test_SetHbkInOtpBuff(uint32_t *otp, uint8_t *hbkBuff, OtpHbkTypes_t typ
 
 uint32_t Test_SetSwVerInOtpBuff(uint32_t *otp, uint32_t offset, uint32_t max_size)
 {
-    uint32_t i;
+	uint32_t i;
 
-    for (i=0; i<max_size ; i++)
-    {
-        if (otp[offset + i] < 0xFFFFFFFF)
-        {
-            memset(&otp[offset+i+1], 0x0, (max_size-i-1)* sizeof(uint32_t));
-            break;
-        }
-    }
+	for (i=0; i<max_size ; i++)
+	{
+		if (otp[offset + i] < 0xFFFFFFFF)
+	    {
+			memset(&otp[offset+i+1], 0x0, (max_size-i-1)* sizeof(uint32_t));
+	     	break;
+	    }
+	}
 
     return TEST_OK;
 }

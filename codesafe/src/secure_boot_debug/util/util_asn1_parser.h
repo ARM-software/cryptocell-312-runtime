@@ -17,24 +17,24 @@ extern "C"
 /* ASN1 data structure */
 typedef struct
 {
-    uint8_t  tagId;
-    uint32_t itemSize;
-    uint8_t  index;
+	uint8_t  tagId;
+	uint32_t itemSize;
+	uint8_t  index;
 
 }CCSbCertAsn1Data_t;
 
 #define UTILS_ASN1_CERT_VERIFY_PTR_RET(address, startAddress, endAddress){ \
-    /* If current address is bigger than endAddress, or if there was a wrapAround and the address is smaller than the address we started with */ \
-    if ((address > endAddress) || (address < startAddress)){ \
-        CC_PAL_LOG_ERR("Certificate pointer is beyond the allowed limit: addr 0x%lx, start 0x%lx, end 0x%lx\n", address, startAddress, endAddress);\
-        return CC_SB_X509_CERT_PARSE_ILLEGAL_VAL;\
-    }\
+	/* If current address is bigger than endAddress, or if there was a wrapAround and the address is smaller than the address we started with */ \
+	if ((address > endAddress) || (address < startAddress)){ \
+		CC_PAL_LOG_ERR("Certificate pointer is beyond the allowed limit: addr 0x%lx, start 0x%lx, end 0x%lx\n", address, startAddress, endAddress);\
+		return CC_SB_X509_CERT_PARSE_ILLEGAL_VAL;\
+	}\
 }\
 
 
 #define UTIL_ASN1_GET_NEXT_ITEM_RET(pAsn1buff, size, startAddress, endAddress){ \
-    (pAsn1buff += size); \
-    UTILS_ASN1_CERT_VERIFY_PTR_RET((unsigned long)pAsn1buff, startAddress, endAddress); \
+	(pAsn1buff += size); \
+	UTILS_ASN1_CERT_VERIFY_PTR_RET((unsigned long)pAsn1buff, startAddress, endAddress); \
 }\
 
 /**
@@ -62,7 +62,7 @@ CCError_t UTIL_Asn1ReadItemVerifyTag(uint8_t *pInStr, CCSbCertAsn1Data_t *pAsn1D
  *         on failure - a value from bootimagesverifierx509_error.h
  */
 CCError_t UTIL_Asn1ReadItemVerifyTagFW(uint8_t **ppInStr, CCSbCertAsn1Data_t *pAsn1Data, uint8_t tag,
-                       unsigned long startAddress, unsigned long endAddress);
+				       unsigned long startAddress, unsigned long endAddress);
 
 #ifdef __cplusplus
 }

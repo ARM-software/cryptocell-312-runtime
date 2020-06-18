@@ -15,15 +15,15 @@
 
 
 CIMPORT_C CCError_t  mbedtls_chacha_poly(
-        mbedtls_chacha_nonce         pNonce,
+        mbedtls_chacha_nonce	 	 pNonce,
         mbedtls_chacha_key            pKey,
         mbedtls_chacha_encrypt_mode_t    encryptDecryptFlag,
-        uint8_t          *pAddData,
-        size_t           addDataSize,
+        uint8_t			 *pAddData,
+        size_t			 addDataSize,
         uint8_t                     *pDataIn,
         size_t                       dataInSize,
         uint8_t                     *pDataOut,
-        mbedtls_poly_mac         macRes)
+        mbedtls_poly_mac		 macRes)
 
 {
     CCError_t rc;
@@ -31,7 +31,7 @@ CIMPORT_C CCError_t  mbedtls_chacha_poly(
     uint8_t chachaOutState[CC_CHACHA_BLOCK_SIZE_IN_BYTES] = {0};
     mbedtls_poly_key polyKey = {0};
     mbedtls_poly_mac polyMac = {0};
-    uint8_t *pCipherData = NULL;
+    uint8_t	*pCipherData = NULL;
 
 
     // Verify inputs

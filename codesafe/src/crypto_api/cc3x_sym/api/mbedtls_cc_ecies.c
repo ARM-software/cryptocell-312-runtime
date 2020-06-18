@@ -374,7 +374,7 @@ CCError_t mbedtls_ecies_kem_encrypt_full(mbedtls_ecp_group *pGrp,
     }
 
     /* call  EcWrstDhDeriveSharedSecret function to calculate the Secret Value */
-    /* --------------------------------------------------------------- */        // h~ = r*h
+    /* --------------------------------------------------------------- */	     // h~ = r*h
     pEphPrivKey = (CCEcpkiPrivKey_t*) &pEphUzPrivKey->PrivKeyDbBuff;
     error = EcWrstDhDeriveSharedSecret(pRecipPublKey, /*in*/
                                        (CCEcpkiPrivKey_t *) (pEphPrivKey->PrivKey), /*in*/
@@ -424,9 +424,9 @@ End:
     {
         *pCipherDataSize = 0;
     }
-
+	
     ecies_free_keys(NULL, pCcReciptUzPublKey);
-
+	
     /* clean temp buffers */
     CC_PalMemSetZero(pBuff, buffLen);
 
@@ -532,8 +532,8 @@ CCError_t mbedtls_ecies_kem_decrypt(mbedtls_ecp_group *pGrp,
     /* convert mbedtls keys to cc structs */
     pTempBuff = (CCEciesTempData_t *)pBuff;
     pRecipUserPrivKey = &pTempBuff->PrivKey;
-
-    if ((error = ecies_convert_mbed_to_cc_private_key(pDomain, pRecipUzPrivKey, pRecipUserPrivKey, pTempBuff)) != 0)
+    
+	if ((error = ecies_convert_mbed_to_cc_private_key(pDomain, pRecipUzPrivKey, pRecipUserPrivKey, pTempBuff)) != 0)
     {
         CC_PAL_LOG_ERR("Error - failed to ecp_convert_mbed_to_cc_public_key reciept public key. error[0x%08x]\n", error);
         goto End;

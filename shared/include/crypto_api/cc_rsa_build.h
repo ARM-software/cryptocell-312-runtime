@@ -43,7 +43,7 @@ CIMPORT_C CCError_t CC_RsaPubKeyBuild(
                                     uint8_t *Exponent_ptr,                  /*!< [in]  Pointer to the exponent stream of bytes (Big-Endian format). */
                                     size_t   ExponentSize,                  /*!< [in]  The size of the exponent (in bytes). */
                                     uint8_t *Modulus_ptr,                   /*!< [in]  Pointer to the modulus stream of bytes (Big-Endian format).
-                                               The most significant bit (MSB) must be set to '1'. */
+										       The most significant bit (MSB) must be set to '1'. */
                                     size_t   ModulusSize                    /*!< [in]  The modulus size in bytes. Supported sizes are 256, 384 and 512 bytes. */
 );
 
@@ -62,7 +62,7 @@ CIMPORT_C CCError_t CC_RsaPrivKeyBuild(
                                     uint8_t                 *PubExponent_ptr,     /*!< [in]  Pointer to the public exponent stream of bytes (Big-Endian format). */
                                     size_t                   PubExponentSize,     /*!< [in]  The size of the public exponent (in bytes). */
                                     uint8_t                 *Modulus_ptr,         /*!< [in]  Pointer to the modulus stream of bytes (Big-Endian format).
-                                               The most significant bit must be set to '1'. */
+											   The most significant bit must be set to '1'. */
                                     size_t                   ModulusSize          /*!< [in]  The modulus size in bytes. Supported sizes are 256, 384 and 512. */
 );
 
@@ -80,10 +80,10 @@ CIMPORT_C CCError_t CC_RsaPrivKeyCrtBuild(
                                       uint8_t *Q_ptr,                           /*!< [in]  Pointer to the second factor stream of bytes (Big-Endian format). */
                                       size_t   QSize,                           /*!< [in]  The size of the second factor (in bytes). */
                                       uint8_t *dP_ptr,                          /*!< [in]  Pointer to the first factor's CRT exponent stream of bytes
-                                               (Big-Endian format). */
+											   (Big-Endian format). */
                                       size_t   dPSize,                          /*!< [in]  The size of the first factor's CRT exponent (in bytes). */
                                       uint8_t *dQ_ptr,                          /*!< [in]  Pointer to the second factor's CRT exponent stream of bytes
-                                               (Big-Endian format). */
+											   (Big-Endian format). */
                                       size_t   dQSize,                          /*!< [in]  The size of the second factor's CRT exponent (in bytes). */
                                       uint8_t *qInv_ptr,                        /*!< [in]  Pointer to the first CRT coefficient stream of bytes (Big-Endian format). */
                                       size_t   qInvSize                         /*!< [in]  The size of the first CRT coefficient (in bytes). */
@@ -106,11 +106,11 @@ CIMPORT_C CCError_t CC_RsaPubKeyGet(
                                 CCRsaUserPubKey_t *UserPubKey_ptr,   /*!< [in] A pointer to the public key structure. */
                                 uint8_t  *Exponent_ptr,                 /*!< [out] A pointer to the exponent stream of bytes (Big-Endian format). */
                                 size_t   *ExponentSize_ptr,             /*!< [in/out] the size of the exponent buffer in bytes,
-                                              it is updated to the actual size of the exponent, in bytes. */
+										      it is updated to the actual size of the exponent, in bytes. */
                                 uint8_t  *Modulus_ptr,                  /*!< [out] A pointer to the modulus stream of bytes (Big-Endian format).
-                                           The MS (most significant) bit must be set to '1'. */
+										   The MS (most significant) bit must be set to '1'. */
                                 size_t   *ModulusSize_ptr               /*!< [in/out] the size of the modulus buffer in bytes, it is updated to the actual
-                                              size of the modulus, in bytes. */
+										      size of the modulus, in bytes. */
 );
 
 /******************************************************************************************/
@@ -124,16 +124,16 @@ CCRsaUserPrivKey_t structure.
 @return A non-zero value from cc_rsa_error.h on failure.
 */
 CEXPORT_C CCError_t CC_RsaGetPrivKey(CCRsaUserPrivKey_t *UserPrivKey_ptr        /*!< [in] A pointer to the private key structure.*/,
-                     uint8_t             *PrivExponent_ptr      /*!< [out] A pointer to the exponent stream of bytes (Big-Endian format).*/,
-                     uint16_t            *PrivExponentSize_ptr  /*!< [in,out] The size of the private exponent buffer in bytes , it is updated to the
-                                                 actual size of the private exponent, in bytes*/,
-                     uint8_t             *PubExponent_ptr       /*!< [out] A pointer to the public exponent stream of bytes ( Big endian ).*/,
-                     uint16_t            *PubExponentSize_ptr,  /*!< [in,out] The size of the exponent buffer in bytes , it is updated to the
-                                                 actual size of the exponent, in bytes*/
-                     uint8_t             *Modulus_ptr,          /*!< [out] A pointer to the modulus stream of bytes (Big-Endian format).
-                                                 The MS (most significant) bit must be set to '1'.*/
-                     uint16_t            *ModulusSize_ptr       /*!< [in,out] The size of the modulus buffer in bytes , it is updated to the
-                                                 actual size of the modulus, in bytes*/
+				     uint8_t             *PrivExponent_ptr      /*!< [out] A pointer to the exponent stream of bytes (Big-Endian format).*/,
+				     uint16_t            *PrivExponentSize_ptr  /*!< [in,out] The size of the private exponent buffer in bytes , it is updated to the
+											     actual size of the private exponent, in bytes*/,
+				     uint8_t             *PubExponent_ptr     	/*!< [out] A pointer to the public exponent stream of bytes ( Big endian ).*/,
+				     uint16_t            *PubExponentSize_ptr,  /*!< [in,out] The size of the exponent buffer in bytes , it is updated to the
+											     actual size of the exponent, in bytes*/
+				     uint8_t             *Modulus_ptr,	        /*!< [out] A pointer to the modulus stream of bytes (Big-Endian format).
+											     The MS (most significant) bit must be set to '1'.*/
+				     uint16_t            *ModulusSize_ptr       /*!< [in,out] The size of the modulus buffer in bytes , it is updated to the
+											     actual size of the modulus, in bytes*/
 );
 
 
@@ -148,21 +148,21 @@ CCRsaUserPrivKey_t structure.
 @return A non-zero value from cc_rsa_error.h on failure.
 */
 CEXPORT_C CCError_t CC_RsaGetPrivKeyCRT(CCRsaUserPrivKey_t *UserPrivKey_ptr /*!< [in] A pointer to the private key structure.*/,
-                    uint8_t *P_ptr              /*!< [out] A pointer to the first factor stream of bytes ( Big endian ).*/,
-                    uint16_t *PSize_ptr,            /*!< [in,out] The size of the first factor buffer in bytes , updated to the actual size of the
-                                             first factor, in bytes.*/
-                    uint8_t *Q_ptr,             /*!< [out] A pointer to the second factor stream of bytes ( Big endian ).*/
-                    uint16_t *QSize_ptr,            /*!< [in,out] The size of the second factor buffer in bytes , updated to the
-                                             actual size of the second factor, in bytes.*/
-                    uint8_t *dP_ptr,            /*!< [out] A pointer to the first factors CRT exponent stream of bytes ( Big endian ).*/
-                    uint16_t *dPSize_ptr,           /*!< [in,out] The size of the first factor exponent buffer in bytes , updated to the
-                                             actual size of the first factor exponent, in bytes.*/
-                    uint8_t *dQ_ptr,            /*!< [out] A pointer to the second factors CRT exponent stream of bytes ( Big endian ).*/
-                    uint16_t *dQSize_ptr,           /*!< [in,out] The size of the second factors CRT exponent buffer in bytes , updated to the
-                                             actual size of the second factors CRT exponent, in bytes.*/
-                    uint8_t *qInv_ptr,          /*!< [out] A pointer to the first CRT coefficient stream of bytes ( Big endian ).*/
-                    uint16_t *qInvSize_ptr          /*!< [in,out] The size of the first CRT coefficient buffer in bytes , updated to the
-                                             actual size of the first CRT coefficient, in bytes.*/
+					uint8_t *P_ptr			    /*!< [out] A pointer to the first factor stream of bytes ( Big endian ).*/,
+					uint16_t *PSize_ptr,		    /*!< [in,out] The size of the first factor buffer in bytes , updated to the actual size of the
+										     first factor, in bytes.*/
+					uint8_t *Q_ptr,			    /*!< [out] A pointer to the second factor stream of bytes ( Big endian ).*/
+					uint16_t *QSize_ptr,		    /*!< [in,out] The size of the second factor buffer in bytes , updated to the
+										     actual size of the second factor, in bytes.*/
+					uint8_t *dP_ptr, 		    /*!< [out] A pointer to the first factors CRT exponent stream of bytes ( Big endian ).*/
+					uint16_t *dPSize_ptr,		    /*!< [in,out] The size of the first factor exponent buffer in bytes , updated to the
+										     actual size of the first factor exponent, in bytes.*/
+					uint8_t *dQ_ptr,		    /*!< [out] A pointer to the second factors CRT exponent stream of bytes ( Big endian ).*/
+					uint16_t *dQSize_ptr,		    /*!< [in,out] The size of the second factors CRT exponent buffer in bytes , updated to the
+										     actual size of the second factors CRT exponent, in bytes.*/
+					uint8_t *qInv_ptr,		    /*!< [out] A pointer to the first CRT coefficient stream of bytes ( Big endian ).*/
+					uint16_t *qInvSize_ptr   	    /*!< [in,out] The size of the first CRT coefficient buffer in bytes , updated to the
+										     actual size of the first CRT coefficient, in bytes.*/
 );
 
 #ifdef __cplusplus

@@ -25,121 +25,121 @@ static uint8_t memInitialised = 0;
 /******************************************************************************/
 void *Test_PalMalloc(size_t size)
 {
-    if (!size)
-        return NULL;
+	if (!size)
+		return NULL;
 
-    return (void *)malloc(size);
+	return (void *)malloc(size);
 }
 
 /******************************************************************************/
 void Test_PalFree(void *pvAddress)
 {
-    if (pvAddress == NULL)
-        return;
+	if (pvAddress == NULL)
+		return;
 
-    free(pvAddress);
+	free(pvAddress);
 }
 
 /******************************************************************************/
 void *Test_PalRealloc(void *pvAddress, size_t newSize)
 {
-    if (pvAddress == NULL)
-        return NULL;
+	if (pvAddress == NULL)
+		return NULL;
 
-    return realloc(pvAddress, newSize);
+	return realloc(pvAddress, newSize);
 }
 
 /******************************************************************************/
 void *Test_PalDMAContigBufferAlloc(size_t size)
 {
-    unsigned long currAddr;
+	unsigned long currAddr;
 
-    if(!size) {
-        TEST_PRINTF_ERROR("Size cannot be zero");
-        goto end_with_error;
-    }
+	if(!size) {
+		TEST_PRINTF_ERROR("Size cannot be zero");
+		goto end_with_error;
+	}
 
-    /* increase size with the requested alignment in our case 0x10 */
-    size += 0x10;
+	/* increase size with the requested alignment in our case 0x10 */
+	size += 0x10;
 
-    if((dmableBaseAddr == 0) || (dmableEndAddr == 0)) {
-        TEST_PRINTF_ERROR("DMA memory allocator wasn't initialized");
-        goto end_with_error;
-    }
+	if((dmableBaseAddr == 0) || (dmableEndAddr == 0)) {
+		TEST_PRINTF_ERROR("DMA memory allocator wasn't initialized");
+		goto end_with_error;
+	}
 
-    /* Exceeds the maximum memory size */
-    if(nextToAlloc + size > dmableEndAddr) {
-        nextToAlloc = dmableBaseAddr;
+	/* Exceeds the maximum memory size */
+	if(nextToAlloc + size > dmableEndAddr) {
+		nextToAlloc = dmableBaseAddr;
 
-        if(nextToAlloc + size > dmableEndAddr) {
-            TEST_PRINTF_ERROR("End of range! size needs to be less "
-                "than %d",(dmableEndAddr - nextToAlloc));
-            goto end_with_error;
-        }
-    }
+		if(nextToAlloc + size > dmableEndAddr) {
+			TEST_PRINTF_ERROR("End of range! size needs to be less "
+				"than %d",(dmableEndAddr - nextToAlloc));
+			goto end_with_error;
+		}
+	}
 
-    currAddr = nextToAlloc;
-    nextToAlloc += size;
+	currAddr = nextToAlloc;
+	nextToAlloc += size;
 
-    return (void *)((currAddr + 0x10) & 0xfffffff0);
+	return (void *)((currAddr + 0x10) & 0xfffffff0);
 
 end_with_error:
-    return NULL;
+	return NULL;
 }
 
 /******************************************************************************/
 void Test_PalDMAContigBufferFree(void *pvAddress)
 {
-    (void)pvAddress;
+	(void)pvAddress;
 }
 
 /******************************************************************************/
 void *Test_PalDMAContigBufferRealloc(void *pvAddress, size_t newSize)
 {
-    (void)pvAddress;
-    (void)newSize;
-    return NULL;
+	(void)pvAddress;
+	(void)newSize;
+	return NULL;
 }
 
 /******************************************************************************/
 unsigned long Test_PalGetDMABaseAddr(void)
 {
-    return dmableBaseAddr;
+	return dmableBaseAddr;
 }
 
 /******************************************************************************/
 unsigned long Test_PalGetUnmanagedBaseAddr(void)
 {
-    return unmanagedBaseAddr;
+	return unmanagedBaseAddr;
 }
 
 /******************************************************************************/
 uint32_t Test_PalMemInit(unsigned long newDMABaseAddr,
-             unsigned long newUnmanagedBaseAddr,
-             size_t DMAsize)
+			 unsigned long newUnmanagedBaseAddr,
+			 size_t DMAsize)
 {
-    if(memInitialised) {
-        TEST_PRINTF_ERROR("Memory is already initialised");
-        return 1;
-    }
+	if(memInitialised) {
+		TEST_PRINTF_ERROR("Memory is already initialised");
+		return 1;
+	}
 
-    dmableBaseAddr = newDMABaseAddr;
-    dmableEndAddr = newDMABaseAddr + DMAsize;
-    nextToAlloc = newDMABaseAddr;
-    unmanagedBaseAddr = newUnmanagedBaseAddr;
-    memInitialised = 1;
+	dmableBaseAddr = newDMABaseAddr;
+	dmableEndAddr = newDMABaseAddr + DMAsize;
+	nextToAlloc = newDMABaseAddr;
+	unmanagedBaseAddr = newUnmanagedBaseAddr;
+	memInitialised = 1;
 
-    return 0;
+	return 0;
 }
 
 /******************************************************************************/
 uint32_t Test_PalMemFin(void)
 {
-    dmableBaseAddr = 0;
-    unmanagedBaseAddr = 0;
-    dmableEndAddr = 0;
-    nextToAlloc = 0;
-    memInitialised = 0;
+	dmableBaseAddr = 0;
+	unmanagedBaseAddr = 0;
+	dmableEndAddr = 0;
+	nextToAlloc = 0;
+	memInitialised = 0;
 
-    return 0;
+	return 0;
 }

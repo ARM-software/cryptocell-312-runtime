@@ -81,12 +81,12 @@ extern "C"
 /*! Maximal size of PartyInfo (U or V). Note: Buffers for Nonce and Ephemeral key
  *  are joined, because only one of them is used actually  */
 #define CC_FFCDH_MAX_SIZE_OF_PARTY_INFO_BYTES  (CC_FFCDH_MAX_SIZE_OF_PARTY_ID_BYTES  + 2*CC_FFCDH_MAX_SIZE_OF_PUBL_KEY_DATA_BYTES + \
-        CC_FFCDH_MAX_SIZE_OF_NONCE_SUB_ENTRY_BYTES + CC_FFCDH_MAX_SIZE_OF_PARTY_INFO_OTHER_DATA_BYTES + \
-        CC_FFCDH_COUNT_OF_PARTY_INFO_ENTRIES * CC_FFCDH_LENGTH_COUNTER_SIZE_IN_BYTES)
+		CC_FFCDH_MAX_SIZE_OF_NONCE_SUB_ENTRY_BYTES + CC_FFCDH_MAX_SIZE_OF_PARTY_INFO_OTHER_DATA_BYTES + \
+		CC_FFCDH_COUNT_OF_PARTY_INFO_ENTRIES * CC_FFCDH_LENGTH_COUNTER_SIZE_IN_BYTES)
 
 /*! Maximal size of OtherInfo buffer, including KDF Counter and all entries of actual OtherInfo data */
 #define CC_FFCDH_MAX_SIZE_OF_OTHER_INFO_DATA_BYTES  (CC_FFCDH_LENGTH_COUNTER_SIZE_IN_BYTES + CC_FFCDH_MAX_SIZE_OF_ALG_ID_ENTRY_BYTES + \
-        2 * (CC_FFCDH_MAX_SIZE_OF_PARTY_INFO_BYTES + CC_FFCDH_LENGTH_COUNTER_SIZE_IN_BYTES + CC_FFCDH_MAX_SIZE_OF_OTHER_INFO_SUPPL_ENTRY_BYTES))
+		2 * (CC_FFCDH_MAX_SIZE_OF_PARTY_INFO_BYTES + CC_FFCDH_LENGTH_COUNTER_SIZE_IN_BYTES + CC_FFCDH_MAX_SIZE_OF_OTHER_INFO_SUPPL_ENTRY_BYTES))
 /*! Extended KDF data buffer: containing: Counter||SharedSecretZZ||OtherInfo */
 #define CC_FFCDH_MAX_SIZE_OF_KDF_DATA_BUFFER_BYTES  (CC_FFCDH_KDF_COUNTER_SIZE_IN_BYTES + 2*CC_FFCDH_MAX_MOD_SIZE_IN_BYTES/*ZZ size*/ + \
 CC_FFCDH_MAX_SIZE_OF_OTHER_INFO_DATA_BYTES)
@@ -100,7 +100,7 @@ CC_FFCDH_MAX_SIZE_OF_OTHER_INFO_DATA_BYTES)
 #define CC_FFCDH_SIZE_OF_CONFIRM_MSG_STRING_BYTES      6 /*!< standard confirmation message string size in bytes. */
 #define CC_FFCDH_MAX_SIZE_OF_CONFIRM_TEXT_DATA_BYTES  32 /*!< party supplied confirmation text size in bytes. */
 #define CC_FFCDH_MAX_SIZE_OF_CONFIRM_MAC_DATA_BYTES  (CC_FFCDH_SIZE_OF_CONFIRM_MSG_STRING_BYTES + 2*(CC_FFCDH_MAX_SIZE_OF_PARTY_ID_BYTES + \
-        CC_FFCDH_MAX_MOD_SIZE_IN_BYTES) + CC_FFCDH_MAX_SIZE_OF_CONFIRM_TEXT_DATA_BYTES)
+		CC_FFCDH_MAX_MOD_SIZE_IN_BYTES) + CC_FFCDH_MAX_SIZE_OF_CONFIRM_TEXT_DATA_BYTES)
 /*! Maximal size of Confirmation MacTag (according max. HASH output size) */
 #define CC_FFCDH_MAX_SIZE_OF_CONFIRM_MAC_TAG_BYTES  CC_HASH_SHA512_DIGEST_SIZE_IN_BYTES
 /*! Minimal size in bytes of Confirmation MacTag (sec 5.9.3, tab.8) */
@@ -126,11 +126,11 @@ in range according to FIPS 186-4 sec. B.1.1 */
 #define CC_FFCDH_CTX_TMP_BUFF_MAX_SIZE_IN_WORDS  (CC_FFCDH_MAX_MOD_SIZE_IN_WORDS + CC_FFCDH_MAX_GENER_ORDER_SIZE_IN_WORDS)
 /* Size of FFCDH Context internal buffer */
 #define CC_FFCDH_CONTEXT_BUFF_SIZE_IN_BYTES  \
-        ROUNDUP_BYTES_TO_32BIT_WORD((FFC_DOMAIN_SIZE_BYTES + 32/*schemeInfo*/ + CC_FFCDH_MAX_SIZE_OF_HMAC_SALT_BUFF_BYTES + \
-        CC_FFCDH_MAX_SIZE_OF_KEYING_MATERIAL_BYTES + 4*CC_FFCDH_MAX_GENER_ORDER_SIZE_IN_BYTES + 2*CC_FFCDH_MAX_SIZE_OF_PARTY_ID_BYTES + \
-        4*CC_FFCDH_MAX_MOD_SIZE_IN_BYTES + CC_FFCDH_MAX_SIZE_OF_KDF_DATA_BUFFER_BYTES + 2*CC_HASH_RESULT_SIZE_IN_WORDS*CC_32BIT_WORD_SIZE/*MacTags*/ + \
-        84/*dataOffsets*/ + 2*CC_FFCDH_MAX_SIZE_OF_CONFIRM_TEXT_DATA_BYTES + 26*CC_32BIT_WORD_SIZE/*separ.words*/ + \
-        CC_FFCDH_CTX_TMP_BUFF_MAX_SIZE_IN_WORDS*CC_32BIT_WORD_SIZE))
+		ROUNDUP_BYTES_TO_32BIT_WORD((FFC_DOMAIN_SIZE_BYTES + 32/*schemeInfo*/ + CC_FFCDH_MAX_SIZE_OF_HMAC_SALT_BUFF_BYTES + \
+		CC_FFCDH_MAX_SIZE_OF_KEYING_MATERIAL_BYTES + 4*CC_FFCDH_MAX_GENER_ORDER_SIZE_IN_BYTES + 2*CC_FFCDH_MAX_SIZE_OF_PARTY_ID_BYTES + \
+		4*CC_FFCDH_MAX_MOD_SIZE_IN_BYTES + CC_FFCDH_MAX_SIZE_OF_KDF_DATA_BUFFER_BYTES + 2*CC_HASH_RESULT_SIZE_IN_WORDS*CC_32BIT_WORD_SIZE/*MacTags*/ + \
+		84/*dataOffsets*/ + 2*CC_FFCDH_MAX_SIZE_OF_CONFIRM_TEXT_DATA_BYTES + 26*CC_32BIT_WORD_SIZE/*separ.words*/ + \
+		CC_FFCDH_CTX_TMP_BUFF_MAX_SIZE_IN_WORDS*CC_32BIT_WORD_SIZE))
 #define CC_FFCDH_CONTEXT_BUFF_SIZE_IN_WORDS  (CC_FFCDH_CONTEXT_BUFF_SIZE_IN_BYTES / CC_32BIT_WORD_SIZE)
 
 #define CC_FFCDH_CALC_USER_MAC_TAG   FALSE
@@ -149,10 +149,10 @@ in range according to FIPS 186-4 sec. B.1.1 */
  *  SP 800-56C sec. 4, SP 800-108 and RFC 5869. */
 typedef enum
 {
-    CC_FFCDH_KDF_HMAC_RFC5869_MODE,  /*!< extraction-then-expansion KDF(RFC 5869), based on HMAC function;
-                                          note: input salt assumed to be NULL. */
+	CC_FFCDH_KDF_HMAC_RFC5869_MODE,  /*!< extraction-then-expansion KDF(RFC 5869), based on HMAC function;
+	                                      note: input salt assumed to be NULL. */
         CC_FFCDH_KDF_NUM_OFF_MODE, /*!< not allowed value */
-    CC_FFCDH_KDF_MODE_LAST = 0x7FFFFFFF
+	CC_FFCDH_KDF_MODE_LAST = 0x7FFFFFFF
 } CCFfcDhKdfModeSp56A_t;
 
 
@@ -160,13 +160,13 @@ typedef enum
     NIST SP 56A Rev. 2, Section 6, tab. 10-12. */
 typedef enum
 {
-    CC_FFCDH_SCHEM_HYBRID1,          /*!< dhHybrid1 C(2e, 2s, FFC DH) */
-    CC_FFCDH_SCHEM_HYBRID_ONE_FLOW,  /*!< dhHybridOneFlow C(1e, 2s, FFC DH) */
-    CC_FFCDH_SCHEM_EPHEM,            /*!< dhEphem C(2e, 0s, FFC DH) */
-    CC_FFCDH_SCHEM_ONE_FLOW,         /*!< dhOneFlow C(1e, 1s, FFC DH) */
-    CC_FFCDH_SCHEM_STATIC,           /*!< dhStatic C(0e, 2s, FFC DH) */
-    CC_FFCDH_SCHEM_NUM_OFF_MODE,     /*!< not allowed value */
-    CC_FFCDH_SCHEM_LAST = 0x7FFFFFFF
+	CC_FFCDH_SCHEM_HYBRID1,          /*!< dhHybrid1 C(2e, 2s, FFC DH) */
+	CC_FFCDH_SCHEM_HYBRID_ONE_FLOW,  /*!< dhHybridOneFlow C(1e, 2s, FFC DH) */
+	CC_FFCDH_SCHEM_EPHEM, 	         /*!< dhEphem C(2e, 0s, FFC DH) */
+	CC_FFCDH_SCHEM_ONE_FLOW,         /*!< dhOneFlow C(1e, 1s, FFC DH) */
+	CC_FFCDH_SCHEM_STATIC, 	         /*!< dhStatic C(0e, 2s, FFC DH) */
+	CC_FFCDH_SCHEM_NUM_OFF_MODE,     /*!< not allowed value */
+	CC_FFCDH_SCHEM_LAST = 0x7FFFFFFF
 } CCFfcDhSchemeId_t;
 
 /*! An enumeration ID, defining user role in DH Agreement, represented as U, V
@@ -183,30 +183,30 @@ typedef enum
   NIST SP 56A Rev. 2, Sections 5.9, 6.1, 6.2, 6.3 */
 typedef enum
 {
-    CC_FFCDH_CONFIRM_U_TO_V,          /*!< only party U provides MacTag to V. */
-    CC_FFCDH_CONFIRM_V_TO_U,          /*!< only party V provides MacTag to U. */
-    CC_FFCDH_CONFIRM_BILATERAL,       /*!< each party provides MacTag to other. */
-    CC_FFCDH_CONFIRM_NOT_USED,        /*!< the confirmation is not performed by the scheme */
-    CC_FFCDH_CONFIRM_NUM_OFF_MODE,    /*!< not allowed value */
-    CC_FFCDH_CONFIRM_MODE_LAST = 0x7FFFFFFF
+	CC_FFCDH_CONFIRM_U_TO_V,          /*!< only party U provides MacTag to V. */
+	CC_FFCDH_CONFIRM_V_TO_U,          /*!< only party V provides MacTag to U. */
+	CC_FFCDH_CONFIRM_BILATERAL,       /*!< each party provides MacTag to other. */
+	CC_FFCDH_CONFIRM_NOT_USED,        /*!< the confirmation is not performed by the scheme */
+	CC_FFCDH_CONFIRM_NUM_OFF_MODE,    /*!< not allowed value */
+	CC_FFCDH_CONFIRM_MODE_LAST = 0x7FFFFFFF
 }CCFfcDhUserConfirmMode_t;
 
 
 /*! DH key status according to its life time (or purpose): static/ephemeral */
 typedef enum
 {
-    CC_FFCDH_KEY_STATIC,     /*!< static (long term) key  */
-    CC_FFCDH_KEY_EPHEMER,    /*!< ephemeral (one-time) key */
-    CC_FFCDH_KEY_STATUS_NUM_OFF_MODE, /*!< not allowed value */
-    CC_FFCDH_KEY_STATUS_LAST = 0x7FFFFFFF
+	CC_FFCDH_KEY_STATIC,     /*!< static (long term) key  */
+	CC_FFCDH_KEY_EPHEMER,    /*!< ephemeral (one-time) key */
+	CC_FFCDH_KEY_STATUS_NUM_OFF_MODE, /*!< not allowed value */
+	CC_FFCDH_KEY_STATUS_LAST = 0x7FFFFFFF
 } CCFfcDhKeyStatus_t;
 
 
 /*! FFC DH Public Key validation mode definitions :
     (such enumerator mode should be given for each key separately). */
 typedef enum {
-    CC_FFCDH_KEY_VALIDAT_FULL_MODE,    /*!< full validation (NIST SP 56A Rev. 2) */
-    CC_FFCDH_KEY_VALIDAT_PARTIAL_MODE, /*!< checking of sizes, pointers and ranges;
+	CC_FFCDH_KEY_VALIDAT_FULL_MODE,    /*!< full validation (NIST SP 56A Rev. 2) */
+	CC_FFCDH_KEY_VALIDAT_PARTIAL_MODE, /*!< checking of sizes, pointers and ranges;
                                                 this mode may be used on user's responsibility
                                                 when he has assurance about received data */
         CC_FFCDH_KEY_VALIDAT_NUM_OFF_MODE, /*!< not allowed value */
@@ -218,10 +218,10 @@ typedef enum {
      namely: static and ephemeral keys. If full mode for any existed key is not defined,
      then it will be validated partially (checking of sizes, pointers and ranges). */
 typedef enum {
-    CC_FFCDH_STAT_KEY_FULL_VALIDAT_MODE,    /*!< full validation of static key only */
-    CC_FFCDH_EPHEM_KEY_FULL_VALIDAT_MODE,   /*!< full validation of ephemeral key only */
-    CC_FFCDH_BOTH_KEYS_FULL_VALIDAT_MODE,   /*!< full validation of both keys */
-    CC_FFCDH_NO_FULL_VALIDAT_MODE,          /*!< only partial validation of existed keys */
+	CC_FFCDH_STAT_KEY_FULL_VALIDAT_MODE,    /*!< full validation of static key only */
+	CC_FFCDH_EPHEM_KEY_FULL_VALIDAT_MODE,   /*!< full validation of ephemeral key only */
+	CC_FFCDH_BOTH_KEYS_FULL_VALIDAT_MODE,   /*!< full validation of both keys */
+	CC_FFCDH_NO_FULL_VALIDAT_MODE,          /*!< only partial validation of existed keys */
         CC_FFCDH_KEYS_VALIDAT_NUM_OFF_MODE,     /*!< not allowed value */
         CC_FFCDH_KEYS_VALIDAT_MODE_LAST = 0x7FFFFFFF
 } CCFfcDhPartyInfoValidMode_t;
@@ -346,7 +346,7 @@ typedef struct CCFfcDhHashBlockAndDigestSizes_t{
 typedef  struct  CCFfcDhPublKey_t
 {
         size_t   keySizeBits;
-    uint32_t pubKey[CC_FFCDH_MAX_MOD_SIZE_IN_WORDS]; /*!< Public Key .*/
+	uint32_t pubKey[CC_FFCDH_MAX_MOD_SIZE_IN_WORDS]; /*!< Public Key .*/
         CCFfcDhKeyStatus_t status; /*! enumerator, defining the key status according to its lifetime
                                     or purpose: static/ephemeral/nonce */
 }CCFfcDhPublKey_t;
@@ -357,8 +357,8 @@ typedef  struct  CCFfcDhPublKey_t
 and is used as input to the DH functions (such as ::CC_FfcDhGeneratePubPrv etc.). */
 typedef struct   CCFfcDhUserPubKey_t
 {
-    uint32_t validTag; /*!< Validation tag.*/
-    uint32_t publKeyDbBuff[CALC_32BIT_WORDS_FROM_BYTES(sizeof(CCFfcDhPublKey_t))]; /*!< Public key data. */
+	uint32_t validTag; /*!< Validation tag.*/
+	uint32_t publKeyDbBuff[CALC_32BIT_WORDS_FROM_BYTES(sizeof(CCFfcDhPublKey_t))]; /*!< Public key data. */
 }CCFfcDhUserPubKey_t;
 
 #ifdef FFC_FURTHER_USING
@@ -366,10 +366,10 @@ typedef struct   CCFfcDhUserPubKey_t
 /*! The structure containing the FFC DH Public Keys parameters. */
 typedef  struct  CCFfcDhCtxPublKeys_t
 {
-    uint32_t statKeySizeBytes;
-    uint8_t statPublKey[CC_FFCDH_MAX_MOD_SIZE_IN_WORDS];
-    uint32_t ephemKeySizeBytes;
-    uint32_t ephemPublKey[CC_FFCDH_MAX_MOD_SIZE_IN_WORDS];
+	uint32_t statKeySizeBytes;
+	uint8_t statPublKey[CC_FFCDH_MAX_MOD_SIZE_IN_WORDS];
+	uint32_t ephemKeySizeBytes;
+	uint32_t ephemPublKey[CC_FFCDH_MAX_MOD_SIZE_IN_WORDS];
         uint32_t nonceSizeBytes;
         uint32_t userNonce[CC_FFCDH_MAX_GENER_ORDER_SIZE_IN_WORDS];
 }CCFfcDhCtxPublKeys_t;
@@ -381,9 +381,9 @@ typedef  struct  CCFfcDhCtxPublKeys_t
 according to NIST SP 56A rev.2, sec.5.5.1.1 */
 typedef  struct  CCFfcDhPrivKey_t
 {
-    /*! Private Key exponent.*/
+	/*! Private Key exponent.*/
         size_t   keySizeBits;
-    uint32_t key[CC_FFCDH_MAX_GENER_ORDER_SIZE_IN_WORDS + FFCDH_RND_ADDING_SIZE_BYTES];
+	uint32_t key[CC_FFCDH_MAX_GENER_ORDER_SIZE_IN_WORDS + FFCDH_RND_ADDING_SIZE_BYTES];
         CCFfcDhKeyStatus_t status; /*! enumerator, defining the key status according to its lifetime
                                     or purpose: static/ephemeral/nonce */
 }CCFfcDhPrivKey_t;
@@ -394,8 +394,8 @@ typedef  struct  CCFfcDhPrivKey_t
 as secret, and is used as input to the DH functions (such as ::CC_FfcDhGeneratePubPrv etc.). */
 typedef struct   CCFfcDhUserPrivKey_t
 {
-    uint32_t validTag; /*!< key validation tag. */
-    uint32_t privKeyDbBuff[CALC_32BIT_WORDS_FROM_BYTES(sizeof(CCFfcDhPrivKey_t))]; /*!< Private key data. */
+	uint32_t validTag; /*!< key validation tag. */
+	uint32_t privKeyDbBuff[CALC_32BIT_WORDS_FROM_BYTES(sizeof(CCFfcDhPrivKey_t))]; /*!< Private key data. */
 }CCFfcDhUserPrivKey_t;
 
 
@@ -405,7 +405,7 @@ typedef struct   CCFfcDhUserPrivKey_t
 according to NIST SP 56A rev.2, sec.5.5.1.1 */
 typedef  struct  CCFfcDhCtxTempBuff_t
 {
-    uint32_t key[CC_FFCDH_CTX_TMP_BUFF_MAX_SIZE_IN_WORDS];
+	uint32_t key[CC_FFCDH_CTX_TMP_BUFF_MAX_SIZE_IN_WORDS];
 }CCFfcDhCtxTempBuff_t;
 
 #endif
@@ -413,7 +413,7 @@ typedef  struct  CCFfcDhCtxTempBuff_t
 /* temp buffer structure, used for DH functions  */
 typedef struct CCFfcDhTemp_t
 {
-    uint32_t TempBuff[CC_FFCDH_CTX_TMP_BUFF_MAX_SIZE_IN_WORDS];
+	uint32_t TempBuff[CC_FFCDH_CTX_TMP_BUFF_MAX_SIZE_IN_WORDS];
 } CCFfcDhTemp_t;
 
 
@@ -435,9 +435,9 @@ typedef struct CCFfcDhTemp_t
    till the end of the APIs flow. */
 typedef struct CCFfcDhUserContext_t
 {
-    /*! Validation tag. */
-    uint32_t validTag;
-    /*! Private data context buffer. */
+	/*! Validation tag. */
+	uint32_t validTag;
+	/*! Private data context buffer. */
         uint32_t  contextBuff[CC_FFCDH_CONTEXT_BUFF_SIZE_IN_WORDS];
 //        uint32_t  contextBuff[(sizeof(DhContext_t)+3)/4];
 } CCFfcDhUserContext_t;
@@ -448,13 +448,13 @@ typedef struct CCFfcDhUserContext_t
 /*! Definition of FFC-DH buffer used for FIPS Known Answer Tests. */
 typedef struct
 {
-    /* FFC Domain parameters */
-    uint32_t prime[CC_FFCDH_FIPS_PRIME_SIZE_VALUE_IN_WORDS];     /*!< prime modulus - in KAT used 2048 bit size. */
+	/* FFC Domain parameters */
+	uint32_t prime[CC_FFCDH_FIPS_PRIME_SIZE_VALUE_IN_WORDS];     /*!< prime modulus - in KAT used 2048 bit size. */
         uint32_t generator[CC_FFCDH_FIPS_PRIME_SIZE_VALUE_IN_WORDS]; /*!< FFC sub-group generator */
         uint32_t order[CC_FFCDH_FIPS_ORDER_SIZE_VALUE_IN_WORDS];     /*!< order of FFC sub-group - in KAT used 256 bit size*/
         uint32_t privKey[CC_FFCDH_FIPS_ORDER_SIZE_VALUE_IN_WORDS];   /*!< private key */
         uint32_t pubKey[CC_FFCDH_FIPS_PRIME_SIZE_VALUE_IN_WORDS];    /*!< public key */
-    CCFfcDhTemp_t tmpBuff;                                       /*!< temporary buffer */
+	CCFfcDhTemp_t tmpBuff;                                       /*!< temporary buffer */
 } CCFfcDhFipsKat_t;
 
 
@@ -477,7 +477,7 @@ typedef struct
 //{{64,20},{64,28},{64,32},{128,48},{128,64}}
 /*! Define and initialize HASH parameters array */
 //CCFfcDhHashBlockAndDigestSizes_t DhHashBlockAndDigestSizes[(uint32_t)CC_FFCDH_HASH_NUM_OFF_MODE] =
-//                           DH_SHA_PARAMETERS_SIZES_IN_BYTES;
+//	                         DH_SHA_PARAMETERS_SIZES_IN_BYTES;
 
 
 /************************ Public Functions ******************************/
@@ -512,16 +512,16 @@ NIST SP 800-56A and FIPS 186-4 standards.
 CEXPORT_C CCError_t  CC_FfcDhCtxSetSchemeParams(
                         CCFfcDhUserContext_t *pDhUserCtx, /*!< [in/out] pointer to context structure, containing all parameters and data,
                                                                     defining DH Key Agreement Scheme */
-            CCFfcDomain_t *pDomain,           /*!< [in] pointer to DH FFC Domain structure. */
-            uint8_t *pAlgId,                  /*!< [in] pointer to Algorithm ID agreed by both parties and indicates how the derived
-                                                        secret keying material will be parsed and for which algorithms (sec.5.8.1.2).
-                                                        In partial, Algorithm ID should indicate also how much bits are intended for
-                                                        internal confirmation MAC algorithm and how much remaining bits will be
-                                                        returned to the user for external applications/algorithms (the total size should
-                                                        be equal to chosen secretKeyDataSize). */
-            size_t algIdSize,                 /*!< [in] size of Algorithm ID in bytes, should be less than
-                                        CC_FFCDH_MAX_SIZE_OF_ALG_ID_SUB_ENTRY. */
-            size_t secretKeyingDataSize,      /*!< [in] size in bytes of shared secret keying data, which will be extracted and in
+			CCFfcDomain_t *pDomain,           /*!< [in] pointer to DH FFC Domain structure. */
+			uint8_t *pAlgId,                  /*!< [in] pointer to Algorithm ID agreed by both parties and indicates how the derived
+			                                            secret keying material will be parsed and for which algorithms (sec.5.8.1.2).
+			                                            In partial, Algorithm ID should indicate also how much bits are intended for
+			                                            internal confirmation MAC algorithm and how much remaining bits will be
+			                                            returned to the user for external applications/algorithms (the total size should
+			                                            be equal to chosen secretKeyDataSize). */
+			size_t algIdSize,                 /*!< [in] size of Algorithm ID in bytes, should be less than
+							            CC_FFCDH_MAX_SIZE_OF_ALG_ID_SUB_ENTRY. */
+			size_t secretKeyingDataSize,      /*!< [in] size in bytes of shared secret keying data, which will be extracted and in
                                                                     the next steps and passed to the user for using in  external algorithm(s).
                                                                     It is used for calculation of Derived Keying material size =
                                                                     key size of the used HMAC function + secretKeyingDataSize. */
@@ -531,12 +531,12 @@ CEXPORT_C CCError_t  CC_FfcDhCtxSetSchemeParams(
                         size_t partnIdSize,               /*!< [in] size of the partner ID in bytes. */
                         CCFfcDhUserPartyIs_t userParty,   /*!< [in] enumerator, defining role of the user (function's caller) in the
                                                                     DH Agreement Scheme: partyU or partyV. */
-            CCFfcDhSchemeId_t dhSchemeId,     /*!< [in] enumerator ID of used FFC DH Key Agreement Scheme, as defined
-                                                in sec. 6, tab. 12. */
-            CCFfcParamSetId_t ffcParamSetId,  /*!< [in] enumerator, defining the set of FFC domain parameters
+			CCFfcDhSchemeId_t dhSchemeId,     /*!< [in] enumerator ID of used FFC DH Key Agreement Scheme, as defined
+					                            in sec. 6, tab. 12. */
+			CCFfcParamSetId_t ffcParamSetId,  /*!< [in] enumerator, defining the set of FFC domain parameters
                                                                     according to SP 56A rev.2 section 5.5.1.1, tab.1. */
-            CCFfcDhKdfModeSp56A_t kdfMode,    /*!< [in] enumerator ID of used KDF function, based on HASH or HMAC algorithms. In current
-                                                        implementation is allowed only KDF HMAC_RFC5869 mode, according to KDF_HMAC_RFC-5869. */
+			CCFfcDhKdfModeSp56A_t kdfMode,    /*!< [in] enumerator ID of used KDF function, based on HASH or HMAC algorithms. In current
+			                                            implementation is allowed only KDF HMAC_RFC5869 mode, according to KDF_HMAC_RFC-5869. */
                         CCFfcHashOpMode_t ffcHashMode,    /*!< [in] enumerator ID of used SHAXXX HASH mode, supported by the product.
                                                                     Note: HASH SHA1 function may be used only with SA set of domain parameters
                                                                     (sec. 5.8.1, tab.6); with other sets the function returns an error. */
@@ -591,15 +591,15 @@ else the function returns an error.
 @return A non-zero value on failure as defined cc_dh_error.h.
 */
 CIMPORT_C CCError_t CC_FfcDhValidatePublKey(
-            CCFfcDomain_t *pFfcDomain,         /*!< [in/out] pointer to DH FFC Context structure. */
-            uint8_t *pPublKeyData,             /*!< [in] pointer to given DH FFC public key formatted as big endianness array;
-                                     it should be in range [2, P-2], where P is the Domain Prime P. */
-            size_t publKeyDataSize,            /*!< [in] pointer to public key size, in bytes: should be not great than Prime size. */
+			CCFfcDomain_t *pFfcDomain,         /*!< [in/out] pointer to DH FFC Context structure. */
+			uint8_t *pPublKeyData,             /*!< [in] pointer to given DH FFC public key formatted as big endianness array;
+								     it should be in range [2, P-2], where P is the Domain Prime P. */
+			size_t publKeyDataSize,            /*!< [in] pointer to public key size, in bytes: should be not great than Prime size. */
 
-            CCFfcDhKeyValidMode_t validatMode, /*!< [in] enumerator ID defining the validation mode:
-                                     CC_FFCDH_CHECK_FULL_MODE - full validation (sec. 5.6.2.3.1);
-                                     CC_FFCDH_CHECK_PARTIAL_MODE - check pointers, sizes and range of values. */
-            uint32_t *pTmpBuff);               /*!< [in] temporary buffer of size not less 2*Prime size. ??? */
+			CCFfcDhKeyValidMode_t validatMode, /*!< [in] enumerator ID defining the validation mode:
+								     CC_FFCDH_CHECK_FULL_MODE - full validation (sec. 5.6.2.3.1);
+								     CC_FFCDH_CHECK_PARTIAL_MODE - check pointers, sizes and range of values. */
+			uint32_t *pTmpBuff);               /*!< [in] temporary buffer of size not less 2*Prime size. ??? */
 
 
 
@@ -853,7 +853,7 @@ of keys, described in cc_ffcdh.h file.
 @return A non-zero value on failure as defined in cc_dh_error.h or cc_rnd_error.h.
 */
 CIMPORT_C CCError_t CC_FfcDhGetSharedSecretVal(
-            CCFfcDomain_t *pDomain,         /*!< [in/out] pointer to DH FFC Context structure. */
+			CCFfcDomain_t *pDomain,         /*!< [in/out] pointer to DH FFC Context structure. */
                         uint8_t *pSharedSecretVal,      /*!< [out] pointer to the shared secret value in big endianness order
                                                                   of bytes in the array (MS-byte is a most left one). This
                                                                   buffer should be at least of prime (modulus) size in bytes. */

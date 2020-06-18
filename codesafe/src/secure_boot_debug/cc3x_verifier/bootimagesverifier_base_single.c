@@ -70,8 +70,8 @@ CCError_t CC_SbCertVerifySingle(CCSbFlashReadFunc flashReadFunc,
                                 uint32_t *pWorkspace,
                                 uint32_t workspaceSize)
 {
-        CCError_t   rc = CC_OK;
-        uint32_t    certLoadWordSize;
+        CCError_t 	rc = CC_OK;
+        uint32_t	certLoadWordSize;
         CertFieldsInfo_t  certFields;
         BufferInfo32_t  workspaceInfo;
         BufferInfo32_t  certInfo;
@@ -124,9 +124,9 @@ CCError_t CC_SbCertVerifySingle(CCSbFlashReadFunc flashReadFunc,
         }
 
         /* workspace order:
-           [0]  certificate
+           [0]	certificate
             [certificate size]   if content certificate - additional data for images and addresses
-           [end of workspace]   N+Np+Signature  OR images information */
+           [end of workspace]	N+Np+Signature  OR images information */
         certInfo.pBuffer =  pWorkspace;
 
         /* Set expected certificate type according to the certificate place in chain - first key ,

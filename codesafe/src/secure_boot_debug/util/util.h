@@ -22,7 +22,7 @@ extern "C"
 
 /* invers the bytes on a word- used for output from HASH */
 #ifdef BIG__ENDIAN
-#define UTIL_INVERSE_UINT32_BYTES( val )    (val)
+#define UTIL_INVERSE_UINT32_BYTES( val )	(val)
 #else
 #define UTIL_INVERSE_UINT32_BYTES( val ) \
    ( ((val) >> 24) | (((val) & 0x00FF0000) >> 8) | (((val) & 0x0000FF00) << 8) | (((val) & 0x000000FF) << 24) )
@@ -33,7 +33,7 @@ extern "C"
 #define UTIL_REVERT_UINT32_BYTES( val ) \
    ( ((val) >> 24) | (((val) & 0x00FF0000) >> 8) | (((val) & 0x0000FF00) << 8) | (((val) & 0x000000FF) << 24) )
 #else
-#define UTIL_REVERT_UINT32_BYTES( val ) (val)
+#define UTIL_REVERT_UINT32_BYTES( val )	(val)
 #endif
 
 /* the minimum and maximum macros */
@@ -49,20 +49,20 @@ do \
 { \
       uint32_t tmp_num = number; \
       BitCount = 0; \
-      while (tmp_num)   \
-      {         \
+      while (tmp_num)	\
+      {			\
         tmp_num = tmp_num & (tmp_num - 1); \
         BitCount = BitCount + 1; \
-      }         \
+      }			\
 } while (0)
 
 #define CONVERT_BYTE_ARR_TO_WORD(inPtr, outWord, numOfBytes) \
 do{\
-    uint8_t index;\
-    outWord = 0;\
-    for (index = 0; index < numOfBytes; index ++){\
-        outWord |= (*(inPtr + index)<<8*index);\
-    }\
+	uint8_t index;\
+	outWord = 0;\
+	for (index = 0; index < numOfBytes; index ++){\
+		outWord |= (*(inPtr + index)<<8*index);\
+	}\
 } while(0)
 
 

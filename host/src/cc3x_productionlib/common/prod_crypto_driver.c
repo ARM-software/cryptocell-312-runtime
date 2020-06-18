@@ -26,11 +26,11 @@
 /**
  * This function is used to perform AES  operation.
  *
- * @param[in] pInternalKey  - a pointer to internal key
- * @param[in] pDataIn       - a pointer to input buffer - address must be 32bit aligned
- * @param[in] dataInSize    - size of data in bytes
- * @param[in] pOutbuff      - a pointer to output buffer- address must be 32bit aligned
- * @param[in] outbuffSize   - size of data out bytes
+ * @param[in] pInternalKey	- a pointer to internal key
+ * @param[in] pDataIn 		- a pointer to input buffer - address must be 32bit aligned
+ * @param[in] dataInSize 	- size of data in bytes
+ * @param[in] pOutbuff 		- a pointer to output buffer- address must be 32bit aligned
+ * @param[in] outbuffSize 	- size of data out bytes
  *
  */
 
@@ -82,11 +82,11 @@ uint32_t CC_PROD_AesCcmDecrypt(uint8_t *pKey,
 /**
  * This function is used to perform AES  operation.
  *
- * @param[in] pInternalKey  - a pointer to internal key
- * @param[in] pDataIn       - a pointer to input buffer - address must be 32bit aligned
- * @param[in] dataInSize    - size of data in bytes
- * @param[in] pOutbuff      - a pointer to output buffer- address must be 32bit aligned
- * @param[in] outbuffSize   - size of data out bytes
+ * @param[in] pInternalKey	- a pointer to internal key
+ * @param[in] pDataIn 		- a pointer to input buffer - address must be 32bit aligned
+ * @param[in] dataInSize 	- size of data in bytes
+ * @param[in] pOutbuff 		- a pointer to output buffer- address must be 32bit aligned
+ * @param[in] outbuffSize 	- size of data out bytes
  *
  */
 uint32_t CC_PROD_Aes(aesMode_t cipherMode,
@@ -126,10 +126,10 @@ uint32_t CC_PROD_Aes(aesMode_t cipherMode,
 /**
  * This function is used to perform AES CBC MAC operation.
  *
- * @param[in] pKey  - a pointer to internal key
- * @param[in] pDataIn       - a pointer to input buffer
- * @param[in] blockSize     - size of data in bytes
- * @param[in] pCmacResult   - a pointer to output buffer
+ * @param[in] pKey	- a pointer to internal key
+ * @param[in] pDataIn 		- a pointer to input buffer
+ * @param[in] blockSize 	- size of data in bytes
+ * @param[in] pCmacResult 	- a pointer to output buffer
  *
  */
 uint32_t CC_PROD_AesInit(AesContext_t *pAesCtx,
@@ -174,11 +174,11 @@ uint32_t CC_PROD_AesInit(AesContext_t *pAesCtx,
 /**
  * This function is used to perform AES CBC MAC operation.
  *
- * @param[in] cipherMode    - the aes mode
- * @param[in] pDataIn       - a pointer to input buffer - address must be 32bit aligned
- * @param[in] dataInSize    - size of data in bytes
- * @param[out] pOutbuff     - a pointer to output buffer - address must be 32bit aligned
- * @param[in] outbuffSize   -  the expectedsize of output buffer in bytes
+ * @param[in] cipherMode	- the aes mode
+ * @param[in] pDataIn 		- a pointer to input buffer - address must be 32bit aligned
+ * @param[in] dataInSize 	- size of data in bytes
+ * @param[out] pOutbuff  	- a pointer to output buffer - address must be 32bit aligned
+ * @param[in] outbuffSize 	-  the expectedsize of output buffer in bytes
  *
  */
 uint32_t CC_PROD_AesProcess(AesContext_t *pAesCtx,

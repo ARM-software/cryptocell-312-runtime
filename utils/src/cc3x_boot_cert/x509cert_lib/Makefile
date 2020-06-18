@@ -3,7 +3,7 @@
 SH_LIB_NAME = libsbu_crypto.so
 
 LIB_SRC_O = main.o common_rsa_keypair.o  common_crypto_x509.o
-LIB_SRC_O += common_crypto_sym.o common_crypto_asym.o common_util_files.o common_rsa_keypair_util.o 
+LIB_SRC_O += common_crypto_sym.o common_crypto_asym.o common_util_files.o common_rsa_keypair_util.o
 
 UTILS_ROOT = $(shell pwd)/../../..
 SHARED_DIR = $(UTILS_ROOT)/../shared
@@ -18,6 +18,10 @@ UTILS_INC_PATH += $(CODESAFE_DIR)/src/secure_boot_debug/platform/common/cc3x $(C
 UTILS_INC_PATH += $(CODESAFE_DIR)/src/secure_boot_debug/secure_debug/cc3x $(CODESAFE_DIR)/src/secure_boot_debug/platform/hal $(CODESAFE_DIR)/src/secure_boot_debug/crypto_driver/reg
 UTILS_INC_PATH += $(SHARED_DIR)/include/pal  $(SHARED_DIR)/include/pal/$(TEE_OS)
 
+include $(UTILS_ROOT)/src/Makefile.openssl
+
+UTILS_INC_PATH += $(OPENSSL_INC_DIR)
+
 CFLAGS += -fPIC $(foreach incdir,$(UTILS_INC_PATH),-I$(incdir)) -c
 CFLAGS += -DCC_SB_SUPPORT_IOT
 
@@ -27,7 +31,7 @@ all: $(SH_LIB_NAME)
 # Compile and link the sbu_crypto library with hard-coded library run path to utils/lib
 # (to assure the private version of openssl libraries are used)
 $(SH_LIB_NAME): $(LIB_SRC_O)
-	gcc -shared -o $(SH_LIB_NAME) $(LIB_SRC_O) -Wl,-rpath,$(UTILS_LIB_PATH) -lcrypto -lssl 
+	gcc -shared -o $(SH_LIB_NAME) $(LIB_SRC_O) -Wl,-rpath=$(OPENSSL_LIB_DIR) -L $(OPENSSL_LIB_DIR) -lcrypto -lssl
 
 vpath %.c $(UTILS_ROOT)/src/common
 

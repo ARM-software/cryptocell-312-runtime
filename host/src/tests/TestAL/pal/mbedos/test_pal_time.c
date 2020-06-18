@@ -17,11 +17,11 @@
 /******************************************************************************/
 void Test_PalDelay(const uint32_t usec)
 {
-    wait_us((int)usec);
+	wait_us((int)usec);
 }
 
 /******************************************************************************/
 uint32_t Test_PalGetTimestamp(void)
 {
-    return (us_ticker_read() / 1000);
+	return (us_ticker_read() / 1000);
 }

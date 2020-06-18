@@ -51,103 +51,103 @@ extern "C"
 /*! RMA statuses. */
 typedef enum  {
     /*! Non-RMA: bit [30] = 0, bit [31] = 0. */
-    CC_MNG_NON_RMA              = 0,
+	CC_MNG_NON_RMA              = 0,
     /*! Pending RMA: bit [30] = 1, bit [31] = 0. */
-    CC_MNG_PENDING_RMA          = 1,
+	CC_MNG_PENDING_RMA          = 1,
     /*! Illegal state: bit [30] = 0, bit [31] = 1. */
-    CC_MNG_ILLEGAL_STATE        = 2,
+	CC_MNG_ILLEGAL_STATE        = 2,
     /*! RMA: bit [30] = 1, bit [31] = 1. */
-    CC_MNG_RMA                  = 3,
+	CC_MNG_RMA                  = 3,
     /*! Reserved. */
-    CC_MNG_END_OF_RMA_STATUS    = 0x7FFFFFFF
+	CC_MNG_END_OF_RMA_STATUS    = 0x7FFFFFFF
 }mbedtls_mng_rmastatus;
 
 /*! AES HW key types. */
 typedef enum  {
     /*! Device root key (HUK). */
-    CC_MNG_HUK_KEY         = 0,
+	CC_MNG_HUK_KEY         = 0,
     /*! Platform key (Krtl). */
-    CC_MNG_RTL_KEY         = 1,
+	CC_MNG_RTL_KEY         = 1,
     /*! ICV provisioning key (Kcp). */
-    CC_MNG_PROV_KEY        = 2,
+	CC_MNG_PROV_KEY        = 2,
     /*! OEM code-encryption key (Kce). */
-    CC_MNG_CE_KEY          = 3,
+	CC_MNG_CE_KEY          = 3,
     /*! OEM provisioning key (Kpicv). */
-    CC_MNG_ICV_PROV_KEY    = 4,
+	CC_MNG_ICV_PROV_KEY    = 4,
     /*! ICV code-encryption key (Kceicv). */
-    CC_MNG_ICV_CE_KEY      = 5,
+	CC_MNG_ICV_CE_KEY      = 5,
     /*! Total number of HW Keys. */
-    CC_MNG_TOTAL_HW_KEYS   = 6,
+	CC_MNG_TOTAL_HW_KEYS   = 6, 
     /*! Reserved. */
-    CC_MNG_END_OF_KEY_TYPE = 0x7FFFFFFF
+	CC_MNG_END_OF_KEY_TYPE = 0x7FFFFFFF
 }mbedtls_mng_keytype;
 
 /*! APB-C only part IDs. */
 typedef enum  {
     /*! Secure accesses. */
-    CC_MNG_APBC_SEC_ID      = 0,
+	CC_MNG_APBC_SEC_ID      = 0,
     /*! Privileged accesses. */
-    CC_MNG_APBC_PRIV_ID     = 1,
+	CC_MNG_APBC_PRIV_ID     = 1,
     /*! Instruction accesses. */
-    CC_MNG_APBC_INST_ID     = 2,
+	CC_MNG_APBC_INST_ID     = 2,
     /*! Total part IDs. */
-    CC_MNG_APBC_TOTAL_ID    = 3,
+	CC_MNG_APBC_TOTAL_ID    = 3,
     /*! Reserved. */
-    CC_MNG_APBC_END_OF_ID   = 0x7FFFFFFF
+	CC_MNG_APBC_END_OF_ID   = 0x7FFFFFFF
 }mbedtls_mng_apbc_parts;
 
 /*! APB-C part configuration. */
 typedef enum  {
     /*! Use APB-C as an input when there is no need to change bits.
     Modify bit = 0. */
-    CC_MNG_APBC_NO_CHANGE           = 0,
-    /*! Use APB-C as an input when you need to set the 'Allow' bit to '0' and
-    leave this part unlocked. Modify bit = 1, Allow bit = 0, Allow Lock
-    bit = 0. */
-    CC_MNG_APBC_ALLOW_0_ALLOWLOCK_0 = 1,
-    /*! Use APB-C as an input when you need to set the 'Allow' bit to '0' and
-    lock this part. Modify bit = 1, Allow bit = 0, Allow Lock bit = 1. */
-    CC_MNG_APBC_ALLOW_0_ALLOWLOCK_1 = 2,
-    /*! Use APB-C as an input when you need to set the 'Allow' bit to '1' and
-    leave this part unlocked. Modify bit = 1, Allow bit = 1, Allow Lock
-    bit = 0. */
-    CC_MNG_APBC_ALLOW_1_ALLOWLOCK_0 = 3,
-    /*! Use APB-C as an input when you need to set the 'Allow' bit to '1' and
-    lock this part. Modify bit = 1, Allow bit = 1, Allow Lock bit = 1. */
-    CC_MNG_APBC_ALLOW_1_ALLOWLOCK_1 = 4,
+	CC_MNG_APBC_NO_CHANGE           = 0,         
+    /*! Use APB-C as an input when you need to set the 'Allow' bit to '0' and 
+	leave this part unlocked. Modify bit = 1, Allow bit = 0, Allow Lock 
+	bit = 0. */
+	CC_MNG_APBC_ALLOW_0_ALLOWLOCK_0 = 1,         
+    /*! Use APB-C as an input when you need to set the 'Allow' bit to '0' and 
+	lock this part. Modify bit = 1, Allow bit = 0, Allow Lock bit = 1. */
+	CC_MNG_APBC_ALLOW_0_ALLOWLOCK_1 = 2,         
+    /*! Use APB-C as an input when you need to set the 'Allow' bit to '1' and 
+	leave this part unlocked. Modify bit = 1, Allow bit = 1, Allow Lock 
+	bit = 0. */
+	CC_MNG_APBC_ALLOW_1_ALLOWLOCK_0 = 3,         
+    /*! Use APB-C as an input when you need to set the 'Allow' bit to '1' and 
+	lock this part. Modify bit = 1, Allow bit = 1, Allow Lock bit = 1. */
+	CC_MNG_APBC_ALLOW_1_ALLOWLOCK_1 = 4,
     /*! Total parts. */
-    CC_MNG_APBC_TOTAL_PARTS_CONFIG  = 5,
+	CC_MNG_APBC_TOTAL_PARTS_CONFIG  = 5, 
     /*! Reserved. */
-    CC_MNG_APBC_END_OF_PARTS_CONFIG = 0x7FFFFFFF
+	CC_MNG_APBC_END_OF_PARTS_CONFIG = 0x7FFFFFFF
 }mbedtls_mng_apbc_parts_config;
 
 /************************ Typedefs  ****************************/
 
-/*! A uint8_t representation for the APB-C parts in the AO_APB_FILTERING
+/*! A uint8_t representation for the APB-C parts in the AO_APB_FILTERING 
 register. */
 typedef union mbedtls_mng_apbc_part{
-    /*! A representation of the APB-C value in the AO_APB_FILTERING register.*/
-    uint8_t apbcPartVal;
-    /*! A representation of the APB-C parts in the AO_APB_FILTERING register.*/
-    struct {
+	/*! A representation of the APB-C value in the AO_APB_FILTERING register.*/
+	uint8_t apbcPartVal;
+	/*! A representation of the APB-C parts in the AO_APB_FILTERING register.*/
+	struct {
         /*! APB-C accepts only 'mbedtls_mng_apbc_parts' accesses. */
-        uint8_t accessAllow       :   1;
+		uint8_t accessAllow       :   1;
         /*! APB-C \p accessAllow cannot be modified. */
-        uint8_t accessAllowLock   :   1;
+		uint8_t accessAllowLock   :   1;
         /*! User decided to modify the upper couple. */
-        uint8_t accessModify      :   1;
+		uint8_t accessModify      :   1;
         /*! APB-C part access bits. */
-        uint8_t rfu               :   5;
+		uint8_t rfu               :   5;
     }apbcPartBits;
 }mbedtls_mng_apbc_part;
 
 /*! Input to the mbedtls_mng_apbc_config_set() function. */
 typedef union mbedtls_mng_apbcconfig{
     /*! APB-C configuration values. */
-    uint32_t apbcConfigVal;
-    /*! An array of the configuration bits for the Secure, Privileged, and
-    Instruction parts. */
-    mbedtls_mng_apbc_part apbcPart[CC_MNG_APBC_TOTAL_ID + 1];
+	uint32_t apbcConfigVal;
+    /*! An array of the configuration bits for the Secure, Privileged, and 
+	Instruction parts. */
+	mbedtls_mng_apbc_part apbcPart[CC_MNG_APBC_TOTAL_ID + 1];
 }mbedtls_mng_apbcconfig;
 
 
@@ -171,7 +171,7 @@ appropriate registers or the OTP.
  */
 int mbedtls_mng_pending_rma_status_get(
         /*! [out] The RMA status. */
-        uint32_t *rmaStatus
+		uint32_t *rmaStatus
                                       );
 
 /*!
@@ -182,9 +182,9 @@ int mbedtls_mng_pending_rma_status_get(
  */
 int mbedtls_mng_hw_version_get(
         /*! [out] The part number. */
-        uint32_t *partNumber,
+		uint32_t *partNumber,
         /*! [out] The HW version. */
-        uint32_t *revision
+		uint32_t *revision
 );
 
 /*!
@@ -196,12 +196,12 @@ int mbedtls_mng_hw_version_get(
   @return A non-zero value from mbedtls_cc_mng_error.h on failure.
  */
 int mbedtls_mng_cc_sec_mode_set(
-        /*! [in] True: Set CryptoCell to Secured mode. False: Set CryptoCell
-        to non-Secured mode. */
-        CCBool_t isSecAccessMode,
-        /*! [in] True: Lock CryptoCell to current mode. False: Do not lock
-        CryptoCell to current mode. Allows calling this function again. */
-        CCBool_t isSecModeLock
+        /*! [in] True: Set CryptoCell to Secured mode. False: Set CryptoCell 
+		to non-Secured mode. */
+		CCBool_t isSecAccessMode,
+        /*! [in] True: Lock CryptoCell to current mode. False: Do not lock 
+		CryptoCell to current mode. Allows calling this function again. */
+		CCBool_t isSecModeLock
 );
 
 /*!
@@ -213,12 +213,12 @@ int mbedtls_mng_cc_sec_mode_set(
   @return A non-zero value from mbedtls_cc_mng_error.h on failure.
  */
 int mbedtls_mng_cc_priv_mode_set(
-        /*! [in] True: Set CryptoCell to privileged mode. False: Set
-        CryptoCell to unprivileged mode. */
-        CCBool_t isPrivAccessMode,
-        /*! [in] True: Lock CryptoCell to current mode. False: Do not lock
-        CryptoCell to current mode. Allows calling this function again. */
-        CCBool_t isPrivModeLock
+        /*! [in] True: Set CryptoCell to privileged mode. False: Set 
+		CryptoCell to unprivileged mode. */
+		CCBool_t isPrivAccessMode,
+        /*! [in] True: Lock CryptoCell to current mode. False: Do not lock 
+		CryptoCell to current mode. Allows calling this function again. */
+		CCBool_t isPrivModeLock
 );
 
 /*!
@@ -229,13 +229,13 @@ int mbedtls_mng_cc_priv_mode_set(
   @return A non-zero value from mbedtls_cc_mng_error.h on failure.
  */
 int mbedtls_mng_debug_key_set(
-        /*! [in] The type of the HW key. One of the following values: HUK,
-        Kcp, Kce, Kpicv, or Kceicv. */
+		/*! [in] The type of the HW key. One of the following values: HUK, 
+		Kcp, Kce, Kpicv, or Kceicv. */
         mbedtls_mng_keytype keyType,
         /*! [in] A pointer to the buffer holding the HW key. */
-        uint32_t *pHwKey,
+		uint32_t *pHwKey,
         /*! [in] The size of the HW key in bytes. */
-        size_t keySize
+		size_t keySize
 );
 
 /*!
@@ -247,7 +247,7 @@ int mbedtls_mng_debug_key_set(
  */
 int mbedtls_mng_gen_config_get(
         /*! [out] The OTP configuration word. */
-        uint32_t *pOtpWord
+		uint32_t *pOtpWord
                                );
 
 /*!
@@ -259,26 +259,26 @@ int mbedtls_mng_gen_config_get(
  */
 int mbedtls_mng_oem_key_lock(
         /*! [in] The flag for locking Kcp usage. */
-        CCBool_t kcpLock,
+		CCBool_t kcpLock,
         /*! [in] The flag for locking Kce usage. */
-        CCBool_t kceLock
+		CCBool_t kceLock
 );
 
 /*!
   @brief This function sets CryptoCell APB-C into one of the following modes:
-         Secured access mode, Privileged access mode, or Instruction access
-         mode.
+         Secured access mode, Privileged access mode, or Instruction access 
+		 mode.
 
   @return CC_OK on success.
   @return A non-zero value from mbedtls_cc_mng_error.h on failure.
  */
 int mbedtls_mng_apbc_config_set(
         /*! Secured access mode. */
-        mbedtls_mng_apbc_parts_config securePartCfg,
+		mbedtls_mng_apbc_parts_config securePartCfg,
         /*! Privileged access mode.*/
-        mbedtls_mng_apbc_parts_config privPartCfg,
+		mbedtls_mng_apbc_parts_config privPartCfg,
         /*! Instruction access mode. */
-        mbedtls_mng_apbc_parts_config instPartCfg
+		mbedtls_mng_apbc_parts_config instPartCfg
 );
 /*!
   @brief This function requests usage of, or releases, the APB-C.
@@ -290,11 +290,11 @@ int mbedtls_mng_apbc_config_set(
  */
 int mbedtls_mng_apbc_access(
         /*! [in] TRUE: Request usage of APB-C. FALSE: Free APB-C. */
-        CCBool_t isApbcAccessUsed
+		CCBool_t isApbcAccessUsed
                            );
 
 /*!
-  @brief This function is called once the external PMU decides to power-down
+  @brief This function is called once the external PMU decides to power-down 
   CryptoCell.
 
   @return CC_OK on success.
@@ -302,14 +302,14 @@ int mbedtls_mng_apbc_access(
  */
 int mbedtls_mng_suspend(
         /*! [in] A pointer to a buffer that can be used for backup. */
-        uint8_t *pBackupBuffer,
-        /*! [in] The size of the backup buffer. Must be at least
-        \c CC_MNG_MIN_BACKUP_SIZE_IN_BYTES. */
-        size_t backupSize
+		uint8_t *pBackupBuffer,
+        /*! [in] The size of the backup buffer. Must be at least 
+		\c CC_MNG_MIN_BACKUP_SIZE_IN_BYTES. */
+		size_t backupSize
 );
 
 /*!
-  @brief This function is called once the external PMU decides to power-up
+  @brief This function is called once the external PMU decides to power-up 
   CryptoCell.
 
   @return CC_OK on success.
@@ -317,10 +317,10 @@ int mbedtls_mng_suspend(
  */
 int mbedtls_mng_resume(
         /*! [in] A pointer to a buffer that can be used for backup. */
-        uint8_t *pBackupBuffer,
-        /*! [in] The size of the backup buffer. Must be at least
-        \c CC_MNG_MIN_BACKUP_SIZE_IN_BYTES. */
-        size_t backupSize
+		uint8_t *pBackupBuffer,
+        /*! [in] The size of the backup buffer. Must be at least 
+		\c CC_MNG_MIN_BACKUP_SIZE_IN_BYTES. */
+		size_t backupSize
 );
 #ifdef __cplusplus
 }

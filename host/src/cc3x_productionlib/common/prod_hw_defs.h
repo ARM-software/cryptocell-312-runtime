@@ -12,7 +12,7 @@
 #include "cc_hal_plat.h"
 
 
-#define CC_PROD_AIB_ADDR_REG_READ_ACCESS_BIT_SHIFT    0x10UL
+#define CC_PROD_AIB_ADDR_REG_READ_ACCESS_BIT_SHIFT 	  0x10UL
 #define CC_PROD_AIB_ADDR_REG_WRITE_ACCESS_BIT_SHIFT   0x11UL
 
 #define CC_PROD_ROT32(val) ( (val) >> 16 | (val) << 16 )
@@ -29,32 +29,32 @@
 /* Poll on the AIB bit */
 #define CC_PROD_WAIT_ON_AIB_PROG_COMP_BIT() \
 do {\
-    uint32_t regVal;\
-    do {\
-        regVal = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, AIB_FUSE_PROG_COMPLETED));\
-    }while( !(regVal & 0x1 ));\
+	uint32_t regVal;\
+	do {\
+		regVal = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, AIB_FUSE_PROG_COMPLETED));\
+	}while( !(regVal & 0x1 ));\
 }while(0)
 
 /*******************************************************  OTP defines  ******************************************************/
 /* read a word directly from OTP memory */
-#define  CC_PROD_OTP_READ(otpData, otpWordOffset)                           \
-    do {                                                                                \
-        otpData = CC_HAL_READ_REGISTER( CC_OTP_BASE_ADDR + ((otpWordOffset)*CC_32BIT_WORD_SIZE));   \
-    }while(0)
+#define  CC_PROD_OTP_READ(otpData, otpWordOffset)							\
+	do { 																				\
+		otpData = CC_HAL_READ_REGISTER( CC_OTP_BASE_ADDR + ((otpWordOffset)*CC_32BIT_WORD_SIZE)); 	\
+	}while(0)
 
 /* write a word directly from OTP memory */
-#define CC_PROD_OTP_WRITE(otpData, otpWordOffset)                           \
-    do {                                                                                \
-        CC_HAL_WRITE_REGISTER(( CC_OTP_BASE_ADDR + ((otpWordOffset)*CC_32BIT_WORD_SIZE)), otpData); \
-        CC_PROD_WAIT_ON_AIB_PROG_COMP_BIT();                                    \
-    }while(0)
+#define CC_PROD_OTP_WRITE(otpData, otpWordOffset)							\
+	do { 																				\
+		CC_HAL_WRITE_REGISTER(( CC_OTP_BASE_ADDR + ((otpWordOffset)*CC_32BIT_WORD_SIZE)), otpData);	\
+		CC_PROD_WAIT_ON_AIB_PROG_COMP_BIT();  									\
+	}while(0)
 
 
 #define CC_PROD_OTP_WRITE_VERIFY_WORD(otpWordOffset, wordValue, rc) {\
-    uint32_t  otpActualVal = 0;\
+	uint32_t  otpActualVal = 0;\
         if (wordValue != 0x0) { \
                 CC_PROD_OTP_WRITE((wordValue), (otpWordOffset));\
-            CC_PROD_OTP_READ(otpActualVal, (otpWordOffset));\
+        	CC_PROD_OTP_READ(otpActualVal, (otpWordOffset));\
                 if (otpActualVal !=(wordValue)) {\
                         rc = CC_PROD_HAL_FATAL_ERR;\
                 } else { \
@@ -65,8 +65,8 @@ do {\
 }
 
 #define CC_PROD_OTP_WRITE_VERIFY_WORD_BUFF(otpWordOffset, wordBuff, buffWordSize, rc) {\
-    uint32_t  ii = 0;\
-    for (ii =0; ii < (buffWordSize); ii++) { \
+	uint32_t  ii = 0;\
+	for (ii =0; ii < (buffWordSize); ii++) { \
            CC_PROD_OTP_WRITE_VERIFY_WORD((otpWordOffset+ii), wordBuff[ii], rc); \
            if (rc != CC_OK) { \
                 break; \
@@ -77,15 +77,15 @@ do {\
 
 #define SET_OTP_MANUFACTURE_FLAG(manufactorWord, bitField, fieldValue)  \
                         BITFIELD_SET(manufactorWord,                             \
-                                            CC_OTP_MANUFACTURE_FLAG_ ## bitField ## _BIT_SHIFT,  \
-                                            CC_OTP_MANUFACTURE_FLAG_ ## bitField ## _BIT_SIZE,   \
-                                            fieldValue)
+                                			CC_OTP_MANUFACTURE_FLAG_ ## bitField ## _BIT_SHIFT,  \
+                                			CC_OTP_MANUFACTURE_FLAG_ ## bitField ## _BIT_SIZE,   \
+                                			fieldValue)
 
 #define SET_OTP_OEM_FLAG(manufactorWord, bitField, fieldValue)  \
                         BITFIELD_SET(manufactorWord,                             \
-                                            CC_OTP_OEM_FLAG_ ## bitField ## _BIT_SHIFT,  \
-                                            CC_OTP_OEM_FLAG_ ## bitField ## _BIT_SIZE,   \
-                                            fieldValue)
+                                			CC_OTP_OEM_FLAG_ ## bitField ## _BIT_SHIFT,  \
+                                			CC_OTP_OEM_FLAG_ ## bitField ## _BIT_SIZE,   \
+                                			fieldValue)
 
 #define IS_HBK0_USED(icvWord)  (BITFIELD_GET(icvWord,      \
                                                               CC_OTP_MANUFACTURE_FLAG_HBK0_NOT_IN_USE_BIT_SHIFT, \

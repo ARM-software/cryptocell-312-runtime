@@ -29,7 +29,7 @@ extern "C"
 #define CC_BOOT_RSA_VERIFIER_CMP_FAILURE    (CC_SB_RSA_BASE_ERROR + 0x00000002)
 
 /* the modulus size ion bits */
-#define RSA_EXP_SIZE_WORDS          1
+#define RSA_EXP_SIZE_WORDS 			1
 
 
 /* PKA max count of SRAM registers: */
@@ -39,7 +39,7 @@ extern "C"
 
 /* maximal size of extended register in "big PKA words" and in 32-bit words:  *
    the size defined according to RSA as more large, and used to define some   *
-*  auxiliary buffers sizes                                */
+*  auxiliary buffers sizes      					      */
 #define RSA_PKA_MAX_REGISTER_SIZE_IN_PKA_WORDS \
         ((SB_CERT_RSA_KEY_SIZE_IN_BITS + RSA_PKA_EXTRA_BITS + RSA_PKA_BIG_WORD_SIZE_IN_BITS - 1)/RSA_PKA_BIG_WORD_SIZE_IN_BITS + 1)
 #define RSA_PKA_MAX_REGISTER_SIZE_WORDS  (RSA_PKA_MAX_REGISTER_SIZE_IN_PKA_WORDS*(RSA_PKA_BIG_WORD_SIZE_IN_BITS/CC_BITS_IN_32BIT_WORD))
@@ -94,13 +94,13 @@ extern "C"
    as defined in PKCS#1 v2.1
 
    @param[in] hwBaseAddress - HW base address. Relevant for HW
-                              implementation, for SW it is ignored.
+                    	      implementation, for SW it is ignored.
    @param[in] dataInHashResult - the DataIn hash result.
    @param[in] pN           - the modulus (2048 bits).
    @param[in] pNp          - the Barrett tag. Relevant for HW
-                              implementation, for SW it is ignored.
-   @param[in] pSig   - the pointer to the signature to be
-                   verified.
+                    	      implementation, for SW it is ignored.
+   @param[in] pSig	 - the pointer to the signature to be
+        		   verified.
         Note: All input arrays are in LE format of bytes and words.
 
    @return CCError_t - On success the value CC_OK is returned,
@@ -123,7 +123,7 @@ CCError_t RSA_PSS_Verify( unsigned long    hwBaseAddress,
  *        The calculation is done in a secured way using the PIC.
  *
  * @param[in] hwBaseAddress - HW base address. Relevant for HW
- *                      implementation, for SW it is ignored.
+ *                  	implementation, for SW it is ignored.
  * @Base_ptr[in]         - The pointer to the base buffer.
  * @pN[in]            - The pointer to the modulus buffer (2048 bits).
  * @pNp[in]           - The np vector buffer (160 bits). Relevant for HW
@@ -138,11 +138,11 @@ CCError_t RSA_PSS_Verify( unsigned long    hwBaseAddress,
  *                        value MODULE_* as defined in ...
  */
 void RSA_CalcExponent(
-        unsigned long hwBaseAddress,
-        uint32_t *Base_ptr,
-        uint32_t *pN,
-        uint32_t *pNp,
-        uint32_t *pRes);
+		unsigned long hwBaseAddress,
+		uint32_t *Base_ptr,
+		uint32_t *pN,
+		uint32_t *pNp,
+		uint32_t *pRes);
 
 
 /*************************************************************************/

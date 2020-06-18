@@ -27,9 +27,9 @@
   Must be implemented according to platform and OS.
 */
 void CC_PalAbort(
-    /*! [in] An optional parameter for a string of chars to indicate the abort
-    operation. */
-    const char * exp
+	/*! [in] An optional parameter for a string of chars to indicate the abort 
+	operation. */
+	const char * exp
 );
 
 /*!

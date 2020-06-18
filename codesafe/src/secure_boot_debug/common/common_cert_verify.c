@@ -24,16 +24,16 @@
 #include "secdebug_defs.h"
 
 const uint32_t certMagicNumber[CC_SB_MAX_CERT] = {
-        /* No enum */           0,
-        /*  CC_SB_KEY_CERT       */ CC_SB_KEY_CERT_MAGIC_NUMBER,
-        /*  CC_SB_CONTENT_CERT   */ CC_SB_CONTENT_CERT_MAGIC_NUMBER,
+        /* No enum */			0,
+        /*  CC_SB_KEY_CERT       */	CC_SB_KEY_CERT_MAGIC_NUMBER,
+        /*  CC_SB_CONTENT_CERT   */	CC_SB_CONTENT_CERT_MAGIC_NUMBER,
         0,
-        /*  CC_SB_ENABLER_CERT   */ CC_CERT_SEC_DEBUG_ENABLER_MAGIC,
-        /*  CC_SB_DEVELOPER_CERT */ CC_CERT_SEC_DEBUG_DEVELOPER_MAGIC
+        /*  CC_SB_ENABLER_CERT   */	CC_CERT_SEC_DEBUG_ENABLER_MAGIC,
+        /*  CC_SB_DEVELOPER_CERT */	CC_CERT_SEC_DEBUG_DEVELOPER_MAGIC
 };
 
 const uint32_t certMainMaxSize[CC_SB_MAX_CERT] = {
-        /* No enum */                 0,
+        /* No enum */			      0,
         /*  CC_SB_KEY_CERT       */(CC_SB_MAX_KEY_CERT_SIZE_IN_BYTES - CC_SB_MAX_CERT_SIGN_SIZE_IN_BYTES),
         /*  CC_SB_CONTENT_CERT   */(CC_SB_MAX_CONTENT_CERT_SIZE_IN_BYTES - CC_SB_MAX_CERT_SIGN_SIZE_IN_BYTES),
         0,
@@ -174,10 +174,10 @@ CCError_t CCCommonCertVerify(unsigned long   hwBaseAddress,
                              BufferInfo32_t  *pWorkspaceInfo,
                              BufferInfo32_t  *pX509HeaderInfo) //in/out
 {
-        uint32_t        rc = 0;
-        uint32_t        certSignedSize = 0;
+        uint32_t    	rc = 0;
+        uint32_t    	certSignedSize = 0;
         keyCertFlags_t  certFlag;
-        uint32_t    *pCertStartSign;
+        uint32_t	*pCertStartSign;
 
         if ((pWorkspaceInfo == NULL) ||
             (pWorkspaceInfo->pBuffer == NULL) ||
@@ -258,7 +258,7 @@ end:
         Return next certificate public key hash.
  */
 uint32_t CCCommonKeyCertVerify(unsigned long   hwBaseAddress,
-                               uint32_t certFlags,
+                               uint32_t	certFlags,
                                uint8_t *pCertMain,
                                CCSbCertInfo_t *pCertPkgInfo)
 {
@@ -305,7 +305,7 @@ uint32_t CCCommonContentCertVerify(CCSbFlashReadFunc flashReadFunc,
                                    unsigned long hwBaseAddress,
                                    CCAddr_t certStoreAddress,
                                    CCSbCertInfo_t *certPkgInfo,
-                                   uint32_t certFlags,
+                                   uint32_t	certFlags,
                                    uint8_t  *pCertMain,
                                    BufferInfo32_t  *pWorkspaceInfo)
 {

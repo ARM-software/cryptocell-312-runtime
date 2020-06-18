@@ -34,7 +34,7 @@ CCError_t CCCommonCertVerify(unsigned long   hwBaseAddress,
    @brief This function verifies key certificate specific fields.
  */
 uint32_t CCCommonKeyCertVerify(unsigned long   hwBaseAddress,
-                               uint32_t certFlags,
+                               uint32_t	certFlags,
                                uint8_t  *pCertMain,
                                CCSbCertInfo_t *pCertPkgInfo);
 
@@ -49,7 +49,7 @@ uint32_t CCCommonContentCertVerify(CCSbFlashReadFunc flashReadFunc,
                                    unsigned long hwBaseAddress,
                                    CCAddr_t certStoreAddress,
                                    CCSbCertInfo_t *certPkgInfo,
-                                   uint32_t certFlags,
+                                   uint32_t	certFlags,
                                    uint8_t *pCertMain,
                                    BufferInfo32_t  *pWorkspaceInfo);
 

@@ -21,11 +21,11 @@ extern CC_PalMutex CCSymCryptoMutex;
 
 
 /******************************************************************************
-*       PUBLIC FUNCTIONS
+*		PUBLIC FUNCTIONS
 ******************************************************************************/
 drvError_t AesExtDmaInit(cryptoDirection_t   encryptDecryptFlag,
-        aesMode_t operationMode,
-        keySizeId_t          keySizeId)
+		aesMode_t operationMode,
+		keySizeId_t 	     keySizeId)
 {
         uint32_t aesCtrl = 0;
         uint32_t irrVal = 0;
@@ -89,29 +89,29 @@ drvError_t AesExtDmaInit(cryptoDirection_t   encryptDecryptFlag,
 
         CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_REMAINING_BYTES), 0);
 
-        /* configure AES direction (in case of CMAC - force only encrypt) */
-        if ((operationMode == CIPHER_CBC_MAC) || (operationMode == CIPHER_CMAC)){
-            dir = CRYPTO_DIRECTION_ENCRYPT;
-        }
-        else {
-            dir = encryptDecryptFlag;
-        }
-        CC_REG_FLD_SET(HOST_RGF, AES_CONTROL, DEC_KEY0, aesCtrl, dir);
+		/* configure AES direction (in case of CMAC - force only encrypt) */
+		if ((operationMode == CIPHER_CBC_MAC) || (operationMode == CIPHER_CMAC)){
+			dir = CRYPTO_DIRECTION_ENCRYPT;
+		}
+		else {
+			dir = encryptDecryptFlag;
+		}
+		CC_REG_FLD_SET(HOST_RGF, AES_CONTROL, DEC_KEY0, aesCtrl, dir);
 
-        /* configure AES mode */
-        CC_REG_FLD_SET(HOST_RGF, AES_CONTROL, MODE_KEY0, aesCtrl, operationMode);
-        switch (keySizeId) {
-        case KEY_SIZE_128_BIT:
-        case KEY_SIZE_192_BIT:
-        case KEY_SIZE_256_BIT:
+		/* configure AES mode */
+		CC_REG_FLD_SET(HOST_RGF, AES_CONTROL, MODE_KEY0, aesCtrl, operationMode);
+		switch (keySizeId) {
+		case KEY_SIZE_128_BIT:
+		case KEY_SIZE_192_BIT:
+		case KEY_SIZE_256_BIT:
             /* NK_KEY0 and NK_KEY1 are configured, only NK_KEY0 is in use (no tunneling in cc3x)*/
             CC_REG_FLD_SET(HOST_RGF, AES_CONTROL, NK_KEY0, aesCtrl, keySizeId);
             break;
-        default:
-            goto end;
-        }
+		default:
+		    goto end;
+		}
 
-        CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_CONTROL) ,aesCtrl);
+		CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_CONTROL) ,aesCtrl);
 
         /* zeroize IV in CMAC */
         if (operationMode == CIPHER_CMAC) {
@@ -121,14 +121,14 @@ drvError_t AesExtDmaInit(cryptoDirection_t   encryptDecryptFlag,
             }
         }
 
-        return AES_DRV_OK;
+		return AES_DRV_OK;
 
 end:
-        rc = terminateAesExtDma();
-        if (rc != 0) {
-            CC_PalAbort("Failed to terminateAesExtDma \n");
-        }
-        return AES_DRV_ILLEGAL_KEY_SIZE_ERROR;
+		rc = terminateAesExtDma();
+		if (rc != 0) {
+			CC_PalAbort("Failed to terminateAesExtDma \n");
+		}
+		return AES_DRV_ILLEGAL_KEY_SIZE_ERROR;
 }
 
 
@@ -140,7 +140,7 @@ void AesExtDmaSetDataSize(uint32_t dataSize)
 
 drvError_t AesExtDmaSetIv(aesMode_t mode, uint32_t *pIv)
 {
-    drvError_t rc = AES_DRV_OK;
+	drvError_t rc = AES_DRV_OK;
     /* write the initial counter value according to mode */
     switch (mode) {
     case(CIPHER_CTR):
@@ -170,17 +170,17 @@ drvError_t AesExtDmaSetIv(aesMode_t mode, uint32_t *pIv)
 
 drvError_t AesExtDmaStoreIv(aesMode_t mode, uint32_t *pIv)
 {
-    drvError_t rc = AES_DRV_OK;
+	drvError_t rc = AES_DRV_OK;
     /* write the initial counter value according to mode */
     switch (mode) {
 
     case(CIPHER_CMAC):
     case(CIPHER_CBC_MAC):
-        pIv[0] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_IV_0_0));
-        pIv[1] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_IV_0_1));
-        pIv[2] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_IV_0_2));
-        pIv[3] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_IV_0_3));
-        break;
+		pIv[0] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_IV_0_0));
+		pIv[1] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_IV_0_1));
+		pIv[2] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_IV_0_2));
+		pIv[3] = CC_HAL_READ_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_IV_0_3));
+		break;
     default:
         rc = AES_DRV_ILLEGAL_OPERATION_MODE_ERROR;
     }
@@ -191,34 +191,34 @@ drvError_t AesExtDmaStoreIv(aesMode_t mode, uint32_t *pIv)
 
 drvError_t AesExtDmaSetKey(aesMode_t mode, uint32_t *keyBuf, keySizeId_t keySizeId)
 {
-    /* verify user context pointer */
-    if ( keyBuf == NULL ) {
-        return AES_DRV_ILLEGAL_KEY_SIZE_ERROR;
-    }
-    if ((keySizeId != KEY_SIZE_256_BIT) && (keySizeId != KEY_SIZE_192_BIT) && (keySizeId != KEY_SIZE_128_BIT)) {
-        return AES_DRV_ILLEGAL_KEY_SIZE_ERROR;
-    }
+	/* verify user context pointer */
+	if ( keyBuf == NULL ) {
+	    return AES_DRV_ILLEGAL_KEY_SIZE_ERROR;
+	}
+	if ((keySizeId != KEY_SIZE_256_BIT) && (keySizeId != KEY_SIZE_192_BIT) && (keySizeId != KEY_SIZE_128_BIT)) {
+	    return AES_DRV_ILLEGAL_KEY_SIZE_ERROR;
+	}
 
-    CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_KEY_0_0) ,keyBuf[0]);
-    CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_KEY_0_1) ,keyBuf[1]);
-    CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_KEY_0_2) ,keyBuf[2]);
-    CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_KEY_0_3) ,keyBuf[3]);
+	CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_KEY_0_0) ,keyBuf[0]);
+	CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_KEY_0_1) ,keyBuf[1]);
+	CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_KEY_0_2) ,keyBuf[2]);
+	CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_KEY_0_3) ,keyBuf[3]);
 
-    if (keySizeId == KEY_SIZE_192_BIT || keySizeId == KEY_SIZE_256_BIT) {
-        CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_KEY_0_4) ,keyBuf[4]);
-        CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_KEY_0_5) ,keyBuf[5]);
-    }
-    if (keySizeId == KEY_SIZE_256_BIT) {
-        CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_KEY_0_6) ,keyBuf[6]);
-        CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_KEY_0_7) ,keyBuf[7]);
-    }
+	if (keySizeId == KEY_SIZE_192_BIT || keySizeId == KEY_SIZE_256_BIT) {
+		CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_KEY_0_4) ,keyBuf[4]);
+		CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_KEY_0_5) ,keyBuf[5]);
+	}
+	if (keySizeId == KEY_SIZE_256_BIT) {
+		CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_KEY_0_6) ,keyBuf[6]);
+		CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_KEY_0_7) ,keyBuf[7]);
+	}
 
     /* initiate CMAC sub-keys calculation */
     if (mode == CIPHER_CMAC) {
         CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_CMAC_INIT) ,0x1);
     }
 
-    return AES_DRV_OK;
+	return AES_DRV_OK;
 }
 
 
@@ -228,7 +228,7 @@ drvError_t finalizeAesExtDma(aesMode_t mode, uint32_t *pIv)
 
         if (mode == CIPHER_CMAC || mode== CIPHER_CBC_MAC)
         {
-            drvRc = AesExtDmaStoreIv(mode, pIv);
+        	drvRc = AesExtDmaStoreIv(mode, pIv);
         }
 
         return drvRc;
@@ -238,8 +238,8 @@ drvError_t terminateAesExtDma(void)
 {
         drvError_t rc = AES_DRV_OK;
 
-        CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_CLK_ENABLE) ,SET_CLOCK_DISABLE);
-        CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, DMA_CLK_ENABLE) ,SET_CLOCK_DISABLE);
+		CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, AES_CLK_ENABLE) ,SET_CLOCK_DISABLE);
+		CC_HAL_WRITE_REGISTER(CC_REG_OFFSET(HOST_RGF, DMA_CLK_ENABLE) ,SET_CLOCK_DISABLE);
 
         /* decrease CC counter at the end of each operation */
         rc = CC_IS_IDLE;
@@ -248,7 +248,7 @@ drvError_t terminateAesExtDma(void)
         }
 
         /* unlock mutex for more aes hw operation */
-        rc = CC_PalMutexUnlock(&CCSymCryptoMutex);
+		rc = CC_PalMutexUnlock(&CCSymCryptoMutex);
         if (rc != 0) {
             CC_PalAbort("Fail to unlock mutex\n");
         }

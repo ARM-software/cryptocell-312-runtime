@@ -20,12 +20,12 @@ void CC_PalLogInit(void)
 
 void CC_PalLogLevelSet(int setLevel)
 {
-    CC_PAL_logLevel = setLevel;
+	CC_PAL_logLevel = setLevel;
 }
 
 void CC_PalLogMaskSet(uint32_t setMask)
 {
-    CC_PAL_logMask = setMask;
+	CC_PAL_logMask = setMask;
 }
 
 void CC_PalLog(int level, const char * format, ...)

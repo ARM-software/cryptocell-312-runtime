@@ -60,58 +60,49 @@ static RunItError_t runIt_ecdsaPrimRandomEdwTest(void);
  * static functions
  *
  ************************************************************/
-static RunItError_t runIt_ecdsaPrimRandomTest(void)
-{
-    RunItError_t rc = RUNIT_ERROR__OK;
+ static RunItError_t runIt_ecdsaPrimRandomTest(void)
+ {
+     RunItError_t rc = RUNIT_ERROR__OK;
 
-#if defined(MBEDTLS_ECP_DP_SECP256R1_ENABLED)
-    mbedtls_ecp_group_id id = RUNIT_ECDSA_TEST_R521 ? MBEDTLS_ECP_DP_SECP521R1 : MBEDTLS_ECP_DP_SECP256R1;
-    mbedtls_ctr_drbg_context *pCtrDrbg = (mbedtls_ctr_drbg_context *)gpRndState;
-    mbedtls_ecp_group *pGrp = NULL;
-    mbedtls_ecp_point *pQ = NULL;
-    mbedtls_mpi d, r, s;
-    unsigned char *pBuf = NULL;
+ #if defined(MBEDTLS_ECP_DP_SECP256R1_ENABLED)
+     mbedtls_ecp_group_id id = RUNIT_ECDSA_TEST_R521 ? MBEDTLS_ECP_DP_SECP521R1 : MBEDTLS_ECP_DP_SECP256R1;
+     mbedtls_ctr_drbg_context *pCtrDrbg = (mbedtls_ctr_drbg_context *)gpRndState;
+     mbedtls_mpi r, s;
+     unsigned char *pBuf = NULL;
+     mbedtls_ecdsa_context *pCtx = NULL;
 
-    RunItPtr grpPtr;
-    RunItPtr qPtr;
-    RunItPtr bufPtr;
+     RunItPtr bufPtr;
+     RunItPtr ctxPtr;
 
-    const char* TEST_NAME = "ECDSA Primary Random";
-    RUNIT_SUB_TEST_START(TEST_NAME);
+     const char* TEST_NAME = "ECDSA Primary Random";
+     RUNIT_SUB_TEST_START(TEST_NAME);
 
-    ALLOC(bufPtr, pBuf, DIGEST_SIZE);
-    ALLOC_STRUCT(mbedtls_ecp_group, grpPtr, pGrp);
-    ALLOC_STRUCT(mbedtls_ecp_point, qPtr, pQ);
+     ALLOC(bufPtr, pBuf, DIGEST_SIZE);
+     ALLOC_STRUCT(mbedtls_ecdsa_context, ctxPtr, pCtx);
 
-    mbedtls_ecp_group_init(pGrp);
-    mbedtls_ecp_point_init(pQ);
-    mbedtls_mpi_init(&d);
-    mbedtls_mpi_init(&r);
-    mbedtls_mpi_init(&s);
-    memset(pBuf, 0, DIGEST_SIZE);
+     mbedtls_ecp_group_init(&pCtx->grp);
+     mbedtls_ecp_point_init(&pCtx->Q);
+     mbedtls_mpi_init(&pCtx->d);
+     mbedtls_mpi_init(&r);
+     mbedtls_mpi_init(&s);
+     memset(pBuf, 0, DIGEST_SIZE);
 
-    RUNIT_ASSERT(mbedtls_ctr_drbg_random(pCtrDrbg, pBuf, DIGEST_SIZE) == 0);
-    RUNIT_ASSERT(mbedtls_ecp_group_load(pGrp, id) == 0);
-    RUNIT_ASSERT(mbedtls_ecp_gen_keypair(pGrp, &d, pQ, mbedtls_ctr_drbg_random, pCtrDrbg) == 0);
-    RUNIT_ASSERT_API(mbedtls_ecdsa_sign(pGrp, &r, &s, &d, pBuf, DIGEST_SIZE, mbedtls_ctr_drbg_random, pCtrDrbg) == 0);
-    RUNIT_ASSERT_API(mbedtls_ecdsa_verify(pGrp, pBuf, DIGEST_SIZE, pQ, &r, &s) == 0);
+     RUNIT_ASSERT(mbedtls_ctr_drbg_random(pCtrDrbg, pBuf, DIGEST_SIZE) == 0);
+     RUNIT_ASSERT(mbedtls_ecdsa_genkey(pCtx,id,mbedtls_ctr_drbg_random, pCtrDrbg) == 0);
+     RUNIT_ASSERT_API(mbedtls_ecdsa_sign(&pCtx->grp, &r, &s, &pCtx->d, pBuf, DIGEST_SIZE, mbedtls_ctr_drbg_random, pCtrDrbg) == 0);
+     RUNIT_ASSERT_API(mbedtls_ecdsa_verify(&pCtx->grp, pBuf, DIGEST_SIZE, &pCtx->Q, &r, &s) == 0);
 
-bail:
-    mbedtls_ecp_group_free(pGrp);
-    mbedtls_ecp_point_free(pQ);
+ bail:
+     mbedtls_mpi_free(&r);
+     mbedtls_mpi_free(&s);
 
-    mbedtls_mpi_free(&d);
-    mbedtls_mpi_free(&r);
-    mbedtls_mpi_free(&s);
+     FREE_IF_NOT_NULL(bufPtr);
+     FREE_IF_NOT_NULL(ctxPtr);
 
-    FREE_IF_NOT_NULL(grpPtr);
-    FREE_IF_NOT_NULL(qPtr);
-    FREE_IF_NOT_NULL(bufPtr);
-
-    RUNIT_SUB_TEST_RESULT_W_PARAMS(TEST_NAME, "ID[%s]", mbedtls_ecp_curve_info_from_grp_id(id)->name);
-#endif /* defined(MBEDTLS_ECP_DP_SECP256R1_ENABLED) */
-    return rc;
-}
+     RUNIT_SUB_TEST_RESULT_W_PARAMS(TEST_NAME, "ID[%s]", mbedtls_ecp_curve_info_from_grp_id(id)->name);
+ #endif /* defined(MBEDTLS_ECP_DP_SECP256R1_ENABLED) */
+     return rc;
+ }
 
 static RunItError_t runIt_ecdsaPrimRandomEdwTest(void)
 {

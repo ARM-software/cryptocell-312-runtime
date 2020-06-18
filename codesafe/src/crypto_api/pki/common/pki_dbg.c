@@ -19,14 +19,14 @@ uint32_t tempRes1[PKA_MAX_REGISTER_SIZE_IN_32BIT_WORDS];
 
 /***********     PkiDbgPrintReg  function     **********************/
 /**
- * @brief The function prints label and PKA register as big endian bytes array.
+ * @brief The function prints label and PKA register as big endian bytes array. 
  *
  * @author reuvenl (8/25/2013)
- *
+ * 
  * @return  None
  */
-void PkiDbgPrintReg(const char*  label,  /*!< [in] Label string. */
-                   const uint32_t reg)   /*!< [in] Register virt. pointer. */
+void PkiDbgPrintReg(const char*  label,  /*!< [in] Label string. */                 
+                   const uint32_t reg)   /*!< [in] Register virt. pointer. */ 
 {
         uint32_t tmp[PKA_MAX_REGISTER_SIZE_IN_32BIT_WORDS] = {0};
         uint32_t sizeBits;
@@ -57,11 +57,11 @@ void PkiDbgPrintReg(const char*  label,  /*!< [in] Label string. */
 
 /***********     PkiDbgPrintUint32BuffAsNum  function     **********************/
 /**
- * @brief This The function prints the label and 32-bit words buffer (LS-word is
- *  a left most) as a big hexadecimal number (MS-digit is a left most).
+ * @brief This The function prints the label and 32-bit words buffer (LS-word is 
+ * 	a left most) as a big hexadecimal number (MS-digit is a left most). 
  *
  * @author reuvenl (8/25/2013)
- *
+ * 
  * @return  None
  */
 void PkiDbgPrintUint32BuffAsNum(const char     *label, /*!< [in] Label string. */
@@ -80,13 +80,13 @@ void PkiDbgPrintUint32BuffAsNum(const char     *label, /*!< [in] Label string. *
         PKA_PRINTF("\n");
 }
 
-/***********     PkiDbgPrintUint8BuffAsNum  function     **********************/
+/***********     PkiDbgPrintUint8BuffAsNum  function     **********************/ 
 /**
- * @brief This The function prints the label and bytes array (LS-byte is
- *  a left most) as a big hexadecimal number (MS-digit is a left most).
+ * @brief This The function prints the label and bytes array (LS-byte is 
+ * 	a left most) as a big hexadecimal number (MS-digit is a left most). 
  *
  * @author reuvenl (14/02/2016)
- *
+ * 
  * @return  None
  */
 void PkiDbgPrintUint8BuffAsNum(const char     *label, /*!< [in] Label string. */
@@ -107,10 +107,10 @@ void PkiDbgPrintUint8BuffAsNum(const char     *label, /*!< [in] Label string. */
 
 /***********     PkiDbgPrintUintBuf  function     **********************/
 /**
- * @brief This The function prints the label and bytes array as string.
+ * @brief This The function prints the label and bytes array as string. 
  *
  * @author reuvenl (14/02/2016)
- *
+ * 
  * @return  None
  */
 void PkiDbgPrintUint8Buff(const char     *label, /*!< [in] Label string. */
@@ -133,69 +133,69 @@ void PkiDbgPrintUint8Buff(const char     *label, /*!< [in] Label string. */
 #if defined PKA_DEBUG && defined DEBUG
 /***********    PkiDbgExecOperation (with virtual pointers)     ******************/
 /**
- * @brief This function executes any allowed PKA mathematic operation according to
+ * @brief This function executes any allowed PKA mathematic operation according to 
  *        user passed Opcode.
  *
- *        The function receives code of operation, virtual pointers to PKI registers
- *        (sequence number), for arguments and result, and operates PKA machine by writing
- *        full operation code into OPCODE register. Then the function calls macros for
+ *        The function receives code of operation, virtual pointers to PKI registers  
+ *        (sequence number), for arguments and result, and operates PKA machine by writing  
+ *        full operation code into OPCODE register. Then the function calls macros for  
  *        waiting the PKA pipe ready signal.
- *        If opcode is illegal or one of operands is illegal, the function returns an
+ *        If opcode is illegal or one of operands is illegal, the function returns an 
  *        error code defined in pka_error.h file.
  *
- *        The user don't call this function directly. For user convenience, in llf_pki.h file  are
- *        given some macros for calling this function according to each performed operation.
+ *        The user don't call this function directly. For user convenience, in llf_pki.h file  are 
+ *        given some macros for calling this function according to each performed operation.  
  *
- *     NOTES:
- *       -  Before executing modular operations, the modulus must be set into N=r0 register of PKA.
- *       -  Before modular multiplication and exponentiation must be calculated and set into NP=r1
- *          register the Barrett modulus tag NP = 2**(sizeN+132) / N.
- *       -  In operations with immediate operands (IsImmediate bit = 1), the operand value (5-bit)
- *          is treated as sign-extended. That means: low 4 bits are treated as unsigned operand
- *          value in range 0-15 and bit 5 is a sign (with extension to all high bits of register,
+ *     NOTES:  
+ *       -	Before executing modular operations, the modulus must be set into N=r0 register of PKA.
+ *       -	Before modular multiplication and exponentiation must be calculated and set into NP=r1 
+ *          register the Barrett modulus tag NP = 2**(sizeN+132) / N.   
+ *       -	In operations with immediate operands (IsImmediate bit = 1), the operand value (5-bit)
+ *          is treated as sign-extended. That means: low 4 bits are treated as unsigned operand 
+ *          value in range 0-15 and bit 5 is a sign (with extension to all high bits of register, 
  *          in which the full operand shall be set).
- *       -  In shift operations the 5-bits shift operand is treated as unsigned value in range 0-31
+ *       -	In shift operations the 5-bits shift operand is treated as unsigned value in range 0-31
  *          (count of shifts is equaled to shift operand value + 1).
- *       -  The LMul operation gives the low half of multiplication result of length equaled to
- *          operation size. The leading not significant bits of the operands and result (including
- *          the the extra word) must be zeroed.
- *       -  The HMul operation gives the high half of multiplication result plus one high word of low
- *          half of full multiplication result. Therefore this result is by one word large, than
- *          operation size. The leading not significant bits of the operands and result,
- *          including extra word must be zeroed.
+ *       -  The LMul operation gives the low half of multiplication result of length equaled to 
+ *          operation size. The leading not significant bits of the operands and result (including 
+ *          the the extra word) must be zeroed.  
+ *       -  The HMul operation gives the high half of multiplication result plus one high word of low 
+ *          half of full multiplication result. Therefore this result is by one word large, than 
+ *          operation size. The leading not significant bits of the operands and result, 
+ *          including extra word must be zeroed. 
  *       -  The ModInv operation calculates Res = 1/OpB mod N for odd modulus. Operand A is ignored.
- *          In case of even modulus the function returns an error. Therefore in this case
- *          (also for odd modulus) the user may call the PkaExecFullModInv function.
+ *          In case of even modulus the function returns an error. Therefore in this case 
+ *          (also for odd modulus) the user may call the PkaExecFullModInv function.  
  *
  * @return  CC_OK On success, otherwise indicates failure
  */
 CCError_t PkiDbgExecOperation(uint32_t       Opcode,      /*!< [in] The operation code according HW PKA definitions. Valid values: 0 - max Opcode. */
-                               uint32_t       lenId,        /*!< [in] ID of the length of operands according to register sizes table
-                                    (means the number of entry in the table). Valid values: 0...7. */
-                               uint32_t       isAImmed,     /*!< [in] If isBImmed = 1, then operand A treated as immediate value, else -
-                                    as virtual register pointer. Valid values:0,1. */
-                               uint32_t       OpA,          /*!< [in] Operand A: an immediate value or virtual register pointer,
-                                    according to isAImmed parameter. */
-                               uint32_t       isBImmed,     /*!< [in] If isBImmed = 1, then operand B treated as immediate value, else -
-                                    as virtual register pointer. Valid values:0,1. */
-                               uint32_t       OpB,          /*!< [in] Operand B: an immediate value or virtual register pointer,
-                                    according to isBImmed parameter. */
+                               uint32_t       lenId,        /*!< [in] ID of the length of operands according to register sizes table 
+									(means the number of entry in the table). Valid values: 0...7. */
+                               uint32_t       isAImmed,     /*!< [in] If isBImmed = 1, then operand A treated as immediate value, else - 
+									as virtual register pointer. Valid values:0,1. */
+                               uint32_t       OpA,          /*!< [in] Operand A: an immediate value or virtual register pointer, 
+									according to isAImmed parameter. */
+                               uint32_t       isBImmed,     /*!< [in] If isBImmed = 1, then operand B treated as immediate value, else - 
+									as virtual register pointer. Valid values:0,1. */
+                               uint32_t       OpB,          /*!< [in] Operand B: an immediate value or virtual register pointer, 
+									according to isBImmed parameter. */
                                uint32_t       ResDiscard,   /*!< [in] If ResDiscard = 1, then result is discarded. */
-                               uint32_t       Res,          /*!< [Out] Virtual register pointer for result data.
-                                    Value Res = RES_DISCARD means result must be discarded. */
+                               uint32_t       Res,          /*!< [Out] Virtual register pointer for result data. 
+									Value Res = RES_DISCARD means result must be discarded. */
                                uint32_t       Tag )         /*!< [in] The user defined value (Tag <= 31), used for indication goals. */
 
 {
         CCError_t Error = CC_OK;
         uint32_t FullOpCode;
-        uint32_t status;
-        uint8_t  OpPrint;
+        uint32_t status;  
+        uint8_t  OpPrint; 
         uint32_t opSizeInBits, RegSizeWords;
 
         /* if Res == RES_DISCARD , then result is discarded */
         if (Res == (int8_t)RES_DISCARD) {
                 ResDiscard = 1;
-                Res = 0;
+                Res = 0; 
         }
 
         /* set operation size according to lenId+1 for debug copy and clearing registers */
@@ -223,16 +223,16 @@ CCError_t PkiDbgExecOperation(uint32_t       Opcode,      /*!< [in] The operatio
                 goto End;
         }
 
-        if (isAImmed   > 1 ||
+        if (isAImmed   > 1 || 
             isBImmed   > 1 ||
             ResDiscard > 1) {
-                Error = PKA_ILLEGAL_OPERAND_TYPE_ERROR;
+                Error = PKA_ILLEGAL_OPERAND_TYPE_ERROR; 
                 goto End;
         }
 
         if ((OpA >  31)      ||
-            (OpB >  31)      ||
-            (Res >  31)      ||
+            (OpB >  31)      || 
+            (Res >  31)      || 
             (Tag >  31)) {
                 Error = PKA_ILLEGAL_OPERAND_ERROR;
                 goto End;
@@ -293,12 +293,12 @@ CCError_t PkiDbgExecOperation(uint32_t       Opcode,      /*!< [in] The operatio
         CC_HAL_WRITE_REGISTER(CC_REG_OFFSET (CRY_KERNEL, OPCODE), FullOpCode);
 
 
-        /*************************************************/
+        /*************************************************/  
         /* finishing operations for different cases      */
         /*************************************************/
         if (Opcode == PKA_OPCODE_ID_DIVISION) {
                 /* for Div operation check, that OpB != 0, else return Error */
-                PKA_GET_STATUS_DIV_BY_ZERO(status);
+                PKA_GET_STATUS_DIV_BY_ZERO(status);         
                 if (status == 1) {
                         Error = PKA_DIVIDER_IS_NULL_ERROR;
                         goto End;
@@ -311,7 +311,7 @@ CCError_t PkiDbgExecOperation(uint32_t       Opcode,      /*!< [in] The operatio
         /* if operation Tag = Print, then copy result into tempRes buffer */
         if (1/*Tag == PKA_TAG_DebugPtint*/ &&
             ResDiscard == 0 && Opcode != PKA_OPCODE_ID_TERMINATE && Opcode != PKA_OPCODE_ID_SEPINT) {
-                CC_PalMemSetZero(tempRes, sizeof(tempRes));
+                CC_PalMemSetZero(tempRes, sizeof(tempRes));      
                 PkaCopyDataFromPkaReg(tempRes/*dst_ptr*/, RegSizeWords, Res/*srcReg*/);
 
                 if (Opcode == PKA_OPCODE_ID_DIVISION || Opcode == PKA_OPCODE_ID_MODINV) {
@@ -324,9 +324,9 @@ CCError_t PkiDbgExecOperation(uint32_t       Opcode,      /*!< [in] The operatio
                 }
         }
 
-        End:
+        End: 
 
-        return Error;
+        return Error;  
 
 }
 

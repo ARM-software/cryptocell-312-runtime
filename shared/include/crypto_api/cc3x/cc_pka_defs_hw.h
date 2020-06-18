@@ -11,7 +11,7 @@
 
 /*!
  @file
- @brief This file contains all of the enums and definitions that are used in
+ @brief This file contains all of the enums and definitions that are used in 
  PKA APIs.
  */
 
@@ -27,12 +27,12 @@
 /*! The maximal EC modulus size. */
 #define CC_ECPKI_MODUL_MAX_LENGTH_IN_BITS   521
 
-/*! The size of the buffers for Barrett modulus tag NP, used in PKI
+/*! The size of the buffers for Barrett modulus tag NP, used in PKI 
 algorithms. */
 #define CC_PKA_BARRETT_MOD_TAG_BUFF_SIZE_IN_WORDS 5
 /*! The size of the buffers for Barrett modulus tag NP, used in ECC. */
 #define CC_PKA_ECPKI_BARRETT_MOD_TAG_BUFF_SIZE_IN_WORDS  CC_PKA_BARRETT_MOD_TAG_BUFF_SIZE_IN_WORDS
-/*! The actual size of Barrett modulus tag NP in words for current
+/*! The actual size of Barrett modulus tag NP in words for current 
 HW platform. */
 #define CC_PKA_BARRETT_MOD_TAG_SIZE_IN_WORDS  \
     (((CC_PKA_WORD_SIZE_IN_BITS + PKA_EXTRA_BITS - 1) + (CC_BITS_IN_32BIT_WORD - 1)) / CC_BITS_IN_32BIT_WORD )
@@ -77,10 +77,10 @@ HW platform. */
 #define CC_PKA_ECDSA_VERIFY_BUFF_MAX_LENGTH_IN_WORDS (3*CC_ECPKI_MODUL_MAX_LENGTH_IN_WORDS)
 
 /* *************************************************************************** */
-/*! The maximal size of the modulus buffers for CC_EC_MONT and EC_EDW in
+/*! The maximal size of the modulus buffers for CC_EC_MONT and EC_EDW in 
 bytes.*/
 #define CC_EC_MONT_EDW_MODULUS_MAX_SIZE_IN_BYTES  32U  /*!< \internal for Curve25519 */
-/*! The maximal size of the modulus buffers for CC_EC_MONT and EC_EDW in
+/*! The maximal size of the modulus buffers for CC_EC_MONT and EC_EDW in 
 words. */
 #define CC_EC_MONT_EDW_MODULUS_MAX_SIZE_IN_WORDS   8U  /*!< \internal for Curve25519 */
 /*! The size of the ECC Montgomery temporary buffer in words. */

@@ -64,7 +64,7 @@ void mbedtls_sha512_t_update(
 /*!
    @brief   This function finishes the SHA-512_t operation, and writes
     the result to the output buffer.
-
+    
     <ul><li>For SHA512/224, the output buffer will include
     the 28 leftmost bytes of the SHA-512 digest.</li>
     <li>For SHA512/256, the output buffer will include

@@ -34,9 +34,9 @@ extern "C"
  * CryptoCell ECPKI MODULE ERRORS                                                                  *
  *********************************************************************************************/
 /*! Illegal domain ID. */
-#define CC_ECPKI_ILLEGAL_DOMAIN_ID_ERROR                    (CC_ECPKI_MODULE_ERROR_BASE + 0x1UL)
+#define CC_ECPKI_ILLEGAL_DOMAIN_ID_ERROR	                (CC_ECPKI_MODULE_ERROR_BASE + 0x1UL)
 /*! Illegal domain pointer. */
-#define CC_ECPKI_DOMAIN_PTR_ERROR               (CC_ECPKI_MODULE_ERROR_BASE + 0x2UL)
+#define CC_ECPKI_DOMAIN_PTR_ERROR	  			(CC_ECPKI_MODULE_ERROR_BASE + 0x2UL)
 /* The CryptoCell ECPKI GEN KEY PAIR module errors */
 /*! Illegal private key pointer. */
 #define CC_ECPKI_GEN_KEY_INVALID_PRIVATE_KEY_PTR_ERROR          (CC_ECPKI_MODULE_ERROR_BASE + 0x3UL)
@@ -45,7 +45,7 @@ extern "C"
 /*! Illegal temporary buffer pointer. */
 #define CC_ECPKI_GEN_KEY_INVALID_TEMP_DATA_PTR_ERROR            (CC_ECPKI_MODULE_ERROR_BASE + 0x5UL)
 /*! Illegal RND context pointer. */
-#define CC_ECPKI_RND_CONTEXT_PTR_ERROR              (CC_ECPKI_MODULE_ERROR_BASE + 0x6UL)
+#define CC_ECPKI_RND_CONTEXT_PTR_ERROR	  			(CC_ECPKI_MODULE_ERROR_BASE + 0x6UL)
 
 /************************************************************************************************************
 * The CryptoCell ECPKI BUILD KEYS MODULE ERRORS                                                                   *
@@ -97,11 +97,11 @@ extern "C"
 
 /* The CryptoCell ECPKI BUILD ECC DOMAIN ERRORS */
 /*! Illegal domain ID. */
-#define CC_ECPKI_BUILD_DOMAIN_ID_IS_NOT_VALID_ERROR               (CC_ECPKI_MODULE_ERROR_BASE + 0x20UL)
+#define CC_ECPKI_BUILD_DOMAIN_ID_IS_NOT_VALID_ERROR	              (CC_ECPKI_MODULE_ERROR_BASE + 0x20UL)
 /*! Illegal domain ID pointer. */
-#define CC_ECPKI_BUILD_DOMAIN_DOMAIN_PTR_ERROR                        (CC_ECPKI_MODULE_ERROR_BASE + 0x21UL)
+#define CC_ECPKI_BUILD_DOMAIN_DOMAIN_PTR_ERROR                 	      (CC_ECPKI_MODULE_ERROR_BASE + 0x21UL)
 /*! Illegal domain parameter pointer. */
-#define CC_ECPKI_BUILD_DOMAIN_EC_PARAMETR_PTR_ERROR                   (CC_ECPKI_MODULE_ERROR_BASE + 0x22UL)
+#define CC_ECPKI_BUILD_DOMAIN_EC_PARAMETR_PTR_ERROR            	      (CC_ECPKI_MODULE_ERROR_BASE + 0x22UL)
 /*! Illegal domain parameter size. */
 #define CC_ECPKI_BUILD_DOMAIN_EC_PARAMETR_SIZE_ERROR                  (CC_ECPKI_MODULE_ERROR_BASE + 0x23UL)
 /*! Illegal domain cofactor parameters. */
@@ -119,15 +119,15 @@ extern "C"
 *************************************************************************************************************/
 /* The CryptoCell EC SVDP_DH Function errors */
 /*! Illegal partner's public key pointer. */
-#define CC_ECDH_SVDP_DH_INVALID_PARTNER_PUBL_KEY_PTR_ERROR                (CC_ECPKI_MODULE_ERROR_BASE + 0x31UL)
+#define CC_ECDH_SVDP_DH_INVALID_PARTNER_PUBL_KEY_PTR_ERROR	              (CC_ECPKI_MODULE_ERROR_BASE + 0x31UL)
 /*! Partner's public key validation failed. */
-#define CC_ECDH_SVDP_DH_PARTNER_PUBL_KEY_VALID_TAG_ERROR                  (CC_ECPKI_MODULE_ERROR_BASE + 0x32UL)
+#define CC_ECDH_SVDP_DH_PARTNER_PUBL_KEY_VALID_TAG_ERROR	              (CC_ECPKI_MODULE_ERROR_BASE + 0x32UL)
 /*! Illegal user private key pointer. */
-#define CC_ECDH_SVDP_DH_INVALID_USER_PRIV_KEY_PTR_ERROR                   (CC_ECPKI_MODULE_ERROR_BASE + 0x33UL)
+#define CC_ECDH_SVDP_DH_INVALID_USER_PRIV_KEY_PTR_ERROR		              (CC_ECPKI_MODULE_ERROR_BASE + 0x33UL)
 /*! Private key validation failed. */
-#define CC_ECDH_SVDP_DH_USER_PRIV_KEY_VALID_TAG_ERROR                     (CC_ECPKI_MODULE_ERROR_BASE + 0x34UL)
+#define CC_ECDH_SVDP_DH_USER_PRIV_KEY_VALID_TAG_ERROR		              (CC_ECPKI_MODULE_ERROR_BASE + 0x34UL)
 /*! Illegal shared secret pointer. */
-#define CC_ECDH_SVDP_DH_INVALID_SHARED_SECRET_VALUE_PTR_ERROR                 (CC_ECPKI_MODULE_ERROR_BASE + 0x35UL)
+#define CC_ECDH_SVDP_DH_INVALID_SHARED_SECRET_VALUE_PTR_ERROR	              (CC_ECPKI_MODULE_ERROR_BASE + 0x35UL)
 /*! Illegal temporary buffer pointer. */
 #define CC_ECDH_SVDP_DH_INVALID_TEMP_DATA_PTR_ERROR                           (CC_ECPKI_MODULE_ERROR_BASE + 0x36UL)
 /*! Illegal shared secret size pointer. */
@@ -145,9 +145,9 @@ extern "C"
  ************************************************************************************************************/
 /* The CryptoCell ECDSA Signing  errors */
 /*! Illegal domain ID. */
-#define CC_ECDSA_SIGN_INVALID_DOMAIN_ID_ERROR           (CC_ECPKI_MODULE_ERROR_BASE + 0x50UL)
+#define CC_ECDSA_SIGN_INVALID_DOMAIN_ID_ERROR			(CC_ECPKI_MODULE_ERROR_BASE + 0x50UL)
 /*! Illegal context pointer. */
-#define CC_ECDSA_SIGN_INVALID_USER_CONTEXT_PTR_ERROR            (CC_ECPKI_MODULE_ERROR_BASE + 0x51UL)
+#define CC_ECDSA_SIGN_INVALID_USER_CONTEXT_PTR_ERROR 	        (CC_ECPKI_MODULE_ERROR_BASE + 0x51UL)
 /*! Illegal private key pointer. */
 #define CC_ECDSA_SIGN_INVALID_USER_PRIV_KEY_PTR_ERROR           (CC_ECPKI_MODULE_ERROR_BASE + 0x52UL)
 /*! Illegal hash operation mode. */
@@ -179,32 +179,32 @@ extern "C"
 
 /* The CryptoCell ECDSA Verifying  errors */
 /*! Illegal domain ID. */
-#define CC_ECDSA_VERIFY_INVALID_DOMAIN_ID_ERROR         (CC_ECPKI_MODULE_ERROR_BASE + 0x70UL)
+#define CC_ECDSA_VERIFY_INVALID_DOMAIN_ID_ERROR			(CC_ECPKI_MODULE_ERROR_BASE + 0x70UL)
 /*! Illegal user's context pointer. */
-#define CC_ECDSA_VERIFY_INVALID_USER_CONTEXT_PTR_ERROR      (CC_ECPKI_MODULE_ERROR_BASE + 0x71UL)
+#define CC_ECDSA_VERIFY_INVALID_USER_CONTEXT_PTR_ERROR		(CC_ECPKI_MODULE_ERROR_BASE + 0x71UL)
 /*! Illegal public key pointer. */
-#define CC_ECDSA_VERIFY_INVALID_SIGNER_PUBL_KEY_PTR_ERROR       (CC_ECPKI_MODULE_ERROR_BASE + 0x72UL)
+#define CC_ECDSA_VERIFY_INVALID_SIGNER_PUBL_KEY_PTR_ERROR    	(CC_ECPKI_MODULE_ERROR_BASE + 0x72UL)
 /*! Illegal hash operation mode. */
-#define CC_ECDSA_VERIFY_ILLEGAL_HASH_OP_MODE_ERROR              (CC_ECPKI_MODULE_ERROR_BASE + 0x73UL)
+#define CC_ECDSA_VERIFY_ILLEGAL_HASH_OP_MODE_ERROR            	(CC_ECPKI_MODULE_ERROR_BASE + 0x73UL)
 /*! Illegal signature pointer. */
-#define CC_ECDSA_VERIFY_INVALID_SIGNATURE_IN_PTR_ERROR          (CC_ECPKI_MODULE_ERROR_BASE + 0x76UL)
+#define CC_ECDSA_VERIFY_INVALID_SIGNATURE_IN_PTR_ERROR        	(CC_ECPKI_MODULE_ERROR_BASE + 0x76UL)
 /*! Illegal signature size. */
-#define CC_ECDSA_VERIFY_INVALID_SIGNATURE_SIZE_ERROR        (CC_ECPKI_MODULE_ERROR_BASE + 0x77UL)
+#define CC_ECDSA_VERIFY_INVALID_SIGNATURE_SIZE_ERROR   		(CC_ECPKI_MODULE_ERROR_BASE + 0x77UL)
 /*! Illegal data in pointer. */
-#define CC_ECDSA_VERIFY_INVALID_MESSAGE_DATA_IN_PTR_ERROR       (CC_ECPKI_MODULE_ERROR_BASE + 0x80UL)
+#define CC_ECDSA_VERIFY_INVALID_MESSAGE_DATA_IN_PTR_ERROR     	(CC_ECPKI_MODULE_ERROR_BASE + 0x80UL)
 /*! Illegal data in size. */
-#define CC_ECDSA_VERIFY_INVALID_MESSAGE_DATA_IN_SIZE_ERROR      (CC_ECPKI_MODULE_ERROR_BASE + 0x81UL)
+#define CC_ECDSA_VERIFY_INVALID_MESSAGE_DATA_IN_SIZE_ERROR    	(CC_ECPKI_MODULE_ERROR_BASE + 0x81UL)
 /*! Context validation failed. */
-#define CC_ECDSA_VERIFY_USER_CONTEXT_VALIDATION_TAG_ERROR       (CC_ECPKI_MODULE_ERROR_BASE + 0x82UL)
+#define CC_ECDSA_VERIFY_USER_CONTEXT_VALIDATION_TAG_ERROR     	(CC_ECPKI_MODULE_ERROR_BASE + 0x82UL)
 /*! public key validation failed. */
-#define CC_ECDSA_VERIFY_SIGNER_PUBL_KEY_VALIDATION_TAG_ERROR    (CC_ECPKI_MODULE_ERROR_BASE + 0x83UL)
+#define CC_ECDSA_VERIFY_SIGNER_PUBL_KEY_VALIDATION_TAG_ERROR  	(CC_ECPKI_MODULE_ERROR_BASE + 0x83UL)
 /*! Verification failed. */
-#define CC_ECDSA_VERIFY_INCONSISTENT_VERIFY_ERROR               (CC_ECPKI_MODULE_ERROR_BASE + 0x84UL)
+#define CC_ECDSA_VERIFY_INCONSISTENT_VERIFY_ERROR             	(CC_ECPKI_MODULE_ERROR_BASE + 0x84UL)
 
 
 
 /*! Illegal hash mode. */
-#define CC_ECC_ILLEGAL_HASH_MODE_ERROR                         (CC_ECPKI_MODULE_ERROR_BASE + 0x85UL)
+#define CC_ECC_ILLEGAL_HASH_MODE_ERROR      	     		   (CC_ECPKI_MODULE_ERROR_BASE + 0x85UL)
 
 
 /************************************************************************************************************
@@ -229,35 +229,35 @@ extern "C"
  * CryptoCell ECIES MODULE ERRORS
 *************************************************************************************************************/
 /*! Illegal public key pointer. */
-#define CC_ECIES_INVALID_PUBL_KEY_PTR_ERROR                     (CC_ECPKI_MODULE_ERROR_BASE + 0xE0UL)
+#define CC_ECIES_INVALID_PUBL_KEY_PTR_ERROR                 	(CC_ECPKI_MODULE_ERROR_BASE + 0xE0UL)
 /*! Public key validation failed. */
-#define CC_ECIES_INVALID_PUBL_KEY_TAG_ERROR         (CC_ECPKI_MODULE_ERROR_BASE + 0xE1UL)
+#define CC_ECIES_INVALID_PUBL_KEY_TAG_ERROR			(CC_ECPKI_MODULE_ERROR_BASE + 0xE1UL)
 /*! Illegal private key pointer. */
-#define CC_ECIES_INVALID_PRIV_KEY_PTR_ERROR                     (CC_ECPKI_MODULE_ERROR_BASE + 0xE2UL)
+#define CC_ECIES_INVALID_PRIV_KEY_PTR_ERROR                  	(CC_ECPKI_MODULE_ERROR_BASE + 0xE2UL)
 /*! Private key validation failed. */
-#define CC_ECIES_INVALID_PRIV_KEY_TAG_ERROR         (CC_ECPKI_MODULE_ERROR_BASE + 0xE3UL)
+#define CC_ECIES_INVALID_PRIV_KEY_TAG_ERROR			(CC_ECPKI_MODULE_ERROR_BASE + 0xE3UL)
 /*! Illegal private key value. */
-#define CC_ECIES_INVALID_PRIV_KEY_VALUE_ERROR           (CC_ECPKI_MODULE_ERROR_BASE + 0xE4UL)
+#define CC_ECIES_INVALID_PRIV_KEY_VALUE_ERROR			(CC_ECPKI_MODULE_ERROR_BASE + 0xE4UL)
 /*! Illegal KDF derivation mode. */
-#define CC_ECIES_INVALID_KDF_DERIV_MODE_ERROR               (CC_ECPKI_MODULE_ERROR_BASE + 0xE5UL)
+#define CC_ECIES_INVALID_KDF_DERIV_MODE_ERROR	    		(CC_ECPKI_MODULE_ERROR_BASE + 0xE5UL)
 /*! Illegal KDF hash mode. */
-#define CC_ECIES_INVALID_KDF_HASH_MODE_ERROR            (CC_ECPKI_MODULE_ERROR_BASE + 0xE6UL)
+#define CC_ECIES_INVALID_KDF_HASH_MODE_ERROR			(CC_ECPKI_MODULE_ERROR_BASE + 0xE6UL)
 /*! Illegal secret key pointer. */
-#define CC_ECIES_INVALID_SECRET_KEY_PTR_ERROR           (CC_ECPKI_MODULE_ERROR_BASE + 0xE7UL)
+#define CC_ECIES_INVALID_SECRET_KEY_PTR_ERROR 			(CC_ECPKI_MODULE_ERROR_BASE + 0xE7UL)
 /*! Illegal secret key size. */
-#define CC_ECIES_INVALID_SECRET_KEY_SIZE_ERROR          (CC_ECPKI_MODULE_ERROR_BASE + 0xE8UL)
+#define CC_ECIES_INVALID_SECRET_KEY_SIZE_ERROR 			(CC_ECPKI_MODULE_ERROR_BASE + 0xE8UL)
 /*! Illegal cipher data pointer. */
-#define CC_ECIES_INVALID_CIPHER_DATA_PTR_ERROR          (CC_ECPKI_MODULE_ERROR_BASE + 0xE9UL)
+#define CC_ECIES_INVALID_CIPHER_DATA_PTR_ERROR 			(CC_ECPKI_MODULE_ERROR_BASE + 0xE9UL)
 /*! Illegal cipher data size pointer. */
-#define CC_ECIES_INVALID_CIPHER_DATA_SIZE_PTR_ERROR         (CC_ECPKI_MODULE_ERROR_BASE + 0xEAUL)
+#define CC_ECIES_INVALID_CIPHER_DATA_SIZE_PTR_ERROR 		(CC_ECPKI_MODULE_ERROR_BASE + 0xEAUL)
 /*! Illegal cipher data size. */
-#define CC_ECIES_INVALID_CIPHER_DATA_SIZE_ERROR         (CC_ECPKI_MODULE_ERROR_BASE + 0xEBUL)
+#define CC_ECIES_INVALID_CIPHER_DATA_SIZE_ERROR 		(CC_ECPKI_MODULE_ERROR_BASE + 0xEBUL)
 /*! Illegal temporary buffer pointer. */
-#define CC_ECIES_INVALID_TEMP_DATA_PTR_ERROR            (CC_ECPKI_MODULE_ERROR_BASE + 0xECUL)
+#define CC_ECIES_INVALID_TEMP_DATA_PTR_ERROR 			(CC_ECPKI_MODULE_ERROR_BASE + 0xECUL)
 /*! Illegal temporary buffe size */
-#define CC_ECIES_INVALID_TEMP_DATA_SIZE_ERROR           (CC_ECPKI_MODULE_ERROR_BASE + 0xEDUL)
+#define CC_ECIES_INVALID_TEMP_DATA_SIZE_ERROR 			(CC_ECPKI_MODULE_ERROR_BASE + 0xEDUL)
 /*! Illegal ephemeral key pointer */
-#define CC_ECIES_INVALID_EPHEM_KEY_PAIR_PTR_ERROR               (CC_ECPKI_MODULE_ERROR_BASE + 0xEEUL)
+#define CC_ECIES_INVALID_EPHEM_KEY_PAIR_PTR_ERROR             	(CC_ECPKI_MODULE_ERROR_BASE + 0xEEUL)
 /*! NULL ptr */
 #define CC_ECIES_INVALID_PTR                                   (CC_ECPKI_MODULE_ERROR_BASE + 0xEFUL)
 

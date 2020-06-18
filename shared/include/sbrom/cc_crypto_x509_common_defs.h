@@ -19,7 +19,7 @@
 /*!  MAX size of  validity period string. */
 #define X509_VALIDITY_PERIOD_MAX_STRING_SIZE  16
 /*! MAX size of a single user's data buffer */
-#define X509_USER_DATA_MAX_SIZE_BYTES         64
+#define X509_USER_DATA_MAX_SIZE_BYTES	      64
 
 
 #endif

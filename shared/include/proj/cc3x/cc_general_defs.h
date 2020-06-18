@@ -29,19 +29,19 @@ extern "C"
 /*! Hash parameters for HMAC operation. */
 typedef struct {
     /*! The size of the HMAC hash result. */
-    uint16_t hashResultSize;
+	uint16_t hashResultSize;
     /*! The hash operation mode. */
-    CCHashOperationMode_t hashMode;
+	CCHashOperationMode_t hashMode; 
 }HmacHash_t;
 
 /*! The maximal size of the hash string. */
 #define CC_HASH_NAME_MAX_SIZE  10
 /*! Hash parameters for HMAC operation. */
-extern const HmacHash_t HmacHashInfo_t[CC_HASH_NumOfModes];
+extern const HmacHash_t HmacHashInfo_t[CC_HASH_NumOfModes]; 
 /*! Supported hash modes. */
-extern const uint8_t HmacSupportedHashModes_t[CC_HASH_NumOfModes];
+extern const uint8_t HmacSupportedHashModes_t[CC_HASH_NumOfModes]; 
 /*! Hash string names. */
-extern const char HashAlgMode2mbedtlsString[CC_HASH_NumOfModes][CC_HASH_NAME_MAX_SIZE];
+extern const char HashAlgMode2mbedtlsString[CC_HASH_NumOfModes][CC_HASH_NAME_MAX_SIZE]; 
 
 
 /* general definitions */
@@ -54,9 +54,9 @@ extern const char HashAlgMode2mbedtlsString[CC_HASH_NumOfModes][CC_HASH_NAME_MAX
 
 /* Life-cycle states. */
 /*! The Chip Manufacturer (CM) LCS value. */
-#define CC_LCS_CHIP_MANUFACTURE_LCS     0x0
+#define CC_LCS_CHIP_MANUFACTURE_LCS     0x0 
 /*! The Secure LCS value. */
-#define CC_LCS_SECURE_LCS               0x5
+#define CC_LCS_SECURE_LCS               0x5 
 
 #ifdef __cplusplus
 }

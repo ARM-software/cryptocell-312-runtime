@@ -23,21 +23,21 @@
 
 /*!
  * Read CryptoCell memory-mapped-IO Env register.
- *
+ * 
  * \param regOffset The offset of the Env register to read
  * \return uint32_t Return the value of the given register
  */
-#define CC_PAL_PerfReadEnvRegister(regOffset)               \
-        (*((volatile uint32_t *)(DX_BASE_ENV_REGS + (regOffset))))
+#define CC_PAL_PerfReadEnvRegister(regOffset) 				\
+		(*((volatile uint32_t *)(DX_BASE_ENV_REGS + (regOffset))))
 
 /*!
  * Write CryptoCell memory-mapped-IO Env register.
- *
+ *  
  * \param regOffset The offset of the Env register to write
  * \param val The value to write
  */
-#define CC_PAL_PerfWriteEnvRegister(regOffset, val)         \
-        (*((volatile uint32_t *)(DX_BASE_ENV_REGS + (regOffset))) = (val))
+#define CC_PAL_PerfWriteEnvRegister(regOffset, val) 		\
+		(*((volatile uint32_t *)(DX_BASE_ENV_REGS + (regOffset))) = (val))
 
 #define MAX(a,b)            (a) > (b) ? (a) : (b)
 #define MIN(a,b)            (a) < (b) ? (a) : (b)
@@ -79,14 +79,14 @@ static uint32_t CC_PalGetMicroSec(CCPalPerfData_t cycles)
 }
 
 
-/**
+/** 
  * @brief   initialize performance test mechanism
- *
- * @param[in]
+ *         
+ * @param[in] 
  * *
  * @return None
- */
-void CC_PalPerfInit(void)
+ */ 	
+void CC_PalPerfInit(void) 
 {
     CCPalPerfType_t funcIndex;
     for (funcIndex = (CCPalPerfType_t)0; funcIndex < PERF_TEST_TYPE_MAX; ++funcIndex)
@@ -103,21 +103,21 @@ void CC_PalPerfInit(void)
 }
 
 
-/**
+/** 
  * @brief   terminates resources used for performance tests
- *
- * @param[in]
+ *         
+ * @param[in] 
  * *
  * @return None
- */
+ */ 	
 void CC_PalPerfFin(void)
 {
-    // nothing to be done
+	// nothing to be done
 }
-/**
+/** 
  * @brief   opens new entry in perf buffer to record new entry
- *
- * @param[in] entryType -  entry type (defined in cc_pal_perf.h) to be recorded in buffer
+ *         
+ * @param[in] entryType -  entry type (defined in cc_pal_perf.h) to be recorded in buffer 
  *
  * @return Returns a non-zero value in case of failure
  */
@@ -134,15 +134,15 @@ CCPalPerfData_t CC_PalPerfOpenNewEntry(CCPalPerfType_t entryType)
 }
 
 
-/**
+/** 
  * @brief   closes entry in perf buffer previously opened by CC_PalPerfOpenNewEntry
- *
+ *         
  * @param[in] idx -  index of the entry to be closed, the return value of CC_PalPerfOpenNewEntry
- * @param[in] entryType -  entry type (defined in cc_pal_perf.h) to be recorded in buffer
+ * @param[in] entryType -  entry type (defined in cc_pal_perf.h) to be recorded in buffer 
  *
  * @return Returns a non-zero value in case of failure
- */
-void CC_PalPerfCloseEntry(CCPalPerfData_t idx, CCPalPerfType_t entryType)
+ */ 	
+void CC_PalPerfCloseEntry(CCPalPerfData_t idx, CCPalPerfType_t entryType) 
 {
     PalPerfCounter_t* pCyclesData = &resultsArr[entryType];
 
@@ -159,14 +159,14 @@ void CC_PalPerfCloseEntry(CCPalPerfData_t idx, CCPalPerfType_t entryType)
 }
 
 
-/**
+/** 
  * @brief   dumps the performance buffer
- *
+ *         
  * @param[in] None
  *
  * @return None
  */
-void CC_PalPerfDump(void)
+void CC_PalPerfDump(void) 
 {
 #define CC_PALPERFDUMP_LENGTH 256
 #define CC_PALPERFDUMP_SEPERATOR "----------------------------------------------------------------" \

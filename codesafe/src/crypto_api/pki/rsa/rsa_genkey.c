@@ -119,8 +119,8 @@ extern CCError_t RndGenerateWordsArrayInRange(CCRndContext_t *pRndContext,
 /***********    PkaRsaKgX931Jacobi   function      **********************/
 /**
  * @brief Calculates Jacobi index.
- *  If there is such a vector b, that satisfies the condition b^2 = a mod p, the result is 1.
- *  If there is no such vector, the result is -1.
+ *	If there is such a vector b, that satisfies the condition b^2 = a mod p, the result is 1.
+ *	If there is no such vector, the result is -1.
  *
  * @return  CC_OK On success, otherwise indicates failure
  */
@@ -211,7 +211,7 @@ static CCError_t PkaRsaKgX931Jacobi (uint32_t  lenId,       /*!< [in]  The RegsS
                 PKA_COMPARE_IM_STATUS(lenId+1, rA1/*OpA*/, 1/*OpB*/, status);
                 if (status == 1) {
                         return CC_OK;
-        }
+		}
 
                 /* p1 = p1 mod a1 - the result is at rP1 register  */
                 PKA_DIV(lenId+1 , rT/*ResNotUsed*/, rP1/*OpA*/, rA1/*OpB*/);
@@ -256,7 +256,7 @@ static CCError_t PkaRsaKgX931Jacobi (uint32_t  lenId,       /*!< [in]  The RegsS
  *
  *       NOTE: - It uses 7 PKA data registers: PKA_REG_N,PKA_REG_NP,30,31, and 3 temp registers.
  *
- *  Assumptions : the max size supported is 2112 bits.
+ * 	Assumptions : the max size supported is 2112 bits.
  *
  * @return  CC_OK On success, otherwise indicates failure
  */
@@ -265,10 +265,10 @@ static  CCError_t PkaRsaKgX931MillerRabinTest(CCRndContext_t *pRndContext, /*!< 
                                                uint32_t  modulusSizeInBits,  /*!< [in]  The prime candidate size. */
                                                int8_t   *pSuccessCode,    /*!< [out]  the success code : 0 - the test failed , 1 the test passed. */
                                                uint8_t   testsCount,      /*!< [in]  Count of exponentiations in test. If CountTests = 0, then
-                                              CountTests will be set automatically according to prime size. */
-                                               int8_t    rT0,         /*!< [in]  Virtual pointer to the base vector. */
-                                               int8_t    rT1,         /*!< [in]  Virtual pointer to the base vector. */
-                                               int8_t    rT2,         /*!< [in]  Virtual pointer to the base vector. */
+										      CountTests will be set automatically according to prime size. */
+                                               int8_t    rT0,   	  /*!< [in]  Virtual pointer to the base vector. */
+                                               int8_t    rT1,   	  /*!< [in]  Virtual pointer to the base vector. */
+                                               int8_t    rT2,   	  /*!< [in]  Virtual pointer to the base vector. */
                                                uint32_t  *pTempBuff)      /*!< [in]   pointer to temp buffer of size 3*modulusSizeInWords. */
 {
         CCError_t error = CC_OK;
@@ -324,7 +324,7 @@ static  CCError_t PkaRsaKgX931MillerRabinTest(CCRndContext_t *pRndContext, /*!< 
                 //          as the Base of exponentiation. The number must be not larger, than
 
                 /* generate a random number b=>rT1 for testing the primality of P by  *
-                *  exponentiation                                 */
+                *  exponentiation       					      */
                 CC_PalMemSetZero(pTempB, sizeof(uint32_t)*pSizeInWords);
                 error = RndGenerateWordsArrayInRange(
                                                          pRndContext,
@@ -341,7 +341,7 @@ static  CCError_t PkaRsaKgX931MillerRabinTest(CCRndContext_t *pRndContext, /*!< 
                 // St. 2.2. Calculate: z = rT1 = z^m mod P; Set j = 0.
                 PKA_MOD_EXP( lenId, rT1/*Res=z*/, rT1/*opA=b*/, rT0/*OpB=m*/);
 
-        // St. 2.3. Check; if z = 1 or z = P-1, then generate next B
+		// St. 2.3. Check; if z = 1 or z = P-1, then generate next B
                 /* z == 1 ? */
                 PKA_COMPARE_IM_STATUS(lenId+1, rT1/*z*/, 1/*OpB*/, status);
                 if (status == 1) {
@@ -399,7 +399,7 @@ End:
 /**
  * @brief Executes the Lucas test according to the the X931 standard.
  *
- *  Assumptions : the max size supported is 2112 bits.
+ * 	Assumptions : the max size supported is 2112 bits.
  *
  * @return  CC_OK On success, otherwise indicates failure
  */
@@ -548,11 +548,11 @@ static CCError_t PkaRsaKgX931LucasPrimeTest(uint32_t  lenId,          /*!< [in] 
  * @return  CC_OK On success, otherwise indicates failure
  */
 static CCError_t PkaRsaKgX931FindPrime1(CCRndContext_t *pRndContext, /*!< [in/out]  Pointer to the RND context buffer. */
-                                         int8_t  rP,                 /*!< [in/out]  Virtual pointer to the prime buff. */
+                                         int8_t  rP,    			 /*!< [in/out]  Virtual pointer to the prime buff. */
                                          RsaKgParams_t *rsaKgPrimeTestParams, /*!< [in]  Pointer to primality testing parameters structure. */
-                                         const int8_t *pRegTemps,            /*!< [in]  Pointer to temp PKA registers list (5 single registers). */
-                                         uint32_t   tempsCount,          /*!< [in]  Count of temp registers in the list. */
-                                         uint32_t  *pTempBuff)           /*!< [in]  Temp buffer of size 2 max RSA buffer size. */
+                                         const int8_t *pRegTemps,       	 /*!< [in]  Pointer to temp PKA registers list (5 single registers). */
+                                         uint32_t   tempsCount,   		 /*!< [in]  Count of temp registers in the list. */
+                                         uint32_t  *pTempBuff)  		 /*!< [in]  Temp buffer of size 2 max RSA buffer size. */
 {
         CCError_t error = CC_OK;
         uint32_t i, c, d;
@@ -636,7 +636,7 @@ static CCError_t PkaRsaKgX931FindPrime1(CCRndContext_t *pRndContext, /*!< [in/ou
                 }
 
                 /* initialization of modular operations, the "modulus" in this case is P or Q which is 1/2 modulus size.*
-                *  that's the reason we use PQ Len ID                                 */
+                *  that's the reason we use PQ Len ID     						      */
                 PkaCalcNpIntoPkaReg(LEN_ID_AUX_PRIME_BITS,
                                      rsaKgPrimeTestParams->auxPrimesSizeInBits,
                                      PKA_REG_N, PKA_REG_NP, rT, rT1);
@@ -683,7 +683,7 @@ static CCError_t PkaRsaKgX931FindPrime1(CCRndContext_t *pRndContext, /*!< [in/ou
 static CCError_t PkaRsaKgX931FindPrime2(CCRndContext_t *pRndContext, /*!< [in/out]  Pointer to the RND context buffer. */
                                           int8_t    rP,                /*!< [in/out] Virtual pointer to the prime P (P or Q in RSA). */
                                           int8_t    rDelta,            /*!< [in]  Virtual pointer to the delta factor. */
-                                          int8_t    rE,            /*!< [in]  Virtual pointer to public exponent. */
+                                          int8_t    rE, 	       /*!< [in]  Virtual pointer to public exponent. */
                                           uint32_t  modulusSizeInBits, /*!< [in]  Size of prime to be generated. */
                                           RsaKgParams_t *rsaKgPrimeTestParams, /*!< [in]  Pointer to primality testing parameters structure. */
                                           const int8_t   *pRegTemps,   /*!< [in]  Pointer to temp PKA registers list. */
@@ -834,7 +834,7 @@ static CCError_t PkaRsaKgX931FindPrime2(CCRndContext_t *pRndContext, /*!< [in/ou
 
                 }
 
-        //find new P if previous one isn't correct
+		//find new P if previous one isn't correct
                 /* the new prime candidate: P = P + Delta */
                 PKA_ADD(LEN_ID_PQ_PKA_REG_BITS, rP/*Res*/, rP/*OpA*/, rDelta/*OpB*/);
 
@@ -856,11 +856,11 @@ End:
  * @return  CC_OK On success, otherwise indicates failure
  */
 static CCError_t RsaKgX931FindPrime(CCRndContext_t *pRndContext, /*!< [in/out]  Pointer to the RND context buffer. */
-                                      int8_t    rP1,          /*!< [in]  Virtual pointers to PKA registers of auxiliary primes p1. */
-                                      int8_t    rP2,          /*!< [in]  Virtual pointers to PKA registers of auxiliary primes p2. */
-                                      int8_t    rP,           /*!< [in/out]  Virtual pointer to the register containing P prime. */
+                                      int8_t    rP1, 	      /*!< [in]  Virtual pointers to PKA registers of auxiliary primes p1. */
+                                      int8_t    rP2, 	      /*!< [in]  Virtual pointers to PKA registers of auxiliary primes p2. */
+                                      int8_t    rP,  	      /*!< [in/out]  Virtual pointer to the register containing P prime. */
                                       uint32_t  modulusSizeInBits, /*!< [in]  Size of the prime P. */
-                                      uint32_t  rE,           /*!< [in]  Virtual pointer to public exponent. */
+                                      uint32_t  rE,  	      /*!< [in]  Virtual pointer to public exponent. */
                                       RsaKgParams_t *rsaKgPrimeTestParams, /*!< [in]  Pointer to primality testing parameters structure. */
                                       const int8_t   *pRegTemps, /*!< [in]  Pointer to temp PKA registers list (5 single registers). */
                                       uint32_t  tempsCount,      /*!< [in]  Count of temp registers in the list. */
@@ -981,7 +981,7 @@ static CCError_t RsaKgX931FindPrime(CCRndContext_t *pRndContext, /*!< [in/out]  
         /* add P = P + R */
         PKA_ADD(LEN_ID_PQ_PKA_REG_BITS, rP/*res*/, rP/*OpA*/, rR1/*OpB*/);
 
-    //now in rP is a number with new conditions
+	//now in rP is a number with new conditions
 
         /* find the prime P */
         error = PkaRsaKgX931FindPrime2( pRndContext, rP, rP12/*rDelta*/, rE,
@@ -1049,9 +1049,9 @@ static int32_t RsaKgQuickPrimeTest(uint8_t    lenId,    /*!< [in]  The SizesTabl
  * @return  CC_OK On success, otherwise indicates failure
  */
 static CCError_t PkaRsaKgFindPrime(CCRndContext_t *pRndContext,  /*!< [in/out]  Pointer to the RND context buffer. */
-                                     int8_t    rP,            /*!< [in/out]  Virtual pointer to the prime P register. */
+                                     int8_t    rP,      	  /*!< [in/out]  Virtual pointer to the prime P register. */
                                      uint32_t  modulusSizeInBits, /*!< [in]  Prime size in bits. */
-                                     int8_t    rE,            /*!< [in]  Virtual pointer to the public exponent register. */
+                                     int8_t    rE,      	  /*!< [in]  Virtual pointer to the public exponent register. */
                                      RsaKgParams_t *rsaKgPrimeTestParams, /*!< [in]  Pointer to primality testing parameters structure. */
                                      const int8_t   *pRegTemps,  /*!< [in]  Pointer to temp PKA registers list. */
                                      uint32_t  tempsCount,       /*!< [in]  Count of temp registers in the list (9). */
@@ -1119,21 +1119,21 @@ static CCError_t PkaRsaKgFindPrime(CCRndContext_t *pRndContext,  /*!< [in/out]  
                 return error;
         }
 #endif
-
-      /* calculate mask for aux.prime candidate */
+	
+	  /* calculate mask for aux.prime candidate */
         mask = (~0UL >> (32 - (rsaKgPrimeTestParams->auxPrimesSizeInBits & 0x1F)));
         msBit = 1UL << ((rsaKgPrimeTestParams->auxPrimesSizeInBits & 0x1F)-1);
 
-    /* calculate mask and set MS bit of aux.prime candidate */
+	/* calculate mask and set MS bit of aux.prime candidate */
         rBuff[auxPrimeSizeInWords-1] &= mask;
         rBuff[auxPrimeSizeInWords-1] |= msBit;
         /* set LSBit = 1 to ensure the odd number */
         rBuff[0] |= 1UL;
 
-    #ifdef FIPS_CERTIFICATION
-    primeInt->bitlen1 = rsaKgPrimeTestParams->auxPrimesSizeInBits;
-    CC_CommonReverseMemcpy(primeInt->xPrime1, (uint8_t*)rBuff, auxPrimeSizeInBytes);
-    #endif
+	#ifdef FIPS_CERTIFICATION
+	primeInt->bitlen1 = rsaKgPrimeTestParams->auxPrimesSizeInBits;
+	CC_CommonReverseMemcpy(primeInt->xPrime1, (uint8_t*)rBuff, auxPrimeSizeInBytes);
+	#endif
 
 #ifdef LLF_PKI_PKA_DEBUG
 #if (defined RSA_KG_NO_RND || defined RSA_KG_FIND_BAD_RND)
@@ -1180,15 +1180,15 @@ static CCError_t PkaRsaKgFindPrime(CCRndContext_t *pRndContext,  /*!< [in/out]  
         }
 
 #endif
-    /* set MS bit of P2*/
+	/* set MS bit of P2*/
         rBuff[auxPrimeSizeInWords-1] &= mask;
         rBuff[auxPrimeSizeInWords-1] |= msBit;
         /* set LSBit = 1 to ensure the odd number */
         rBuff[0] |= 1UL;
 
 #ifdef FIPS_CERTIFICATION
-    primeInt->bitlen2 = rsaKgPrimeTestParams->auxPrimesSizeInBits;
-    CC_CommonReverseMemcpy(primeInt->xPrime2, (uint8_t*)rBuff, auxPrimeSizeInBytes);
+	primeInt->bitlen2 = rsaKgPrimeTestParams->auxPrimesSizeInBits;
+	CC_CommonReverseMemcpy(primeInt->xPrime2, (uint8_t*)rBuff, auxPrimeSizeInBytes);
 #endif
         /*  Debug  */
 #ifdef LLF_PKI_PKA_DEBUG
@@ -1200,7 +1200,7 @@ static CCError_t PkaRsaKgFindPrime(CCRndContext_t *pRndContext,  /*!< [in/out]  
         /* copy random number P2 into PKA register rP2 */
         PkaCopyDataIntoPkaReg( rP2/*dstReg*/, LEN_ID_MAX_BITS, rBuff/*src_ptr*/, auxPrimeSizeInWords);
 
-    //at the end of this function rP includes P value
+	//at the end of this function rP includes P value
         /* find the primes P1,P2, P */
         error = RsaKgX931FindPrime(pRndContext,
                                       rP1, rP2, /*aux.primes*/
@@ -1238,7 +1238,7 @@ static CCError_t PkaRsaKgFindPrime(CCRndContext_t *pRndContext,  /*!< [in/out]  
  *         NOTE:  For using in RSA module  size of each temp buffer must be of minimum size
  *                of prime number P in words.
  *                For using in ANSI X9.42 standard (DH,DSA algorithms) size of each temp buffer
- *            must be minimum of two size of prime number P in words.
+ *      	  must be minimum of two size of prime number P in words.
  *
  * @return  CC_OK On success, otherwise indicates failure
  */
@@ -1248,7 +1248,7 @@ static CCError_t RsaKgPrimeTest(CCRndContext_t *pRndContext, /*!< [in/out]  Poin
                                   int32_t   rabinTestsCount, /*!< [in]  Count of Rabin-Miller tests repetition. */
                                   int8_t   *pIsPrime,        /*!< [in]  The flag indicates primality: not prime - CC_FALSE, otherwise - CC_TRUE. */
                                   CCRsaDhPrimeTestMode_t primeTestMode, /*!< [in]  Primality testing mode (RSA or DH - defines how are performed some
-                                            operations on temp buffers. */
+				      						operations on temp buffers. */
                                   uint32_t *pTempBuff) /*!< [in]  Temp buffer of size 3*ModSizeWords. */
 {
         CCError_t error = CC_OK;
@@ -1343,54 +1343,54 @@ CCError_t RsaCalculateNandD(CCRsaPubKey_t *pCcPubKey, /*!< [in] pointer to the p
                         CCRsaKgData_t  *pKeyGenData,  /*!< [in] pointer to a structure required for the KeyGen operation, holding P and Q */
                         uint32_t        primeSizeInBits) /*!< [in] Size of the prime factors in bits. */
 {
-    uint32_t  primeSizeInWords, i;
-    uint32_t  pkaRegsCount = 8;
-    CCError_t error=CC_OK;
-    /* define virtual pointers to PKA registers */
-    uint32_t r0   = PKA_REG_N; /*mod*/
-    uint32_t rLcm = 1;
-    uint32_t rP   = 2;
-    uint32_t rQ   = 3;
-    uint32_t rD   = 4;
-    uint32_t rT   = 5;
-    uint32_t *pPrivExp = pCcPrivKey->PriveKeyDb.NonCrt.d;
+	uint32_t  primeSizeInWords, i;
+	uint32_t  pkaRegsCount = 8;
+	CCError_t error=CC_OK;
+	/* define virtual pointers to PKA registers */
+	uint32_t r0   = PKA_REG_N; /*mod*/
+	uint32_t rLcm = 1;
+	uint32_t rP   = 2;
+	uint32_t rQ   = 3;
+	uint32_t rD   = 4;
+	uint32_t rT   = 5;
+	uint32_t *pPrivExp = pCcPrivKey->PriveKeyDb.NonCrt.d;
 
 
-    /* setting the primes P,Q length in bytes */
-    primeSizeInWords = CALC_FULL_32BIT_WORDS(primeSizeInBits);
-    /*Mutex lock and PKA init*/
-    error = PkaInitAndMutexLock(2*primeSizeInBits, &pkaRegsCount );
-    if (error != CC_SUCCESS) {
-        return error;
-    }
-    /* RL  clean the n-buffer */
-    CC_PalMemSetZero( pCcPubKey->n, CC_32BIT_WORD_SIZE*CC_RSA_MAXIMUM_MOD_BUFFER_SIZE_IN_WORDS );
+	/* setting the primes P,Q length in bytes */
+	primeSizeInWords = CALC_FULL_32BIT_WORDS(primeSizeInBits);
+	/*Mutex lock and PKA init*/
+	error = PkaInitAndMutexLock(2*primeSizeInBits, &pkaRegsCount );
+	if (error != CC_SUCCESS) {
+	    return error;
+	}
+	/* RL  clean the n-buffer */
+	CC_PalMemSetZero( pCcPubKey->n, CC_32BIT_WORD_SIZE*CC_RSA_MAXIMUM_MOD_BUFFER_SIZE_IN_WORDS );
 
-    PkaSetLenIds(primeSizeInBits, LEN_ID_PQ_BITS);
-    PkaSetLenIds(GET_FULL_OP_SIZE_BITS(primeSizeInBits), LEN_ID_PQ_PKA_REG_BITS);
+	PkaSetLenIds(primeSizeInBits, LEN_ID_PQ_BITS);
+	PkaSetLenIds(GET_FULL_OP_SIZE_BITS(primeSizeInBits), LEN_ID_PQ_PKA_REG_BITS);
 
-    /* clear pka memory for new using */
-    PkaClearBlockOfRegs(r0/*firstReg*/, pkaRegsCount, LEN_ID_MAX_BITS);
+	/* clear pka memory for new using */
+	PkaClearBlockOfRegs(r0/*firstReg*/, pkaRegsCount, LEN_ID_MAX_BITS);
 
 
-    /*  copy P, Q into PKA registers. Note: now size of registers is full.  */
-    PkaCopyDataIntoPkaReg(rP/*dstReg*/, LEN_ID_MAX_BITS, pKeyGenData->KGData.p/*src_ptr*/,
-                          primeSizeInWords);
+	/*  copy P, Q into PKA registers. Note: now size of registers is full.  */
+	PkaCopyDataIntoPkaReg(rP/*dstReg*/, LEN_ID_MAX_BITS, pKeyGenData->KGData.p/*src_ptr*/,
+	                      primeSizeInWords);
 
-    PkaCopyDataIntoPkaReg(rQ/*dstReg*/, LEN_ID_MAX_BITS, pKeyGenData->KGData.q/*src_ptr*/,
-                          primeSizeInWords);
+	PkaCopyDataIntoPkaReg(rQ/*dstReg*/, LEN_ID_MAX_BITS, pKeyGenData->KGData.q/*src_ptr*/,
+	                      primeSizeInWords);
 
-    /*******************************************************************************************/
-    /*                     CALCULATIONS WITH LONG REGISTERS                                    */
-    /*  Init the PKA again on default mode according to N operation size.                      */
-    /*  Note: All PKA memory shall be cleaned, nSizeInBits=> entry 0, nSizeInBits+CC_PKA_WORD_SIZE_IN_BITS=> entry 1 */
-    /*******************************************************************************************/
-    /*     N= r0= P*Q. lenId = 0 for full reg size   */
-    PKA_MUL_LOW(LEN_ID_N_BITS, r0, rP/*OpA*/, rQ/*OpB*/);   // use LEN_ID_N_BITS, since its size is 2*primeSizeInBits
+	/*******************************************************************************************/
+	/*                     CALCULATIONS WITH LONG REGISTERS                                    */
+	/*  Init the PKA again on default mode according to N operation size.                      */
+	/*  Note: All PKA memory shall be cleaned, nSizeInBits=> entry 0, nSizeInBits+CC_PKA_WORD_SIZE_IN_BITS=> entry 1 */
+	/*******************************************************************************************/
+	/*     N= r0= P*Q. lenId = 0 for full reg size   */
+	PKA_MUL_LOW(LEN_ID_N_BITS, r0, rP/*OpA*/, rQ/*OpB*/);   // use LEN_ID_N_BITS, since its size is 2*primeSizeInBits
 
     /* output the modulus N */
     PkaCopyDataFromPkaReg(pCcPubKey->n,  2*primeSizeInWords, r0/*srcReg*/);
-    CC_PalMemCopy(pCcPrivKey->n, pCcPubKey->n, pCcPubKey->nSizeInBits / CC_BITS_IN_BYTE);
+	CC_PalMemCopy(pCcPrivKey->n, pCcPubKey->n, pCcPubKey->nSizeInBits / CC_BITS_IN_BYTE);
 
         if (pCcPrivKey->OperationMode == CC_RSA_NoCrt) {
                 bool isTrue = false;
@@ -1399,90 +1399,90 @@ CCError_t RsaCalculateNandD(CCRsaPubKey_t *pCcPubKey, /*!< [in] pointer to the p
                 uint32_t bit0P, bit0Q;
 
 
-        /*    calculate D = E^-1 mod LCM(P-1)*(Q-1)   */
-        PKA_FLIP_BIT0(LEN_ID_N_BITS, rP/*Res*/, rP/*OpA*/);
-        PKA_FLIP_BIT0(LEN_ID_N_BITS, rQ/*Res*/, rQ/*OpA*/);
+	    /*    calculate D = E^-1 mod LCM(P-1)*(Q-1)   */
+	    PKA_FLIP_BIT0(LEN_ID_N_BITS, rP/*Res*/, rP/*OpA*/);
+	    PKA_FLIP_BIT0(LEN_ID_N_BITS, rQ/*Res*/, rQ/*OpA*/);
 
-        /* remove common factors 2 from P-1, Q-1 to find odd */
-        i = 0;
-        do {
-            PKA_SHR_FILL0(LEN_ID_N_BITS, rP, rP, 0/*shift-1*/);
-            PKA_SHR_FILL0(LEN_ID_N_BITS, rQ, rQ, 0/*shift-1*/);
-            PKA_READ_BIT0(LEN_ID_N_BITS, rP, bit0P);
-            PKA_READ_BIT0(LEN_ID_N_BITS, rQ, bit0Q);
-            i++;
-        } while (bit0P == 0 && bit0Q == 0);
+	    /* remove common factors 2 from P-1, Q-1 to find odd */
+	    i = 0;
+	    do {
+	        PKA_SHR_FILL0(LEN_ID_N_BITS, rP, rP, 0/*shift-1*/);
+	        PKA_SHR_FILL0(LEN_ID_N_BITS, rQ, rQ, 0/*shift-1*/);
+	        PKA_READ_BIT0(LEN_ID_N_BITS, rP, bit0P);
+	        PKA_READ_BIT0(LEN_ID_N_BITS, rQ, bit0Q);
+	        i++;
+	    } while (bit0P == 0 && bit0Q == 0);
 
 
-        /* D = (P-1) * (Q-1) / 2^i (removed only common divider 2^i) */
-        PKA_2CLEAR(LEN_ID_MAX_BITS, rD); // ? RL
-        PKA_MUL_LOW(LEN_ID_N_BITS, rD/*Res*/, rP/*OpA*/, rQ/*OpB*/);
-        PKA_SHL_FILL0(LEN_ID_N_BITS, rD, rD, i-1);
+	    /* D = (P-1) * (Q-1) / 2^i (removed only common divider 2^i) */
+	    PKA_2CLEAR(LEN_ID_MAX_BITS, rD); // ? RL
+	    PKA_MUL_LOW(LEN_ID_N_BITS, rD/*Res*/, rP/*OpA*/, rQ/*OpB*/);
+	    PKA_SHL_FILL0(LEN_ID_N_BITS, rD, rD, i-1);
 
-        /* chose odd number as modulus for ModInv operation */
-        if (bit0P == 1) {
-            PKA_COPY(LEN_ID_N_BITS, r0/*dst*/, rP);
-            rGcd = rQ;
-        } else {
-            PKA_COPY(LEN_ID_N_BITS, r0/*dst*/, rQ);
-            rGcd = rP;
+	    /* chose odd number as modulus for ModInv operation */
+	    if (bit0P == 1) {
+	        PKA_COPY(LEN_ID_N_BITS, r0/*dst*/, rP);
+	        rGcd = rQ;
+	    } else {
+	        PKA_COPY(LEN_ID_N_BITS, r0/*dst*/, rQ);
+	        rGcd = rP;
+	    }
+
+	    /* calculate GCD(rP,rQ) */
+	    PKA_MOD_INV(LEN_ID_N_BITS, rT/*temp*/, rGcd);
+	    /* LCM = ((P-1)*(Q-1) / GCD) = rD/rGcd */
+	    PKA_DIV(LEN_ID_N_BITS, rLcm/*res: LCM*/, rD, rGcd);
+
+
+	    // Because LCM may be even, but HW ModInw operation works only with odd modulus,
+	    // we use reverse calculation as follows: D =  1/E mod LCM = LCM - ((1/LCM mod E)*LCM - 1) / E
+
+	    /* copy public exp E into r0 register */
+	    PkaCopyDataIntoPkaReg(r0/*dstReg*/, LEN_ID_MAX_BITS, pCcPubKey->e/*src_ptr*/,
+	                          CALC_FULL_32BIT_WORDS(pCcPubKey->eSizeInBits));
+
+	    /* calc rT = 1/LCM mod E */
+	    PKA_COPY(LEN_ID_N_BITS, rP/*dst*/, rLcm/*LCM*/); /*rP used as temp*/
+	    PKA_DIV(LEN_ID_N_BITS, rQ/*Res not used*/, rP/*OpA=LCM*/, r0/*OpB=E*/); /*rP = LCM mod E*/
+
+	    PKA_MOD_INV(LEN_ID_N_BITS, rT/*Res*/, rP/*OpB*/); /* rT = 1/LCM mod E (E - odd, gcd(LCM,E)=1) */
+	    /* RL additional check need if E is not prime */
+	    PKA_COMPARE_IM_STATUS(LEN_ID_N_BITS, rP, 1/*im*/, stat);
+	    if (stat != 1) {
+	        error = PKA_INTERNAL_ERROR;
+	        goto End;
+	    }
+
+	    /* rK = (rT*LCM - 1) / r0=E  */
+	    PKA_MUL_LOW(LEN_ID_N_PKA_REG_BITS, rT/*Res*/, rT/*OpA*/, rLcm/*OpB*/); /* Note: size of result < register size, because E is small */
+	    PKA_SUB_IM(LEN_ID_N_PKA_REG_BITS, rT/*Res*/, rT/*OpA*/, 1/*OpB*/);
+	    PKA_DIV(LEN_ID_N_PKA_REG_BITS, rD/*Res*/, rT/*OpA*/, r0/*OpB*/); /*rT = rT / e*/
+	    PKA_SUB(LEN_ID_N_PKA_REG_BITS, rD/*Res*/, rLcm/*OpA*/, rD/*OpB*/);
+
+	    /*    output the result value D */
+	    PkaCopyDataFromPkaReg(pPrivExp, 2*primeSizeInWords, rD/*srcReg*/);
+
+	    /* check that d > 2^(nlen/2) [FIPS 186-4, B.3.1] - very rare  *
+	     *  case.                                                      */
+	    for (i = 2*primeSizeInWords - 1; i >= primeSizeInWords; i--) {
+	        isTrue = isTrue || (pPrivExp[i] != 0);
+	    }
+	    if (!isTrue) {
+	        CC_PalMemSetZero(pPrivExp, 2*primeSizeInWords);
+	        error = CC_RSA_GENERATED_PRIV_KEY_IS_TOO_LOW;
+	    }
+
+	    /* set the length of d in bits */
+	    pCcPrivKey->PriveKeyDb.NonCrt.dSizeInBits =
+	    CC_CommonGetWordsCounterEffectiveSizeInBits(pCcPrivKey->PriveKeyDb.NonCrt.d,
+	                                                (uint16_t)(CALC_FULL_32BIT_WORDS(pCcPubKey->nSizeInBits)));
         }
 
-        /* calculate GCD(rP,rQ) */
-        PKA_MOD_INV(LEN_ID_N_BITS, rT/*temp*/, rGcd);
-        /* LCM = ((P-1)*(Q-1) / GCD) = rD/rGcd */
-        PKA_DIV(LEN_ID_N_BITS, rLcm/*res: LCM*/, rD, rGcd);
+	End:
 
+	PkaFinishAndMutexUnlock( pkaRegsCount );
 
-        // Because LCM may be even, but HW ModInw operation works only with odd modulus,
-        // we use reverse calculation as follows: D =  1/E mod LCM = LCM - ((1/LCM mod E)*LCM - 1) / E
-
-        /* copy public exp E into r0 register */
-        PkaCopyDataIntoPkaReg(r0/*dstReg*/, LEN_ID_MAX_BITS, pCcPubKey->e/*src_ptr*/,
-                              CALC_FULL_32BIT_WORDS(pCcPubKey->eSizeInBits));
-
-        /* calc rT = 1/LCM mod E */
-        PKA_COPY(LEN_ID_N_BITS, rP/*dst*/, rLcm/*LCM*/); /*rP used as temp*/
-        PKA_DIV(LEN_ID_N_BITS, rQ/*Res not used*/, rP/*OpA=LCM*/, r0/*OpB=E*/); /*rP = LCM mod E*/
-
-        PKA_MOD_INV(LEN_ID_N_BITS, rT/*Res*/, rP/*OpB*/); /* rT = 1/LCM mod E (E - odd, gcd(LCM,E)=1) */
-        /* RL additional check need if E is not prime */
-        PKA_COMPARE_IM_STATUS(LEN_ID_N_BITS, rP, 1/*im*/, stat);
-        if (stat != 1) {
-            error = PKA_INTERNAL_ERROR;
-            goto End;
-        }
-
-        /* rK = (rT*LCM - 1) / r0=E  */
-        PKA_MUL_LOW(LEN_ID_N_PKA_REG_BITS, rT/*Res*/, rT/*OpA*/, rLcm/*OpB*/); /* Note: size of result < register size, because E is small */
-        PKA_SUB_IM(LEN_ID_N_PKA_REG_BITS, rT/*Res*/, rT/*OpA*/, 1/*OpB*/);
-        PKA_DIV(LEN_ID_N_PKA_REG_BITS, rD/*Res*/, rT/*OpA*/, r0/*OpB*/); /*rT = rT / e*/
-        PKA_SUB(LEN_ID_N_PKA_REG_BITS, rD/*Res*/, rLcm/*OpA*/, rD/*OpB*/);
-
-        /*    output the result value D */
-        PkaCopyDataFromPkaReg(pPrivExp, 2*primeSizeInWords, rD/*srcReg*/);
-
-        /* check that d > 2^(nlen/2) [FIPS 186-4, B.3.1] - very rare  *
-         *  case.                                                      */
-        for (i = 2*primeSizeInWords - 1; i >= primeSizeInWords; i--) {
-            isTrue = isTrue || (pPrivExp[i] != 0);
-        }
-        if (!isTrue) {
-            CC_PalMemSetZero(pPrivExp, 2*primeSizeInWords);
-            error = CC_RSA_GENERATED_PRIV_KEY_IS_TOO_LOW;
-        }
-
-        /* set the length of d in bits */
-        pCcPrivKey->PriveKeyDb.NonCrt.dSizeInBits =
-        CC_CommonGetWordsCounterEffectiveSizeInBits(pCcPrivKey->PriveKeyDb.NonCrt.d,
-                                                    (uint16_t)(CALC_FULL_32BIT_WORDS(pCcPubKey->nSizeInBits)));
-        }
-
-    End:
-
-    PkaFinishAndMutexUnlock( pkaRegsCount );
-
-    return error;
+	return error;
 }
 
 
@@ -1703,25 +1703,25 @@ End:
 /***********    RsaPrimeTestCall   function      **********************/
 /**
  * @brief Test a primality according to ANSI X9.42 standard by
- *  calling the RsaKgPrimeTest() which performs said algorithm.
+ * 	calling the RsaKgPrimeTest() which performs said algorithm.
  *
  * @return  CC_OK On success, otherwise indicates failure
  */
 CCError_t RsaPrimeTestCall(CCRndContext_t *pRndContext,          /*!< [in/out]  Pointer to the RND context buffer. */
                              uint32_t *pPrimeP,                        /*!< [in] The pointer to the prime buff. */
-                             int32_t   sizeWords,                  /*!< [in] The prime size in words. */
-                             int32_t   rabinTestsCount,            /*!< [in] The count of Rabin-Miller tests repetition. */
-                             int8_t   *pIsPrime,               /*!< [in] TThe flag indicates primality:
-                                        if is not prime - CC_FALSE, otherwise - CC_TRUE. */
-                             uint32_t *pTempBuff,                  /*!< [in] The temp buffer of minimum size:
-                                        - on HW platform  3*MaxModSizeWords,
-                                        - on SW platform  41*MaxModSizeWords. */
+                             int32_t   sizeWords,       	       /*!< [in] The prime size in words. */
+                             int32_t   rabinTestsCount, 	       /*!< [in] The count of Rabin-Miller tests repetition. */
+                             int8_t   *pIsPrime,		       /*!< [in] TThe flag indicates primality:
+										if is not prime - CC_FALSE, otherwise - CC_TRUE. */
+                             uint32_t *pTempBuff,       	       /*!< [in] The temp buffer of minimum size:
+										- on HW platform  3*MaxModSizeWords,
+										- on SW platform  41*MaxModSizeWords. */
                              CCRsaDhPrimeTestMode_t primeTestMode)/*!< [in] primality testing mode (RSA or DH - defines how are performed some
-                                        operations on temp buffers. */
+										operations on temp buffers. */
 {
         CCError_t error;
 
-    error =  RsaKgPrimeTest(
+	error =  RsaKgPrimeTest(
                                   pRndContext,
                                   pPrimeP,
                                   sizeWords,
@@ -1731,7 +1731,7 @@ CCError_t RsaPrimeTestCall(CCRndContext_t *pRndContext,          /*!< [in/out]  
                                   pTempBuff);
 
 
-    return error;
+	return error;
 
 }
 
@@ -1744,196 +1744,196 @@ CCError_t RsaPrimeTestCall(CCRndContext_t *pRndContext,          /*!< [in/out]  
  */
 CCError_t RsaGenPandQ(
                     CCRndContext_t *pRndContext, /*!< [in/out] Pointer to the RND context buffer. */
-                    size_t          KeySize,        /* key size in bits */
-                    uint32_t        eSizeInBits,
+                    size_t 	        KeySize,        /* key size in bits */
+                    uint32_t 	    eSizeInBits,
                     uint32_t       *pPubExp,
                     CCRsaKgData_t  *pKeyGenData) /*!< [in] Temporary buffer for internal use. */
 {
 
-    /* the error identifier */
-    CCError_t error = CC_OK;
+	/* the error identifier */
+	CCError_t error = CC_OK;
 
-    uint32_t *pPrimeP, *pPrimeQ;
-    uint32_t pqSizeWords;
-    uint32_t success = 0;
+	uint32_t *pPrimeP, *pPrimeQ;
+	uint32_t pqSizeWords;
+	uint32_t success = 0;
 #if ((!defined RSA_KG_FIND_BAD_RND && !defined RSA_KG_NO_RND) || defined RSA_KG_FIND_BAD_RND || !defined DEBUG)
-    uint32_t buffXp[4]; //buffer for 4 MSB words of Xq
+	uint32_t buffXp[4]; //buffer for 4 MSB words of Xq
 #endif
-    uint32_t distPQ , tempSwap, i;
-    CCCommonCmpCounter_t cmpRes;
+	uint32_t distPQ , tempSwap, i;
+	CCCommonCmpCounter_t cmpRes;
 
-    pPrimeP = pKeyGenData->KGData.p;
-    pPrimeQ = pKeyGenData->KGData.q;
-    pqSizeWords = CALC_FULL_32BIT_WORDS(KeySize/2);
+	pPrimeP = pKeyGenData->KGData.p;
+	pPrimeQ = pKeyGenData->KGData.q;
+	pqSizeWords = CALC_FULL_32BIT_WORDS(KeySize/2);
 #if (defined RSA_KG_FIND_BAD_RND && defined DEBUG)
-    CC_PalMemCopy( RSA_KG_debugPvect, (uint8_t*)pKeyGenData->KGData.p, KeySize/(2*CC_BITS_IN_BYTE) );
-    CC_PalMemCopy( RSA_KG_debugQvect, (uint8_t*)pKeyGenData->KGData.q, KeySize/(2*CC_BITS_IN_BYTE) );
+	CC_PalMemCopy( RSA_KG_debugPvect, (uint8_t*)pKeyGenData->KGData.p, KeySize/(2*CC_BITS_IN_BYTE) );
+	CC_PalMemCopy( RSA_KG_debugQvect, (uint8_t*)pKeyGenData->KGData.q, KeySize/(2*CC_BITS_IN_BYTE) );
 #endif
 
 #if (defined RSA_KG_NO_RND && defined DEBUG)
-    CC_PalMemCopy( (uint8_t*)pKeyGenData->KGData.p, RSA_KG_debugPvect, KeySize/(2*CC_BITS_IN_BYTE) );
-    CC_PalMemCopy( (uint8_t*)pKeyGenData->KGData.q, RSA_KG_debugQvect, KeySize/(2*CC_BITS_IN_BYTE) );
+	CC_PalMemCopy( (uint8_t*)pKeyGenData->KGData.p, RSA_KG_debugPvect, KeySize/(2*CC_BITS_IN_BYTE) );
+	CC_PalMemCopy( (uint8_t*)pKeyGenData->KGData.q, RSA_KG_debugQvect, KeySize/(2*CC_BITS_IN_BYTE) );
 #endif
 #if ((defined RSA_KG_FIND_BAD_RND || defined RSA_KG_NO_RND) && defined DEBUG)
 #ifdef BIG__ENDIAN
-    /* for big endiannes machine reverse bytes order in words according to Big Endian  */
-    CC_COMMON_INVERSE_UINT32_IN_ARRAY( pKeyGenData->KGData.p, KeySize/(2*CC_BITS_IN_32BIT_WORD) );
-    CC_COMMON_INVERSE_UINT32_IN_ARRAY( pKeyGenData->KGData.q, KeySize/(2*CC_BITS_IN_32BIT_WORD) );
+	/* for big endiannes machine reverse bytes order in words according to Big Endian  */
+	CC_COMMON_INVERSE_UINT32_IN_ARRAY( pKeyGenData->KGData.p, KeySize/(2*CC_BITS_IN_32BIT_WORD) );
+	CC_COMMON_INVERSE_UINT32_IN_ARRAY( pKeyGenData->KGData.q, KeySize/(2*CC_BITS_IN_32BIT_WORD) );
 #endif
 #endif
 
 
 
-    /* ................ Generate the 1st prime ................................. */
-    /* ------------------------------------------------------------------------- */
-    do{
-        /* clean the word adjacent to the old P (in case there's garbage in it) */
-        pPrimeP[pqSizeWords]=0;
+	/* ................ Generate the 1st prime ................................. */
+	/* ------------------------------------------------------------------------- */
+	do{
+		/* clean the word adjacent to the old P (in case there's garbage in it) */
+		pPrimeP[pqSizeWords]=0;
 
-        /*Generate Xp*/
+		/*Generate Xp*/
 #if ((!defined RSA_KG_FIND_BAD_RND && !defined RSA_KG_NO_RND) || defined RSA_KG_FIND_BAD_RND || !defined DEBUG)
-        error = CC_RsaGenerateVectorInRangeX931(pRndContext, pqSizeWords, pPrimeP);
-        if (error != CC_OK){
-            goto End;
-        }
+		error = CC_RsaGenerateVectorInRangeX931(pRndContext, pqSizeWords, pPrimeP);
+		if (error != CC_OK){
+			goto End;
+		}
 
-        /*save 4 MSB of Xp to temporary buffer for checking it's distance from Xq*/
-        CC_PalMemCopy(buffXp, pPrimeP, 4 *CC_32BIT_WORD_SIZE );
+		/*save 4 MSB of Xp to temporary buffer for checking it's distance from Xq*/
+		CC_PalMemCopy(buffXp, pPrimeP, 4 *CC_32BIT_WORD_SIZE );
 
 #ifdef FIPS_CERTIFICATION
-        rsaKgOutParams.pP_PrimeInt = &prim1Int;
-        rsaKgOutParams.pQ_PrimeInt = &prim2Int;
-        primeInt = &prim1Int;
+		rsaKgOutParams.pP_PrimeInt = &prim1Int;
+		rsaKgOutParams.pQ_PrimeInt = &prim2Int;
+		primeInt = &prim1Int;
 #endif
 
 #endif
-        /* for debug */
+		/* for debug */
 #if (defined RSA_KG_FIND_BAD_RND && defined DEBUG)
-        CC_PalMemCopy( RSA_KG_debugPvect, (uint8_t*)pPrimeP, KeySize/(2*CC_BITS_IN_BYTE) );
-        CC_PalMemCopy( RSA_KG_debugQvect, (uint8_t*)pPrimeQ, KeySize/(2*CC_BITS_IN_BYTE) );
+		CC_PalMemCopy( RSA_KG_debugPvect, (uint8_t*)pPrimeP, KeySize/(2*CC_BITS_IN_BYTE) );
+		CC_PalMemCopy( RSA_KG_debugQvect, (uint8_t*)pPrimeQ, KeySize/(2*CC_BITS_IN_BYTE) );
 #endif
 #if ((defined RSA_KG_FIND_BAD_RND || defined RSA_KG_NO_RND) && defined DEBUG)
 #ifdef BIG__ENDIAN
-        /* for big endiannes machine reverse bytes order in words according to Big Endian  */
-        CC_COMMON_INVERSE_UINT32_IN_ARRAY( pPrimeP, KeySize/(2*CC_BITS_IN_32BIT_WORD) );
-        CC_COMMON_INVERSE_UINT32_IN_ARRAY( pPrimeQ, KeySize/(2*CC_BITS_IN_32BIT_WORD) );
+		/* for big endiannes machine reverse bytes order in words according to Big Endian  */
+		CC_COMMON_INVERSE_UINT32_IN_ARRAY( pPrimeP, KeySize/(2*CC_BITS_IN_32BIT_WORD) );
+		CC_COMMON_INVERSE_UINT32_IN_ARRAY( pPrimeQ, KeySize/(2*CC_BITS_IN_32BIT_WORD) );
 #endif
 #if defined LLF_PKI_PKA_DEBUG
-        PQindex = 0;
+		PQindex = 0;
 #endif
 #endif
-        /*Generate P:*/
+		/*Generate P:*/
 
-        error = RsaKgFindPrime(
-                pRndContext,
-                pPubExp,  eSizeInBits,
-                KeySize,
-                &success,
-                pPrimeP,
-                pKeyGenData->KGData.kg_buf.ccRSAKGDataIntBuff);
-        if (error != CC_OK){
-            goto End;
-        }
+		error = RsaKgFindPrime(
+				pRndContext,
+				pPubExp,  eSizeInBits,
+				KeySize,
+				&success,
+				pPrimeP,
+				pKeyGenData->KGData.kg_buf.ccRSAKGDataIntBuff);
+		if (error != CC_OK){
+			goto End;
+		}
 
-    }while(!success); /* End of loop for generating  P */
+	}while(!success); /* End of loop for generating  P */
 
-    /* ................ Generate the 2nd prime ................................. */
-    /* ------------------------------------------------------------------------- */
-    while(1){
-        /* clean the word adjacent to the old Q (in case there's garbage in it) */
-        pPrimeQ[pqSizeWords]=0;
+	/* ................ Generate the 2nd prime ................................. */
+	/* ------------------------------------------------------------------------- */
+	while(1){
+		/* clean the word adjacent to the old Q (in case there's garbage in it) */
+		pPrimeQ[pqSizeWords]=0;
 
 #if ((!defined RSA_KG_FIND_BAD_RND && !defined RSA_KG_NO_RND) || defined RSA_KG_FIND_BAD_RND || !defined DEBUG)
-        while(1){/*Generate Xq*/
-            error = CC_RsaGenerateVectorInRangeX931(pRndContext, pqSizeWords, pPrimeQ); /*Xq Generation*/
-            if (error != CC_OK){
-                goto End;
-            }
+		while(1){/*Generate Xq*/
+			error = CC_RsaGenerateVectorInRangeX931(pRndContext, pqSizeWords, pPrimeQ); /*Xq Generation*/
+			if (error != CC_OK){
+				goto End;
+			}
 
-            /*check |Xp - Xq|<= 2^(keySize/2-100):
-             * compare 100 MS bits (3 words + 4 bits) of XP and XQ if they are equall, then
-             * generate new Xq*/
-            distPQ = (buffXp[3] - pPrimeQ[pqSizeWords-1]) != 0 ||
-                     (buffXp[2] - pPrimeQ[pqSizeWords-2]) != 0 ||
-                     (buffXp[1] - pPrimeQ[pqSizeWords-3]) != 0 ||
-                    ((buffXp[0] - pPrimeQ[pqSizeWords-4]) & 0xF0000000) != 0;
-            if (distPQ)
-            {
-                break;
-            }
-        } /* Generation of Xq is done - pPrimeQ points to Xq */
+			/*check |Xp - Xq|<= 2^(keySize/2-100):
+			 * compare 100 MS bits (3 words + 4 bits) of XP and XQ if they are equall, then
+			 * generate new Xq*/
+			distPQ = (buffXp[3] - pPrimeQ[pqSizeWords-1]) != 0 ||
+					 (buffXp[2] - pPrimeQ[pqSizeWords-2]) != 0 ||
+					 (buffXp[1] - pPrimeQ[pqSizeWords-3]) != 0 ||
+					((buffXp[0] - pPrimeQ[pqSizeWords-4]) & 0xF0000000) != 0;
+			if (distPQ)
+			{
+				break;
+			}
+		} /* Generation of Xq is done - pPrimeQ points to Xq */
 #endif
 
-        /*Generate Q*/
+		/*Generate Q*/
 #if defined LLF_PKI_PKA_DEBUG && defined DEBUG
 #if (defined RSA_KG_NO_RND || defined RSA_KG_FIND_BAD_RND)
-        PQindex = 1;
+		PQindex = 1;
 #endif
 #endif
 #ifdef FIPS_CERTIFICATION
-        primeInt = &prim2Int;
+		primeInt = &prim2Int;
 #endif
-        error = RsaKgFindPrime(
-                pRndContext,
-                pPubExp,  eSizeInBits,
-                KeySize,
-                &success,
-                pPrimeQ,
-                pKeyGenData->KGData.kg_buf.ccRSAKGDataIntBuff);
-        if (error != CC_OK){
-            goto End;
-        }
+		error = RsaKgFindPrime(
+				pRndContext,
+				pPubExp,  eSizeInBits,
+				KeySize,
+				&success,
+				pPrimeQ,
+				pKeyGenData->KGData.kg_buf.ccRSAKGDataIntBuff);
+		if (error != CC_OK){
+			goto End;
+		}
 
 
-        if(success)
-        {
+		if(success)
+		{
             distPQ = (pPrimeP[3] - pPrimeQ[pqSizeWords-1]) != 0 ||
                      (pPrimeP[2] - pPrimeQ[pqSizeWords-2]) != 0 ||
                      (pPrimeP[1] - pPrimeQ[pqSizeWords-3]) != 0 ||
                     ((pPrimeP[0] - pPrimeQ[pqSizeWords-4]) & 0xF0000000) != 0;
 
-            if (distPQ){
-                break;
-            }
-            else {
-                /* In case the distance between P and Q is too small, generate a new prime.
-                 * The smaller prime should be discarded and generated again.
-                 * If Q is larger then P set P=Q. */
+			if (distPQ){
+				break;
+			}
+			else {
+				/* In case the distance between P and Q is too small, generate a new prime.
+				 * The smaller prime should be discarded and generated again.
+				 * If Q is larger then P set P=Q. */
 
-                cmpRes = CC_CommonCmpLsWordsUnsignedCounters(pPrimeP,pqSizeWords,pPrimeQ,pqSizeWords);
-                if (cmpRes != CC_COMMON_CmpCounter1GreaterThenCounter2) {  /* if Q > P */
-                    CC_PalMemCopy(pPrimeP/*dest*/, pPrimeQ/*src*/, pqSizeWords*CC_32BIT_WORD_SIZE);
+				cmpRes = CC_CommonCmpLsWordsUnsignedCounters(pPrimeP,pqSizeWords,pPrimeQ,pqSizeWords);
+				if (cmpRes != CC_COMMON_CmpCounter1GreaterThenCounter2) {  /* if Q > P */
+					CC_PalMemCopy(pPrimeP/*dest*/, pPrimeQ/*src*/, pqSizeWords*CC_32BIT_WORD_SIZE);
 #ifdef FIPS_CERTIFICATION
-                    rsaKgOutParams.pP_PrimeInt = &prim2Int;
-                    rsaKgOutParams.pQ_PrimeInt = &prim1Int;
+					rsaKgOutParams.pP_PrimeInt = &prim2Int;
+					rsaKgOutParams.pQ_PrimeInt = &prim1Int;
 #endif
                 }
-            }
-        }
-    }/* End of loop for generating  Q - pPrimeQ points to Q */
+			}
+		}
+	}/* End of loop for generating  Q - pPrimeQ points to Q */
 
-    /* if Q is larger then P exchange the vectors - we want to have P > Q */
-    /* copy P,Q, buffers into PKA registers */
-    cmpRes = CC_CommonCmpLsWordsUnsignedCounters(pPrimeP, pqSizeWords, pPrimeQ, pqSizeWords);
+	/* if Q is larger then P exchange the vectors - we want to have P > Q */
+	/* copy P,Q, buffers into PKA registers */
+	cmpRes = CC_CommonCmpLsWordsUnsignedCounters(pPrimeP, pqSizeWords, pPrimeQ, pqSizeWords);
 
-    if (cmpRes != CC_COMMON_CmpCounter1GreaterThenCounter2) {  /* Q > P */
-        /* swap P/Q */
-        for(i=0 ; i<pqSizeWords ; i++){
-            tempSwap = pKeyGenData->KGData.p[i];
-            pKeyGenData->KGData.p[i] = pKeyGenData->KGData.q[i];
-            pKeyGenData->KGData.q[i] = tempSwap;
+	if (cmpRes != CC_COMMON_CmpCounter1GreaterThenCounter2) {  /* Q > P */
+	    /* swap P/Q */
+		for(i=0 ; i<pqSizeWords ; i++){
+			tempSwap = pKeyGenData->KGData.p[i];
+			pKeyGenData->KGData.p[i] = pKeyGenData->KGData.q[i];
+			pKeyGenData->KGData.q[i] = tempSwap;
         }
 
 #ifdef FIPS_CERTIFICATION
-        rsaKgOutParams.pP_PrimeInt = &prim2Int;
-        rsaKgOutParams.pQ_PrimeInt = &prim1Int;
+		rsaKgOutParams.pP_PrimeInt = &prim2Int;
+		rsaKgOutParams.pQ_PrimeInt = &prim1Int;
 #endif
-    }
+	}
 
 #if  (defined LLF_PKI_PKA_DEBUG || defined RSA_KG_FIND_BAD_RND || !defined DEBUG)
 End:
 #endif
-    return error;
+	return error;
 }
 
 #endif /* !defined(CC_IOT) || ( defined(CC_IOT) && defined(MBEDTLS_RSA_C)) */
