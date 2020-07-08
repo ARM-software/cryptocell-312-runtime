@@ -1,4 +1,6 @@
 # cryptocell-312-runtime
+
+First OSS release - cc110-bu-00000-r1p3
  
 Refer to docs/cc312_cryptocell_runtime_software_developers_manual*.pdf for APIs documentation.
  
