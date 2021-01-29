@@ -1,146 +1,276 @@
-#!/usr/local/bin/python3
+#!/usr/bin/env python3
 #
-# Copyright (c) 2001-2019, Arm Limited and Contributors. All rights reserved.
+# Copyright (c) 2001-2020, Arm Limited and Contributors. All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause OR Arm’s non-OSI source license
 #
 
+import optparse
+import configparser
+import sys
+import struct
+import os
+import logging
+sys.path.append(os.path.join(sys.path[0], "..", ".."))
+
+from common import loggerinitializer
+from common import cryptolayer
+
+# Util's log file
+LOG_FILENAME = "oem_asset_pkg.log"
 
 # This utility builds production asset  package:
 # the package format is:
 #                       token, version, asset length, user data (20 bytes)
 #                       nonce(12 bytes)
 #                       encrypted asset (up to 512 bytes - multiple of 16 bytes)
-#                       aset tag (16 bytes)
+#                       asset tag (16 bytes)
 
 
-# This file contains the general functions that are used in both certificates
+class ArgumentParser:
+    def __init__(self):
+        self.cfg_filename = None
+        self.log_filename = LOG_FILENAME
+        self.parser = optparse.OptionParser(usage="usage: %prog cfg_file [log_filename]")
+
+    def parse_arguments(self):
+        (options, args) = self.parser.parse_args()
+        if len(args) > 2 or len(args) < 1:
+            self.parser.error("incorrect number of positional arguments")
+        elif len(args) == 2:
+            self.log_filename = args[1]
+        self.cfg_filename = args[0]
 
 
+class AssetPackageConfig:
+    CFG_SECTION_NAME = "DMPU-OEM-ASSET-CFG"
 
-import sys
-# Definitions for paths
-if sys.platform != "win32" :
-    path_div = "//"    
-else : #platform = win32
-    path_div = "\\"
+    def __init__(self):
+        self._asset_type = None
+        self._icv_enc_oem_key = None
+        self._oem_enc_keypair = None
+        self._oem_enc_keypwd = ""
+        self._asset_filename = None
+        self._pkg_filename = None
 
-import configparser
-from dmpu_util_helper import *
-from dmpu_util_crypto_helper import *
-import sys
+    @property
+    def section_name(self):
+        return self.CFG_SECTION_NAME
 
-UTILITY_LIB_DIR = "lib"
-UTILITY_LIB_Name = SBU_CRYPTO_LIB_DIR + "/" + "lib_oem_asset_pkg.so"
+    @property
+    def asset_type(self):
+        return self._asset_type
 
-# Parse given test configuration file and return test attributes as dictionary
-def parse_config_file (config, log_file):
-    local_dict = {}
-    section_name = "DMPU-OEM-ASSET-CFG"
-    if not config.has_section(section_name):
-        log_sync(log_file, "section " + section_name + " wasn't found in cfg file\n")
-        return None
+    @asset_type.setter
+    def asset_type(self, value):
+        if isinstance(value, str) is False:
+            raise TypeError("Config parameter asset-type must be a string")
+        elif value not in ["kcp", "kce"]:  # asset_type_prov or asset_type_enc
+            raise ValueError("Config parameter asset-type has invalid input value")
+        else:
+            self._asset_type = value
 
-    if config.get(section_name, 'asset-type') == "kce":
-          local_dict['asset_type'] = int(ASSET_TYPE_ENC)
-    elif config.get(section_name, 'asset-type') == "kcp":
-          local_dict['asset_type'] = int(ASSET_TYPE_PROV)
-    else:
-        log_sync(log_file, "Illegal asset-type defined - exiting\n")
-        return None
-    log_sync(log_file,"asset-type: " + str(local_dict['asset_type']) + "\n")
+    @property
+    def icv_enc_oem_key(self):
+        return self._icv_enc_oem_key
 
-    local_dict['icv_enc_oem_key'] = config.get(section_name, 'icv-enc-oem-key')
-    log_sync(log_file,"icv-enc-oem-key: " + str(local_dict['icv_enc_oem_key']) + "\n")
-     
-    local_dict['oem_enc_keypair'] =  str.encode(config.get(section_name, 'oem-enc-keypair'))
-    log_sync(log_file,"oem-enc-keypair: " + str(local_dict['oem_enc_keypair']) + "\n")
-     
-    if config.has_option(section_name, 'oem-enc-keypwd'): #used for testing
-            local_dict['oem_enc_keypwd'] = str.encode(config.get(section_name, 'oem-enc-keypwd'))
-            log_sync(log_file,"oem-enc-keypwd: " + str(local_dict['oem_enc_keypwd']) + "\n")
-    else:
-        local_dict['oem_enc_keypwd'] = ''
+    @icv_enc_oem_key.setter
+    def icv_enc_oem_key(self, value):
+        if isinstance(value, str) is False:
+            raise TypeError("Config parameter icv-enc-oem-key must be a string")
+        elif value == "":
+            raise ValueError("Config parameter icv-enc-oem-key cannot be an empty string!")
+        else:
+            self._icv_enc_oem_key = value
 
-    local_dict['asset_filename'] = config.get(section_name, 'asset-filename')
-    log_sync(log_file,"asset-filename: " + str(local_dict['asset_filename']) + "\n")
+    @property
+    def oem_enc_keypair(self):
+        return self._oem_enc_keypair
 
-    local_dict['pkg_filename'] = str.encode(config.get(section_name, 'pkg-filename'))
-    log_sync(log_file,"pkg-filename: " + str(local_dict['pkg_filename']) + "\n")
+    @oem_enc_keypair.setter
+    def oem_enc_keypair(self, value):
+        if isinstance(value, str) is False:
+            raise TypeError("Config parameter oem-enc-keypair must be a string")
+        elif value == "":
+            raise ValueError("Config parameter oem-enc-keypair cannot be an empty string!")
+        else:
+            self._oem_enc_keypair = value
 
-    return local_dict
+    @property
+    def oem_enc_keypwd(self):
+        return self._oem_enc_keypwd
 
-# Parse script parameters
-def parse_shell_arguments ():
-    len_arg =  len(sys.argv)
-    if len_arg < 2:
-        print_sync("len " + str(len_arg) + " invalid. Usage:" + sys.argv[0] + "<test configuration file>\n")
-        for i in range(1,len_arg):
-            print_sync("i " + str(i) + " arg " + sys.argv[i] + "\n")
-        sys.exit(1)
-    config_fname = sys.argv[1]
-    if len_arg == 3:
-        log_fname = sys.argv[2]
-    else:
-        log_fname = "asset_prov.log"
-    return config_fname, log_fname
+    @oem_enc_keypwd.setter
+    def oem_enc_keypwd(self, value):
+        if isinstance(value, str) is False:
+            raise TypeError("Config parameter oem-enc-keypwd must be a string")
+        else:
+            self._oem_enc_keypwd = value
 
-def main():
+    @property
+    def asset_filename(self):
+        return self._asset_filename
 
-    config_fname, log_fname = parse_shell_arguments()
-    log_file = create_log_file(log_fname)
-    print_and_log(log_file, str(datetime.now()) + ": OEM Asset provisioning Utility started (Logging to " + log_fname + ")\n")
+    @asset_filename.setter
+    def asset_filename(self, value):
+        if isinstance(value, str) is False:
+            raise TypeError("Config parameter asset-filename must be a string")
+        elif value == "":
+            raise ValueError("Config parameter asset-filename cannot be an empty string!")
+        else:
+            self._asset_filename = value
 
-    DLLHandle = LoadDLLGetHandle(UTILITY_LIB_Name)
-    
-    try:
-        config_file = open(config_fname, 'r')
-    except IOError as e:
-        print_and_log(log_file,"Failed opening " + config_fname + " (" + e.strerror + ")\n")
-        log_file.close()
-        sys.exit(e.errno)
+    @property
+    def pkg_filename(self):
+        return self._pkg_filename
 
-    config = configparser.ConfigParser()
-    config.read(config_fname)
-    data_dict = {}
-
-    data_dict = parse_config_file(config, log_file)
-
-    if (data_dict != None):
-        # Get assets and encrypted key from files
-        asset_size, assetStr = GetDataFromBinFile(log_file, data_dict['asset_filename'])
-        if (asset_size != ASSET_SIZE) :
-                print_and_log(log_file, "invalid asset size \n")
-                exit_main_func(log_file, config_file, 1)
-
-        encKey_size, encKey_Str = GetDataFromBinFile(log_file, data_dict['icv_enc_oem_key'])
-        if (encKey_size != PUBKEY_SIZE_BYTES) :
-                print_and_log(log_file, "invalid key size \n")
-                exit_main_func(log_file, config_file, 1)
+    @pkg_filename.setter
+    def pkg_filename(self, value):
+        if isinstance(value, str) is False:
+            raise TypeError("Config parameter pkg-filename must be a string")
+        elif value == "":
+            raise ValueError("Config parameter pkg-filename cannot be an empty string!")
+        else:
+            self._pkg_filename = value
 
 
-        print_and_log(log_file, "**** Generate DMPU Asset package ****\n")        
+class AssetPackageConfigParser:
 
-        result = DLLHandle.build_oem_asset_pkg(data_dict['oem_enc_keypair'], data_dict['oem_enc_keypwd'],
-                          encKey_Str, encKey_size,
-                         data_dict['asset_type'],
-                         assetStr, asset_size,
-                         data_dict['pkg_filename'])
-        if result != 0:
-            raise NameError
-       
-        print_and_log(log_file, "**** Generate OEM asset package completed successfully ****\n")
-        exit_main_func(log_file, config_file, 0)
+    def __init__(self, config_filename):
+        self.config_filename = config_filename
+        self.config = configparser.ConfigParser()
+        self.logger = logging.getLogger()
+        self._config_holder = AssetPackageConfig()
 
-    else:
-        print_and_log(log_file, "**** Invalid config file ****\n")
-        exit_main_func(log_file, config_file, 1)
+    def get_config(self):
+        return self._config_holder
 
-    FreeDLLGetHandle(DLLHandle)
+    def parse_config(self):
+        self.logger.info("Parsing config file: " + self.config_filename)
+        self.config.read(self.config_filename)
 
-#############################
+        if not self.config.has_section(self._config_holder.section_name):
+            self.logger.warning("section [" + self._config_holder.section_name + "] wasn't found in cfg file")
+            return False
+
+        if not self.config.has_option(self._config_holder.section_name, 'asset-type'):
+            self.logger.warning("asset-type not found")
+            return False
+        else:
+            self._config_holder.asset_type = self.config.get(self._config_holder.section_name, 'asset-type')
+
+        if not self.config.has_option(self._config_holder.section_name, 'icv-enc-oem-key'):
+            self.logger.warning("icv-enc-oem-key not found")
+            return False
+        else:
+            self._config_holder.icv_enc_oem_key = self.config.get(self._config_holder.section_name, 'icv-enc-oem-key')
+
+        if not self.config.has_option(self._config_holder.section_name, 'oem-enc-keypair'):
+            self.logger.warning("oem-enc-keypair not found")
+            return False
+        else:
+            self._config_holder.oem_enc_keypair = self.config.get(self._config_holder.section_name, 'oem-enc-keypair')
+
+        if self.config.has_option(self._config_holder.section_name, 'oem-enc-keypwd'):
+            self._config_holder.oem_enc_keypwd = self.config.get(self._config_holder.section_name, 'oem-enc-keypwd')
+
+        if not self.config.has_option(self._config_holder.section_name, 'asset-filename'):
+            self.logger.warning("asset-filename not found")
+            return False
+        else:
+            self._config_holder.asset_filename = self.config.get(self._config_holder.section_name, 'asset-filename')
+
+        if not self.config.has_option(self._config_holder.section_name, 'pkg-filename'):
+            self.logger.warning("pkg-filename not found")
+            return False
+        else:
+            self._config_holder.pkg_filename = self.config.get(self._config_holder.section_name, 'pkg-filename')
+
+        return True
+
+
+class AssetPackager:
+    ASSET_SIZE = 16
+    PUBKEY_SIZE_BYTES = 384     # 3072 bits
+
+    PROD_ASSET_PROV_TOKEN = 0x50726F64
+    PROD_ASSET_PROV_VERSION = 0x10000
+    PROD_ASSET_RESERVED1_VAL = 0x52657631
+    PROD_ASSET_RESERVED2_VAL = 0x52657632
+    PROD_ASSET_NONCE_SIZE = 12
+    PROD_OEM_ENC_CONTEXT = "Kce "
+    PROD_OEM_PROV_CONTEXT = "Kcp "
+
+    def __init__(self, key_cfg):
+        self.config = key_cfg
+        self.logger = logging.getLogger()
+
+    def generate_package(self):
+        with open(self.config.asset_filename, "rb") as asset_file:
+            asset_data = asset_file.read()
+        asset_data_size = len(asset_data)
+        if asset_data_size != self.ASSET_SIZE:
+            self.logger.warning("Invalid asset size: " + str(asset_data_size))
+            sys.exit(-1)
+
+        with open(self.config.icv_enc_oem_key, "rb") as koem_key_file:
+            koem_key = koem_key_file.read()
+        koem_key_size = len(koem_key)
+        if koem_key_size != self.PUBKEY_SIZE_BYTES:
+            self.logger.warning("Invalid key size: " + str(koem_key_size))
+            sys.exit(-1)
+
+        self.logger.info("**** Generate DMPU Asset package ****")
+        # build package header
+        nonce = os.urandom(self.PROD_ASSET_NONCE_SIZE)
+        asset_package = (struct.pack('<I', self.PROD_ASSET_PROV_TOKEN)
+                         + struct.pack('<I', self.PROD_ASSET_PROV_VERSION)
+                         + struct.pack('<I', asset_data_size)
+                         + struct.pack('<I', self.PROD_ASSET_RESERVED1_VAL)
+                         + struct.pack('<I', self.PROD_ASSET_RESERVED2_VAL))
+        # decrypt temporary key created by icv
+        key_tmp = cryptolayer.Common.decrypt_data_with_rsa_keypair(self.config.oem_enc_keypair,
+                                                                   self.config.oem_enc_keypwd,
+                                                                   koem_key)
+
+        if self.config.asset_type == "kcp":
+            key_prov_context = self.PROD_OEM_PROV_CONTEXT
+        else:   # kce
+            key_prov_context = self.PROD_OEM_ENC_CONTEXT
+
+        # calculate Kprov= cmac(Ktmp, 0x01 || "P"  || 0x0 || key_prov_context || 0x80)
+        input_data = (struct.pack('B', 0x01)
+                      + struct.pack('B', 0x50)
+                      + struct.pack('B', 0)
+                      + key_prov_context.encode('utf-8')
+                      + struct.pack('B', 0x80))  # outkeysize in bits
+        prov_key = cryptolayer.AesCrypto.calc_aes_cmac(input_data, key_tmp)
+
+        # encrypt and authenticate the asset
+        encrypted_data_and_tag = cryptolayer.AesCrypto.encrypt_aes_ccm(prov_key, nonce, asset_package, asset_data)
+        # attach encrypted data to asset blob and nonce
+        asset_package += nonce
+        asset_package += encrypted_data_and_tag
+        # write asset blob to output file
+        with open(self.config.pkg_filename, "wb") as encrypted_outfile:
+            encrypted_outfile.write(asset_package)
+
+
 if __name__ == "__main__":
-    main()
-
-
-
+    if not (sys.version_info.major == 3 and sys.version_info.minor >= 5):
+        sys.exit("The script requires Python3.5 or later!")
+    # parse arguments
+    the_argument_parser = ArgumentParser()
+    the_argument_parser.parse_arguments()
+    # get logging up and running
+    logger_config = loggerinitializer.LoggerInitializer(the_argument_parser.log_filename)
+    logger = logging.getLogger()
+    # get util configuration parameters
+    config_parser = AssetPackageConfigParser(the_argument_parser.cfg_filename)
+    if config_parser.parse_config() is False:
+        logger.critical("Config file parsing is not successful")
+        sys.exit(-1)
+    # create secure asset package
+    asset_provisioner = AssetPackager(config_parser.get_config())
+    asset_provisioner.generate_package()
+    logger.info("**** OEM Asset package generation has been completed successfully ****")

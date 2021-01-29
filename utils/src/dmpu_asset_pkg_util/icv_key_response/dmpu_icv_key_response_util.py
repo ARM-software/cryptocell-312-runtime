@@ -1,121 +1,236 @@
-#!/usr/local/bin/python3
+#!/usr/bin/env python3
 #
-# Copyright (c) 2001-2019, Arm Limited and Contributors. All rights reserved.
+# Copyright (c) 2001-2020, Arm Limited and Contributors. All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause OR Arm’s non-OSI source license
 #
 
+import optparse
+import configparser
+import sys
+import struct
+import os
+import logging
+sys.path.append(os.path.join(sys.path[0], "..", ".."))
+
+from common import loggerinitializer
+from common import cryptolayer
+
+# Util's log file
+LOG_FILENAME = "key_response_cert.log"
 
 # This utility enables the ICV to build the encrypted OEM temporary key
 
-import sys
-# Definitions for paths
-if sys.platform != "win32" :
-    path_div = "//"    
-else : #platform = win32
-    path_div = "\\"
 
-import configparser
-from dmpu_util_helper import *
-from dmpu_util_crypto_helper import *
-import sys
+class ArgumentParser:
+    def __init__(self):
+        self.cfg_filename = None
+        self.log_filename = LOG_FILENAME
+        self.parser = optparse.OptionParser(usage="usage: %prog cfg_file [log_filename]")
 
-UTILITY_LIB_DIR = "lib"
-UTILITY_LIB_Name = SBU_CRYPTO_LIB_DIR + "/" + "lib_icv_key_response.so"
+    def parse_arguments(self):
+        (options, args) = self.parser.parse_args()
+        if len(args) > 2 or len(args) < 1:
+            self.parser.error("incorrect number of positional arguments")
+        elif len(args) == 2:
+            self.log_filename = args[1]
+        self.cfg_filename = args[0]
 
-# Parse given test configuration file and return test attributes as dictionary
-def parse_config_file (config, log_file):
-    local_dict = {}
-    section_name = "DMPU-ICV-KEY-RES-CFG"
-    if not config.has_section(section_name):
-        log_sync(log_file, "section " + section_name + " wasn't found in cfg file\n")
-        return None
 
-    local_dict['oem_cert_pkg'] = config.get(section_name, 'oem-cert-pkg')
-    log_sync(log_file,"oem-cert-pkg: " + str(local_dict['oem_cert_pkg']) + "\n")
-     
-    local_dict['key_filename'] = config.get(section_name, 'key-filename')
-    log_sync(log_file,"key-filename: " + str(local_dict['key_filename']) + "\n")
-     
-    if config.has_option(section_name, 'keypwd-filename'): #used for testing
-            local_dict['keypwd_filename'] = str.encode(config.get(section_name, 'keypwd-filename'))
-            log_sync(log_file,"keypwd-filename: " + str(local_dict['keypwd_filename']) + "\n")
-    else:
-        local_dict['keypwd_filename'] = ''
+class IcvKeyResponseConfig:
+    CFG_SECTION_NAME = "DMPU-ICV-KEY-RES-CFG"
 
-    local_dict['pkg_filename'] = str.encode(config.get(section_name, 'icv-enc-oem-key'))
-    log_sync(log_file,"icv-enc-oem-key: " + str(local_dict['pkg_filename']) + "\n")
+    def __init__(self):
+        self._oem_cert_pkg = None
+        self._key_filename = None
+        self._keypwd_filename = ""
+        self._icv_enc_oem_key = None
 
-    return local_dict
+    @property
+    def section_name(self):
+        return self.CFG_SECTION_NAME
 
-# Parse script parameters
-def parse_shell_arguments ():
-    len_arg =  len(sys.argv)
-    if len_arg < 2:
-        print_sync("len " + str(len_arg) + " invalid. Usage:" + sys.argv[0] + "<test configuration file>\n")
-        for i in range(1,len_arg):
-            print_sync("i " + str(i) + " arg " + sys.argv[i] + "\n")
-        sys.exit(1)
-    config_fname = sys.argv[1]
-    if len_arg == 3:
-        log_fname = sys.argv[2]
-    else:
-        log_fname = "asset_prov.log"
-    return config_fname, log_fname
+    @property
+    def oem_cert_pkg(self):
+        return self._oem_cert_pkg
 
-def main():
+    @oem_cert_pkg.setter
+    def oem_cert_pkg(self, value):
+        if isinstance(value, str) is False:
+            raise TypeError("Config parameter oem-cert-pkg must be a string")
+        elif value == "":
+            raise ValueError("Config parameter oem-cert-pkg cannot be an empty string!")
+        else:
+            self._oem_cert_pkg = value
 
-    config_fname, log_fname = parse_shell_arguments()
-    log_file = create_log_file(log_fname)
-    print_and_log(log_file, str(datetime.now()) + ": ICV key response Utility started (Logging to " + log_fname + ")\n")
+    @property
+    def key_filename(self):
+        return self._key_filename
 
-    DLLHandle = LoadDLLGetHandle(UTILITY_LIB_Name)
-    
-    try:
-        config_file = open(config_fname, 'r')
-    except IOError as e:
-        print_and_log(log_file,"Failed opening " + config_fname + " (" + e.strerror + ")\n")
-        log_file.close()
-        sys.exit(e.errno)
+    @key_filename.setter
+    def key_filename(self, value):
+        if isinstance(value, str) is False:
+            raise TypeError("Config parameter key-filename must be a string")
+        elif value == "":
+            raise ValueError("Config parameter key-filename cannot be an empty string!")
+        else:
+            self._key_filename = value
 
-    config = configparser.ConfigParser()
-    config.read(config_fname)
-    data_dict = {}
+    @property
+    def keypwd_filename(self):
+        return self._keypwd_filename
 
-    data_dict = parse_config_file(config, log_file)
+    @keypwd_filename.setter
+    def keypwd_filename(self, value):
+        if isinstance(value, str) is False:
+            raise TypeError("Config parameter keypwd-filename must be a string")
+        else:
+            self._keypwd_filename = value
 
-    if (data_dict != None):
-        # Get assets and encrypted key from files
-        cert_size, certStr = GetDataFromBinFile(log_file, data_dict['oem_cert_pkg'])
-        if (cert_size != OEM_KEY_REQ_CERT_SIZE) :
-                print_and_log(log_file, "invalid certificate size " + str(cert_size) +" \n")
-                exit_main_func(log_file, config_file, 1)
+    @property
+    def icv_enc_oem_key(self):
+        return self._icv_enc_oem_key
 
-        key_size, keyStr = GetDataFromBinFile(log_file, data_dict['key_filename'])
-        if (key_size != KRTL_SIZE*2) :
-                print_and_log(log_file, "invalid key size  \n")
-                exit_main_func(log_file, config_file, 1)
+    @icv_enc_oem_key.setter
+    def icv_enc_oem_key(self, value):
+        if isinstance(value, str) is False:
+            raise TypeError("Config parameter icv-enc-oem-key must be a string")
+        elif value == "":
+            raise ValueError("Config parameter icv-enc-oem-key cannot be an empty string!")
+        else:
+            self._icv_enc_oem_key = value
 
-        print_and_log(log_file, "**** Generate OEM key package ****\n")        
 
-        result = DLLHandle.generateIcvKeyRespPkg(keyStr, key_size, data_dict['keypwd_filename'],
-                          certStr, cert_size,
-                         data_dict['pkg_filename'])
-        if result != 0:
-            raise NameError
-       
-        print_and_log(log_file, "**** ICV key response utility completed successfully ****\n")
-        exit_main_func(log_file, config_file, 0)
+class IcvKeyResponseConfigParser:
 
-    else:
-        print_and_log(log_file, "**** Invalid config file ****\n")
-        exit_main_func(log_file, config_file, 1)
+    def __init__(self, config_filename):
+        self.config_filename = config_filename
+        self.config = configparser.ConfigParser()
+        self.logger = logging.getLogger()
+        self._config_holder = IcvKeyResponseConfig()
 
-    FreeDLLGetHandle(DLLHandle)
+    def get_config(self):
+        return self._config_holder
 
-#############################
+    def parse_config(self):
+        self.logger.info("Parsing config file: " + self.config_filename)
+        self.config.read(self.config_filename)
+
+        if not self.config.has_section(self._config_holder.section_name):
+            self.logger.warning("section [" + self._config_holder.section_name + "] wasn't found in cfg file")
+            return False
+
+        if not self.config.has_option(self._config_holder.section_name, 'oem-cert-pkg'):
+            self.logger.warning("oem-cert-pkg not found")
+            return False
+        else:
+            self._config_holder.oem_cert_pkg = self.config.get(self._config_holder.section_name, 'oem-cert-pkg')
+
+        if not self.config.has_option(self._config_holder.section_name, 'key-filename'):
+            self.logger.warning("key-filename not found")
+            return False
+        else:
+            self._config_holder.key_filename = self.config.get(self._config_holder.section_name, 'key-filename')
+
+        if self.config.has_option(self._config_holder.section_name, 'keypwd-filename'):
+            self._config_holder.keypwd_filename = self.config.get(self._config_holder.section_name, 'keypwd-filename')
+
+        if not self.config.has_option(self._config_holder.section_name, 'icv-enc-oem-key'):
+            self.logger.warning("icv-enc-oem-key not found")
+            return False
+        else:
+            self._config_holder.icv_enc_oem_key = self.config.get(self._config_holder.section_name, 'icv-enc-oem-key')
+
+        return True
+
+
+class KeyResponsePackageCreator:
+    OEM_KEY_REQ_CERT_SIZE = 1204
+    DMPU_OEM_KEY_REQ_TOKEN = 0x52455144
+    DMPU_OEM_KEY_REQ_VERSION = 0x01
+    KRTL_SIZE = 16
+    PROD_OEM_KEY_TMP_LABEL = "KEY OEM"
+    PUBKEY_SIZE_BYTES = 384  # 3072 bits
+    NP_SIZE_IN_BYTES = 20
+    DMPU_CERT_HEADER_SIZE_IN_BYTES = 12
+
+    def __init__(self, key_response_cfg):
+        self.config = key_response_cfg
+        self.logger = logging.getLogger()
+
+    def create_package(self):
+        with open(self.config.oem_cert_pkg, "rb") as cert_package:
+            cert_data = cert_package.read()
+        cert_data_size = len(cert_data)
+        if cert_data_size != self.OEM_KEY_REQ_CERT_SIZE:
+            self.logger.warning("Invalid certificate size: " + str(cert_data_size))
+            sys.exit(-1)
+
+        with open(self.config.key_filename, "rb") as krtl_key_file:
+            krtl_key = krtl_key_file.read()
+        krtl_key_size = len(krtl_key)
+        if krtl_key_size != 2 * self.KRTL_SIZE:
+            self.logger.warning("Invalid key size: " + str(krtl_key_size))
+            sys.exit(-1)
+
+        #  verify the certificate
+        if cert_data[0:4] != struct.pack('<I', self.DMPU_OEM_KEY_REQ_TOKEN):
+            self.logger.warning("Invalid token field in certificate header: " + str(cert_data[0:4]))
+            sys.exit(-1)
+        if cert_data[4:8] != struct.pack('<I', self.DMPU_OEM_KEY_REQ_VERSION):
+            self.logger.warning("Invalid version field in certificate header: " + str(cert_data[4:8]))
+            sys.exit(-1)
+        if cert_data[8:12] != struct.pack('<I', self.OEM_KEY_REQ_CERT_SIZE - self.PUBKEY_SIZE_BYTES):
+            self.logger.warning("Invalid length field in certificate header: " + str(cert_data[8:12]))
+            sys.exit(-1)
+        # verify certificate
+        oem_enc_pubkey_field_start = 12 + cryptolayer.RsaCrypto.SB_CERT_RSA_KEY_SIZE_IN_BYTES + cryptolayer.RsaCrypto.NP_SIZE_IN_BYTES
+        oem_rsa_public_key_params = cert_data[12:oem_enc_pubkey_field_start]
+        oem_rsa_public_key_param_n = oem_rsa_public_key_params[0:cryptolayer.RsaCrypto.SB_CERT_RSA_KEY_SIZE_IN_BYTES]
+        cert_signed_data_length = self.DMPU_CERT_HEADER_SIZE_IN_BYTES + 2 * (self.PUBKEY_SIZE_BYTES + self.NP_SIZE_IN_BYTES)
+        cryptolayer.Common.rsa_verify_with_pubkey_params(oem_rsa_public_key_param_n,
+                                                         cert_data[0:cert_signed_data_length],
+                                                         cert_data[cert_signed_data_length:])
+
+        self.logger.info("**** Generate OEM key package ****")
+        # decrypt Krtl
+        decrypted_krtl_key = cryptolayer.Common.decrypt_asset_with_aes_cbc(krtl_key, self.config.keypwd_filename)
+        # Calculate HBK from oem main public key hash
+        hbk_value = cryptolayer.HashCrypto.calculate_sha256_hash(oem_rsa_public_key_params)
+        # calculate Ktmp = cmac(Krtl, 0x01 || OEM_label  || 0x0 || HBK(only 16 bytes) || 0x80)
+        input_data = (struct.pack('B', 0x01)
+                      + self.PROD_OEM_KEY_TMP_LABEL.encode('utf-8')
+                      + struct.pack('B', 0)
+                      + hbk_value[0:16]
+                      + struct.pack('B', 0x80))  # outkeysize in bits
+        key_tmp = cryptolayer.AesCrypto.calc_aes_cmac(input_data, decrypted_krtl_key)
+        # Encrypt the OEM key with the dedicated key pair
+        oem_enc_pubkey_params_from_cert = cert_data[oem_enc_pubkey_field_start:
+                                                    (oem_enc_pubkey_field_start
+                                                     + cryptolayer.RsaCrypto.SB_CERT_RSA_KEY_SIZE_IN_BYTES
+                                                     + cryptolayer.RsaCrypto.NP_SIZE_IN_BYTES)]
+        encrypted_key = cryptolayer.Common.encrypt_data_with_rsa_pubkey_params(oem_enc_pubkey_params_from_cert, key_tmp)
+
+        # write package to output file
+        with open(self.config.icv_enc_oem_key, "wb") as package_outfile:
+            package_outfile.write(encrypted_key)
+
+
 if __name__ == "__main__":
-    main()
-
-
-
+    if not (sys.version_info.major == 3 and sys.version_info.minor >= 5):
+        sys.exit("The script requires Python3.5 or later!")
+    # parse arguments
+    the_argument_parser = ArgumentParser()
+    the_argument_parser.parse_arguments()
+    # get logging up and running
+    logger_config = loggerinitializer.LoggerInitializer(the_argument_parser.log_filename)
+    logger = logging.getLogger()
+    # get util configuration parameters
+    config_parser = IcvKeyResponseConfigParser(the_argument_parser.cfg_filename)
+    if config_parser.parse_config() is False:
+        logger.critical("Config file parsing is not successful")
+        sys.exit(-1)
+    # create secure asset package
+    asset_provisioner = KeyResponsePackageCreator(config_parser.get_config())
+    asset_provisioner.create_package()
+    logger.info("**** ICV key response generation has been completed successfully ****")

@@ -1,166 +1,291 @@
-#!/usr/local/bin/python3
+#!/usr/bin/env python3
 #
-# Copyright (c) 2001-2019, Arm Limited and Contributors. All rights reserved.
+# Copyright (c) 2001-2020, Arm Limited and Contributors. All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause OR Arm’s non-OSI source license
 #
 
+import optparse
+import configparser
+import sys
+import struct
+import os
+import logging
+sys.path.append(os.path.join(sys.path[0], ".."))
+
+from common import loggerinitializer
+from common import cryptolayer
+
+# Util's log file
+LOG_FILENAME = "icv_asset_pkg.log"
 
 # This utility builds production asset  package:
 # the package format is:
 #                       token, version, asset length, user data (20 bytes)
 #                       nonce(12 bytes)
 #                       encrypted asset (up to 512 bytes - multiple of 16 bytes)
-#                       aset tag (16 bytes)
+#                       asset tag (16 bytes)
 
 
-# This file contains the general functions that are used in both certificates
+class ArgumentParser:
+    def __init__(self):
+        self.cfg_filename = None
+        self.log_filename = LOG_FILENAME
+        self.parser = optparse.OptionParser(usage="usage: %prog cfg_file [log_filename]")
 
-ASSET_TYPE_ENC = 1
-ASSET_TYPE_PROV = 2
-
-ASSET_SIZE = 16
-USER_DATA_SIZE = 16
-KRTL_SIZE = 16
-
-import sys
-# Definitions for paths
-if sys.platform != "win32" :
-    path_div = "//"    
-else : #platform = win32
-    path_div = "\\"
+    def parse_arguments(self):
+        (options, args) = self.parser.parse_args()
+        if len(args) > 2 or len(args) < 1:
+            self.parser.error("incorrect number of positional arguments")
+        elif len(args) == 2:
+            self.log_filename = args[1]
+        self.cfg_filename = args[0]
 
 
-CURRENT_PATH = sys.path[0]
-# In case the scripts were run from current directory
-CURRENT_PATH_SCRIPTS = path_div
-# this is the scripts local path, from where the program was called
-sys.path.append(CURRENT_PATH+CURRENT_PATH_SCRIPTS)
+class AssetPackageConfig:
+    CFG_SECTION_NAME = "CMPU-ASSET-CFG"
 
-import configparser
-from cmpu_util_helper import *
-import sys
+    def __init__(self):
+        self._asset_type = None
+        self._unique_data = None
+        self._key_filename = None
+        self._keypwd_filename = ""
+        self._asset_filename = None
+        self._pkg_filename = None
 
-# Parse given test configuration file and return test attributes as dictionary
-def parse_config_file (config, log_file):
-    local_dict = {}
-    section_name = "CMPU-ASSET-CFG"
-    if not config.has_section(section_name):
-        log_sync(log_file, "section " + section_name + " wasn't found in cfg file\n")
-        return None
+    @property
+    def section_name(self):
+        return self.CFG_SECTION_NAME
 
-    if config.get(section_name, 'asset-type') == "kpicv":
-         local_dict['asset_type'] = int(ASSET_TYPE_PROV)
-    elif config.get(section_name, 'asset-type') == "kceicv":
-          local_dict['asset_type'] = int(ASSET_TYPE_ENC)
-    else:
-        log_sync(log_file, "Illegal asset-type defined - exiting\n")
-        return None
-    log_sync(log_file,"asset-type: " + str(local_dict['asset_type']) + "\n")
+    @property
+    def asset_type(self):
+        return self._asset_type
 
-    local_dict['unique_data'] = config.get(section_name, 'unique-data')
-    log_sync(log_file,"unique-data: " + str(local_dict['unique_data']) + "\n")
-     
-    local_dict['key_filename'] = config.get(section_name, 'key-filename')
-    log_sync(log_file,"key-filename: " + str(local_dict['key_filename']) + "\n")
-     
-    if config.has_option(section_name, 'keypwd-filename'): #used for testing
-            local_dict['keypwd_filename'] = str.encode(config.get(section_name, 'keypwd-filename'))
-            log_sync(log_file,"keypwd-filename: " + str(local_dict['keypwd_filename']) + "\n")
-    else:
-        local_dict['keypwd_filename'] = ''
+    @asset_type.setter
+    def asset_type(self, value):
+        if isinstance(value, str) is False:
+            raise TypeError("Config parameter asset-type must be a string")
+        elif value not in ["kpicv", "kceicv"]:  # asset_type_prov or asset_type_enc
+            raise ValueError("Config parameter asset-type has invalid input value")
+        else:
+            self._asset_type = value
 
-    local_dict['asset_filename'] = config.get(section_name, 'asset-filename')
-    log_sync(log_file,"asset-filename: " + str(local_dict['asset_filename']) + "\n")
+    @property
+    def unique_data(self):
+        return self._unique_data
 
-    local_dict['pkg_filename'] = str.encode(config.get(section_name, 'pkg-filename'))
-    log_sync(log_file,"pkg-filename: " + str(local_dict['pkg_filename']) + "\n")
+    @unique_data.setter
+    def unique_data(self, value):
+        if isinstance(value, str) is False:
+            raise TypeError("Config parameter unique-data must be a string")
+        elif value == "":
+            raise ValueError("Config parameter unique-data cannot be an empty string!")
+        else:
+            self._unique_data = value
 
-    return local_dict
+    @property
+    def key_filename(self):
+        return self._key_filename
 
-# Parse script parameters
-def parse_shell_arguments ():
-    len_arg =  len(sys.argv)
-    if len_arg < 2:
-        print_sync("len " + str(len_arg) + " invalid. Usage:" + sys.argv[0] + "<test configuration file>\n")
-        for i in range(1,len_arg):
-            print_sync("i " + str(i) + " arg " + sys.argv[i] + "\n")
-        sys.exit(1)
-    config_fname = sys.argv[1]
-    if len_arg == 3:
-        log_fname = sys.argv[2]
-    else:
-        log_fname = "asset_prov.log"
-    return config_fname, log_fname
+    @key_filename.setter
+    def key_filename(self, value):
+        if value == "":
+            raise ValueError("Config parameter key-filename cannot be an empty string!")
+        elif isinstance(value, str) is False:
+            raise TypeError("Config parameter key-filename must be a string")
+        else:
+            self._key_filename = value
+
+    @property
+    def keypwd_filename(self):
+        return self._keypwd_filename
+
+    @keypwd_filename.setter
+    def keypwd_filename(self, value):
+        if isinstance(value, str) is False:
+            raise TypeError("Config parameter keypwd-filename must be a string")
+        else:
+            self._keypwd_filename = value
+
+    @property
+    def asset_filename(self):
+        return self._asset_filename
+
+    @asset_filename.setter
+    def asset_filename(self, value):
+        if value == "":
+            raise ValueError("Config parameter asset-filename cannot be an empty string!")
+        elif isinstance(value, str) is False:
+            raise TypeError("Config parameter asset-filename must be a string")
+        else:
+            self._asset_filename = value
+
+    @property
+    def pkg_filename(self):
+        return self._pkg_filename
+
+    @pkg_filename.setter
+    def pkg_filename(self, value):
+        if isinstance(value, str) is False:
+            raise TypeError("Config parameter pkg-filename must be a string")
+        elif value == "":
+            raise ValueError("Config parameter pkg-filename cannot be an empty string!")
+        else:
+            self._pkg_filename = value
 
 
-# close files and exit script
-def exit_main_func(log_file, config_file, rc):
-    log_file.close()
-    config_file.close()
-    sys.exit(rc)
+class AssetPackageConfigParser:
+
+    def __init__(self, config_filename):
+        self.config_filename = config_filename
+        self.config = configparser.ConfigParser()
+        self.logger = logging.getLogger()
+        self._config_holder = AssetPackageConfig()
+
+    def get_config(self):
+        return self._config_holder
+
+    def parse_config(self):
+        self.logger.info("Parsing config file: " + self.config_filename)
+        self.config.read(self.config_filename)
+
+        if not self.config.has_section(self._config_holder.section_name):
+            self.logger.warning("section [" + self._config_holder.section_name + "] wasn't found in cfg file")
+            return False
+
+        if not self.config.has_option(self._config_holder.section_name, 'asset-type'):
+            self.logger.warning("asset-type not found")
+            return False
+        else:
+            self._config_holder.asset_type = self.config.get(self._config_holder.section_name, 'asset-type')
+
+        if not self.config.has_option(self._config_holder.section_name, 'unique-data'):
+            self.logger.warning("unique-data not found")
+            return False
+        else:
+            self._config_holder.unique_data = self.config.get(self._config_holder.section_name, 'unique-data')
+
+        if not self.config.has_option(self._config_holder.section_name, 'key-filename'):
+            self.logger.warning("key-filename not found")
+            return False
+        else:
+            self._config_holder.key_filename = self.config.get(self._config_holder.section_name, 'key-filename')
+
+        if self.config.has_option(self._config_holder.section_name, 'keypwd-filename'):
+            self._config_holder.keypwd_filename = self.config.get(self._config_holder.section_name, 'keypwd-filename')
+
+        if not self.config.has_option(self._config_holder.section_name, 'asset-filename'):
+            self.logger.warning("asset-filename not found")
+            return False
+        else:
+            self._config_holder.asset_filename = self.config.get(self._config_holder.section_name, 'asset-filename')
+
+        if not self.config.has_option(self._config_holder.section_name, 'pkg-filename'):
+            self.logger.warning("pkg-filename not found")
+            return False
+        else:
+            self._config_holder.pkg_filename = self.config.get(self._config_holder.section_name, 'pkg-filename')
+
+        return True
 
 
-def main():
+class AssetPackager:
+    ASSET_SIZE = 16
+    USER_DATA_SIZE = 16
+    KRTL_SIZE = 16
+    ASSET_BLOCK_SIZE = 16
 
-    config_fname, log_fname = parse_shell_arguments()
-    log_file = create_log_file(log_fname)
-    print_and_log(log_file, str(datetime.now()) + ": Asset provisioning Utility started (Logging to " + log_fname + ")\n")
+    PROD_ASSET_PROV_TOKEN = 0x50726F64
+    PROD_ASSET_PROV_VERSION = 0x10000
+    PROD_ASSET_RESERVED1_VAL = 0x52657631
+    PROD_ASSET_RESERVED2_VAL = 0x52657632
+    PROD_ASSET_NONCE_SIZE = 12
+    PROD_ICV_KEY_TMP_LABEL = "KEY ICV"
+    PROD_ICV_ENC_CONTEXT = "EICV"
+    PROD_ICV_PROV_CONTEXT = "PICV"
 
-    DLLHandle = LoadDLLGetHandle()
-    
-    try:
-        config_file = open(config_fname, 'r')
-    except IOError as e:
-        print_and_log(log_file,"Failed opening " + config_fname + " (" + e.strerror + ")\n")
-        log_file.close()
-        sys.exit(e.errno)
+    def __init__(self, key_cfg):
+        self.config = key_cfg
+        self.logger = logging.getLogger()
 
-    config = configparser.ConfigParser()
-    config.read(config_fname)
-    data_dict = {}
+    def generate_package(self):
+        with open(self.config.asset_filename, "rb") as asset_file:
+            asset_data = asset_file.read()
+        asset_data_size = len(asset_data)
+        if asset_data_size != self.ASSET_SIZE:
+            self.logger.warning("Invalid asset size: " + str(asset_data_size))
+            sys.exit(-1)
 
-    data_dict = parse_config_file(config, log_file)
+        with open(self.config.unique_data, "rb") as userdata_file:
+            user_data = userdata_file.read()
+        user_data_size = len(user_data)
+        if user_data_size != self.USER_DATA_SIZE:
+            self.logger.warning("Invalid unique data size: " + str(user_data_size))
+            sys.exit(-1)
 
-    if (data_dict != None):
-        # Get assets and encrypted key from files
-        asset_size, assetStr = GetDataFromBinFile(log_file, data_dict['asset_filename'])
-        if (asset_size != ASSET_SIZE) :
-                print_and_log(log_file, "invalid asset size \n")
-                exit_main_func(log_file, config_file, 1)
+        with open(self.config.key_filename, "rb") as key_file:
+            key_data = key_file.read()
+        key_data_size = len(key_data)
+        if key_data_size != self.KRTL_SIZE + self.ASSET_BLOCK_SIZE:
+            self.logger.warning("Invalid key size: " + str(key_data_size))
+            sys.exit(-1)
 
-        userData_size, userData_Str = GetDataFromBinFile(log_file, data_dict['unique_data'])
-        if (userData_size < USER_DATA_SIZE) :
-                print_and_log(log_file, "invalid key size \n")
-                exit_main_func(log_file, config_file, 1)
+        self.logger.info("**** Generate Production Asset package ****")
+        # build package header
+        nonce = os.urandom(self.PROD_ASSET_NONCE_SIZE)
+        asset_package = (struct.pack('<I', self.PROD_ASSET_PROV_TOKEN)
+                         + struct.pack('<I', self.PROD_ASSET_PROV_VERSION)
+                         + struct.pack('<I', asset_data_size)
+                         + struct.pack('<I', self.PROD_ASSET_RESERVED1_VAL)
+                         + struct.pack('<I', self.PROD_ASSET_RESERVED2_VAL))
+        # decrypt Krtl
+        decrypted_krtl_key = cryptolayer.Common.decrypt_asset_with_aes_cbc(key_data,
+                                                                           self.config.keypwd_filename)
+        if self.config.asset_type == "kceicv":
+            key_prov_context = self.PROD_ICV_ENC_CONTEXT
+        else:
+            key_prov_context = self.PROD_ICV_PROV_CONTEXT
+        # calculate Ktmp = cmac(Krtl, 0x01 || ICV/OEM_label  || 0x0 || user context || 0x80)
+        input_data = (struct.pack('B', 0x01)
+                      + self.PROD_ICV_KEY_TMP_LABEL.encode('utf-8')
+                      + struct.pack('B', 0)
+                      + user_data
+                      + struct.pack('B', 0x80))  # outkeysize in bits
+        key_tmp = cryptolayer.AesCrypto.calc_aes_cmac(input_data, decrypted_krtl_key)
 
-        key_size, keyStr = GetDataFromBinFile(log_file, data_dict['key_filename'])
-        if (key_size != KRTL_SIZE*2) :
-                print_and_log(log_file, "invalid key size  \n")
-                exit_main_func(log_file, config_file, 1)
+        # calculate Kprov= cmac(Ktmp, 0x01 || "P"  || 0x0 || key_prov_context? || 0x80)
+        input_data = (struct.pack('B', 0x01)
+                      + struct.pack('B', 0x50)
+                      + struct.pack('B', 0)
+                      + key_prov_context.encode('utf-8')
+                      + struct.pack('B', 0x80))  # outkeysize in bits
+        prov_key = cryptolayer.AesCrypto.calc_aes_cmac(input_data, key_tmp)
 
-        print_and_log(log_file, "**** Generate production Asset package ****\n")        
+        # encrypt and authenticate the asset
+        encrypted_data_and_tag = cryptolayer.AesCrypto.encrypt_aes_ccm(prov_key, nonce, asset_package, asset_data)
+        # attach encrypted data to asset blob and nonce
+        asset_package += nonce
+        asset_package += encrypted_data_and_tag
+        # write asset blob to output file
+        with open(self.config.pkg_filename, "wb") as encrypted_outfile:
+            encrypted_outfile.write(asset_package)
 
-        result = DLLHandle.build_asset_pkg(keyStr, key_size, data_dict['keypwd_filename'],
-                         data_dict['asset_type'],
-                         userData_Str, int(USER_DATA_SIZE),
-                         assetStr, int(ASSET_SIZE),
-                         data_dict['pkg_filename'])
-        if result != 0:
-            raise NameError
-       
-        print_and_log(log_file, "**** Generate asset package completed successfully ****\n")
-        exit_main_func(log_file, config_file, 0)
 
-    else:
-        print_and_log(log_file, "**** Invalid config file ****\n")
-        exit_main_func(log_file, config_file, 1)
-
-    FreeDLLGetHandle(DLLHandle)
-
-#############################
 if __name__ == "__main__":
-    main()
-
-
-
+    if not (sys.version_info.major == 3 and sys.version_info.minor >= 5):
+        sys.exit("The script requires Python3.5 or later!")
+    # parse arguments
+    the_argument_parser = ArgumentParser()
+    the_argument_parser.parse_arguments()
+    # get logging up and running
+    logger_config = loggerinitializer.LoggerInitializer(the_argument_parser.log_filename)
+    logger = logging.getLogger()
+    # get util configuration parameters
+    config_parser = AssetPackageConfigParser(the_argument_parser.cfg_filename)
+    if config_parser.parse_config() is False:
+        logger.critical("Config file parsing is not successful")
+        sys.exit(-1)
+    # create secure asset package
+    asset_provisioner = AssetPackager(config_parser.get_config())
+    asset_provisioner.generate_package()
+    logger.info("**** Asset package generation has been completed successfully ****")
